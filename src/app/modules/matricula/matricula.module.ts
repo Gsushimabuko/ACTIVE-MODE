@@ -9,6 +9,7 @@ import { MaterialModule } from 'src/app/core/material/material.module';
 import { CursoComponent } from './components/curso/curso.component';
 import { CursoDialogComponent } from './components/curso-dialog/curso-dialog.component';
 import { FormularioMatriculaComponent } from './components/formulario-matricula/formulario-matricula.component';
+import { CursoListaComponent } from './components/curso-lista/curso-lista.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { FormularioMatriculaComponent } from './components/formulario-matricula/
     CursoComponent,
     CursoDialogComponent,
     FormularioMatriculaComponent,
+    CursoListaComponent,
   ],
   imports: [
     CommonModule,
