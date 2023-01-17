@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Curso } from 'src/app/modules/shared/interfaces/Curso';
+import { FormBuilder } from '@angular/forms';
+import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 
 @Component({
   selector: 'app-curso',
@@ -8,9 +9,13 @@ import { Curso } from 'src/app/modules/shared/interfaces/Curso';
 })
 export class CursoComponent {
 
-  @Input() curso!: Curso
+  @Input() curso!: any
 
-  constructor(){
+  
+
+  constructor(private _fb: FormBuilder){
+
+
 
   }
 
