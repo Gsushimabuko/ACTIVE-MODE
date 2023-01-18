@@ -3,11 +3,12 @@
     <mat-card class="card">
         <mat-card-header>
             <mat-card-title-group>
-                <mat-card-title>curso.nombre</mat-card-title>
-                <mat-card-subtitle>curso.periodo curso.cupos</mat-card-subtitle>
+                <mat-card-title>{{curso.name | titlecase}}</mat-card-title>
+                <mat-card-subtitle>{{curso.month | titlecase}} {{curso.year}}</mat-card-subtitle>
+                <mat-card-subtitle>{{curso.instructor | titlecase }}</mat-card-subtitle>
             </mat-card-title-group>
         </mat-card-header>
-        <mat-card-content> curso.descripcion</mat-card-content>
+        <mat-card-content> curso.description</mat-card-content>
     </mat-card>
 
 

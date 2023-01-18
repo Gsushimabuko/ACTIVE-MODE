@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
+import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ZCursoService {
   getCursosHorarios(idTipoUsuario:number){
     const url = this.apiURL + "/cursos_horarios"
     console.log(url)
-    return this.http.get(url,{params:{idTipoUsuario: idTipoUsuario}})
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario}})
   }
 
 }

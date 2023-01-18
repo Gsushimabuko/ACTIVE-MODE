@@ -1,8 +1,13 @@
+import { NivelPeriodo } from './Nivel';
+
 export interface CursoPeriodo {
-    id: number
-    nombre:string
-    descripcion:string
-    periodo:Date
-    profesor:string
-    cupos:number
+    idCurso: number
+    name:string
+    description:string
+    idCursoPeriodo:number
+    instructor:string
+    month:string
+    year:number
+    state:string
+    niveles:NivelPeriodo[]
 }

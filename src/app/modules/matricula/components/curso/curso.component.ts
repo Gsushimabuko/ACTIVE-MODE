@@ -9,12 +9,10 @@ import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 })
 export class CursoComponent {
 
-  @Input() curso!: any
+  @Input() curso!: CursoPeriodo
 
-  
 
   constructor(private _fb: FormBuilder){
-
 
 
   }

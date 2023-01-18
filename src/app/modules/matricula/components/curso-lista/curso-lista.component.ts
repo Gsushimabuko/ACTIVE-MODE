@@ -8,17 +8,10 @@ import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 })
 export class CursoListaComponent {
 
-  cursos!:CursoPeriodo[]
+  cursos!: any
 
   constructor(){
-    this.cursos = [
-      {id: 1,
-        nombre:"Voley",
-        descripcion:"una descripcion corta",
-        periodo:new Date,
-        profesor:"Juan Carlos Tafur Roman",
-        cupos:15},
-    ]
+    
   }
 
 }
