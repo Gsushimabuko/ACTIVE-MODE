@@ -1,0 +1,74 @@
+mat-icon{
+    cursor:pointer;
+ }
+ .container{
+    background-color: rgb(0, 0, 0);
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    display: flex;
+ }
+
+.login-card{
+    width: 30vw;
+    height: 600px;
+    background-color: rgb(255, 255, 255);
+}
+h2{
+    font-size: 30px;
+}
+mat-card{
+    border-radius: 30px;
+    padding: 50px;
+}
+.boton-login{
+    color: black;
+    background-color: #69d360;
+    width: 160px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+.texto-sugerencia{
+    font-size: 12px;
+}
+
+input{
+    height: 20px;
+    
+}
+
+.login-input{
+    width: 300px;
+    height: 20px;
+    font-size: medium;
+}
+@media (max-width: 600px) {
+
+    mat-error{
+        font-size: 10px;
+        margin: 5px;
+    }
+
+    .container{
+        height: 850px; 
+     }
+    
+    .login-card{
+        margin: 20px;
+        width: 280px;
+        height: 500px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    h2{
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .login-input{
+        width: 150px;
+        height: 20px;
+        font-size: medium;
+    }
+}

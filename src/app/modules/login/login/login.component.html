@@ -1,0 +1,71 @@
+<div fxLayout="row" fxFlex="100" 
+ fxLayoutAlign="center center" class="container">
+    <div style="color: aliceblue;">
+        a
+    </div>
+ <form (ngSubmit)="login()" [formGroup] ="loginForm">
+    <mat-card class="login-card">
+        
+        <div fxLayout="column" fxFlex="100" fxLayoutAlign="start center">
+            <div fxFlex="20" fxLayoutAlign="center center" >
+                <h2> Iniciar sesión padre </h2>
+            </div>
+            <div fxFlex="50" fxLayoutAlign="center center" >
+                <div  fxLayout="column"  >
+                        <div>
+                            <mat-form-field style="margin:40px"class="login-input" appearance="outline">
+                                <mat-label> E-mail
+                                </mat-label>
+                                <input matInput formControlName="email" required>
+                                
+                                <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+                                    Ingrese un correo válido
+                                </mat-error>
+                                <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+                                    Ingrese un correo
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <mat-form-field style="margin:40px" class="login-input" appearance="outline">
+                                <mat-label> Contraseña
+                                </mat-label>
+                                <input  type="password" [type]="hide ? 'password' : 'text'" matInput formControlName="contrasena" required>
+                               
+                                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}  
+                                </mat-icon>
+                                <mat-error *ngIf="loginForm.controls['contrasena'].hasError('required')">
+                                        Contraseña requerida
+                                </mat-error>
+                                <mat-error *ngIf="loginForm.controls['contrasena'].hasError('minlength')">
+                                        Ingrese una contraseña válida
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        
+                        <div style=" margin-top: 30px;text-align: center; color: rgb(228, 46, 46)">
+                            <mat-error  *ngIf="mensaje">
+                                {{mensaje}}
+                            </mat-error>
+                        </div>
+                    </div>
+                </div>
+                <div  fxLayout="column" fxLayoutGap="30" fxFlex="30" fxLayoutAlign="center center" >
+                    <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button >
+                        Iniciar sesión
+                    </button>
+                    <div class="texto-sugerencia">
+                        <span>
+                            <a style="color:#dfb544" routerLink="/sesion/olvide-contrasena">Olvidé mi contraseña</a>
+                        </span>
+                    </div>
+                    <div class="texto-sugerencia">
+                        <span> ¿No tienes cuenta? </span>
+                        <span> <a style="color:#dfb544" routerLink="/sesion/registro"> Registrate </a> </span>
+                        
+                    </div>
+                </div>
+            </div>   
+        </mat-card>
+    </form>
+</div>

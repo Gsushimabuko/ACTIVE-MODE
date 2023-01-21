@@ -7,6 +7,8 @@ import { HomeMainComponent } from './modules/home/home-main/home-main/home-main.
 const routes: Routes = [
   {path: 'matricula', loadChildren: () =>
   import('./modules/matricula/matricula.module').then(m => m.MatriculaModule) },
+  {path: 'login', loadChildren: () =>
+  import('./modules/login/login.module').then(m => m.LoginModule)},
 
   //Redirect
   {path: '', component: HomeMainComponent},
