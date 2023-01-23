@@ -21,7 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
-import { FlexLayoutModule } from '@angular/flex-layout';
+//import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -45,7 +45,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatProgressSpinnerModule,
     MatButtonToggleModule,
     MatListModule,
-    FlexLayoutModule,
+    //FlexLayoutModule,
     MatDialogModule,
     FormsModule,
     MatExpansionModule,
