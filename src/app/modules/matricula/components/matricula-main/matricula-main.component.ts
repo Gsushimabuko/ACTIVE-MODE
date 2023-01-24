@@ -31,6 +31,8 @@ export class MatriculaMainComponent {
   niveles!:NivelPeriodo[]
   ratios!:RatioPeriodo[]
   dias!:DiaPeriodo[]
+  listaCursos:any = []
+  listaCursosNuevos:any=[]
 
 
   constructor(private formBuilder: FormBuilder,
@@ -48,6 +50,18 @@ export class MatriculaMainComponent {
       nivel: [{ value: '', disabled: true }, [Validators.required]],
       dia: [{ value: '', disabled: true }, [Validators.required]],
     })
+
+    this.listaCursos =[
+      {idCursoPeriodo: 5,nombre:"Futbol",horario:"6:00pm - 7pm"},
+      {idCursoPeriodo: 7,nombre:"Voley",horario:"6:00pm - 7pm"}
+    ]
+
+    
+    this.listaCursosNuevos =[
+      {idCursoPeriodo: 8,nombre:"Futbol",horario:"6:00pm - 7pm"},
+      {idCursoPeriodo: 1,nombre:"Voley",horario:"6:00pm - 7pm"},
+      {idCursoPeriodo: 9,nombre:"Futbol",horario:"6:00pm - 7pm"},
+    ]
   }
 
   cambioCurso(){
@@ -85,6 +99,34 @@ export class MatriculaMainComponent {
       if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
         this.dias = ratio.dias
       } 
+    }
+  }
+
+  agregarCurso(){
+    const nombre = this.curso.name
+    const idCursoPeriodo= this.curso.idCursoPeriodo
+    var horario
+
+    for(var nivel of this.niveles){
+      if(nivel.idNivel == this.cursoForm.controls['nivel'].value){
+        horario = nivel.time
+      }
+    }
+
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horario: horario}
+    console.log(curso)
+    this.listaCursosNuevos.push(curso)
+  }
+
+  eliminar(id:any){
+    console.log(id,"id del paddre")
+    const lista = this.listaCursosNuevos
+    for (let i = 0; i < lista.length; i++) {
+      if(this.listaCursosNuevos[i].idCursoPeriodo == id){
+        lista.splice(i,1)
+        this.listaCursosNuevos = lista
+        break
+      }
     }
   }
   

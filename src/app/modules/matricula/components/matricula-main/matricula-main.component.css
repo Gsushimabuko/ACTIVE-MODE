@@ -9,3 +9,21 @@
 .border{
   border: solid 2px green;
 }
+
+.form{
+  width: 350px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.info{
+  width: 350px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.calendario{
+  width: 700px;
+  padding-left: 20px;
+  padding-right: 20px;
+}

@@ -2,47 +2,61 @@
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <mat-step [stepControl]="cursoForm" fxFill="80">
 
-      <div fxLayout="row warp" fxLayoutAlign="space-evenly">
-                <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start none">
-                  <mat-form-field class="input-propiedades" appearance="fill">
-                    <mat-label>Curso</mat-label>
-                    <mat-select formControlName="curso" (selectionChange)="cambioCurso()">
-                        <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso" [disabled]="curso.state=='CERRADO'">
-                            {{curso.name | titlecase}} - {{curso.month}} {{(curso.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="input-propiedades" appearance="fill">
-                    <mat-label>Horario</mat-label>
-                    <mat-select formControlName="nivel" (selectionChange)="cambioNivel()">
-                        <mat-option *ngFor="let nivel of niveles" [value]="nivel.idNivel" [disabled]="nivel.state=='CERRADO'">
-                            {{nivel.time}} ({{nivel.name}}) {{(nivel.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="input-propiedades" appearance="fill">
-                    <mat-label>Ratio</mat-label>
-                    <mat-select formControlName="ratio" (selectionChange)="cambioRatio()">
-                        <mat-option *ngFor="let ratio of ratios" [value]="ratio.idRatio" [disabled]="ratio.state=='CERRADO'">
-                            {{ratio.ratio}} {{(ratio.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field class="input-propiedades" appearance="fill">
-                    <mat-label>Dias</mat-label>
-                    <mat-select formControlName="dia">
-                        <mat-option *ngFor="let dia of dias" [value]="dia.idDias" [disabled]="dia.state=='CERRADO'">
-                            {{dia.name}} {{(dia.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                        </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </form>
-                <app-curso *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso"></app-curso>
-                <div> calendario </div>
-                
-                
-                
+      <div fxLayout="column" fxLayoutAlign="start">
+
+        <!-- formularios -->
+        <div class="border" fxLayout="row warp" fxLayoutAlign="space-evenly">
+          <div class="form border">
+            <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
+              <mat-form-field class="input-propiedades" appearance="fill">
+                <mat-label>Curso</mat-label>
+                <mat-select formControlName="curso" (selectionChange)="cambioCurso()">
+                    <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso" [disabled]="curso.state=='CERRADO'">
+                        {{curso.name | titlecase}} - {{curso.month}} {{(curso.state == 'CERRADO' ? '(CERRADO)' : '')}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="input-propiedades" appearance="fill">
+                <mat-label>Horario</mat-label>
+                <mat-select formControlName="nivel" (selectionChange)="cambioNivel()">
+                    <mat-option *ngFor="let nivel of niveles" [value]="nivel.idNivel" [disabled]="nivel.state=='CERRADO'">
+                        {{nivel.time}} ({{nivel.name}}) {{(nivel.state == 'CERRADO' ? '(CERRADO)' : '')}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="input-propiedades" appearance="fill">
+                <mat-label>Ratio</mat-label>
+                <mat-select formControlName="ratio" (selectionChange)="cambioRatio()">
+                    <mat-option *ngFor="let ratio of ratios" [value]="ratio.idRatio" [disabled]="ratio.state=='CERRADO'">
+                        {{ratio.ratio}} {{(ratio.state == 'CERRADO' ? '(CERRADO)' : '')}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="input-propiedades" appearance="fill">
+                <mat-label>Dias</mat-label>
+                <mat-select formControlName="dia">
+                    <mat-option *ngFor="let dia of dias" [value]="dia.idDias" [disabled]="dia.state=='CERRADO'">
+                        {{dia.name}} {{(dia.state == 'CERRADO' ? '(CERRADO)' : '')}}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="info border">
+            <!-- lista de cursos inscritos -->
+            <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
+            <!-- info del curso actual -->
+            <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" ></app-curso>
+          </div>       
+          <div class="calendario border" > calendario </div>             
+        </div>
+        <!-- botones -->
+        <div class="border">
+          <button  mat-raised-button color="primary" mat-button (click)="agregarCurso()">Agregar curso</button>
+        </div>
       </div>
+
+      
 
 
 

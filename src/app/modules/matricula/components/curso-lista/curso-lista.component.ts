@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 
 @Component({
@@ -8,10 +8,17 @@ import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 })
 export class CursoListaComponent {
 
-  cursos!: any
+  @Input() listaCursos:any
+  @Input() listaCursosNuevos:any
+
+  @Output() eliminar: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(){
     
+  }
+
+  eliminarCurso(id:number){
+    this.eliminar.emit(id)
   }
 
 }
