@@ -1,0 +1,124 @@
+table {
+    font-family: arial, sans-serif;
+    width: 624px;
+}
+
+.schedule-container {
+    width: 100%;
+    overflow: scroll;
+}
+  
+.mat-column-lunes {
+    border-right: 1px dashed rgba(113, 113, 113, 0.277);
+    text-align: center;
+    max-width: 100px;
+    width: 100px;
+}
+
+.mat-column-martes {
+    border-right: 1px dashed rgba(113, 113, 113, 0.277);
+    text-align: center;
+    max-width: 100px;
+    width: 100px;
+}
+  
+.mat-column-miercoles {
+    border-right: 1px dashed rgba(113, 113, 113, 0.277);
+    text-align: center;
+    max-width: 100px;
+    width: 100px;
+}
+
+.mat-column-jueves {
+    border-right: 1px dashed rgba(113, 113, 113, 0.277);
+    text-align: center;
+    max-width: 100px;
+    width: 100px;
+}
+
+.mat-column-viernes {
+    border-right: 1px dashed rgba(113, 113, 113, 0.277);
+    text-align: center;
+    max-width: 100px;
+    width: 100px;
+}   
+
+.mat-mdc-cell{
+    height: 60px;
+}
+
+
+.time {
+    background-color: rgb(223, 86, 86);
+    min-height: 45px;
+    color: white;
+    white-space: normal;
+    overflow-wrap: break-word;
+    line-height: 18px;
+}
+
+.schedule-time {
+    padding-bottom: 25px;
+}
+
+.hora-text {
+    left: -5px;
+}
+
+.taller-bloque {
+    /* border-radius: 3px; */
+    width: 101px;
+    position: relative;
+}
+
+.col-container {
+    position: relative;
+}
+
+.col-lunes {
+    height: 100%;
+    position: absolute;
+    top: -384px;
+    left: 95px;
+}
+
+.col-martes {
+    height: 100%;
+    position: absolute;
+    top: -384px;
+    left: 196px;
+}
+
+.col-miercoles {
+    height: 100%;
+    position: absolute;
+    top: -384px;
+    left: 297px;
+}
+
+.col-jueves {
+    height: 100%;
+    position: absolute;
+    top: -384px;
+    left: 398px;
+}
+
+.col-viernes {
+    height: 100%;
+    position: absolute;
+    top: -384px;
+    left: 499px;
+}
+
+.horario-text {
+    color: white;
+    font-weight: normal;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.circle {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}

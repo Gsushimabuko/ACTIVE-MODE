@@ -34,7 +34,7 @@
               </mat-form-field>
               <mat-form-field class="input-propiedades" appearance="fill">
                 <mat-label>Dias</mat-label>
-                <mat-select formControlName="dia">
+                <mat-select formControlName="dia" (selectionChange)="eleccionDia()">
                     <mat-option *ngFor="let dia of dias" [value]="dia.idDias" [disabled]="dia.state=='CERRADO'">
                         {{dia.name}} {{(dia.state == 'CERRADO' ? '(CERRADO)' : '')}}
                     </mat-option>
@@ -48,7 +48,10 @@
             <!-- info del curso actual -->
             <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" ></app-curso>
           </div>       
-          <div class="calendario border" > calendario </div>             
+            <!-- calendario -->
+          <div class="calendario border" >
+            <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales"></app-calendar-main>
+          </div>             
         </div>
         <!-- botones -->
         <div class="border">

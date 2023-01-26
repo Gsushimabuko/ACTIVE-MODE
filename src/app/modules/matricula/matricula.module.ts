@@ -10,6 +10,7 @@ import { CursoComponent } from './components/curso/curso.component';
 import { CursoDialogComponent } from './components/curso-dialog/curso-dialog.component';
 import { FormularioMatriculaComponent } from './components/formulario-matricula/formulario-matricula.component';
 import { CursoListaComponent } from './components/curso-lista/curso-lista.component';
+import { CalendarModule } from '../calendar/calendar.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { CursoListaComponent } from './components/curso-lista/curso-lista.compon
     HttpClientModule,
     MaterialModule,
     MatriculaRoutingModule,
+    CalendarModule,
   ]
 })
 export class MatriculaModule { }

@@ -1,0 +1,66 @@
+<div class="">
+
+    <table mat-table [dataSource]="HORARIO_DATA"   class="mat-elevation-z8 demo-table">
+
+        <ng-container matColumnDef="lunes">
+            <th mat-header-cell *matHeaderCellDef> Lunes </th>
+            <td mat-cell *matCellDef="let element"> {{element.lunes}}
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="martes">
+            <th mat-header-cell *matHeaderCellDef> Martes </th>
+            <td mat-cell *matCellDef="let element"> {{element.martes}}
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="miercoles">
+            <th mat-header-cell *matHeaderCellDef> Miércoles </th>
+            <td mat-cell *matCellDef="let element"> {{element.miercoles}}
+            </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="jueves">
+              <th mat-header-cell *matHeaderCellDef> Jueves </th>
+              <td mat-cell *matCellDef="let element"> {{element.jueves}}
+              </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="viernes">
+              <th mat-header-cell *matHeaderCellDef> Viernes </th>
+              <td mat-cell *matCellDef="let element"> {{element.viernes}}
+              </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+    </table>
+
+    <div *ngFor="let curso of listaCursosTotales">
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="circle" [ngStyle]="{'background-color': 'rgb(252, 192, 0)' , 'border': 'solid 2px' + ' green'}"></div> {{curso.nombre}} {{curso.horario}}
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div *ngFor="let evento of curso.diasEvento" class="circle" [ngStyle]="{'background-color': 'rgb(252, 192, 0)' , 'border': 'solid 2px' + ' green'}"></div>
+        </div>
+    
+    </div>
+
+    <div class="col-container">
+        <div class="col-lunes">
+            <div *ngFor="let taller of horarios.lunes" class="taller-bloque"  [ngStyle]="{'height': taller.pixels + 'px', 'top': taller.minPixel + 'px', 'background-color': taller.color}">
+                <small class="horario-text">
+                    {{ taller.nombre }}
+                </small>
+                <br>
+                <small class="horario-text">
+                    {{ taller.horario.lunes[0] }} - {{ taller.horario.lunes[1] }}
+                </small>
+            </div>
+        </div>
+    </div>
+
+</div>
