@@ -1,6 +1,7 @@
 table {
     font-family: arial, sans-serif;
     width: 624px;
+    position: relative;
 }
 
 .schedule-container {
@@ -59,62 +60,6 @@ table {
 
 .schedule-time {
     padding-bottom: 25px;
-}
-
-.hora-text {
-    left: -5px;
-}
-
-.taller-bloque {
-    /* border-radius: 3px; */
-    width: 101px;
-    position: relative;
-}
-
-.col-container {
-    position: relative;
-}
-
-.col-lunes {
-    height: 100%;
-    position: absolute;
-    top: -384px;
-    left: 95px;
-}
-
-.col-martes {
-    height: 100%;
-    position: absolute;
-    top: -384px;
-    left: 196px;
-}
-
-.col-miercoles {
-    height: 100%;
-    position: absolute;
-    top: -384px;
-    left: 297px;
-}
-
-.col-jueves {
-    height: 100%;
-    position: absolute;
-    top: -384px;
-    left: 398px;
-}
-
-.col-viernes {
-    height: 100%;
-    position: absolute;
-    top: -384px;
-    left: 499px;
-}
-
-.horario-text {
-    color: white;
-    font-weight: normal;
-    margin-left: 5px;
-    margin-right: 5px;
 }
 
 .circle {

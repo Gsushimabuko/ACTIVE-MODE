@@ -14,53 +14,60 @@ export class CalendarMainComponent {
 
   constructor() {
     this.generadorCalendarioMes()
-    this.horarios = {
-      lunes: [],
-      martes: [],
-      miercoles: [],
-      jueves: [],
-      viernes: [],
-    };
-
     this.talleres = [];
   }
   
   minPixelRatio = 1.25;
 
   ngOnInit(): void {
-
-      this.actualizarHorario();
-
-  
+    //this.actualizarHorario();
     //console.log(this.horarios)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("entro")
     this.actualizarHorario();
   }
 
   actualizarHorario() {
 
+    this.generadorCalendarioMes()
+    
     if(this.listaCursosTotales[0].idCursoPeriodo!=undefined){
-      this.horarios = {
-        lunes: [],
-        martes: [],
-        miercoles: [],
-        jueves: [],
-        viernes: [],
-      };
-  
-      console.log(this.listaCursosTotales)
-  
+      var color = 0
+      var horariosCurso = []    
+
       for(var curso of this.listaCursosTotales){
-        console.log(curso)
-        for(var dia of curso.diasEvento){
-          let diaMes = new Date(dia.start).getDay()
-          console.log(diaMes)
+        let cursoDatos = {
+          nombre: curso.nombre,
+          horario : curso.horario,
+          color: this.colores[color],
+          eventos: [] as any
         }
+        color += 1;
+        for(var dia of curso.diasEvento){
+          let diaMes = new Date(dia.start).getDate()
+          cursoDatos.eventos.push(diaMes)
+        }
+        horariosCurso.push(cursoDatos)  
+
+        for(var semana of this.HORARIO_DATA){
+
+          let diasSemana = Object.keys(semana)
+          for(var diaSem of diasSemana){
+            if(cursoDatos.eventos.includes(semana[diaSem].dia)){
+              semana[diaSem].cursos.push(cursoDatos.nombre)
+            }
+          }
+        }
+
+        console.log(this.HORARIO_DATA)
+
       }
-  
+
+      
+
+      
+/*
       for (let dia of this.dias) {
         let startPixel = 0;
         let color = 0;
@@ -88,7 +95,7 @@ export class CalendarMainComponent {
             this.horarios[dia].push(taller);
           }
         }
-      }
+      } */
 
     }
 
@@ -130,7 +137,7 @@ export class CalendarMainComponent {
     var calendarioMes = []
     const fechaHoy = new Date()
     const diasMes = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth()+1,0).getDate()
-    let semana = {}  as { [key: string]: number}
+    let semana = {}  as any
     for(let i = 1; i < diasMes+1; i++){
       let dia = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth(),i).getDay()
       if(dia==0){
@@ -138,24 +145,24 @@ export class CalendarMainComponent {
           //no pasa nada 
         }else{
           calendarioMes.push(semana)
-          semana={} as { [key: string]: number}
+          semana={} as any
         }
       }else{
         switch (dia) {
           case 1:
-            semana['lunes'] = i
+            semana['lunes'] = {dia:i,cursos:[]}
             break;         
           case 2:
-            semana['martes'] = i
+            semana['martes'] = {dia:i,cursos:[]}
             break;
           case 3:
-            semana['miercoles'] = i
+            semana['miercoles'] = {dia:i,cursos:[]}
             break;        
           case 4:
-            semana['jueves'] = i
+            semana['jueves'] = {dia:i,cursos:[]}
             break;
           case 5:
-            semana['viernes'] = i
+            semana['viernes'] = {dia:i,cursos:[]}
             break;
           default:
             break;
