@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
+import { ValidarTokenGuard } from './guards/token.guard';
 import { HomeMainComponent } from './modules/home/home-main/home-main/home-main.component';
 
 
 const routes: Routes = [
   {path: 'matricula', loadChildren: () =>
-  import('./modules/matricula/matricula.module').then(m => m.MatriculaModule) },
+  import('./modules/matricula/matricula.module').then(m => m.MatriculaModule)
+  ,canLoad: [ValidarTokenGuard],
+  canActivate: [ValidarTokenGuard] },
   {path: 'login', loadChildren: () =>
   import('./modules/login/login.module').then(m => m.LoginModule)},
 

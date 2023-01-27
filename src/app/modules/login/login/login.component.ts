@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent {
   hide = true;
   mensaje: string = ""
   constructor(
-    private router: Router ,private fb: FormBuilder, /* private padreService: UsuarioPadreService */) { }
+    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService) { }
 
   login(){
 
@@ -24,15 +25,15 @@ export class LoginComponent {
       correo: this.loginForm.value.email.toLowerCase(),
       contrasena: this.loginForm.value.contrasena,
     }
-    /* 
-    this.padreService.login(usuario).subscribe((res =>{
+    
+    this.usuarioService.login(usuario).subscribe((res =>{
       //si respuesta es igual a true
       if (res == true) {
-        this.router.navigateByUrl('/padre/cuenta')
+        this.router.navigateByUrl('/matricula')
       } else {
         this.mensaje = "Usuario o contraseña invalidos"
       }
-    })); */
+    })); 
   }
 
 }
