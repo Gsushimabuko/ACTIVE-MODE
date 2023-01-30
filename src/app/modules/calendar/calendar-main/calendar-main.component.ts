@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges } from '@angular/core';
 import { DiaPeriodo } from '../../shared/interfaces/Dia';
 
 @Component({
@@ -12,6 +12,12 @@ export class CalendarMainComponent {
   talleres: any[];
   HORARIO_DATA: any[] = [];
   listaCursosModificados:any=[]
+  innerWidth: any;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+  this.innerWidth = window.innerWidth;
+  }
 
   constructor() {
     this.generadorCalendarioMes()
@@ -23,10 +29,12 @@ export class CalendarMainComponent {
   ngOnInit(): void {
     //this.actualizarHorario();
     //console.log(this.horarios)
+    this.innerWidth = window.innerWidth;
+    console.log(this.innerWidth)
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.actualizarHorario();
+    this.actualizarHorario();  
   }
 
   actualizarHorario() {
