@@ -1,12 +1,13 @@
 
   <mat-stepper orientation="vertical" [linear]="true" #stepper>
     <mat-step [stepControl]="cursoForm" fxFill="80">
+      <ng-template matStepLabel>Seleccionar los cursos</ng-template>
 
       <div fxLayout="column" fxLayoutAlign="start">
 
         <!-- formularios -->
         <div class="border" fxLayout="row warp" fxLayoutAlign="space-evenly">
-          <div class="form border">
+          <div class="form">
             <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
               <mat-form-field class="input-propiedades" appearance="fill">
                 <mat-label>Curso</mat-label>
@@ -42,38 +43,80 @@
               </mat-form-field>
             </form>
           </div>
-          <div class="info border">
+          <div class="info">
             <!-- lista de cursos inscritos -->
             <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
             <!-- info del curso actual -->
             <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" ></app-curso>
           </div>       
             <!-- calendario -->
-          <div class="calendario border" >
+          <div class="calendario" >
             <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales"></app-calendar-main>
           </div>             
         </div>
         <!-- botones -->
-        <div class="border">
-          <button  mat-raised-button color="primary" mat-button (click)="agregarCurso()">Agregar curso</button>
+        <div class="">
+          <button  mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Agregar curso</button>
+          <button  mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="nextStep(stepper)">Calcular monto</button>
         </div>
       </div>
 
       
 
-
-
       
 
     </mat-step>
+    
 
     <mat-step >
+      <ng-template matStepLabel>Monto</ng-template>
+
+      <table mat-table [dataSource]="MONTO_CURSO_DATA"   class="mat-elevation-z8 demo-table">
+        <ng-container matColumnDef="orden">
+            <th mat-header-cell *matHeaderCellDef> Orden </th>
+            <td mat-cell *matCellDef="let element"> {{element.orden}}
+                
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="curso">
+            <th mat-header-cell *matHeaderCellDef> Curso </th>
+            <td mat-cell *matCellDef="let element"> {{element.curso}}
+          
+            </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="dias">
+            <th mat-header-cell *matHeaderCellDef> Dias </th>
+            <td mat-cell *matCellDef="let element"> {{element.dias}}
+                
+            </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="monto">
+              <th mat-header-cell *matHeaderCellDef> Monto </th>
+              <td mat-cell *matCellDef="let element"> {{element.monto | currency: 'S/. '}}
+               
+              </td>
+          </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <button  mat-raised-button color="primary"  mat-button (click)="nextStep(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
+
+
+    </mat-step>
+
+    
+    <mat-step >
+      <ng-template matStepLabel>Pago</ng-template>
 
 
     </mat-step>
 
     <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
+      <ng-template matStepLabel>Finalizado</ng-template>
       <p>You are now done.</p>
       <div>
         <button mat-button matStepperPrevious>Back</button>

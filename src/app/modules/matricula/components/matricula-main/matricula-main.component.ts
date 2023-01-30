@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZCursoService } from '../../../../core/http/z_curso/z-curso.service';
 import { CursoPeriodo } from '../../../shared/interfaces/Curso';
@@ -6,6 +6,9 @@ import { NivelPeriodo } from '../../../shared/interfaces/Nivel';
 import { RatioPeriodo } from '../../../shared/interfaces/Ratio';
 import { DiaPeriodo } from '../../../shared/interfaces/Dia';
 import { CalendarMainComponent } from '../../../calendar/calendar-main/calendar-main.component';
+import { MatStepper } from '@angular/material/stepper';
+import { HorarioPeriodo } from '../../../shared/interfaces/Horario';
+import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 
 @Component({
   selector: 'app-matricula-main',
@@ -37,6 +40,8 @@ export class MatriculaMainComponent {
   listaCursosTotales:any = []
   flagDia:boolean=false
   cursoPendiente:any={}
+  MONTO_CURSO_DATA: any[] = [];
+  totalPagar:number = 0
 
 
   constructor(private formBuilder: FormBuilder,
@@ -57,7 +62,7 @@ export class MatriculaMainComponent {
 
   
     this.listaCursos =[
-      {idCursoPeriodo: 5,nombre:"Futbol",horario:"6:00pm - 7pm", "diasEvento": [ { "idHorario": 1, "start": "2023-01-04T23:00:00.120Z", "end": "2023-01-04T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 6, "start": "2023-01-16T23:00:00.120Z", "end": "2023-01-16T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 7, "start": "2023-01-18T23:00:00.120Z", "end": "2023-01-18T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 9, "start": "2023-01-23T23:00:00.120Z", "end": "2023-01-23T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 10, "start": "2023-01-25T23:00:00.120Z", "end": "2023-01-25T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 12, "start": "2023-01-30T23:00:00.120Z", "end": "2023-01-30T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 3, "start": "2023-01-09T23:00:00.120Z", "end": "2023-01-09T22:00:00.120Z", "number": 7, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 4, "start": "2023-01-11T23:00:00.120Z", "end": "2023-01-11T22:00:00.120Z", "number": 10, "time": "6pm - 7pm", "state": "ACTIVO" }]},
+      {idCursoPeriodo: 8,nombre:"Futbol 1",horario:"6:00pm - 7pm", "diasEvento": [ { "idHorario": 1, "start": "2023-01-04T23:00:00.120Z", "end": "2023-01-04T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 6, "start": "2023-01-16T23:00:00.120Z", "end": "2023-01-16T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 7, "start": "2023-01-18T23:00:00.120Z", "end": "2023-01-18T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 9, "start": "2023-01-23T23:00:00.120Z", "end": "2023-01-23T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 10, "start": "2023-01-25T23:00:00.120Z", "end": "2023-01-25T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 12, "start": "2023-01-30T23:00:00.120Z", "end": "2023-01-30T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 3, "start": "2023-01-09T23:00:00.120Z", "end": "2023-01-09T22:00:00.120Z", "number": 7, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 4, "start": "2023-01-11T23:00:00.120Z", "end": "2023-01-11T22:00:00.120Z", "number": 10, "time": "6pm - 7pm", "state": "ACTIVO" }]},
       {idCursoPeriodo: 7,nombre:"Voley",horario:"6:00pm - 7pm", "diasEvento": [ { "idHorario": 1, "start": "2023-01-04T23:00:00.120Z", "end": "2023-01-04T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 6, "start": "2023-01-16T23:00:00.120Z", "end": "2023-01-16T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 7, "start": "2023-01-18T23:00:00.120Z", "end": "2023-01-18T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 9, "start": "2023-01-23T23:00:00.120Z", "end": "2023-01-23T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 10, "start": "2023-01-25T23:00:00.120Z", "end": "2023-01-25T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 12, "start": "2023-01-30T23:00:00.120Z", "end": "2023-01-30T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 3, "start": "2023-01-09T23:00:00.120Z", "end": "2023-01-09T22:00:00.120Z", "number": 7, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 4, "start": "2023-01-11T23:00:00.120Z", "end": "2023-01-11T22:00:00.120Z", "number": 10, "time": "6pm - 7pm", "state": "ACTIVO" }]}
     ]  
 
@@ -129,6 +134,8 @@ export class MatriculaMainComponent {
     if(this.cursoForm.controls['dia'].value!=''){
       this.listaCursosTotales.push(this.cursoPendiente)
     } 
+    console.log(this.listaCursosNuevos)
+    this.calcularMontoCurso()
   }
 
   eleccionDia(){
@@ -164,8 +171,10 @@ export class MatriculaMainComponent {
   agregarCurso(){
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
+    
     var horario
     var diasEvento
+    var tarifa
     
     for(var nivel of this.niveles){
       if(nivel.idNivel == this.cursoForm.controls['nivel'].value){
@@ -177,7 +186,19 @@ export class MatriculaMainComponent {
         diasEvento = dia.schedule
       }
     }
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horario: horario,diasEvento:diasEvento}
+
+    for(var ratio of this.ratios){
+      if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
+        tarifa = ratio.payment
+        console.log(tarifa)
+      }
+    }
+
+    
+
+    
+
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horario: horario,diasEvento:diasEvento,tarifa:tarifa}
     this.listaCursosNuevos.push(curso)
 
     this.cursoForm.controls['curso'].setValue('')
@@ -191,6 +212,8 @@ export class MatriculaMainComponent {
 
     this.cursoPendiente = {}
     this.actualizarCursosCalendario()
+    this.cursoForm.invalid
+    
   }
 
   eliminar(id:any){
@@ -205,6 +228,39 @@ export class MatriculaMainComponent {
     }
     this.actualizarCursosCalendario()
   }
+
+  nextStep(stepper: MatStepper) {
+  
+    stepper.next();
+  }
+
+
+  calcularMontoCurso(){
+    let orden = 1
+    let listaCalculada =[]
+    for(var curso of this.listaCursosNuevos){
+      let diasMax = 12 // calcular el maximo dependiendo del curso
+      let costoMes = curso.tarifa
+      let cantDias = curso.diasEvento.length
+      let montoCurso = Number((costoMes*(cantDias/diasMax)).toFixed(2))
+      console.log(montoCurso)
+
+      listaCalculada.push({
+        orden: orden,
+        curso: curso.nombre + " " + curso.horario,
+        dias:cantDias,
+        monto: montoCurso
+      })
+
+      this.totalPagar = this.totalPagar + montoCurso
+      orden = orden + 1
+    }
+
+  
+    this.MONTO_CURSO_DATA = listaCalculada
+  }
+
+  displayedColumns: string[] = ['orden','curso', 'dias', 'monto'];
   
   
   
