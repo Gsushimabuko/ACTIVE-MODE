@@ -4,31 +4,56 @@
 
         <ng-container matColumnDef="lunes">
             <th mat-header-cell *matHeaderCellDef> Lunes </th>
-            <td mat-cell *matCellDef="let element"> {{(element.lunes == undefined ? ' '  : element.lunes .dia)}}
+            <td mat-cell *matCellDef="let element"> {{(element.lunes == undefined ? ' '  : element.lunes.dia)}}
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.lunes != undefined && element.lunes.cursos != undefined">
+                    <div  *ngFor="let evento of element.lunes.cursos">
+                        <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
+                    </div>
+                </div>  
             </td>
           </ng-container>
         
           <ng-container matColumnDef="martes">
             <th mat-header-cell *matHeaderCellDef> Martes </th>
             <td mat-cell *matCellDef="let element"> {{(element.martes == undefined ? ' '  : element.martes.dia)}}
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.martes != undefined && element.martes.cursos != undefined">
+                    <div  *ngFor="let evento of element.martes.cursos">
+                        <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
+                    </div>
+                </div>  
             </td>
           </ng-container>
         
           <ng-container matColumnDef="miercoles">
             <th mat-header-cell *matHeaderCellDef> Miércoles </th>
             <td mat-cell *matCellDef="let element"> {{(element.miercoles == undefined ? ' '  : element.miercoles.dia)}}
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.miercoles != undefined && element.miercoles.cursos != undefined">
+                    <div   *ngFor="let evento of element.miercoles.cursos">
+                        <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
+                    </div>
+                </div>  
             </td>
           </ng-container>
       
           <ng-container matColumnDef="jueves">
               <th mat-header-cell *matHeaderCellDef> Jueves </th>
               <td mat-cell *matCellDef="let element"> {{(element.jueves == undefined ? ' '  : element.jueves.dia)}}
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.jueves != undefined && element.jueves.cursos != undefined">
+                    <div  *ngFor="let evento of element.jueves.cursos">
+                        <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
+                    </div>
+                </div>  
               </td>
           </ng-container>
       
           <ng-container matColumnDef="viernes">
               <th mat-header-cell *matHeaderCellDef> Viernes </th>
               <td mat-cell *matCellDef="let element"> {{(element.viernes == undefined ? ' '  : element.viernes.dia)}}
+                <div fxLayout="row" fxLayoutAlign="start center" *ngIf="element.viernes != undefined && element.viernes.cursos != undefined">
+                    <div  *ngFor="let evento of element.viernes.cursos">
+                        <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
+                    </div>
+                </div>  
               </td>
           </ng-container>
       
@@ -37,14 +62,14 @@
     
     </table>
 
-    <div *ngFor="let curso of listaCursosTotales">
+    <div *ngFor="let curso of listaCursosModificados">
 
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="circle" [ngStyle]="{'background-color': 'rgb(252, 192, 0)' , 'border': 'solid 2px' + ' green'}"></div> {{curso.nombre}} {{curso.horario}}
+            <div class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div> {{curso.nombre}} {{curso.horario}}
         </div>
 
         <div fxLayout="row" fxLayoutAlign="start center">
-            <div *ngFor="let evento of curso.diasEvento" class="circle" [ngStyle]="{'background-color': 'rgb(252, 192, 0)' , 'border': 'solid 2px' + ' green'}"></div>
+            <div *ngFor="let evento of curso.diasEvento" class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div>
         </div>
     
     </div>

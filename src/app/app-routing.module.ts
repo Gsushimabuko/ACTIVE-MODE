@@ -8,8 +8,8 @@ import { HomeMainComponent } from './modules/home/home-main/home-main/home-main.
 const routes: Routes = [
   {path: 'matricula', loadChildren: () =>
   import('./modules/matricula/matricula.module').then(m => m.MatriculaModule)
-  ,canLoad: [ValidarTokenGuard],
-  canActivate: [ValidarTokenGuard] },
+  /*,canLoad: [ValidarTokenGuard],
+  canActivate: [ValidarTokenGuard] */ },
   {path: 'login', loadChildren: () =>
   import('./modules/login/login.module').then(m => m.LoginModule)},
 

@@ -11,6 +11,7 @@ export class CalendarMainComponent {
   @Input() listaCursosTotales:any = []
   talleres: any[];
   HORARIO_DATA: any[] = [];
+  listaCursosModificados:any=[]
 
   constructor() {
     this.generadorCalendarioMes()
@@ -34,7 +35,8 @@ export class CalendarMainComponent {
     
     if(this.listaCursosTotales[0].idCursoPeriodo!=undefined){
       var color = 0
-      var horariosCurso = []    
+      var horariosCurso = []   
+      var cursosEvento = []     
 
       for(var curso of this.listaCursosTotales){
         let cursoDatos = {
@@ -55,16 +57,22 @@ export class CalendarMainComponent {
           let diasSemana = Object.keys(semana)
           for(var diaSem of diasSemana){
             if(cursoDatos.eventos.includes(semana[diaSem].dia)){
-              semana[diaSem].cursos.push(cursoDatos.nombre)
+              let datosEvento = {
+                nombre: cursoDatos.nombre,
+                color: cursoDatos.color
+              }
+              semana[diaSem].cursos.push(datosEvento)
             }
           }
         }
 
-        console.log(this.HORARIO_DATA)
+        cursosEvento.push(cursoDatos)
 
       }
 
+      this.listaCursosModificados= cursosEvento
       
+      console.log(this.listaCursosModificados)
 
       
 /*
