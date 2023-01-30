@@ -49,6 +49,10 @@ table {
 padding: 5px;
 }
 
+.leyenda{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 .time {
     background-color: rgb(223, 86, 86);

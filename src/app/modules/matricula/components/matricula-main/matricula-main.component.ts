@@ -146,23 +146,32 @@ export class MatriculaMainComponent {
     }
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
-    var horario
+    var horarioHoras
     var diasEvento
+    var horarioDias
 
     for(var nivel of this.niveles){
       if(nivel.idNivel == this.cursoForm.controls['nivel'].value){
-        horario = nivel.time
+        horarioHoras = nivel.time
         break
       }
     }
     for(var dia of this.dias){
       if(dia.idDias == this.cursoForm.controls['dia'].value){
-        diasEvento = dia.schedule
+        let schedule = [] //este es el horario que se envia al front
+        for(var evento of dia.schedule){
+          console.log(evento)
+          if(new Date(evento.start).getTime() > new Date().getTime()){
+            schedule.push(evento)
+          }  
+        }
+        diasEvento = schedule
+        horarioDias = dia.name
         console.log(diasEvento)
         break
       }
     }
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horario: horario,diasEvento:diasEvento}
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento}
     this.cursoPendiente = curso
     this.flagDia = true
     this.actualizarCursosCalendario()
@@ -172,18 +181,29 @@ export class MatriculaMainComponent {
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
     
-    var horario
+    var horarioHoras
     var diasEvento
     var tarifa
+    var diasMax
+    var horarioDias
     
     for(var nivel of this.niveles){
       if(nivel.idNivel == this.cursoForm.controls['nivel'].value){
-        horario = nivel.time
+        horarioHoras = nivel.time
       }
     }
     for(var dia of this.dias){
       if(dia.idDias == this.cursoForm.controls['dia'].value){
-        diasEvento = dia.schedule
+        let schedule = [] //este es el horario que se envia al front
+        for(var evento of dia.schedule){
+          console.log(evento)
+          if(new Date(evento.start).getTime() > new Date().getTime()){
+            schedule.push(evento)
+          }  
+        }
+        diasEvento = schedule
+        horarioDias = dia.name
+        diasMax = dia.numEvents
       }
     }
 
@@ -194,11 +214,7 @@ export class MatriculaMainComponent {
       }
     }
 
-    
-
-    
-
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horario: horario,diasEvento:diasEvento,tarifa:tarifa}
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,diasMax:diasMax}
     this.listaCursosNuevos.push(curso)
 
     this.cursoForm.controls['curso'].setValue('')
@@ -238,24 +254,25 @@ export class MatriculaMainComponent {
   calcularMontoCurso(){
     let orden = 1
     let listaCalculada =[]
+    let total = 0
     for(var curso of this.listaCursosNuevos){
-      let diasMax = 12 // calcular el maximo dependiendo del curso
+      let diasMax = curso.diasMax
       let costoMes = curso.tarifa
       let cantDias = curso.diasEvento.length
       let montoCurso = Number((costoMes*(cantDias/diasMax)).toFixed(2))
       console.log(montoCurso)
-
       listaCalculada.push({
         orden: orden,
-        curso: curso.nombre + " " + curso.horario,
+        curso: curso.nombre + " " + curso.horarioDias + " " + curso.horarioHoras,
         dias:cantDias,
         monto: montoCurso
       })
 
-      this.totalPagar = this.totalPagar + montoCurso
+      total = total + montoCurso
       orden = orden + 1
     }
 
+    this.totalPagar = total
   
     this.MONTO_CURSO_DATA = listaCalculada
   }

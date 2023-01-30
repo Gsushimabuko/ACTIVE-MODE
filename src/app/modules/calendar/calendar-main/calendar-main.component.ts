@@ -49,7 +49,7 @@ export class CalendarMainComponent {
       for(var curso of this.listaCursosTotales){
         let cursoDatos = {
           nombre: curso.nombre,
-          horario : curso.horario,
+          horario : curso.horarioDias + " - " + curso.horarioHoras,
           color: this.colores[color],
           eventos: [] as any
         }

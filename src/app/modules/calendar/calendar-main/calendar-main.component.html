@@ -1,4 +1,9 @@
-<div class="">
+<div class="" fxLayout="column" fxLayoutAlign=" stretch">
+
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <h3>Calendario del mes</h3>
+    </div>
+    
 
     <div *ngIf="innerWidth >700; else celular">
         <table mat-table [dataSource]="HORARIO_DATA"   class="mat-elevation-z8 demo-table">
@@ -127,14 +132,11 @@
 
    
 
-    <div *ngFor="let curso of listaCursosModificados">
+    <div class="leyenda" >
 
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div> {{curso.nombre}} {{curso.horario}}
-        </div>
-
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div *ngFor="let evento of curso.diasEvento" class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div>
+        <h4>Cursos calendario</h4>
+        <div *ngFor="let curso of listaCursosModificados" fxLayout="row" fxLayoutAlign="start center">
+            <div class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div> {{curso.nombre}} - {{curso.horario}}
         </div>
     
     </div>

@@ -5,5 +5,6 @@ export interface DiaPeriodo {
     name:string
     value: number[]
     state:string
+    numEvents:number
     schedule:HorarioPeriodo[]
 }
