@@ -1,5 +1,5 @@
 
-  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+  <mat-stepper orientation="vertical" [linear]="false" #stepper>
     <mat-step [stepControl]="cursoForm" fxFill="80">
       <ng-template matStepLabel>Seleccionar los cursos</ng-template>
 
@@ -8,12 +8,14 @@
       
   
         <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
-          
+      
           
                   <!-- formularios -->
             <div class="form">
               <mat-card class="card">
+               
               <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
+                 <h4>Datos del curso</h4>
                 <mat-form-field class="input-propiedades" appearance="fill">
                   <mat-label>Curso</mat-label>
                   <mat-select formControlName="curso" (selectionChange)="cambioCurso()">
@@ -56,10 +58,12 @@
 
           <div class="info">
             <mat-card class="card">
+
+            <h4>Cursos en calendario</h4>
             <!-- lista de cursos inscritos -->
             <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
             <!-- info del curso actual -->
-            <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" ></app-curso>
+            <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" [tarifa]="costoPagarTemporal"></app-curso>
           </mat-card>
           </div>    
           
@@ -109,7 +113,7 @@
             </ng-container>
           
             <ng-container matColumnDef="dias">
-              <th mat-header-cell *matHeaderCellDef> Dias </th>
+              <th mat-header-cell *matHeaderCellDef> Días </th>
               <td mat-cell *matCellDef="let element"> {{element.dias}}
                   
               </td>
@@ -138,6 +142,7 @@
     <mat-step >
       <ng-template matStepLabel>Pago</ng-template>
 
+      <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)"> Inscribir cursos</button>
 
     </mat-step>
 

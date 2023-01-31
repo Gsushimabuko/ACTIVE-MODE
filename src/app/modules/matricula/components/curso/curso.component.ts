@@ -10,6 +10,7 @@ import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 export class CursoComponent {
 
   @Input() curso!: CursoPeriodo
+  @Input() tarifa!: number
 
 
   constructor(private _fb: FormBuilder){

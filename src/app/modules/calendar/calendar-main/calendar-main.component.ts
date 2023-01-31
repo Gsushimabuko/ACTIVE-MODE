@@ -41,7 +41,7 @@ export class CalendarMainComponent {
 
     this.generadorCalendarioMes()
     
-    if(this.listaCursosTotales[0].idCursoPeriodo!=undefined){
+    if(this.listaCursosTotales[0]!=undefined){
       var color = 0
       var horariosCurso = []   
       var cursosEvento = []     

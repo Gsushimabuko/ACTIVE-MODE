@@ -4,7 +4,7 @@
             <mat-card-header>
                 <mat-card-title-group>
                     <mat-card-title>{{curso.nombre | titlecase}}</mat-card-title>
-                    <mat-card-subtitle>{{curso.horario}} {{curso.idCursoPeriodo}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{curso.horarioDias}} - {{curso.horarioHoras}}</mat-card-subtitle>
                 </mat-card-title-group>
             </mat-card-header>
         </mat-card>
@@ -15,7 +15,7 @@
             <mat-card-header>
                 <mat-card-title-group>
                     <mat-card-title>{{curso.nombre | titlecase}}</mat-card-title>
-                    <mat-card-subtitle>{{curso.horario}} {{curso.idCursoPeriodo}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{curso.horarioDias}} - {{curso.horarioHoras}}</mat-card-subtitle>
                 </mat-card-title-group>
                 <div class="borrar" (click)="eliminarCurso(curso.idCursoPeriodo)">
                     <mat-icon  class="icono-eliminado" fontIcon="delete_outline"></mat-icon>

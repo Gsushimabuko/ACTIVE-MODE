@@ -44,3 +44,6 @@
   padding-right: 0px;
 }
 
+.mat-horizontal-stepper-header {
+  pointer-events: none;
+}

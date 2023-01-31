@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { CursoPeriodo } from 'src/app/modules/shared/interfaces/Curso';
 
 @Component({
@@ -15,6 +15,9 @@ export class CursoListaComponent {
 
   constructor(){
     
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
   }
 
   eliminarCurso(id:number){
