@@ -59,10 +59,11 @@
           <div class="info">
             <mat-card class="card">
 
-            <h4>Cursos en calendario</h4>
+            <h4>Listado de cursos</h4>
             <!-- lista de cursos inscritos -->
             <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
             <!-- info del curso actual -->
+            
             <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" [tarifa]="costoPagarTemporal"></app-curso>
           </mat-card>
           </div>    
@@ -74,7 +75,7 @@
             <!-- calendario -->
           <div class="calendario" >
   
-              <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales"></app-calendar-main>
+              <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
           
           </div>             
         </div>

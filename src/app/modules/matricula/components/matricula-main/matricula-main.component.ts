@@ -44,6 +44,8 @@ export class MatriculaMainComponent {
   totalPagar:number = 0
   costoPagarTemporal:number = 0
   fechaHoy:Date
+  mesCalendario!:Date
+  idPago:number = 1
 
 
   constructor(private formBuilder: FormBuilder,
@@ -53,10 +55,20 @@ export class MatriculaMainComponent {
 
     this.fechaHoy = new Date('2023-01-17T23:15:21.905Z')
 
+
     this.cursoService.getCursosHorarios(this.idTipoUsuario).subscribe(res=>{
       console.log(res)
       this.cursos = res
+      this.mesCalendario = new Date(this.cursos[0].dateMat)
+      console.log(this.mesCalendario)
+
+      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
+        this.listaCursos = res
+        this.actualizarCursosCalendario()
+      })
+
     })
+
     this.cursoForm = this.formBuilder.group({
       curso: ['', [Validators.required]],
       ratio: [{ value: '', disabled: true }, [Validators.required]],
@@ -64,17 +76,14 @@ export class MatriculaMainComponent {
       dia: [{ value: '', disabled: true }, [Validators.required]],
     })
 
-    /*
-    this.listaCursos =[
-      {idCursoPeriodo: 8,nombre:"Futbol 1",horario:"6:00pm - 7pm", "diasEvento": [ { "idHorario": 1, "start": "2023-01-04T23:00:00.120Z", "end": "2023-01-04T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 6, "start": "2023-01-16T23:00:00.120Z", "end": "2023-01-16T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 7, "start": "2023-01-18T23:00:00.120Z", "end": "2023-01-18T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 9, "start": "2023-01-23T23:00:00.120Z", "end": "2023-01-23T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 10, "start": "2023-01-25T23:00:00.120Z", "end": "2023-01-25T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 12, "start": "2023-01-30T23:00:00.120Z", "end": "2023-01-30T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 3, "start": "2023-01-09T23:00:00.120Z", "end": "2023-01-09T22:00:00.120Z", "number": 7, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 4, "start": "2023-01-11T23:00:00.120Z", "end": "2023-01-11T22:00:00.120Z", "number": 10, "time": "6pm - 7pm", "state": "ACTIVO" }]},
-      {idCursoPeriodo: 7,nombre:"Voley",horario:"6:00pm - 7pm", "diasEvento": [ { "idHorario": 1, "start": "2023-01-04T23:00:00.120Z", "end": "2023-01-04T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 6, "start": "2023-01-16T23:00:00.120Z", "end": "2023-01-16T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 7, "start": "2023-01-18T23:00:00.120Z", "end": "2023-01-18T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 9, "start": "2023-01-23T23:00:00.120Z", "end": "2023-01-23T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 10, "start": "2023-01-25T23:00:00.120Z", "end": "2023-01-25T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 12, "start": "2023-01-30T23:00:00.120Z", "end": "2023-01-30T22:00:00.120Z", "number": 0, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 3, "start": "2023-01-09T23:00:00.120Z", "end": "2023-01-09T22:00:00.120Z", "number": 7, "time": "6pm - 7pm", "state": "ACTIVO" }, { "idHorario": 4, "start": "2023-01-11T23:00:00.120Z", "end": "2023-01-11T22:00:00.120Z", "number": 10, "time": "6pm - 7pm", "state": "ACTIVO" }]}
-    ]  */
+
+  
 
 
   }
 
   ngOnInit(): void {
-    this.actualizarCursosCalendario()
+    
   }
 
   @ViewChild('calendario') calendario: any;
@@ -192,6 +201,7 @@ export class MatriculaMainComponent {
     var horarioHoras
     var diasEvento
     var tarifa
+    var idTarifa
     var diasMax
     var horarioDias
     
@@ -218,11 +228,13 @@ export class MatriculaMainComponent {
     for(var ratio of this.ratios){
       if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
         tarifa = ratio.payment
+        idTarifa = ratio.idTarifa
       }
     }
 
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,diasMax:diasMax}
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
     this.listaCursosNuevos.push(curso)
+    console.log(curso)
 
     this.cursoForm.controls['curso'].setValue('')
     this.cursoForm.controls['nivel'].setValue('')
@@ -260,6 +272,14 @@ export class MatriculaMainComponent {
   matricula(stepper: MatStepper){
 
     //matricula
+    for(var cursos of this.listaCursosNuevos){
+      console.log(cursos)
+      
+      this.cursoService.createMatriculaHorario(cursos,this.idPago,this.idUsuario).subscribe(res=>{
+        console.log(res)
+      })  
+    }
+    
 
     stepper.next();
   }
