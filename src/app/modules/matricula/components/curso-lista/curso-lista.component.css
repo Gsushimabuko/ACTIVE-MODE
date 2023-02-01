@@ -1,8 +1,16 @@
 .card{
     margin-bottom: 10px;
+    padding: 5px;
+    background-color: rgb(185, 185, 185);
+}
+
+.card-nuevo{
+    margin-bottom: 10px;
     margin-top: 10px;
+    padding: 5px;
+    background-color: beige;
 }
 
 .icono-eliminado{
     cursor: pointer
-  }
+}

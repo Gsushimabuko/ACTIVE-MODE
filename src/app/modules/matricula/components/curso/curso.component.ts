@@ -11,6 +11,7 @@ export class CursoComponent {
 
   @Input() curso!: CursoPeriodo
   @Input() tarifa!: number
+  @Input() dias!:number
 
 
   constructor(private _fb: FormBuilder){

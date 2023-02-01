@@ -17,16 +17,6 @@ import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 })
 export class MatriculaMainComponent {
 
-  horarios:any[] = [
-    {nombre:'Solo Lunes',valor:1},
-    {nombre:'Solo miércoles',valor:1},
-    {nombre:'Solo viernes',valor:1},
-    {nombre:'Lunes y Miércoles',valor:2},
-    {nombre:'Miércoles y viernes',valor:2},
-    {nombre:'Lunes y viernes',valor:2},
-    {nommbre:'Lun, miér y vier',valor:3}
-]
-
   idUsuario!:number
   cursoForm!: FormGroup
   mesForm!: FormGroup
@@ -50,6 +40,7 @@ export class MatriculaMainComponent {
   meses:any
   listaDeCursosPrecios:any = []
   esEditable:boolean = true
+  cantDiasTemporal: any;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -82,14 +73,13 @@ export class MatriculaMainComponent {
     this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
     this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
-      console.log(res)
       this.cursos = res
       
-      console.log(this.mesCalendario)
-
+    
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
         this.listaCursos = res
         this.actualizarCursosCalendario()
+        console.log(this.cursos)
       })
 
     })
@@ -155,7 +145,9 @@ export class MatriculaMainComponent {
     for(var ratio of this.ratios){
       if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
         this.dias = ratio.dias
+        this.cantDiasTemporal = ratio.dias[0].numEvents
         this.costoPagarTemporal = ratio.payment
+
       } 
     }
 
