@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 
@@ -10,19 +11,22 @@ import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 })
 export class LoginComponent {
 
+
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    contrasena: ['', [Validators.required, Validators.minLength(6)] ]
+    correo: ['', [Validators.required, Validators.email]],
+    contrasena: ['', [Validators.required, Validators.minLength(5)] ],
+   
+    
   })
   hide = true;
   mensaje: string = ""
   constructor(
-    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService) { }
+    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private snackbar:MatSnackBar) { }
 
   login(){
 
     const usuario = { 
-      correo: this.loginForm.value.email.toLowerCase(),
+      correo: this.loginForm.value.correo.toLowerCase(),
       contrasena: this.loginForm.value.contrasena,
     }
     
@@ -34,6 +38,12 @@ export class LoginComponent {
         this.mensaje = "Usuario o contraseña invalidos"
       }
     })); 
+  }
+  
+  openSnackBar(message: string, seconds: number) {
+    this.snackbar.open(message, 'X', {
+      duration: seconds * 1000,
+    });
   }
 
 }
