@@ -29,6 +29,7 @@ export class MatriculaMainComponent {
 
   idUsuario!:number
   cursoForm!: FormGroup
+  mesForm!: FormGroup
   idTipoUsuario: number
   cursos!:CursoPeriodo[]
   curso!:CursoPeriodo
@@ -46,6 +47,7 @@ export class MatriculaMainComponent {
   fechaHoy:Date
   mesCalendario!:Date
   idPago:number = 1
+  meses:any
 
 
   constructor(private formBuilder: FormBuilder,
@@ -53,20 +55,12 @@ export class MatriculaMainComponent {
     this.idUsuario=1
     this.idTipoUsuario=2
 
+    this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') //HARCODEO
     this.fechaHoy = new Date('2023-01-17T23:15:21.905Z')
 
-
-    this.cursoService.getCursosHorarios(this.idTipoUsuario).subscribe(res=>{
+    this.cursoService.getMatriculaActiva().subscribe(res=>{
       console.log(res)
-      this.cursos = res
-      this.mesCalendario = new Date(this.cursos[0].dateMat)
-      console.log(this.mesCalendario)
-
-      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
-        this.listaCursos = res
-        this.actualizarCursosCalendario()
-      })
-
+      this.meses=res
     })
 
     this.cursoForm = this.formBuilder.group({
@@ -76,10 +70,27 @@ export class MatriculaMainComponent {
       dia: [{ value: '', disabled: true }, [Validators.required]],
     })
 
+    this.mesForm = this.formBuilder.group({
+      mes: [''],
+    })
 
-  
+  }
 
+  seleccionMes(){
+    this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
+    this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
+      console.log(res)
+      this.cursos = res
+      
+      console.log(this.mesCalendario)
+
+      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
+        this.listaCursos = res
+        this.actualizarCursosCalendario()
+      })
+
+    })
   }
 
   ngOnInit(): void {

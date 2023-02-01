@@ -12,10 +12,10 @@ export class ZCursoService {
 
   constructor(private http: HttpClient) { }
 
-  getCursosHorarios(idTipoUsuario:number){
+  getCursosHorarios(idTipoUsuario:number,fechaReferencial:Date){
     const url = this.apiURL + "/cursos_horarios"
     console.log(url)
-    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario}})
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString()}})
   }
 
   getCursosHorariosMatriculados(idUsuario:number,fechaReferencial:Date){
@@ -33,6 +33,11 @@ export class ZCursoService {
       idUsuario:idUsuario
     }
     return this.http.post<any>(url,data)
+  }
+
+  getMatriculaActiva(){
+    const url = this.apiURL + "/matricula_activa"
+    return this.http.get<any>(url)
   }
 
 }

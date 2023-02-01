@@ -3,15 +3,24 @@
     <mat-step [stepControl]="cursoForm" fxFill="80">
       <ng-template matStepLabel>Seleccionar los cursos</ng-template>
 
-      <div fxLayout="column" fxLayoutAlign="start">
+      <form *ngIf="mesForm.controls['mes'].value == '' " [formGroup]="mesForm">
+        <mat-form-field class="input-propiedades" appearance="fill">
+          <mat-label>Mes</mat-label>
+          <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
+              <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
+                  {{mes.mes}} - {{mes.ano}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
 
-      
-  
+      <div *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="column" fxLayoutAlign="start">
+
         <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
       
-          
                   <!-- formularios -->
             <div class="form">
+
               <mat-card class="card">
                
               <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
