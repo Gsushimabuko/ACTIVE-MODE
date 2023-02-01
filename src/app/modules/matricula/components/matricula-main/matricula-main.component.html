@@ -1,6 +1,6 @@
 
-  <mat-stepper orientation="vertical" [linear]="false" #stepper>
-    <mat-step [stepControl]="cursoForm" fxFill="80">
+  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step fxFill="80" [editable]="esEditable">
       <ng-template matStepLabel>Seleccionar los cursos</ng-template>
 
       <form *ngIf="mesForm.controls['mes'].value == '' " [formGroup]="mesForm">
@@ -102,7 +102,7 @@
     </mat-step>
     
 
-    <mat-step >
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Monto</ng-template>
 
       <div fxLayout="column" fxLayoutAlign="center center">
@@ -140,7 +140,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
   
-      <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="nextStep(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
+      <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="realizarPago(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
   
       </div>
 
@@ -149,14 +149,14 @@
     </mat-step>
 
     
-    <mat-step >
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Pago</ng-template>
 
       <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)"> Inscribir cursos</button>
 
     </mat-step>
 
-    <mat-step>
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Finalizado</ng-template>
       <p>Se ha inscrito satisfactoriamente</p>
       <div>

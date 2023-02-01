@@ -48,6 +48,8 @@ export class MatriculaMainComponent {
   mesCalendario!:Date
   idPago:number = 1
   meses:any
+  listaDeCursosPrecios:any = []
+  esEditable:boolean = true
 
 
   constructor(private formBuilder: FormBuilder,
@@ -257,6 +259,7 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['curso'].setErrors(null)
 
     this.cursoPendiente = {}
+    this.listaDeCursosPrecios = []
     this.actualizarCursosCalendario()
     this.cursoForm.invalid
     
@@ -280,10 +283,15 @@ export class MatriculaMainComponent {
     stepper.next();
   }
 
+  realizarPago(stepper: MatStepper){
+    this.esEditable=false
+    stepper.next();
+  }
+
   matricula(stepper: MatStepper){
 
     //matricula
-    for(var cursos of this.listaCursosNuevos){
+    for(var cursos of this.listaDeCursosPrecios){
       console.log(cursos)
       
       this.cursoService.createMatriculaHorario(cursos,this.idPago,this.idUsuario).subscribe(res=>{
@@ -300,7 +308,10 @@ export class MatriculaMainComponent {
     let orden = 1
     let listaCalculada =[]
     let total = 0
-    for(var curso of this.listaCursosNuevos){
+
+    this.listaDeCursosPrecios = this.listaCursosNuevos
+
+    for(var curso of this.listaDeCursosPrecios){
       let diasMax = curso.diasMax
       let costoMes = curso.tarifa
       
