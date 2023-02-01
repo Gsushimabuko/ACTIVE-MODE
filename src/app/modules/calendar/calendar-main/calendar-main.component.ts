@@ -13,6 +13,7 @@ export class CalendarMainComponent {
   HORARIO_DATA: any[] = [];
   listaCursosModificados:any=[]
   innerWidth: any;
+  @Input() mesCalendario!: Date
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -20,7 +21,7 @@ export class CalendarMainComponent {
   }
 
   constructor() {
-    this.generadorCalendarioMes()
+
     this.talleres = [];
   }
   
@@ -29,6 +30,7 @@ export class CalendarMainComponent {
   ngOnInit(): void {
     //this.actualizarHorario();
     //console.log(this.horarios)
+  
     this.innerWidth = window.innerWidth;
     console.log(this.innerWidth)
   }
@@ -150,43 +152,46 @@ export class CalendarMainComponent {
   ]
 
   generadorCalendarioMes(){
-    var calendarioMes = []
-    const fechaHoy = new Date()
-    const diasMes = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth()+1,0).getDate()
-    let semana = {}  as any
-    for(let i = 1; i < diasMes+1; i++){
-      let dia = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth(),i).getDay()
-      if(dia==0){
-        if(i==1){
-          //no pasa nada 
+    if(this.mesCalendario){
+      var calendarioMes = []
+      const fechaHoy = this.mesCalendario
+      const diasMes = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth()+1,0).getDate()
+      let semana = {}  as any
+      for(let i = 1; i < diasMes+1; i++){
+        let dia = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth(),i).getDay()
+        if(dia==0){
+          if(i==1){
+            //no pasa nada 
+          }else{
+            calendarioMes.push(semana)
+            semana={} as any
+          }
         }else{
-          calendarioMes.push(semana)
-          semana={} as any
-        }
-      }else{
-        switch (dia) {
-          case 1:
-            semana['lunes'] = {dia:i,cursos:[]}
-            break;         
-          case 2:
-            semana['martes'] = {dia:i,cursos:[]}
-            break;
-          case 3:
-            semana['miercoles'] = {dia:i,cursos:[]}
-            break;        
-          case 4:
-            semana['jueves'] = {dia:i,cursos:[]}
-            break;
-          case 5:
-            semana['viernes'] = {dia:i,cursos:[]}
-            break;
-          default:
-            break;
-        }
-      } 
+          switch (dia) {
+            case 1:
+              semana['lunes'] = {dia:i,cursos:[]}
+              break;         
+            case 2:
+              semana['martes'] = {dia:i,cursos:[]}
+              break;
+            case 3:
+              semana['miercoles'] = {dia:i,cursos:[]}
+              break;        
+            case 4:
+              semana['jueves'] = {dia:i,cursos:[]}
+              break;
+            case 5:
+              semana['viernes'] = {dia:i,cursos:[]}
+              break;
+            default:
+              break;
+          }
+        } 
+      }
+      calendarioMes.push(semana)
+      this.HORARIO_DATA = calendarioMes
     }
-    calendarioMes.push(semana)
-    this.HORARIO_DATA = calendarioMes
+    
   }
 
   parseHoraStringToNumber(hora: string) {

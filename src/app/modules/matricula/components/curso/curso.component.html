@@ -1,5 +1,5 @@
 <div class="container">
- 
+    <h4>Curso seleccionado</h4>
     <mat-card class="card">
         <mat-card-header>
             <mat-card-title-group>
@@ -10,7 +10,7 @@
         </mat-card-header>
         <mat-card-content >
             <div *ngIf="tarifa!=0">
-                Monto por mes: {{tarifa | currency: 'S/. ' }}
+                Monto por mes: {{tarifa | currency: 'S/. ' }} por {{dias}} clases
             </div>
             
         </mat-card-content>

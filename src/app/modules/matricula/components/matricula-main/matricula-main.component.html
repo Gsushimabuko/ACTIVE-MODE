@@ -1,17 +1,26 @@
 
-  <mat-stepper orientation="vertical" [linear]="false" #stepper>
-    <mat-step [stepControl]="cursoForm" fxFill="80">
+  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step fxFill="80" [editable]="esEditable">
       <ng-template matStepLabel>Seleccionar los cursos</ng-template>
 
-      <div fxLayout="column" fxLayoutAlign="start">
+      <form *ngIf="mesForm.controls['mes'].value == '' " [formGroup]="mesForm">
+        <mat-form-field class="input-propiedades" appearance="fill">
+          <mat-label>Mes</mat-label>
+          <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
+              <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
+                  {{mes.mes}} - {{mes.ano}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
 
-      
-  
+      <div *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="column" fxLayoutAlign="start">
+
         <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
       
-          
                   <!-- formularios -->
             <div class="form">
+
               <mat-card class="card">
                
               <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
@@ -59,11 +68,12 @@
           <div class="info">
             <mat-card class="card">
 
-            <h4>Cursos en calendario</h4>
+            <h4>Listado de cursos</h4>
             <!-- lista de cursos inscritos -->
             <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
             <!-- info del curso actual -->
-            <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" [tarifa]="costoPagarTemporal"></app-curso>
+            
+            <app-curso  *ngIf="this.cursoForm.controls['curso'].value!=''" [curso]="curso" [tarifa]="costoPagarTemporal" [dias]=cantDiasTemporal></app-curso>
           </mat-card>
           </div>    
           
@@ -74,7 +84,7 @@
             <!-- calendario -->
           <div class="calendario" >
   
-              <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales"></app-calendar-main>
+              <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
           
           </div>             
         </div>
@@ -92,7 +102,7 @@
     </mat-step>
     
 
-    <mat-step >
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Monto</ng-template>
 
       <div fxLayout="column" fxLayoutAlign="center center">
@@ -130,7 +140,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
   
-      <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="nextStep(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
+      <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="realizarPago(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
   
       </div>
 
@@ -139,14 +149,14 @@
     </mat-step>
 
     
-    <mat-step >
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Pago</ng-template>
 
       <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)"> Inscribir cursos</button>
 
     </mat-step>
 
-    <mat-step>
+    <mat-step [editable]="false">
       <ng-template matStepLabel>Finalizado</ng-template>
       <p>Se ha inscrito satisfactoriamente</p>
       <div>

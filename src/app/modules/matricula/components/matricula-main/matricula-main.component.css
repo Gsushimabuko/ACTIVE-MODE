@@ -44,6 +44,13 @@
   padding-right: 0px;
 }
 
-.mat-horizontal-stepper-header {
+.mat-step-header {
+  pointer-events: none;
+}
+
+.mat-step {
+  pointer-events: none;
+}
+.mat-vertical-stepper-header{
   pointer-events: none;
 }
