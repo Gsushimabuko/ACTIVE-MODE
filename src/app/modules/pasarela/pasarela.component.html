@@ -1,0 +1,77 @@
+<div class="container">
+    <p class='main-description'>
+      <span>Pago con </span>
+      <img src="/assets/images-openpay/openpay_logo.png" class="logo">
+    </p>
+    
+    <div class='method-card' id='method-card'>
+      <div class='method-card__images'>
+        <img src="/assets/images-openpay/visa.svg" alt="visa">
+        <img src="/assets/images-openpay/mastercard.svg" alt="mastercard">
+        <img src="/assets/images-openpay/american-express.svg" alt="american-express">
+        <img src="/assets/images-openpay/diners.svg" alt="diners">
+      </div>
+      <p class='method-card__description'>
+        Recuerda que algunas tarjetas cuentan con el código de seguridad o CVV Dinámico,
+        consúltalo desde el App de tu banco.
+      </p>
+      <form>
+          <div class='method-card__inputs'>
+              <mat-form-field class="example-full-width">
+                  <mat-label>Titular de la tarjeta</mat-label>
+                  <input matInput>
+              </mat-form-field>
+              
+              <mat-form-field class="example-full-width">
+                  <mat-label>Número de tarjeta</mat-label>
+                  <input matInput>
+              </mat-form-field>
+      
+              <mat-form-field class="example-full-width">
+                  <mat-label>Fecha de Expiración</mat-label>
+                  <input matInput placeholder="MM/AA">
+              </mat-form-field>
+      
+              <mat-form-field class="example-full-width">
+                  <mat-label>CVV</mat-label>
+                  <input matInput>
+              </mat-form-field>
+          </div>
+      </form>
+
+      <button id="pay-button" class='method-card__button'>
+        Pagar
+      </button>
+    </div>
+</div>
+
+<head>
+    <script type="text/javascript" src="https://js.openpay.pe/openpay.v1.min.js"></script>
+    <script type='text/javascript'src="https://js.openpay.pe/openpay-data.v1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            OpenPay.setId('m65bzifhawsoqryayhex');
+            OpenPay.setApiKey('pk_f9d34a0a522b407ab465f942932c7849');
+            var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
+            OpenPay.setSandboxMode(true);
+        });
+        $('#pay-button').on('click', function(event) {
+            event.preventDefault();
+            $("#pay-button").prop( "disabled", true);
+            OpenPay.token.extractFormAndCreate('payment-form', success_callbak, error_callbak);
+        });
+    
+        var success_callbak = function(response) {
+            var token_id = response.data.id;
+            $('#token_id').val(token_id);
+            $('#payment-form').submit(); 
+        };
+    
+        var error_callbak = function(response) {
+            var desc = response.data.description != undefined ?response.data.description : response.message;
+            alert("ERROR [" + response.status + "] " + desc);
+            $("#pay-button").prop("disabled", false); 
+        };
+    </script>
+</head>
+

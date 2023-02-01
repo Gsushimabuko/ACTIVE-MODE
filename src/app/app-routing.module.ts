@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ValidarTokenGuard } from './guards/token.guard';
 import { HomeMainComponent } from './modules/home/home-main/home-main/home-main.component';
+import { PasarelaComponent } from './modules/pasarela/pasarela.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   canActivate: [ValidarTokenGuard] */ },
   {path: 'login', loadChildren: () =>
   import('./modules/login/login.module').then(m => m.LoginModule)},
+  {path: 'pasarela', component: PasarelaComponent },
 
   //Redirect
   {path: '', component: HomeMainComponent},

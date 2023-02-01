@@ -7,10 +7,13 @@ import { MaterialModule } from './core/material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { PasarelaComponent } from './modules/pasarela/pasarela.component';
+import { ScriptService } from './services/script.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PasarelaComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +24,7 @@ import { RouterModule } from '@angular/router';
     RouterModule,
 
   ],
-  providers: [],
+  providers: [ScriptService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
