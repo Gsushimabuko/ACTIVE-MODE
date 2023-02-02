@@ -37,7 +37,7 @@ export class MatriculaMainComponent {
   costoPagarTemporal:number = 0
   fechaHoy:Date
   mesCalendario!:Date
-  idPago:number = 1
+  idPago:number = 1 //HARCODEADO
   meses:any
   listaDeCursosPrecios:any = []
   esEditable:boolean = true
