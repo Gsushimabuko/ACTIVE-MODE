@@ -1,19 +1,11 @@
 <div class="container">
-    <h4>Cursos ya inscritos</h4>
-    <div *ngFor="let curso of listaCursos">
-        <mat-card class="card" >   
-                    <mat-card-title >{{curso.nombre | titlecase}}</mat-card-title>
-                    <mat-card-subtitle >{{curso.horarioDias}} - {{curso.horarioHoras}}</mat-card-subtitle>
-        </mat-card>
-    </div>
-
-    <h4>Cursos por inscribirse</h4>
+    <p class="">Cursos por inscribirse</p>
     <div *ngFor="let curso of listaCursosNuevos">
         <mat-card class="card-nuevo">
             <mat-card-header>
                 <mat-card-title-group>
-                    <mat-card-title>{{curso.nombre | titlecase}}</mat-card-title>
-                    <mat-card-subtitle>{{curso.horarioDias}} - {{curso.horarioHoras}}</mat-card-subtitle>
+                    <p>{{curso.nombre | titlecase}}</p> 
+                    <p>{{curso.horarioDias}} - {{curso.horarioHoras}}</p>
                 </mat-card-title-group>
                 <div class="borrar" (click)="eliminarCurso(curso.idCursoPeriodo)">
                     <mat-icon  class="icono-eliminado" fontIcon="delete_outline"></mat-icon>

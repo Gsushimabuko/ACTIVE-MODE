@@ -1,19 +1,28 @@
 mat-icon{
     cursor:pointer;
  }
- .container{
-    background-color: rgb(0, 0, 0);
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    align-items: center;
-    display: flex;
- }
+ .logo{
+    margin:25px;
+}
+.logo img{
+    width: 20vw;
+}
+
+hr{
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: rgb(249, 249, 249); /* old IE */
+    background-color: rgb(255, 255, 255);
+    width:50%;
+}
 
 .login-card{
-    width: 30vw;
-    height: 600px;
-    background-color: rgb(255, 255, 255);
+    width: 40%;
+    height: 90%;
+    margin: 50px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.853);
 }
 h2{
     font-size: 30px;
@@ -23,12 +32,12 @@ mat-card{
     padding: 50px;
 }
 .boton-login{
-    color: black;
-    background-color: #69d360;
-    width: 160px;
-    border-radius: 2px;
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
     font-weight: bold;
-}
+    background-color:rgb(126, 108, 228); }
+
 .texto-sugerencia{
     font-size: 12px;
 }
@@ -55,10 +64,11 @@ input{
      }
     
     .login-card{
-        margin: 20px;
-        width: 280px;
-        height: 500px;
-        background-color: rgb(255, 255, 255);
+        width: 80%;
+        height: 90%;
+        margin: 50px;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.853);
     }
 
     h2{
@@ -71,4 +81,27 @@ input{
         height: 20px;
         font-size: medium;
     }
+}
+
+mat-label{
+    color:white;
+}
+::ng-deep .mdc-notched-outline__leading{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+    
+}
+::ng-deep .mdc-notched-outline__notch{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+}
+::ng-deep .mdc-notched-outline__trailing{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+}
+::ng-deep .mat-mdc-select-value .ng-tns-c134-9{
+color: white!important;
+}
+input {
+    color: white !important;
 }
