@@ -28,7 +28,11 @@
               "src/custom-theme.scss",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/jquery.min.js",
+              "src/assets/js/openpay.v1.min.js",
+              "src/assets/js/openpay-data.v1.min.js"
+            ]
           },
           "configurations": {
             "production": {

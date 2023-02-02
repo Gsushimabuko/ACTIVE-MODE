@@ -1,0 +1,93 @@
+
+
+.logo{
+    margin:25px;
+}
+.logo img{
+    width: 20vw;
+}
+
+.card{
+    width: 80%;
+    height: 90%;
+    margin: 50px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.853);
+    
+}
+hr{
+    border: none;
+    height: 1px;
+    /* Set the hr color */
+    color: rgb(249, 249, 249); /* old IE */
+    background-color: rgb(255, 255, 255);
+    width:50%;
+}
+
+.row-section{
+    margin: 75px;
+}
+mat-label{
+    color:white;
+}
+::ng-deep .mdc-notched-outline__leading{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+    
+}
+::ng-deep .mdc-notched-outline__notch{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+}
+::ng-deep .mdc-notched-outline__trailing{
+    border-color: rgba(255, 255, 255, 0.804)!important;
+    color: white;
+}
+::ng-deep .mat-mdc-select-value .ng-tns-c134-9{
+color: white!important;
+}
+input {
+    color: white !important;
+}
+
+mat-form-field{
+    color: white;
+    width: 19vw;
+    font-size: 14px;
+    margin-left: 20px ;
+    margin-right:  20px ;
+}
+
+
+.boton-registro{
+    width: 200px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    background-color:rgb(126, 108, 228); ;
+}
+mat-label{
+    font-size: 95%;
+}
+
+@media (max-width: 950px) {
+    mat-form-field{
+        color: white;
+        width: 200px;
+        font-size: 12px;
+        margin-bottom: 10px !important;
+        
+    }
+
+   
+    .row-section{
+        margin: 0px;
+    }
+
+    hr{
+        margin-bottom: 30px;
+    }
+    
+    
+}

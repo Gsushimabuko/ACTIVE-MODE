@@ -19,7 +19,7 @@ export class ZUsuarioService {
   }
 
   createUsuario(persona: any): Observable<any>  {
-    return this.http.post<any>(this.API_URL + 'registro', persona)
+    return this.http.post<any>(this.API_URL + '/registro', persona)
   }
 
   login(usuario: any) {

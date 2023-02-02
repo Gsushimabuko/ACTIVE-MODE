@@ -1,33 +1,38 @@
-<div fxLayout="row" fxFlex="100" 
- fxLayoutAlign="center center" class="container">
-    <div style="color: aliceblue;">
-        a
-    </div>
- <form (ngSubmit)="login()" [formGroup] ="loginForm">
-    <mat-card class="login-card">
-        
-        <div fxLayout="column" fxFlex="100" fxLayoutAlign="start center">
-            <div fxFlex="20" fxLayoutAlign="center center" >
-                <h2> Iniciar sesión padre </h2>
+<form (ngSubmit)="login()" [formGroup] ="loginForm">
+     <div fxLayout="row" fxFlex="100" 
+      fxLayoutAlign="center center" class="container">
+        <mat-card class="login-card">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutAlign="center center" class="logo">
+                    <img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png">
+                    
+                </div>
             </div>
-            <div fxFlex="50" fxLayoutAlign="center center" >
-                <div  fxLayout="column"  >
+            
+            <div>
+                <hr>
+            </div>
+
+        <div fxLayout="column" fxFlex="50" fxLayoutAlign="start center">
+            
+            <div fxFlex="100" fxLayoutAlign="center center" >
+                <div fxLayoutAlign="center center"   fxLayout="column"  >
                         <div>
-                            <mat-form-field style="margin:40px"class="login-input" appearance="outline">
+                            <mat-form-field style="margin:20px" appearance="outline">
                                 <mat-label> E-mail
                                 </mat-label>
-                                <input matInput formControlName="email" required>
+                                <input matInput formControlName="correo" required>
                                 
-                                <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+                                <mat-error *ngIf="loginForm.controls['correo'].hasError('email')">
                                     Ingrese un correo válido
                                 </mat-error>
-                                <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+                                <mat-error *ngIf="loginForm.controls['correo'].hasError('required')">
                                     Ingrese un correo
                                 </mat-error>
                             </mat-form-field>
                         </div>
                         <div>
-                            <mat-form-field style="margin:40px" class="login-input" appearance="outline">
+                            <mat-form-field style="margin:20px"  appearance="outline">
                                 <mat-label> Contraseña
                                 </mat-label>
                                 <input  type="password" [type]="hide ? 'password' : 'text'" matInput formControlName="contrasena" required>
@@ -43,7 +48,7 @@
                             </mat-form-field>
                         </div>
                         
-                        <div style=" margin-top: 30px;text-align: center; color: rgb(228, 46, 46)">
+                        <div style=" margin-bottom: 15px;text-align: center; color: rgb(228, 46, 46)">
                             <mat-error  *ngIf="mensaje">
                                 {{mensaje}}
                             </mat-error>
@@ -54,18 +59,14 @@
                     <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button >
                         Iniciar sesión
                     </button>
+                    
                     <div class="texto-sugerencia">
-                        <span>
-                            <a style="color:#dfb544" routerLink="/sesion/olvide-contrasena">Olvidé mi contraseña</a>
-                        </span>
-                    </div>
-                    <div class="texto-sugerencia">
-                        <span> ¿No tienes cuenta? </span>
-                        <span> <a style="color:#dfb544" routerLink="/sesion/registro"> Registrate </a> </span>
+                        <span style="color:white"> ¿No tienes cuenta? </span>
+                        <span> <a style="color:#672fce" routerLink="/login/registro"> Registrate </a> </span>
                         
                     </div>
                 </div>
             </div>   
         </mat-card>
-    </form>
-</div>
+    </div>
+</form>

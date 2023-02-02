@@ -1,0 +1,166 @@
+.container {
+  margin: 50px;
+}
+
+.main-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.main-description {
+  color: #004080;
+  margin-bottom: 40px;
+}
+
+.main-description span {
+  font-weight: 600;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 40px;
+  margin-bottom: 32px;
+}
+
+.payment-methods__method {
+  background-color: #EAF6FE;
+  border: 4px solid #EAF6FE;
+  border-radius: 16px;
+  padding: 64px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.payment-methods__method--selected {
+  border-color: #004481;
+}
+
+.payment-methods__method img {
+  width: 100%;
+  max-width: 180px;
+  height: 120px;
+  margin-bottom: 32px;
+}
+
+.payment-methods__method span {
+  font-weight: 600;
+  text-align: center;
+  color: #004080;
+}
+
+
+.method-card {
+  border-radius: 16px;
+  border: 1px solid #989898;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 32px 40px;
+}
+
+.method-card__images {
+  width: 100%;
+  max-width: 998px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.method-card__images img {
+  margin: 16px;
+}
+
+.method-card__description {
+  color: #004080;
+  margin: 24px auto;
+}
+
+.method-card__inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}
+
+
+
+.method-card__inputs select {
+  height: 64px;
+  border-radius: 8px;
+  border: 0.816px solid #989898;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
+.method-card__description span {
+  font-weight: bold;
+}
+
+.method-card__button {
+  margin-left: auto;
+  cursor: pointer;
+  background-color: #004481;
+  font-weight: bold;
+  color: #FFF;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.method-digital {
+  border-radius: 16px;
+  border: 1px solid #989898;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 32px 40px;
+  min-height: 500px;
+}
+
+.method-digital__images {
+  width: 100%;
+  max-width: 998px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.method-digital__images img {
+  margin: 16px;
+}
+
+.method-digital__description {
+  color: #004080;
+  margin: 64px auto 56px;
+  max-width: 640px;
+  text-align: center;
+}
+
+.method-digital__description span {
+  font-weight: bold;
+}
+
+.method-digital__button {
+  margin-left: auto;
+  cursor: pointer;
+  background-color: #004481;
+  font-weight: bold;
+  color: #FFF;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+.logo {
+  width: 100%;
+  max-width: 180px;
+}
