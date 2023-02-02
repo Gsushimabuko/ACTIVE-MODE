@@ -9,6 +9,7 @@ import { CalendarMainComponent } from '../../../calendar/calendar-main/calendar-
 import { MatStepper } from '@angular/material/stepper';
 import { HorarioPeriodo } from '../../../shared/interfaces/Horario';
 import { CursoListaComponent } from '../curso-lista/curso-lista.component';
+import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.service';
 
 @Component({
   selector: 'app-matricula-main',
@@ -44,13 +45,16 @@ export class MatriculaMainComponent {
 
 
   constructor(private formBuilder: FormBuilder,
+    private usuarioService: ZUsuarioService,
     private cursoService:ZCursoService) {
-    this.idUsuario=1
-    this.idTipoUsuario=2
+
+  
+    this.idUsuario= this.usuarioService.usuario.id
+    this.idTipoUsuario=  this.usuarioService.usuario.id_tipo_usuario
 
     this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
 
-    this.fechaHoy = new Date('2023-01-17T23:15:21.905Z') //HARCODEO
+    this.fechaHoy = new Date() 
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
