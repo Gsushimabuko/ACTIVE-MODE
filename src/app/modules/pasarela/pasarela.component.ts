@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
+import { environment } from 'src/app/environments/environment';
 import { Card } from 'src/app/interfaces/card';
 
 @Component({
@@ -9,7 +11,8 @@ import { Card } from 'src/app/interfaces/card';
 })
 export class PasarelaComponent implements OnInit {
   
-  constructor(private _fb: FormBuilder) {
+  constructor(private _fb: FormBuilder,
+    private pasarelaService: PasarelaService) {
     this.form = this._fb.group({
       cardNumber: this._fb.control('', [Validators.required]),
       holderName: this._fb.control('', [Validators.required]),
@@ -20,6 +23,7 @@ export class PasarelaComponent implements OnInit {
       line1: this._fb.control('', [Validators.required]),
       line2: this._fb.control('', [Validators.required]),
       line3: this._fb.control('', [Validators.required]),
+      postalCode: this._fb.control('', [Validators.required]),
       state: this._fb.control('', [Validators.required]),
       countryCode: this._fb.control('', [Validators.required]),
     });
@@ -29,11 +33,11 @@ export class PasarelaComponent implements OnInit {
   
   ngOnInit(): void {
     //Config
-    OpenPay.setId('m65bzifhawsoqryayhex');
-    OpenPay.setApiKey('pk_f9d34a0a522b407ab465f942932c7849');
+    OpenPay.setId(environment.ID);
+    OpenPay.setApiKey(environment.PK_KEY);
     OpenPay.setSandboxMode(true);
     
-    this.deviceSessionId = OpenPay.deviceData.setup("formId");
+    this.deviceSessionId = OpenPay.deviceData.setup("formId", "deviceIdHiddenFieldName");
     console.log(this.deviceSessionId);
     
   }
@@ -70,7 +74,7 @@ export class PasarelaComponent implements OnInit {
         line1: this.form.get('line1')?.value,
         line2: this.form.get('line2')?.value,
         line3: this.form.get('line3')?.value,
-        postal_code: this.form.get('cardNumber')?.value,
+        postal_code: this.form.get('postalCode')?.value,
         state: this.form.get('state')?.value,
         country_code: this.form.get('countryCode')?.value,
       }
@@ -95,6 +99,8 @@ export class PasarelaComponent implements OnInit {
       }
     };
 
+    this.getCardInfo();
+
     OpenPay.token.create(this.cardInfo, (response: any) => {
       alert('Operación exitosa');
 
@@ -106,6 +112,27 @@ export class PasarelaComponent implements OnInit {
       }
 
       console.log(response);
+      
+      //const tokenId = response.data.id;
+      const chargeData = {
+        name: 'Miguel',
+        last_name: 'Millones',
+        phone_number: '959103504',
+        email: 'miguel.millones.f@gmail.com',
+        source_id: response.data.id,
+        amount: 500,
+        description: 'Mi primer pago de prueba',
+        use_card_points: false,
+        deviceIdHiddenFieldName: this.deviceSessionId,
+        order_id: 'oid-65584',
+      }
+
+      console.log(chargeData);
+
+      //Enviar formulario
+      this.pasarelaService.createPayment(chargeData).subscribe((data) => {
+        console.log(data);
+      });
     }, (error: any) => {
       alert('Fallo en la transacción');
 

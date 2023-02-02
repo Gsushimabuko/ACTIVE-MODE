@@ -21,7 +21,7 @@
     <form [formGroup]="form" id="formId" name="formId" class='method-card__inputs'>
         <mat-form-field class="example-full-width">
             <mat-label>Titular de la tarjeta</mat-label>
-            <input data-openpay-card="holder_name" matInput formControlName="holderName">
+            <input data-openpay-card="holder_name" type="text" matInput formControlName="holderName">
         </mat-form-field>
             
         <mat-form-field class="example-full-width">
@@ -61,7 +61,7 @@
 
         <mat-form-field class="example-full-width">
             <mat-label>Código postal</mat-label>
-            <input data-openpay-card-address="postal_code" matInput formControlName="countryCode">
+            <input data-openpay-card-address="postal_code" matInput formControlName="postalCode">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
