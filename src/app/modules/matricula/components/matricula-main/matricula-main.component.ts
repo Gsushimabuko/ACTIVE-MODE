@@ -52,7 +52,6 @@ export class MatriculaMainComponent {
     this.fechaHoy = new Date('2023-01-17T23:15:21.905Z')
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
-      console.log(res)
       this.meses=res
     })
 
@@ -79,7 +78,6 @@ export class MatriculaMainComponent {
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
         this.listaCursos = res
         this.actualizarCursosCalendario()
-        console.log(this.cursos)
       })
 
     })
@@ -147,7 +145,6 @@ export class MatriculaMainComponent {
         this.dias = ratio.dias
         this.cantDiasTemporal = ratio.dias[0].numEvents
         this.costoPagarTemporal = ratio.payment
-
       } 
     }
 
@@ -193,10 +190,19 @@ export class MatriculaMainComponent {
         break
       }
     }
+    
     const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento}
-    this.cursoPendiente = curso
-    this.flagDia = true
-    this.actualizarCursosCalendario()
+
+    if(this.comprobarCruce(curso)){
+      this.cursoPendiente = curso
+      console.log(curso)
+      this.flagDia = true
+      this.actualizarCursosCalendario()
+    }else{
+      this.cursoForm.controls['dia'].setValue('')
+    }
+   
+    
   }
 
   agregarCurso(){
@@ -220,7 +226,6 @@ export class MatriculaMainComponent {
         let schedule = [] //este es el horario que se envia al front
         for(var evento of dia.schedule){
           if(new Date(evento.start).getTime() > this.fechaHoy.getTime()){
-            console.log(evento)
             schedule.push(evento)
           }  
         }
@@ -239,7 +244,6 @@ export class MatriculaMainComponent {
 
     const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
     this.listaCursosNuevos.push(curso)
-    console.log(curso)
 
     this.cursoForm.controls['curso'].setValue('')
     this.cursoForm.controls['nivel'].setValue('')
@@ -258,7 +262,7 @@ export class MatriculaMainComponent {
   }
 
   eliminar(id:any){
-    console.log(id,"id del padre")
+ 
     const lista = this.listaCursosNuevos
     for (let i = 0; i < lista.length; i++) {
       if(this.listaCursosNuevos[i].idCursoPeriodo == id){
@@ -268,6 +272,66 @@ export class MatriculaMainComponent {
       }
     }
     this.actualizarCursosCalendario()
+  }
+
+  comprobarCruce(curso:any) : boolean{
+
+    for(let  cursoNuevo of this.listaCursosNuevos){
+      for(let horarioNuevo of cursoNuevo.diasEvento){
+
+        for(let horarioSeleccionado of curso.diasEvento){
+
+          let horaSelIni = new Date(horarioSeleccionado.start).getTime()
+          let horaSelFin = new Date(horarioSeleccionado.end).getTime()
+          let horaNueIni = new Date(horarioNuevo.start).getTime()
+          let horaNueFin = new Date(horarioNuevo.end).getTime()
+          console.log(horaNueIni,horaSelIni,horaNueFin,1)
+          console.log(horaNueIni,horaSelFin,horaNueFin,2)
+          if( horaSelIni < horaNueIni  && horaSelFin <= horaNueIni){
+         
+          }else if(horaSelFin > horaNueFin  && horaSelIni >= horaNueFin){
+            
+          }else{
+            alert('cruce')  
+            return false 
+          }
+
+        }
+
+      }
+    }
+
+  
+    for(let cursoNuevo of this.listaCursos){
+      for(let horarioNuevo of cursoNuevo.diasEvento){
+
+        for(let horarioSeleccionado of curso.diasEvento){
+
+          let horaSelIni = new Date(horarioSeleccionado.start).getTime()
+          let horaSelFin = new Date(horarioSeleccionado.end).getTime()
+          let horaNueIni = new Date(horarioNuevo.start).getTime()
+          let horaNueFin = new Date(horarioNuevo.end).getTime()
+          
+          console.log(horaNueIni,horaSelIni,horaNueFin,1)
+          console.log(horaNueIni,horaSelFin,horaNueFin,2)
+
+          if( horaSelIni < horaNueIni  && horaSelFin <= horaNueIni){
+         
+          }else if(horaSelFin > horaNueFin  && horaSelIni >= horaNueFin){
+            
+          }else{
+            alert('cruce')  
+            return false 
+          }
+
+        }
+
+      }
+    }
+
+    return true
+
+
   }
 
   nextStep(stepper: MatStepper) {
@@ -284,7 +348,6 @@ export class MatriculaMainComponent {
 
     //matricula
     for(var cursos of this.listaDeCursosPrecios){
-      console.log(cursos)
       
       this.cursoService.createMatriculaHorario(cursos,this.idPago,this.idUsuario).subscribe(res=>{
         console.log(res)
@@ -309,7 +372,6 @@ export class MatriculaMainComponent {
       
       let cantDias = curso.diasEvento.length
       let montoCurso = Number((costoMes*(cantDias/diasMax)).toFixed(2))
-      console.log(montoCurso)
       listaCalculada.push({
         orden: orden,
         curso: curso.nombre + " " + curso.horarioDias + " " + curso.horarioHoras,
