@@ -48,8 +48,9 @@ export class MatriculaMainComponent {
     this.idUsuario=1
     this.idTipoUsuario=2
 
-    this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') //HARCODEO
-    this.fechaHoy = new Date('2023-01-17T23:15:21.905Z')
+    this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
+
+    this.fechaHoy = new Date('2023-01-17T23:15:21.905Z') //HARCODEO
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
