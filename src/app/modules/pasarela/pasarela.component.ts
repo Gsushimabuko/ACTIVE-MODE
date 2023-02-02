@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
 import { environment } from 'src/app/environments/environment';
@@ -10,6 +10,8 @@ import { Card } from 'src/app/interfaces/card';
   styleUrls: ['./pasarela.component.css']
 })
 export class PasarelaComponent implements OnInit {
+  @Input() listaPagosPrecio: any;
+  @Input() idUsuario!: number;
   
   constructor(private _fb: FormBuilder,
     private pasarelaService: PasarelaService) {
@@ -130,7 +132,7 @@ export class PasarelaComponent implements OnInit {
       console.log(chargeData);
 
       //Enviar formulario
-      this.pasarelaService.createPayment(chargeData).subscribe((data) => {
+      this.pasarelaService.createPayment(chargeData,this.listaPagosPrecio,this.idUsuario).subscribe((data) => {
         console.log(data);
       });
     }, (error: any) => {

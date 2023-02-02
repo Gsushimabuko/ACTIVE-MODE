@@ -10,6 +10,8 @@ import { MatStepper } from '@angular/material/stepper';
 import { HorarioPeriodo } from '../../../shared/interfaces/Horario';
 import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.service';
+import { PasarelaComponent } from '../../../pasarela/pasarela.component';
+
 
 @Component({
   selector: 'app-matricula-main',
@@ -352,12 +354,13 @@ export class MatriculaMainComponent {
   matricula(stepper: MatStepper){
 
     //matricula
-    for(var cursos of this.listaDeCursosPrecios){
-      
-      this.cursoService.createMatriculaHorario(cursos,this.idPago,this.idUsuario).subscribe(res=>{
+    /*
+    
+      this.cursoService.createMatriculaHorario(this.listaDeCursosPrecios,this.idPago,this.idUsuario).subscribe(res=>{
         console.log(res)
       })  
-    }
+
+    */
     
 
     stepper.next();

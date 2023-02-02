@@ -13,6 +13,7 @@ import { CursoListaComponent } from './components/curso-lista/curso-lista.compon
 import { CalendarModule } from '../calendar/calendar.module';
 
 
+
 @NgModule({
   declarations: [
     MatriculaMainComponent,
@@ -28,7 +29,7 @@ import { CalendarModule } from '../calendar/calendar.module';
     HttpClientModule,
     MaterialModule,
     MatriculaRoutingModule,
-    CalendarModule,
+    CalendarModule
   ]
 })
 export class MatriculaModule { }
