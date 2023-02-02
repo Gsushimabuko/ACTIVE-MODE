@@ -19,7 +19,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -50,6 +50,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     FormsModule,
     MatExpansionModule,
     MatTableModule,
+    ReactiveFormsModule,
   ],
 })
 
