@@ -156,7 +156,7 @@
         <mat-step [editable]="false">
           <ng-template matStepLabel>Pago</ng-template>
 
-          
+          <app-pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" ></app-pasarela>
     
           <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)"> Inscribir cursos</button>
     

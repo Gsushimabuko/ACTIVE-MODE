@@ -11,6 +11,8 @@ import { CursoDialogComponent } from './components/curso-dialog/curso-dialog.com
 import { FormularioMatriculaComponent } from './components/formulario-matricula/formulario-matricula.component';
 import { CursoListaComponent } from './components/curso-lista/curso-lista.component';
 import { CalendarModule } from '../calendar/calendar.module';
+import { PasarelaComponent } from '../pasarela/pasarela.component';
+import { PasarelaModule } from '../pasarela/pasarela.module';
 
 
 
@@ -29,7 +31,8 @@ import { CalendarModule } from '../calendar/calendar.module';
     HttpClientModule,
     MaterialModule,
     MatriculaRoutingModule,
-    CalendarModule
+    CalendarModule,
+    PasarelaModule
   ]
 })
 export class MatriculaModule { }

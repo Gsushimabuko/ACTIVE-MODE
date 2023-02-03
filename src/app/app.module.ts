@@ -9,11 +9,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { PasarelaComponent } from './modules/pasarela/pasarela.component';
 import { ScriptService } from './services/script.service';
+import { PasarelaModule } from './modules/pasarela/pasarela.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PasarelaComponent
   ],
   imports: [
     BrowserModule,
@@ -22,6 +22,7 @@ import { ScriptService } from './services/script.service';
     AppRoutingModule,
     HttpClientModule,
     RouterModule,
+    PasarelaModule
 
   ],
   providers: [ScriptService],
