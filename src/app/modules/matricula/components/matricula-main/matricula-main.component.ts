@@ -80,17 +80,25 @@ export class MatriculaMainComponent {
   }
 
   seleccionMes(){
+    this.loader=true
     this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
     console.log(this.idTipoUsuario)
-
+    
     this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
+     
+      console.log("cargado...")
       this.cursos = res
+      console.log("done...")
+     
       
     
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
+        console.log("cargado.2..")
         this.listaCursos = res
+        console.log("done.2..")
         this.actualizarCursosCalendario()
+        this.loader=false
       })
 
     })

@@ -1,15 +1,15 @@
 <div class="container">
-    <p class="">Cursos por inscribirse</p>
+    <b>Cursos por inscribirse</b>
     <div *ngFor="let curso of listaCursosNuevos">
         <mat-card class="card-nuevo">
             <mat-card-header>
                 <mat-card-title-group>
                     <p>{{curso.nombre | titlecase}}</p> 
                     <p>{{curso.horarioDias}} - {{curso.horarioHoras}}</p>
+                    <div class="borrar" (click)="eliminarCurso(curso.idCursoPeriodo)">
+                        <mat-icon  class="icono-eliminado" fontIcon="delete_outline"></mat-icon>
+                    </div>
                 </mat-card-title-group>
-                <div class="borrar" (click)="eliminarCurso(curso.idCursoPeriodo)">
-                    <mat-icon  class="icono-eliminado" fontIcon="delete_outline"></mat-icon>
-                </div>
             </mat-card-header>
         </mat-card>
     </div>
