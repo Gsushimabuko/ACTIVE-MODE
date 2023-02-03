@@ -12,38 +12,42 @@ table {
 .mat-column-lunes {
     border-right: 1px dashed rgba(113, 113, 113, 0.277);
     text-align: center;
-    max-width: 120px;
-    width: 120px;
+    max-width: 110px;
+    width: 110px;
 }
 
 .mat-column-martes {
     border-right: 1px dashed rgba(113, 113, 113, 0.277);
     text-align: center;
-    max-width: 120px;
-    width: 120px;
+    max-width: 110px;
+    width: 110px;
 }
   
 .mat-column-miercoles {
     border-right: 1px dashed rgba(113, 113, 113, 0.277);
     text-align: center;
-    max-width: 120px;
-    width: 120px;
+    max-width: 110px;
+    width: 110px;
 }
 
 .mat-column-jueves {
     border-right: 1px dashed rgba(113, 113, 113, 0.277);
     text-align: center;
-    max-width: 120px;
-    width: 120px;
+    max-width: 110px;
+    width: 110px;
 }
 
 .mat-column-viernes {
     border-right: 1px dashed rgba(113, 113, 113, 0.277);
     text-align: center;
-    max-width: 120px;
-    width: 120px;
+    max-width: 110px;
+    width: 110px;
 
 }   
+
+.mdc-data-table__table{
+    min-width:90%;
+}
 
 .mat-mdc-cell{
 padding: 5px;

@@ -45,6 +45,8 @@ export class MatriculaMainComponent {
   esEditable:boolean = true
   cantDiasTemporal: any;
 
+  loader= true
+
 
   constructor(private formBuilder: FormBuilder,
     private usuarioService: ZUsuarioService,
@@ -59,7 +61,9 @@ export class MatriculaMainComponent {
     this.fechaHoy = new Date() 
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
+    
       this.meses=res
+      this.loader = false
     })
 
     this.cursoForm = this.formBuilder.group({

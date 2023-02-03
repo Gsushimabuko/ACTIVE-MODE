@@ -44,8 +44,9 @@ export class ZUsuarioService {
             id_rol: resp.id_rol,
             id_tipo_usuario: resp.id_rol
           }
-          console.log(this._usuario)
+          
         }
+        
       }),//Tap hace que se ejecute esa acción primero
       map(resp => resp.ok),//map transforma la respuesta solo a ok
       catchError( err => {return of(false)})//si hay un errpr devuelve false

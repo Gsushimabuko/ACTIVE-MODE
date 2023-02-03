@@ -1,10 +1,15 @@
-
-  <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100">
-    <mat-card class="card-general">
-      <mat-stepper orientation="vertical" [linear]="true" #stepper>
-        <mat-step fxFill="80" [editable]="esEditable">
-          <ng-template matStepLabel>Seleccionar los cursos</ng-template>
-    
+<!--loader-->
+<div *ngIf="loader" class="loader-spinner"
+fxLayout="column" fxLayoutAlign="center center"
+>
+  <mat-spinner color="primary"></mat-spinner>
+</div>
+<div fxLayout="column" fxLayoutAlign="center center" fxFlex="100">
+  <mat-card class="card-general">
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
+      <mat-step fxFill="80" [editable]="esEditable">
+        <ng-template matStepLabel>Seleccionar los cursos</ng-template>
+        
           <form *ngIf="mesForm.controls['mes'].value == '' " [formGroup]="mesForm">
             <mat-form-field class="input-propiedades" appearance="outline">
               <mat-label>Mes</mat-label>
@@ -26,7 +31,7 @@
                   <mat-card class="card">
                    
                   <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
-                    <p>Datos del curso</p>
+                    <b style="margin: 15px ;font-size:18px">Elige la fecha y hora</b>
                     <mat-form-field class="input-propiedades" appearance="outline">
                       <mat-label>Curso</mat-label>
                       <mat-select formControlName="curso" (selectionChange)="cambioCurso()">
@@ -44,7 +49,7 @@
                       </mat-select>
                     </mat-form-field>
                     <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Ratio</mat-label>
+                      <mat-label>Veces por semana</mat-label>
                       <mat-select formControlName="ratio" (selectionChange)="cambioRatio()">
                           <mat-option *ngFor="let ratio of ratios" [value]="ratio.idRatio" [disabled]="ratio.state=='CERRADO'">
                               {{ratio.ratio}} {{(ratio.state == 'CERRADO' ? '(CERRADO)' : '')}}

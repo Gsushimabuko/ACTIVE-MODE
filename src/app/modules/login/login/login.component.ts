@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -30,15 +31,26 @@ export class LoginComponent {
       contrasena: this.loginForm.value.contrasena,
     }
     
-    this.usuarioService.login(usuario).subscribe((res =>{
+    this.usuarioService.login(usuario).subscribe(res=>{
+     console.log("RES: ", res)
       //si respuesta es igual a true
       if (res == true) {
+        console.log("wiii")
         this.router.navigateByUrl('/matricula')
-      } else {
-        this.mensaje = "Usuario o contraseña invalidos"
+      } else{
+        this.mensaje = "Datos incorrectos"
       }
-    })); 
-  }
+    }, (err:HttpErrorResponse) => { 
+
+      if (err.status == 500){
+        this.mensaje = "Error de servidor, intente más tarde"
+       }  else{
+         this.mensaje = "Error desconocido"
+
+       }
+        
+    })}; 
+  
   
   openSnackBar(message: string, seconds: number) {
     this.snackbar.open(message, 'X', {

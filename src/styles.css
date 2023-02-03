@@ -7,3 +7,14 @@ font-family: 'Roboto', sans-serif;
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
+.loader-spinner{
+    position:absolute;
+    z-index: 200;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    align-items: center;
+    background-color:rgba(248, 183, 18, 0.668);
+    
+}
