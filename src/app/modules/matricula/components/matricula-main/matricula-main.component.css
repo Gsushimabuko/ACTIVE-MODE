@@ -10,7 +10,7 @@
 }
 
 .card-general{
-  width: 80%;
+  width: 85%;
   height: 90%;
   margin: 90px;
   border-radius: 10px;
@@ -52,6 +52,7 @@
   width: 700px;
   padding-left: 0px;
   padding-right: 0px;
+  margin-top:10px;
 }
 
 .mat-step-header {

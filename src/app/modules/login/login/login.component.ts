@@ -36,7 +36,7 @@ export class LoginComponent {
       //si respuesta es igual a true
       if (res == true) {
         console.log("wiii")
-        this.router.navigateByUrl('/matricula')
+        this.router.navigateByUrl('/matricula/dashboard')
       } else{
         this.mensaje = "Datos incorrectos"
       }

@@ -1,9 +1,16 @@
 <!--loader-->
+<div style="margin:20px;" fxLayout="column" fxLayoutAlign="start">
+   <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
+    <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
+  </button> 
+</div>
 <div *ngIf="loader" class="loader-spinner"
 fxLayout="column" fxLayoutAlign="center center"
 >
   <mat-spinner color="primary"></mat-spinner>
 </div>
+
+
 <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100">
   <mat-card class="card-general">
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
@@ -81,7 +88,7 @@ fxLayout="column" fxLayoutAlign="center center"
                   </div>
                   
                   <div  fxLayout="row" fxLayoutAlign="center center">
-                    <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Agregar curso</button>
+                    <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Seleccionar</button>
                     <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="nextStep(stepper)">Calcular monto</button>
                   </div>
 

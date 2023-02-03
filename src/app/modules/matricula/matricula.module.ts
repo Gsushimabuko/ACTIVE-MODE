@@ -13,6 +13,8 @@ import { CursoListaComponent } from './components/curso-lista/curso-lista.compon
 import { CalendarModule } from '../calendar/calendar.module';
 import { PasarelaComponent } from '../pasarela/pasarela.component';
 import { PasarelaModule } from '../pasarela/pasarela.module';
+import { DasboardComponent } from './components/dasboard/dasboard.component';
+import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component';
 
 
 
@@ -23,6 +25,8 @@ import { PasarelaModule } from '../pasarela/pasarela.module';
     CursoDialogComponent,
     FormularioMatriculaComponent,
     CursoListaComponent,
+    DasboardComponent,
+    MisCursosComponent,
   ],
   imports: [
     CommonModule,
