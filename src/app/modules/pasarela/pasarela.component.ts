@@ -41,7 +41,6 @@ export class PasarelaComponent implements OnInit {
     
     this.deviceSessionId = OpenPay.deviceData.setup("formId", "deviceIdHiddenFieldName");
     console.log(this.deviceSessionId);
-    
   }
 
   form: FormGroup;
@@ -106,34 +105,27 @@ export class PasarelaComponent implements OnInit {
     OpenPay.token.create(this.cardInfo, (response: any) => {
       alert('Operación exitosa');
 
-      //Set content
-      const content = {
-        cardId: response.data.id,
-        holderName: response.data.holder_name,
-        brand: response.data.brand
-      }
-
-      console.log(response);
-      
-      //const tokenId = response.data.id;
+      //Charga data - First 4 fields are from customer
       const chargeData = {
         name: 'Miguel',
         last_name: 'Millones',
         phone_number: '959103504',
         email: 'miguel.millones.f@gmail.com',
         source_id: response.data.id,
-        amount: 500,
+        amount: 500.00,
         description: 'Mi primer pago de prueba',
         use_card_points: false,
         deviceIdHiddenFieldName: this.deviceSessionId,
-        order_id: 'oid-65584',
       }
 
       console.log(chargeData);
+      console.log(response);
 
       //Enviar formulario
-      this.pasarelaService.createPayment(chargeData,this.listaPagosPrecio,this.idUsuario).subscribe((data) => {
+      this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario).subscribe((data) => {
         console.log(data);
+      }, (error: any) => {
+        console.log('Error en la pasarela');
       });
     }, (error: any) => {
       alert('Fallo en la transacción');
