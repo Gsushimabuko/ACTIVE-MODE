@@ -78,6 +78,8 @@ export class MatriculaMainComponent {
   seleccionMes(){
     this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
+    console.log(this.idTipoUsuario)
+
     this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
       this.cursos = res
       
