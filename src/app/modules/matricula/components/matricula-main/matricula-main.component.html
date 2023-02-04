@@ -15,9 +15,9 @@ fxLayout="column" fxLayoutAlign="center center"
   <mat-card class="card-general">
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
       <mat-step fxFill="80" [editable]="esEditable">
-        <ng-template matStepLabel>Seleccionar los cursos</ng-template>
+        <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
         
-          <form *ngIf="mesForm.controls['mes'].value == '' " [formGroup]="mesForm">
+          <form [formGroup]="mesForm">
             <mat-form-field class="input-propiedades" appearance="outline">
               <mat-label>Mes</mat-label>
               <mat-select formControlName="mes" (selectionChange)="seleccionMes()">

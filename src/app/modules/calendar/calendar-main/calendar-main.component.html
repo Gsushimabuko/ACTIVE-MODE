@@ -8,7 +8,6 @@
             <h3>Calendario del mes</h3>
         </div>
         
-    
         <div  style="text-align: center;" *ngIf="innerWidth >700; else celular">
             <table mat-table [dataSource]="HORARIO_DATA"  class="mat-elevation-z8 demo-table">
                 <ng-container matColumnDef="lunes">
@@ -131,10 +130,6 @@
             
             </table>
         </ng-template>
-    
-        
-    
-       
     
         <div fxLayout="column" fxLayoutAlign="center center"class="leyenda" >
     

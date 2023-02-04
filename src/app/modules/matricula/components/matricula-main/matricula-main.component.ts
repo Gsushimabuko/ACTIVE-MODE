@@ -29,23 +29,28 @@ export class MatriculaMainComponent {
   niveles!:NivelPeriodo[]
   ratios!:RatioPeriodo[]
   dias!:DiaPeriodo[]
-  listaCursos:any = []
-  listaCursosNuevos:any=[]
-  listaCursosTotales:any =[]
   flagDia:boolean=false
-  cursoPendiente:any={}
-  MONTO_CURSO_DATA: any[] = [];
-  totalPagar:number = 0
-  costoPagarTemporal:number = 0
+  
+
+  
   fechaHoy:Date
   mesCalendario!:Date
   idPago:number = 1 //HARCODEADO
   meses:any
-  listaDeCursosPrecios:any = []
   esEditable:boolean = true
-  cantDiasTemporal: any;
 
-  loader= true
+  listaCursos:any = []
+  listaCursosNuevos:any=[]
+  listaCursosTotales:any =[]
+  totalPagar:number = 0
+  costoPagarTemporal:number = 0
+  cursoPendiente:any={}
+  MONTO_CURSO_DATA: any[] = [];
+  cantDiasTemporal!: number;
+  listaDeCursosPrecios:any = []
+
+
+  loader:boolean= true
 
 
   constructor(private formBuilder: FormBuilder,
@@ -83,6 +88,17 @@ export class MatriculaMainComponent {
     this.loader=true
     this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
+    this.listaCursos = []
+    this.listaCursosNuevos =[]
+    this.listaCursosTotales =[]
+    this.totalPagar = 0
+    this.costoPagarTemporal = 0
+    this.cursoPendiente ={}
+    this.MONTO_CURSO_DATA = [];
+    this.cantDiasTemporal = 0;
+    this.listaDeCursosPrecios = []
+  
+
     console.log(this.idTipoUsuario)
     
     this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
@@ -91,8 +107,6 @@ export class MatriculaMainComponent {
       this.cursos = res
       console.log("done...")
      
-      
-    
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
         console.log("cargado.2..")
         this.listaCursos = res
@@ -102,6 +116,7 @@ export class MatriculaMainComponent {
       })
 
     })
+
   }
 
   ngOnInit(): void {

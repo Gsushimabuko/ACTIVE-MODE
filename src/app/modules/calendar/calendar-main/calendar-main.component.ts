@@ -82,44 +82,12 @@ export class CalendarMainComponent {
 
       this.listaCursosModificados= cursosEvento
       
-      console.log(this.listaCursosModificados)
-
-      
-/*
-      for (let dia of this.dias) {
-        let startPixel = 0;
-        let color = 0;
-  
-        if (dia == 'martes' || dia == 'jueves') {
-          color = 3;
-        }
-        else {
-          color = 0;
-        }
-  
-        for(let taller of this.talleres) {
-          if (!taller.horario[dia].includes('')) {
-            const min = this.parseHoraStringToNumber(taller.horario[dia][0]);
-            const max = this.parseHoraStringToNumber(taller.horario[dia][1]);
-  
-            taller.duracion = max - min;
-            taller.pixels = taller.duracion/this.minPixelRatio;
-  
-            taller.minPixel = (min - 60*7)/this.minPixelRatio - startPixel;
-            startPixel += taller.pixels;
-            taller.color = this.colores[color];
-            color += 1;
-  
-            this.horarios[dia].push(taller);
-          }
-        }
-      } */
-
+    }else{
+      this.listaCursosModificados =[]
     }
 
     
   }
-
 
   displayedColumns: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
   
