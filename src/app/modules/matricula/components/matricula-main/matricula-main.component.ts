@@ -35,7 +35,6 @@ export class MatriculaMainComponent {
   
   fechaHoy:Date
   mesCalendario!:Date
-  idPago:number = 1 //HARCODEADO
   meses:any
   esEditable:boolean = true
 
@@ -66,7 +65,6 @@ export class MatriculaMainComponent {
     this.fechaHoy = new Date() 
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
-    
       this.meses=res
       this.loader = false
     })
@@ -101,7 +99,7 @@ export class MatriculaMainComponent {
 
     console.log(this.idTipoUsuario)
     
-    this.cursoService.getCursosHorarios(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
+    this.cursoService.getCursos(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
      
       console.log("cargado...")
       this.cursos = res
@@ -126,6 +124,7 @@ export class MatriculaMainComponent {
   @ViewChild('calendario') calendario: any;
 
   cambioCurso(){
+    this.loader=true
     if(this.flagDia){
       this.listaCursosTotales.pop()
       this.flagDia = false
@@ -137,12 +136,20 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['ratio'].disable()
     this.cursoForm.controls['dia'].setValue('')
     this.cursoForm.controls['dia'].disable()
-    for(var curso of this.cursos){
-      if(curso.idCurso == this.cursoForm.controls['curso'].value){
-        this.niveles = curso.niveles
-        this.curso = curso
-      }   
-    }  
+
+   this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario,this.cursoForm.controls['curso'].value).subscribe(res =>{
+    console.log(res)
+    this.curso = res[0]
+    this.niveles = res[0].niveles
+    this.loader=false
+   })
+
+    // for(var curso of this.cursos){
+    //   if(curso.idCurso == this.cursoForm.controls['curso'].value){
+    //     this.niveles = curso.niveles
+    //     this.curso = curso
+    //   }   
+    // }  
 
     this.actualizarCursosCalendario()
   }

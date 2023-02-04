@@ -18,6 +18,18 @@ export class ZCursoService {
     return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString()}})
   }
 
+  getCursos(idTipoUsuario:number,fechaReferencial:Date){
+    const url = this.apiURL + "/cursos"
+    console.log(url)
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString()}})
+  }
+
+  getCursoHorarios(idTipoUsuario:number,fechaReferencial:Date,idCurso:number){
+    const url = this.apiURL + "/cursos_horariosv2"
+    console.log(url)
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString(),idCurso:idCurso}})
+  }
+
   getCursosHorariosMatriculados(idUsuario:number,fechaReferencial:Date){
     const url = this.apiURL + "/cursos_horarios_matriculados"
     console.log(fechaReferencial.toString())
