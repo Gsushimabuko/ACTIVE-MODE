@@ -12,6 +12,7 @@ import { Card } from 'src/app/interfaces/card';
 export class PasarelaComponent implements OnInit {
   @Input() listaPagosPrecio: any;
   @Input() idUsuario!: number;
+  @Input() monto!: number;
   
   constructor(private _fb: FormBuilder,
     private pasarelaService: PasarelaService) {
@@ -83,23 +84,6 @@ export class PasarelaComponent implements OnInit {
   }
 
   createToken() {
-    const cardInfoText = {
-      "card_number":"4111111111111111",
-      "holder_name":"Juan Perez Ramirez",
-      "expiration_year":"20",
-      "expiration_month":"12",
-      "cvv2":"110",
-      "address":{
-        "city":"Querétaro",
-        "line3":"Queretaro",
-        "postal_code":"76900",
-        "line1":"Av 5 de Febrero",
-        "line2":"Roble 207",
-        "state":"Queretaro",
-        "country_code":"MX"
-      }
-    };
-
     this.getCardInfo();
 
     OpenPay.token.create(this.cardInfo, (response: any) => {
@@ -107,13 +91,9 @@ export class PasarelaComponent implements OnInit {
 
       //Charga data - First 4 fields are from customer
       const chargeData = {
-        name: 'Miguel',
-        last_name: 'Millones',
-        phone_number: '959103504',
-        email: 'miguel.millones.f@gmail.com',
         source_id: response.data.id,
-        amount: 500.00,
-        description: 'Mi primer pago de prueba',
+        amount: this.monto,
+        description: 'Pago de matrícula a talleres de Active Mode',
         use_card_points: false,
         deviceIdHiddenFieldName: this.deviceSessionId,
       }
@@ -125,7 +105,7 @@ export class PasarelaComponent implements OnInit {
       this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario).subscribe((data) => {
         console.log(data);
       }, (error: any) => {
-        console.log('Error en la pasarela');
+        console.log(error);
       });
     }, (error: any) => {
       alert('Fallo en la transacción');
