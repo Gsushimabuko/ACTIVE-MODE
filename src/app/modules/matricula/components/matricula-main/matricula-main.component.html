@@ -16,7 +16,9 @@ fxLayout="column" fxLayoutAlign="center center"
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
       <mat-step fxFill="80" [editable]="esEditable">
         <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
-        
+
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+          
           <form [formGroup]="mesForm">
             <mat-form-field class="input-propiedades" appearance="outline">
               <mat-label>Mes</mat-label>
@@ -27,6 +29,14 @@ fxLayout="column" fxLayoutAlign="center center"
               </mat-select>
             </mat-form-field>
           </form>
+
+          <mat-card class= "aviso">
+            <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparesca cerrado, llame al número xxx xxxxxx para preguntar si existe alguna vacante extraordinaria</p>
+          </mat-card>
+
+        </div>
+        
+          
     
           <div *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="column" fxLayoutAlign="start">
     
