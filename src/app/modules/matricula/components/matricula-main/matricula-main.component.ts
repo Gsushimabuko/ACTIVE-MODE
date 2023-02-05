@@ -95,24 +95,24 @@ export class MatriculaMainComponent {
     this.MONTO_CURSO_DATA = [];
     this.cantDiasTemporal = 0;
     this.listaDeCursosPrecios = []
+
+    this.cursoForm.controls['curso'].setValue('')
+    this.cursoForm.controls['nivel'].setValue('')
+    this.cursoForm.controls['nivel'].disable()
+    this.cursoForm.controls['ratio'].setValue('')
+    this.cursoForm.controls['ratio'].disable()
+    this.cursoForm.controls['dia'].setValue('')
+    this.cursoForm.controls['dia'].disable()
   
 
-    console.log(this.idTipoUsuario)
-    
-    this.cursoService.getCursos(this.idTipoUsuario,this.mesCalendario).subscribe(res=>{
-     
-      console.log("cargado...")
+    this.cursoService.getCursos(this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
       this.cursos = res
-      console.log("done...")
-     
-      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario).subscribe(res=>{
-        console.log("cargado.2..")
+
+      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
         this.listaCursos = res
-        console.log("done.2..")
         this.actualizarCursosCalendario()
         this.loader=false
       })
-
     })
 
   }
@@ -121,9 +121,11 @@ export class MatriculaMainComponent {
     
   }
 
-  @ViewChild('calendario') calendario: any;
+  @ViewChild('calendario') calendario!: CalendarMainComponent;
+  @ViewChild('pasarela') pasarela!:PasarelaComponent
 
   cambioCurso(){
+
     this.loader=true
     if(this.flagDia){
       this.listaCursosTotales.pop()
@@ -136,20 +138,14 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['ratio'].disable()
     this.cursoForm.controls['dia'].setValue('')
     this.cursoForm.controls['dia'].disable()
+    
 
-   this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario,this.cursoForm.controls['curso'].value).subscribe(res =>{
-    console.log(res)
-    this.curso = res[0]
-    this.niveles = res[0].niveles
-    this.loader=false
-   })
-
-    // for(var curso of this.cursos){
-    //   if(curso.idCurso == this.cursoForm.controls['curso'].value){
-    //     this.niveles = curso.niveles
-    //     this.curso = curso
-    //   }   
-    // }  
+    this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value).subscribe(res =>{
+      console.log(res)
+      this.curso = res[0]
+      this.niveles = res[0].niveles
+      this.loader=false
+    })
 
     this.actualizarCursosCalendario()
   }
@@ -238,7 +234,6 @@ export class MatriculaMainComponent {
 
     if(this.comprobarCruce(curso)){
       this.cursoPendiente = curso
-      console.log(curso)
       this.flagDia = true
       this.actualizarCursosCalendario()
     }else{
@@ -251,6 +246,7 @@ export class MatriculaMainComponent {
   agregarCurso(){
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
+    const cupoMax = this.curso.cupoMax
     
     var horarioHoras
     var diasEvento
@@ -285,7 +281,7 @@ export class MatriculaMainComponent {
       }
     }
 
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
+    const curso = {idCursoPeriodo: idCursoPeriodo, cupoMax:cupoMax, nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
     this.listaCursosNuevos.push(curso)
 
     this.cursoForm.controls['curso'].setValue('')
@@ -387,19 +383,23 @@ export class MatriculaMainComponent {
     stepper.next();
   }
 
-  matricula(stepper: MatStepper){
+  matricula(){
 
-    //matricula
-    /*
+    this.loader=true
+    this.pasarela.createToken()
     
-      this.cursoService.createMatriculaHorario(this.listaDeCursosPrecios,this.idPago,this.idUsuario).subscribe(res=>{
-        console.log(res)
-      })  
+  }
 
-    */
+  pagoAceptado(respuesta:boolean,stepper: MatStepper):void{
+    console.log("entro a pago aceptado")
+    this.loader=false
+    console.log(respuesta)
+    if(respuesta){
+      stepper.next();
+    }else{
+      console.log("dio Error")
+    }
     
-
-    stepper.next();
   }
 
 

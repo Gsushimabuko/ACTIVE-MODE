@@ -9,6 +9,20 @@
   margin-top: 10px;
 }
 
+.aviso{
+  padding-left: 10px;
+  padding-right: 10px;
+  
+  width: 750px;
+  border-radius: 10px;
+  background-color: rgba(207, 28, 28, 0.664);
+}
+
+.texto-aviso{
+  color: white;
+  font-weight: bolder;
+}
+
 .card-general{
   width: 85%;
   height: 90%;

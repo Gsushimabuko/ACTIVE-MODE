@@ -14,6 +14,7 @@ import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 export class RegisterComponent {
 
   listaSexos = ["Masculino", "Femenino", "No desea especificar"]
+  listaRelaciones = ["Externo", "Alumno del colegio", "Ex Alumno del colegio", "Miembro de la cooperativa", "Personal", "Otro"]
   tieneCondicion = false
   registerForm: FormGroup = this.fb.group({
 
@@ -31,6 +32,7 @@ export class RegisterComponent {
 
     direccion: ['', [Validators.required]],
     codigo :['', [Validators.required] ],
+    relacion: ['', [Validators.required]],
    
   })
 
@@ -135,6 +137,7 @@ export class RegisterComponent {
 
       direccion: this.registerForm.value.direccion,
       codigo :this.registerForm.value.codigo,
+      relacion: this.registerForm.value.relacion,
 
       id_codigo: this.id_codigo,
       id_rol: this.id_rol,

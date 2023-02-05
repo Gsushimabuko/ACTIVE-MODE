@@ -11,6 +11,7 @@ export interface CursoPeriodo {
     dateMat:Date
     year:number
     state:string
+    cupoMax:number
     niveles:NivelPeriodo[]
 }
 
