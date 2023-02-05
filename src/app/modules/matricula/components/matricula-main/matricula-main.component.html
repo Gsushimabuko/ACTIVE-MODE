@@ -92,7 +92,7 @@ fxLayout="column" fxLayoutAlign="center center"
                     <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
                     <!-- info del curso actual -->
                     
-                    <app-curso  *ngIf="this.cursoForm.controls['curso'].value !=''" [curso]="curso" [tarifa]="costoPagarTemporal" [dias]=cantDiasTemporal></app-curso>
+                    <app-curso  *ngIf="this.cursoForm.controls['curso'].value !='' && curso!=undefined" [curso]="curso" [tarifa]="costoPagarTemporal" [dias]=cantDiasTemporal></app-curso>
                     
                   </mat-card>
                   </div>
