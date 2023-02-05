@@ -12,28 +12,27 @@ export class ZCursoService {
 
   constructor(private http: HttpClient) { }
 
-  getCursosHorarios(idTipoUsuario:number,fechaReferencial:Date){
+  getCursosHorarios(idTipoUsuario:number,mes:number,ano:number){
     const url = this.apiURL + "/cursos_horarios"
     console.log(url)
-    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString()}})
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, mes:mes, ano:ano}})
   }
 
-  getCursos(idTipoUsuario:number,fechaReferencial:Date){
+  getCursos(mes:number,ano:number){
     const url = this.apiURL + "/cursos"
     console.log(url)
-    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString()}})
+    return this.http.get<CursoPeriodo[]>(url,{params:{mes:mes, ano:ano}})
   }
 
-  getCursoHorarios(idTipoUsuario:number,fechaReferencial:Date,idCurso:number){
+  getCursoHorarios(idTipoUsuario:number,mes:number,ano:number,idCurso:number){
     const url = this.apiURL + "/cursos_horariosv2"
     console.log(url)
-    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, fechaReferencial: fechaReferencial.toString(),idCurso:idCurso}})
+    return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, mes:mes, ano:ano,idCurso:idCurso}})
   }
 
-  getCursosHorariosMatriculados(idUsuario:number,fechaReferencial:Date){
+  getCursosHorariosMatriculados(idUsuario:number,mes:number, ano:number){
     const url = this.apiURL + "/cursos_horarios_matriculados"
-    console.log(fechaReferencial.toString())
-    return this.http.get<CursoMatriculado[]>(url,{params:{idUsuario: idUsuario, fechaReferencial: fechaReferencial.toString()}})
+    return this.http.get<CursoMatriculado[]>(url,{params:{idUsuario: idUsuario, mes:mes, ano:ano}})
   }
   
 
