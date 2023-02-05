@@ -262,6 +262,7 @@ export class MatriculaMainComponent {
   agregarCurso(){
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
+    const cupoMax = this.curso.cupoMax
     
     var horarioHoras
     var diasEvento
@@ -296,7 +297,7 @@ export class MatriculaMainComponent {
       }
     }
 
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
+    const curso = {idCursoPeriodo: idCursoPeriodo, cupoMax:cupoMax, nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
     this.listaCursosNuevos.push(curso)
 
     this.cursoForm.controls['curso'].setValue('')
