@@ -92,7 +92,7 @@ fxLayout="column" fxLayoutAlign="center center"
                     <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
                     <!-- info del curso actual -->
                     
-                    <app-curso  *ngIf="this.curso!= undefined" [curso]="curso" [tarifa]="costoPagarTemporal" [dias]=cantDiasTemporal></app-curso>
+                    <app-curso  *ngIf="this.cursoForm.controls['curso'].value !=''" [curso]="curso" [tarifa]="costoPagarTemporal" [dias]=cantDiasTemporal></app-curso>
                     
                   </mat-card>
                   </div>
@@ -178,17 +178,24 @@ fxLayout="column" fxLayoutAlign="center center"
         <mat-step [editable]="false">
           <ng-template matStepLabel>Pago</ng-template>
 
-          <app-pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" ></app-pasarela>
+          <div  fxLayout="column" fxLayoutAlign="center center">
+
+            <app-pasarela #pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" (pagoAceptado)="pagoAceptado($event,stepper)" ></app-pasarela>
     
-          <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)"> Inscribir cursos</button>
+            <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula()">Pagar</button>
+
+          </div>
+
+          
     
         </mat-step>
     
         <mat-step [editable]="false">
-          <ng-template matStepLabel>Finalizado</ng-template>
-          <p>Se ha inscrito satisfactoriamente</p>
-          <div>
-            <button mat-button (click)="stepper.reset()">Regresar al perfil</button>
+          <ng-template matStepLabel>Matricula finalizada</ng-template>
+          
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <p>Se ha inscrito satisfactoriamente</p>
+            <button mat-button  mat-raised-button color="primary" [routerLink] = "['/matricula/dashboard']">Regresar al perfil</button>
           </div>
         </mat-step>
       </mat-stepper>

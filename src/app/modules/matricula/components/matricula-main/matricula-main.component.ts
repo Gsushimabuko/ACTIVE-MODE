@@ -86,6 +86,8 @@ export class MatriculaMainComponent {
     this.loader=true
     this.mesCalendario = new Date(this.mesForm.controls['mes'].value)
 
+
+
     this.listaCursos = []
     this.listaCursosNuevos =[]
     this.listaCursosTotales =[]
@@ -95,6 +97,14 @@ export class MatriculaMainComponent {
     this.MONTO_CURSO_DATA = [];
     this.cantDiasTemporal = 0;
     this.listaDeCursosPrecios = []
+
+    this.cursoForm.controls['curso'].setValue('')
+    this.cursoForm.controls['nivel'].setValue('')
+    this.cursoForm.controls['nivel'].disable()
+    this.cursoForm.controls['ratio'].setValue('')
+    this.cursoForm.controls['ratio'].disable()
+    this.cursoForm.controls['dia'].setValue('')
+    this.cursoForm.controls['dia'].disable()
   
 
     console.log(this.idTipoUsuario)
@@ -121,7 +131,8 @@ export class MatriculaMainComponent {
     
   }
 
-  @ViewChild('calendario') calendario: any;
+  @ViewChild('calendario') calendario!: CalendarMainComponent;
+  @ViewChild('pasarela') pasarela!:PasarelaComponent
 
   cambioCurso(){
     this.loader=true
@@ -136,6 +147,7 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['ratio'].disable()
     this.cursoForm.controls['dia'].setValue('')
     this.cursoForm.controls['dia'].disable()
+    
 
    this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario,this.cursoForm.controls['curso'].value).subscribe(res =>{
     console.log(res)
@@ -238,7 +250,6 @@ export class MatriculaMainComponent {
 
     if(this.comprobarCruce(curso)){
       this.cursoPendiente = curso
-      console.log(curso)
       this.flagDia = true
       this.actualizarCursosCalendario()
     }else{
@@ -387,8 +398,12 @@ export class MatriculaMainComponent {
     stepper.next();
   }
 
-  matricula(stepper: MatStepper){
+  matricula(){
 
+    this.pasarela.createToken()
+
+    this.loader=true
+    
     //matricula
     /*
     
@@ -398,8 +413,17 @@ export class MatriculaMainComponent {
 
     */
     
+  }
 
-    stepper.next();
+  pagoAceptado(respuesta:boolean,stepper: MatStepper):void{
+    this.loader=false
+    console.log(respuesta)
+    if(respuesta){
+      stepper.next();
+    }else{
+      console.log("dio Error")
+    }
+    
   }
 
 

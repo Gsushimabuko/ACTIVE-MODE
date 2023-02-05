@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
 import { environment } from 'src/app/environments/environment';
@@ -13,6 +13,7 @@ export class PasarelaComponent implements OnInit {
   @Input() listaPagosPrecio: any;
   @Input() idUsuario!: number;
   @Input() monto!: number;
+  @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
   
   constructor(private _fb: FormBuilder,
     private pasarelaService: PasarelaService) {
@@ -87,7 +88,7 @@ export class PasarelaComponent implements OnInit {
     this.getCardInfo();
 
     OpenPay.token.create(this.cardInfo, (response: any) => {
-      alert('Operación exitosa');
+      //alert('Operación exitosa');
 
       //Charga data - First 4 fields are from customer
       const chargeData = {
@@ -104,6 +105,7 @@ export class PasarelaComponent implements OnInit {
       //Enviar formulario
       this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario).subscribe((data) => {
         console.log(data);
+        this.pagoAceptado.emit(true)
       }, (error: any) => {
         console.log(error);
       });
