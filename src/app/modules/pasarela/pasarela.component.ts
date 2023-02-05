@@ -111,6 +111,7 @@ export class PasarelaComponent implements OnInit {
       });
     }, (error: any) => {
       alert('Fallo en la transacción');
+      this.pagoAceptado.emit(false)
 
       const content = {
         status: error.data.status,
