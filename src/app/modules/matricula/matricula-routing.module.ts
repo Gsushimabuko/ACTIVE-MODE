@@ -5,6 +5,7 @@ import { MatriculaMainComponent } from './components/matricula-main/matricula-ma
 import { DasboardComponent } from './components/dasboard/dasboard.component';
 import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component';
 
+
 const routes: Routes = [
 
   { path: '', component: MatriculaMainComponent },

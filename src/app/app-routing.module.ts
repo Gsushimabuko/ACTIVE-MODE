@@ -15,7 +15,7 @@ const routes: Routes = [
   ,canLoad: [ValidarTokenGuard],
   canActivate: [ValidarTokenGuard] },
   {path: 'pasarela', component: PasarelaComponent },
-  { path: 'admin', loadChildren: () =>
+  {path: 'admin', loadChildren: () =>
   import('./modules/admin/admin.module').then(m => m.AdminModule),
   canLoad: [AdminTokenGuard],
   canActivate: [AdminTokenGuard]
