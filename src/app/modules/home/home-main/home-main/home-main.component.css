@@ -13,17 +13,17 @@
 .welcome-subtext{
     font-weight: 300;
     font-size: 3vw;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .welcome-subtext2{
     font-weight: 300;
     font-size: 1.5vw;
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 .logo{
-    margin:75px;
+    margin:50px;
 }
 .logo img{
     width: 20vw;
@@ -34,8 +34,9 @@ a:link { text-decoration: none; }
 
 a:visited { text-decoration: none; }
 
-a {color: white; transition: 0.25s;}
-.login-animation:hover { color: rgb(0, 84, 240);}
+a {color: rgb(51, 110, 219) ;transition: 0.25s;}
+
+.login-animation:hover { color: rgb(255, 255, 255);}
 
 
 a:active { text-decoration: none; }

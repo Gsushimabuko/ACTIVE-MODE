@@ -2,10 +2,10 @@ mat-icon{
     cursor:pointer;
  }
  .logo{
-    margin:25px;
+    margin:20px;
 }
 .logo img{
-    width: 20vw;
+    width: 18vw;
 }
 
 hr{
@@ -20,7 +20,7 @@ hr{
 .login-card{
     width: 40%;
     height: 90%;
-    margin: 50px;
+    margin: 30px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.853);
 }
@@ -40,6 +40,7 @@ mat-card{
 
 .texto-sugerencia{
     font-size: 12px;
+    margin-bottom: 10px;
 }
 
 input{
