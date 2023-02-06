@@ -39,8 +39,10 @@ export class MisCursosComponent {
       mes: [''],
     })
 
-
-
+    this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
+      this.listaCursos = res
+      this.loader=false
+    })
 
   }
   

@@ -1,7 +1,20 @@
+<div style="margin:20px;" fxLayout="column" fxLayoutAlign="start">
+    <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
+      <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
+    </button> 
+  </div>
+
+  <div *ngIf="loader" class="loader-spinner"
+  fxLayout="column" fxLayoutAlign="center center"
+  >
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
+
+  
 <div fxLayout="column" fxLayoutAlign="space-evenly center">
           
     <form [formGroup]="mesForm">
-      <mat-form-field class="input-propiedades" appearance="outline">
+      <mat-form-field class="input-propiedades" appearance="fill">
         <mat-label>Mes</mat-label>
         <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
             <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
@@ -11,13 +24,14 @@
       </mat-form-field>
     </form>
 
+    <div class="calendario" >
+      
+        <app-calendar-main #calendario [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario" ></app-calendar-main>
+    
+    </div>        
+
 
   </div>
 
 
 
-<div class="calendario" >
-      
-    <app-calendar-main #calendario [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario"></app-calendar-main>
-
-</div>        

@@ -5,7 +5,7 @@
     
         
         <div fxLayout="column" fxLayoutAlign="center center">
-            <h3>Calendario del mes</h3>
+            <h3>Calendario del mes de {{mesCalendario | date: 'MMMM' : 'es-PE'}}</h3>
         </div>
         
         <div  style="text-align: center;" *ngIf="innerWidth >700; else celular">
