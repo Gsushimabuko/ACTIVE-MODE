@@ -10,7 +10,7 @@
     <mat-spinner color="primary"></mat-spinner>
   </div>
 
-  
+
 <div fxLayout="column" fxLayoutAlign="space-evenly center">
           
     <form [formGroup]="mesForm">
@@ -26,7 +26,7 @@
 
     <div class="calendario" >
       
-        <app-calendar-main #calendario [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario" ></app-calendar-main>
+        <app-calendar-main *ngIf="listaCursos" #calendario [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario" ></app-calendar-main>
     
     </div>        
 
