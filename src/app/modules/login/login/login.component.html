@@ -1,3 +1,8 @@
+<div style="margin:20px;" fxLayout="row" fxLayoutAlign="start">
+    <button routerLink="/" mat-button style="transform:scale(2);"> 
+      <mat-icon >home</mat-icon>
+    </button> 
+</div>
 <form (ngSubmit)="login()" [formGroup] ="loginForm">
      <div fxLayout="row" fxFlex="100" 
       fxLayoutAlign="center center" class="container">
@@ -13,7 +18,7 @@
                 <hr>
             </div>
 
-        <div fxLayout="column" fxFlex="50" fxLayoutAlign="start center">
+        <div fxLayout="column" fxFlex="0" fxLayoutAlign="start center">
             
             <div fxFlex="100" fxLayoutAlign="center center" >
                 <div fxLayoutAlign="center center"   fxLayout="column"  >
