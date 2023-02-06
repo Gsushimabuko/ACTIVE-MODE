@@ -138,9 +138,17 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['ratio'].disable()
     this.cursoForm.controls['dia'].setValue('')
     this.cursoForm.controls['dia'].disable()
+
+    let idPeriodoCurso = 0
+
+    for(let curso of this.cursos){
+      if(curso.idCurso == this.cursoForm.controls['curso'].value){
+        idPeriodoCurso = curso.idCursoPeriodo
+      }
+    }
     
 
-    this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value).subscribe(res =>{
+    this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value,idPeriodoCurso).subscribe(res =>{
       console.log(res)
       this.curso = res[0]
       this.niveles = res[0].niveles
