@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { PasarelaComponent } from './modules/pasarela/pasarela.component';
 import { ScriptService } from './services/script.service';
 import { PasarelaModule } from './modules/pasarela/pasarela.module';
+import { HomeModule } from './modules/home/home.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PasarelaModule } from './modules/pasarela/pasarela.module';
     AppRoutingModule,
     HttpClientModule,
     RouterModule,
-    PasarelaModule
+    PasarelaModule,
+    HomeModule
 
   ],
   providers: [ScriptService],
