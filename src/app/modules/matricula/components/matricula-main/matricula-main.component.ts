@@ -403,7 +403,7 @@ export class MatriculaMainComponent {
           }else if(horaSelFin > horaNueFin  && horaSelIni >= horaNueFin){
             
           }else{
-            alert('cruce')  
+            alert('Ya tiene seleccionado un curso con el mismo horario')  
             return false 
           }
 
