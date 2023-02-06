@@ -11,6 +11,7 @@ import { HorarioPeriodo } from '../../../shared/interfaces/Horario';
 import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.service';
 import { PasarelaComponent } from '../../../pasarela/pasarela.component';
+import { CursoComponent } from '../curso/curso.component';
 
 
 @Component({
@@ -30,6 +31,8 @@ export class MatriculaMainComponent {
   ratios!:RatioPeriodo[]
   dias!:DiaPeriodo[]
   flagDia:boolean=false
+  tarifa:number = 0
+  cantDias!:number
   
 
   
@@ -124,6 +127,7 @@ export class MatriculaMainComponent {
   @ViewChild('calendario') calendario!: CalendarMainComponent;
   @ViewChild('pasarela') pasarela!:PasarelaComponent
 
+
   cambioCurso(){
 
     this.loader=true
@@ -183,6 +187,10 @@ export class MatriculaMainComponent {
       this.listaCursosTotales.pop()
       this.flagDia = false
     }
+    if(this.cursoForm.controls['dia'].value!=''){
+      this.tarifa = 0
+    }
+    
     this.cursoForm.controls['dia'].setValue('')
     this.cursoForm.controls['dia'].enable()
     
@@ -190,10 +198,12 @@ export class MatriculaMainComponent {
     for(var ratio of this.ratios){
       if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
         this.dias = ratio.dias
-        this.cantDiasTemporal = ratio.dias[0].numEvents
-        this.costoPagarTemporal = ratio.payment
+        this.cantDiasTemporal = ratio.dias[0].numEvents//
+        this.costoPagarTemporal = ratio.payment//
       } 
     }
+    
+   
 
     this.actualizarCursosCalendario()
   }
@@ -208,6 +218,12 @@ export class MatriculaMainComponent {
 
   eleccionDia(){
 
+    const cupoMax = this.curso.cupoMax
+    let diasEvento
+    let tarifa
+    let diasMax 
+    let idTarifa 
+
     if(this.flagDia){
       this.listaCursosTotales.pop()
       this.flagDia = false
@@ -215,7 +231,7 @@ export class MatriculaMainComponent {
     const nombre = this.curso.name
     const idCursoPeriodo= this.curso.idCursoPeriodo
     var horarioHoras
-    var diasEvento
+   
     var horarioDias
 
     for(var nivel of this.niveles){
@@ -224,6 +240,15 @@ export class MatriculaMainComponent {
         break
       }
     }
+
+    for(var ratio of this.ratios){
+      if(ratio.idRatio == this.cursoForm.controls['ratio'].value){
+        this.dias = ratio.dias
+        tarifa = ratio.payment
+        idTarifa = ratio.idTarifa
+      } 
+    }
+
     for(var dia of this.dias){
       if(dia.idDias == this.cursoForm.controls['dia'].value){
         let schedule = [] //este es el horario que se envia al front
@@ -234,15 +259,25 @@ export class MatriculaMainComponent {
         }
         diasEvento = schedule
         horarioDias = dia.name
+        diasMax = dia.numEvents
         break
       }
     }
     
-    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento}
+    const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,cupoMax:cupoMax,tarifa:tarifa,diasMax:diasMax}
+     
+    
+    console.log(curso)
 
     if(this.comprobarCruce(curso)){
+
+      let cantDias = curso.diasEvento!.length
+      let montoCurso = Number((this.costoPagarTemporal*(cantDias/this.cantDiasTemporal)).toFixed(2))
+      this.tarifa = montoCurso
+      this.cantDias = cantDias
+
       this.cursoPendiente = curso
-      this.flagDia = true
+      this.flagDia = true  
       this.actualizarCursosCalendario()
     }else{
       this.cursoForm.controls['dia'].setValue('')
@@ -302,6 +337,7 @@ export class MatriculaMainComponent {
     this.cursoForm.controls['curso'].setErrors(null)
 
     this.cursoPendiente = {}
+    this.tarifa = 0
     this.listaDeCursosPrecios = []
     this.actualizarCursosCalendario()
     this.cursoForm.invalid
@@ -339,7 +375,7 @@ export class MatriculaMainComponent {
           }else if(horaSelFin > horaNueFin  && horaSelIni >= horaNueFin){
             
           }else{
-            alert('cruce')  
+            alert('Ya tiene seleccionado un curso con el mismo horario')  
             return false 
           }
 
