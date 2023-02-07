@@ -4,12 +4,18 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminRoutingModule } from './admin-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CursosComponent } from './cursos/cursos.component';
+import { AlumnosComponent } from './alumnos/alumnos.component';
+import { CodigosComponent } from './codigos/codigos.component';
 
 
 
 @NgModule({
   declarations: [
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    CursosComponent,
+    AlumnosComponent,
+    CodigosComponent
   ],
   imports: [
     CommonModule,

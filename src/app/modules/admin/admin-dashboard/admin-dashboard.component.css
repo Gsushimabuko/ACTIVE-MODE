@@ -46,8 +46,16 @@ a:active { text-decoration: none; }
 mat-card{
     width: 200px;
     height: 200px;
+    color: black;
+    font-size: 25px;
+}
+mat-card:hover{
+    cursor:pointer;
 }
 
+mat-icon{
+    transform: scale(3);
+}
 
 
 
