@@ -51,4 +51,25 @@ export class ZCursoService {
     return this.http.get<any>(url)
   }
 
+  getOnlyCursos(){
+    const url = this.apiURL + "/curso-only"
+    return this.http.get<any>(url)
+
+  }
+
+  getOnlyCursoPeriodo (idCurso: number){
+    const url = this.apiURL + "/curso-periodo-only"
+    return this.http.get<any>(url,{params:{idCurso:idCurso}})
+
+  }
+  getOnlyHorario(idCursoPeriodo:number){
+    const url = this.apiURL + "/horario-only"
+    return this.http.get<any>(url,{params:{idCursoPeriodo:idCursoPeriodo}})
+
+
+  }
+  getOnlyAlumnosHorario(idHorario:number){
+    const url = this.apiURL + "/horario-alumnos-only"
+    return this.http.get<any>(url,{params:{idHorario:idHorario}})
+  }
 }
