@@ -15,7 +15,7 @@ fxLayout="column" fxLayoutAlign="center center"
 <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="animate__animated animate__fadeIn animate__fast">
   <mat-card class="card-general">
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
-      <mat-step fxFill="80" [editable]="esEditable">
+      <mat-step fxFill="80" [editable]="esEditable" completed = "false">
         <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
 
         <div fxLayout="row" fxLayoutAlign="space-evenly center">
@@ -129,7 +129,7 @@ fxLayout="column" fxLayoutAlign="center center"
         </mat-step>
         
     
-        <mat-step [editable]="false">
+        <mat-step [editable]="false" completed="false">
           <ng-template matStepLabel>Monto</ng-template>
     
           <div fxLayout="column" fxLayoutAlign="center center">
@@ -176,14 +176,14 @@ fxLayout="column" fxLayoutAlign="center center"
         </mat-step>
     
         
-        <mat-step [editable]="false">
+        <mat-step [editable]="false" completed="false">
           <ng-template matStepLabel>Pago</ng-template>
 
           <div  fxLayout="column" fxLayoutAlign="center center">
 
             <app-pasarela #pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" (pagoAceptado)="pagoAceptado($event,stepper)" ></app-pasarela>
     
-            <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula()">Pagar</button>
+            <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="matricula(stepper)">Pagar</button>
 
           </div>
 
@@ -191,7 +191,7 @@ fxLayout="column" fxLayoutAlign="center center"
     
         </mat-step>
     
-        <mat-step [editable]="false">
+        <mat-step [editable]="false" completed="false">
           <ng-template matStepLabel>Matricula finalizada</ng-template>
           
           <div fxLayout="column" fxLayoutAlign="center center">

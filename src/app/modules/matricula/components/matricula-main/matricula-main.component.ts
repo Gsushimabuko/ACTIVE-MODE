@@ -418,18 +418,21 @@ export class MatriculaMainComponent {
   }
 
   nextStep(stepper: MatStepper) {
-  
+
+    stepper.selected!.completed = true;
     stepper.next();
   }
 
   realizarPago(stepper: MatStepper){
     this.esEditable=false
+    stepper.selected!.completed = true;
     stepper.next();
   }
 
-  matricula(){
+  matricula(stepper: MatStepper){
 
     this.loader=true
+    stepper.selected!.completed = true;
     this.pasarela.createToken()
     
   }
@@ -439,6 +442,7 @@ export class MatriculaMainComponent {
     this.loader=false
     console.log(respuesta)
     if(respuesta){
+      stepper.selected!.completed = true;
       stepper.next();
     }else{
       console.log("dio Error")
