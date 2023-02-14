@@ -14,7 +14,7 @@ fxLayout="column" fxLayoutAlign="center center"
 
 <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="animate__animated animate__fadeIn animate__fast">
   <mat-card class="card-general">
-    <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-stepper orientation="vertical" [linear]="false" #stepper>
       <mat-step fxFill="80" [editable]="esEditable" completed = "false">
         <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
 
@@ -32,7 +32,7 @@ fxLayout="column" fxLayoutAlign="center center"
           </form>
 
           <mat-card class= "aviso">
-            <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparesca cerrado, llame al número 960 192 400  para preguntar si existe alguna vacante extraordinaria</p>
+            <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparezca cerrado, llame al número 960 192 400  para preguntar si existe alguna vacante extraordinaria</p>
           </mat-card>
 
         </div>
@@ -129,7 +129,7 @@ fxLayout="column" fxLayoutAlign="center center"
         </mat-step>
         
     
-        <mat-step [editable]="false" completed="false">
+        <mat-step [editable]="true" completed="false">
           <ng-template matStepLabel>Monto</ng-template>
     
           <div fxLayout="column" fxLayoutAlign="center center">
@@ -176,7 +176,7 @@ fxLayout="column" fxLayoutAlign="center center"
         </mat-step>
     
         
-        <mat-step [editable]="false" completed="false">
+        <mat-step [editable]="true" completed="false">
           <ng-template matStepLabel>Pago</ng-template>
 
           <div  fxLayout="column" fxLayoutAlign="center center">
@@ -191,7 +191,7 @@ fxLayout="column" fxLayoutAlign="center center"
     
         </mat-step>
     
-        <mat-step [editable]="false" completed="false">
+        <mat-step [editable]="true" completed="false">
           <ng-template matStepLabel>Matricula finalizada</ng-template>
           
           <div fxLayout="column" fxLayoutAlign="center center">

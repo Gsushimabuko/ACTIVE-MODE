@@ -61,7 +61,7 @@ export class PasarelaComponent implements OnInit {
       line3: '',
       postal_code: '',
       state: '',
-      country_code: '',
+      country_code: 'PE',
     }
   }
 
@@ -79,7 +79,7 @@ export class PasarelaComponent implements OnInit {
         line3: this.form.get('line3')?.value,
         postal_code: this.form.get('postalCode')?.value,
         state: this.form.get('state')?.value,
-        country_code: this.form.get('countryCode')?.value,
+        country_code: 'PE',
       }
     }
   }
@@ -108,10 +108,11 @@ export class PasarelaComponent implements OnInit {
         this.pagoAceptado.emit(true)
       }, (error: any) => {
         console.log(error);
+        this.pagoAceptado.emit(false);
       });
     }, (error: any) => {
       alert('Fallo en la transacción');
-      this.pagoAceptado.emit(false)
+      this.pagoAceptado.emit(false);
 
       const content = {
         status: error.data.status,
