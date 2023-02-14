@@ -76,13 +76,11 @@
             <input data-openpay-card-address="state" matInput formControlName="state">
         </mat-form-field>
 
-        <mat-form-field class="example-full-width">
-            <mat-label>País</mat-label>
-            <input data-openpay-card-address="country_code" matInput formControlName="countryCode">
-        </mat-form-field>
-
     </form>
-    
+    <div fxLayout="row" fxLayoutAlign="center center" style="color: red" *ngIf="errorFlag">
+        <mat-icon>info</mat-icon>
+        <mat-error>{{ errorMessage }}</mat-error>
+    </div>
 </div>
 
 

@@ -14,6 +14,8 @@ export class PasarelaComponent implements OnInit {
   @Input() idUsuario!: number;
   @Input() monto!: number;
   @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
+  errorFlag: boolean = false;
+  errorMessage: string = '';
   
   constructor(private _fb: FormBuilder,
     private pasarelaService: PasarelaService) {
@@ -85,6 +87,7 @@ export class PasarelaComponent implements OnInit {
   }
 
   createToken() {
+    this.errorFlag = false;
     this.getCardInfo();
 
     OpenPay.token.create(this.cardInfo, (response: any) => {
@@ -107,7 +110,9 @@ export class PasarelaComponent implements OnInit {
         console.log(data);
         this.pagoAceptado.emit(true)
       }, (error: any) => {
-        console.log(error);
+        this.errorFlag = true;
+        this.errorMessage = error.error.mensaje;
+
         this.pagoAceptado.emit(false);
       });
     }, (error: any) => {
