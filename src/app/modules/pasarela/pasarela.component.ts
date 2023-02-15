@@ -16,6 +16,8 @@ export class PasarelaComponent implements OnInit {
   @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() matricula: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  departments: string[] = ['Amazonas', 'Áncash', 'Apurímac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Callao', 'Cusco' , 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', '	Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'];
+
   errorFlag: boolean = false;
   errorMessage: string = '';
   
@@ -122,7 +124,8 @@ export class PasarelaComponent implements OnInit {
         this.pagoAceptado.emit(false);
       });
     }, (error: any) => {
-      alert('Fallo en la transacción');
+      this.errorFlag = true;
+      this.errorMessage = 'Complete correctamente todos los campos del formulario';
       this.pagoAceptado.emit(false);
 
       const content = {
@@ -134,5 +137,22 @@ export class PasarelaComponent implements OnInit {
 
       console.log(error);
     });
+  }
+
+  twoNumbersOnly(event: any, value: string) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.key);
+    
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    if (value.toString().length >= 2) {
+      event.preventDefault();
+    }
+  }
+
+  print(event: any) {
+    console.log(event)
   }
 }
