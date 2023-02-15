@@ -157,10 +157,10 @@
                         </div>
 
                         <div>
-                            <mat-form-field style="color:white !important" appearance="outline">
-                                <mat-label>Sexo</mat-label>
-                                <mat-select style="color:white !important"   formControlName="sexo" name="sexo">
-                                    <mat-option style="color:white !important" *ngFor="let sexo of listaSexos" [value]="sexo">
+                            <mat-form-field appearance="outline">
+                                <mat-label >Sexo</mat-label>
+                                <mat-select   formControlName="sexo" name="sexo">
+                                    <mat-option   *ngFor="let sexo of listaSexos" [value]="sexo">
                                         {{sexo}}
                                     </mat-option>
                                 </mat-select>
@@ -193,9 +193,9 @@
 
                         <div>
                             <mat-form-field appearance="outline">
-                                <mat-label style="color:white !important">Relación con el colegio</mat-label>
+                                <mat-label>Relación con el colegio</mat-label>
                                 <mat-select formControlName="relacion" name="relacion">
-                                    <mat-option style="color:white !important" *ngFor="let relacion of listaRelaciones" [value]="relacion">
+                                    <mat-option *ngFor="let relacion of listaRelaciones" [value]="relacion">
                                         {{relacion}}
                                     </mat-option>
                                 </mat-select>
