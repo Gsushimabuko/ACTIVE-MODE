@@ -172,3 +172,9 @@
   width: 100%;
   max-width: 180px;
 }
+
+.boton-monto{
+  margin-top: 20px;
+  font-size: large;
+  font-weight: bold;
+}

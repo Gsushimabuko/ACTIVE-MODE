@@ -77,6 +77,7 @@
         </mat-form-field>
 
     </form>
+    <button  class="boton-monto" mat-raised-button color="primary"   mat-button (click)="sendSignal()" >Pagar</button>
     <div fxLayout="row" fxLayoutAlign="center center" style="color: red" *ngIf="errorFlag">
         <mat-icon>info</mat-icon>
         <mat-error>{{ errorMessage }}</mat-error>

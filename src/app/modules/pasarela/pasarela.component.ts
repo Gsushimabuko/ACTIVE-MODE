@@ -14,6 +14,8 @@ export class PasarelaComponent implements OnInit {
   @Input() idUsuario!: number;
   @Input() monto!: number;
   @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() matricula: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   errorFlag: boolean = false;
   errorMessage: string = '';
   
@@ -84,6 +86,10 @@ export class PasarelaComponent implements OnInit {
         country_code: 'PE',
       }
     }
+  }
+
+  sendSignal(){
+    this.matricula.emit(true);
   }
 
   createToken() {
