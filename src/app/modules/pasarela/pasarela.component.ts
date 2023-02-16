@@ -142,9 +142,14 @@ export class PasarelaComponent implements OnInit {
   twoNumbersOnly(event: any, value: string) {
     const pattern = /[0-9]/;
     let inputChar = String.fromCharCode(event.key);
+
     
     if (!pattern.test(inputChar)) {
       event.preventDefault();
+    }
+    
+    if(!value) {
+      return;
     }
 
     if (value.toString().length >= 2) {
