@@ -53,15 +53,12 @@ mat-label{
     color: white;
 }
 
-/*
-input {
-    color: white !important;
+mat-icon{
+    color:white !important
 }
 
-*/
-
 mat-form-field{
- /*    color: white; */
+   color: white; 
     width: 19vw;
     font-size: 14px;
     margin-left: 20px ;
@@ -82,12 +79,19 @@ mat-label{
 }
 
 @media (max-width: 950px) {
+    .logo img{
+        width: 150px;
+    }
     mat-form-field{
         color: white;
         width: 200px;
         font-size: 12px;
         margin-bottom: 10px !important;
         
+    }
+    .card{
+        
+        height: 95%;
     }
 
    

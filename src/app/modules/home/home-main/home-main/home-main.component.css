@@ -104,7 +104,24 @@ a:active { text-decoration: none; }
     cubic-bezier(.3, .7, .4, 1);
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
+  .contacto{
+    font-size: 10px;
+  }
+  .welcome-subtext2{
+    font-size:12px
+  }
+  .welcome-text{
+    font-size: 30px;
+  }
+
+  .logo{
+    margin:50px;
+}
+.logo img{
+    width: 200px;
+}
+
   .button-82-front {
     font-size: 1.25rem;
     padding: 12px 42px;
