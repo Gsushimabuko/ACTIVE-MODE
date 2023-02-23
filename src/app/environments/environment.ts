@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   API_URL: 'http://localhost:5000/api',
-  PK_KEY: 'pk_ff59e195efc442ecbe0f22151114e22c',
-  ID: 'mkvbujzmcmpjymbuozat'
+  PK_KEY: 'pk_ae2de17f35b34055ae3aaf43787e336c',
+  ID: 'mp59rdelynsfxqvguytv'
 };
 
 /*
