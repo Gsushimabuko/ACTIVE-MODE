@@ -30,32 +30,38 @@ hr{
 mat-label{
     color:white;
 }
+
 ::ng-deep .mdc-notched-outline__leading{
     border-color: rgba(255, 255, 255, 0.804)!important;
     color: white;
     
 }
+
 ::ng-deep .mdc-notched-outline__notch{
     border-color: rgba(255, 255, 255, 0.804)!important;
     color: white;
 }
+
 ::ng-deep .mdc-notched-outline__trailing{
     border-color: rgba(255, 255, 255, 0.804)!important;
     color: white;
 }
-::ng-deep .mat-mdc-select-value .ng-tns-c134-9{
-color: white!important;
+
+/*SELECTS OPTION BLANCOS */
+
+::ng-deep .mat-mdc-select-value-text{
+    color: white;
 }
+
+/*
 input {
     color: white !important;
 }
 
-::ng-deep .mat-mdc-select-value .ng-tns-c134-12{
-    color: white !important
-}
+*/
 
 mat-form-field{
-    color: white;
+ /*    color: white; */
     width: 19vw;
     font-size: 14px;
     margin-left: 20px ;
