@@ -45,10 +45,10 @@ export class PasarelaComponent implements OnInit {
     //Config
     OpenPay.setId(environment.ID);
     OpenPay.setApiKey(environment.PK_KEY);
-    OpenPay.setSandboxMode(true);
+    OpenPay.setSandboxMode(false);
     
     this.deviceSessionId = OpenPay.deviceData.setup("formId", "deviceIdHiddenFieldName");
-    console.log(this.deviceSessionId);
+    //console.log(this.deviceSessionId);
   }
 
   form: FormGroup;
@@ -110,12 +110,15 @@ export class PasarelaComponent implements OnInit {
         deviceIdHiddenFieldName: this.deviceSessionId,
       }
 
-      console.log(chargeData);
-      console.log(response);
+      //console.log(chargeData);
+      //console.log(this.listaPagosPrecio);
+      //console.log(this.idUsuario);
+      //console.log(response);
+
 
       //Enviar formulario
       this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario).subscribe((data) => {
-        console.log(data);
+        //console.log(data);
         this.pagoAceptado.emit(true)
       }, (error: any) => {
         this.errorFlag = true;
@@ -135,7 +138,7 @@ export class PasarelaComponent implements OnInit {
         requestId: error.data.request_id,
       }
 
-      console.log(error);
+      //console.log(error);
     });
   }
 
@@ -158,6 +161,6 @@ export class PasarelaComponent implements OnInit {
   }
 
   print(event: any) {
-    console.log(event)
+    //console.log(event)
   }
 }

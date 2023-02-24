@@ -62,7 +62,7 @@ export class ZUsuarioService {
       
       map( resp => {
         
-        console.log("RESP ", resp )
+        //console.log("RESP ", resp )
         localStorage.setItem('token', resp.token)
         
           this._usuario = {
@@ -84,7 +84,7 @@ export class ZUsuarioService {
           return resp.ok;
         }),
         catchError((err) =>  { 
-          console.log(err)
+          //console.log(err)
           return of(false) })
   )}
 
@@ -128,7 +128,7 @@ export class ZUsuarioService {
       
       map( resp => {
         
-        console.log("RESP ", resp )
+        //console.log("RESP ", resp )
         localStorage.setItem('token', resp.token)
         
           this._usuario = {
@@ -147,19 +147,19 @@ export class ZUsuarioService {
             id_tipo_usuario: resp.id_rol
           }
 
-          console.log("USUARIO ROL ID: ",this._usuario.id_rol)
+          //console.log("USUARIO ROL ID: ",this._usuario.id_rol)
 
           if(this._usuario.id_rol == 2){
-            console.log("USUARIO ADMINISTRADOR")
+            //console.log("USUARIO ADMINISTRADOR")
             return resp.ok;
           } else {
-            console.log("USUARIO NORMAL")
+            //console.log("USUARIO NORMAL")
             return of(false)
           }
 
         }),
         catchError((err) =>  { 
-          console.log(err)
+          //console.log(err)
           return of(false) })
   )}
 

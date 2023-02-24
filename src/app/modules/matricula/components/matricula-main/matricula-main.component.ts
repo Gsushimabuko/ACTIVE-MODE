@@ -153,7 +153,7 @@ export class MatriculaMainComponent {
     
 
     this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value,idPeriodoCurso).subscribe(res =>{
-      console.log(res)
+      //console.log(res)
       this.curso = res[0]
       this.niveles = res[0].niveles
       this.loader=false
@@ -267,7 +267,7 @@ export class MatriculaMainComponent {
     const curso = {idCursoPeriodo: idCursoPeriodo,nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,cupoMax:cupoMax,tarifa:tarifa,diasMax:diasMax}
      
     
-    console.log(curso)
+    //console.log(curso)
 
     if(this.comprobarCruce(curso)){
 
@@ -368,8 +368,8 @@ export class MatriculaMainComponent {
           let horaSelFin = new Date(horarioSeleccionado.end).getTime()
           let horaNueIni = new Date(horarioNuevo.start).getTime()
           let horaNueFin = new Date(horarioNuevo.end).getTime()
-          console.log(horaNueIni,horaSelIni,horaNueFin,1)
-          console.log(horaNueIni,horaSelFin,horaNueFin,2)
+          //console.log(horaNueIni,horaSelIni,horaNueFin,1)
+          //console.log(horaNueIni,horaSelFin,horaNueFin,2)
           if( horaSelIni < horaNueIni  && horaSelFin <= horaNueIni){
          
           }else if(horaSelFin > horaNueFin  && horaSelIni >= horaNueFin){
@@ -395,8 +395,8 @@ export class MatriculaMainComponent {
           let horaNueIni = new Date(horarioNuevo.start).getTime()
           let horaNueFin = new Date(horarioNuevo.end).getTime()
           
-          console.log(horaNueIni,horaSelIni,horaNueFin,1)
-          console.log(horaNueIni,horaSelFin,horaNueFin,2)
+          //console.log(horaNueIni,horaSelIni,horaNueFin,1)
+          //console.log(horaNueIni,horaSelFin,horaNueFin,2)
 
           if( horaSelIni < horaNueIni  && horaSelFin <= horaNueIni){
          
@@ -438,14 +438,14 @@ export class MatriculaMainComponent {
   }
 
   pagoAceptado(respuesta:boolean,stepper: MatStepper):void{
-    console.log("entro a pago aceptado")
+    //console.log("entro a pago aceptado")
     this.loader=false
-    console.log(respuesta)
+    //console.log(respuesta)
     if(respuesta){
       stepper.selected!.completed = true;
       stepper.next();
     }else{
-      console.log("dio Error")
+      //console.log("dio Error")
     }
     
   }
