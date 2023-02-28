@@ -1,5 +1,6 @@
 mat-icon{
     cursor:pointer;
+    color:white;
  }
  .logo{
     margin:20px;
@@ -55,6 +56,10 @@ input{
 }
 @media (max-width: 600px) {
 
+    .logo img{
+        width: 200px;
+
+    }
     mat-error{
         font-size: 10px;
         margin: 5px;
