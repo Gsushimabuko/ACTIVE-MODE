@@ -28,7 +28,10 @@ hr{
     margin: 75px;
 }
 mat-label{
-    color:white;
+    color:white !important;
+}
+input{
+    color: white !important;
 }
 
 ::ng-deep .mdc-notched-outline__leading{

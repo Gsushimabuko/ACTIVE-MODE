@@ -1,59 +1,54 @@
-<div style="margin:20px;" fxLayout="column" fxLayoutAlign="start">
-  <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
-    <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
-  </button> 
-</div>
 
 <!--loader-->
 <div *ngIf="loader" class="loader-spinner"
 fxLayout="column" fxLayoutAlign="center center"
 >
-  <mat-spinner color="primary"></mat-spinner>
+<mat-spinner color="primary"></mat-spinner>
 </div>
 
 
-<div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="animate__animated animate__fadeIn animate__fast">
+<div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="container-general animate__animated animate__fadeIn animate__fast">
+  <div style="margin:40px" fxLayout="row" fxLayoutAlign="center center">
+    <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
+      <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
+    </button> 
+  </div>
   <mat-card class="card-general">
     <mat-stepper orientation="vertical" [linear]="true" #stepper>
       <mat-step fxFill="80" [editable]="esEditable" completed = "false">
         <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
 
-        <div fxLayout="row" fxLayoutAlign="space-evenly center">
-          
-          <form [formGroup]="mesForm">
-            <mat-form-field class="input-propiedades" appearance="outline">
-              <mat-label>Mes</mat-label>
-              <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
-                  <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
-                      {{mes.mes}} - {{mes.ano}}
-                  </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </form>
-
-          <mat-card class= "aviso">
-            <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparezca cerrado, llame al número 960 192 400  para preguntar si existe alguna vacante extraordinaria</p>
-          </mat-card>
-
-        </div>
         
+        
+        <div  fxLayout="column" fxLayoutAlign="space-evenly">
           
+          <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
+            
+            <!-- formularios -->
+            <div class="form">
+
+                  <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-evenly center">
+                    <form [formGroup]="mesForm">
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Mes</mat-label>
+                        <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
+                            <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
+                                {{mes.mes}} - {{mes.ano}}
+                            </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </form>
+                  </div>
+                  
     
-          <div *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="column" fxLayoutAlign="start">
-    
-            <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
-          
-                      <!-- formularios -->
-                <div class="form">
-    
-                  <mat-card class="card">
+                  <mat-card *ngIf=" mesForm.controls['mes'].value != '' " class="card">
                    
                   <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
                     <b style="margin: 15px ;font-size:18px">Elige la fecha y hora</b>
-                    <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-form-field class="input-propiedades" appearance="outline" >
                       <mat-label>Curso</mat-label>
-                      <mat-select formControlName="curso" (selectionChange)="cambioCurso()">
-                          <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso" [disabled]="curso.state=='CERRADO'">
+                      <mat-select formControlName="curso" (selectionChange)="cambioCurso()" >
+                          <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso"  [disabled]="curso.state=='CERRADO'">
                               {{curso.name | titlecase}} - {{curso.month}} {{(curso.state == 'CERRADO' ? '(CERRADO)' : '')}}
                           </mat-option>
                       </mat-select>
@@ -87,7 +82,7 @@ fxLayout="column" fxLayoutAlign="center center"
                 </mat-card>
 
                   <div class="info">
-                    <mat-card class="card">
+                    <mat-card class="card" *ngIf=" mesForm.controls['mes'].value != '' ">
         
                     <!-- lista de cursos inscritos -->
                     <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
@@ -98,7 +93,7 @@ fxLayout="column" fxLayoutAlign="center center"
                   </mat-card>
                   </div>
                   
-                  <div  fxLayout="row" fxLayoutAlign="center center">
+                  <div class="botones" *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="row" fxLayoutAlign="center center">
                     <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Seleccionar</button>
                     <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="nextStep(stepper)">Calcular monto</button>
                   </div>
@@ -112,8 +107,17 @@ fxLayout="column" fxLayoutAlign="center center"
         
     
                 <!-- calendario -->
-              <div class="calendario" >
-      
+              <div class="calendario" *ngIf=" mesForm.controls['mes'].value != '' " >
+                <div>
+                <mat-card fxLayout="row"  class= "aviso">
+                  <div>
+                    <mat-icon style="color:rgb(222, 112, 112); margin-top:20px; margin-right: 20px ;">info</mat-icon>
+                  </div>
+                  <div>
+                    <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparezca cerrado, escriba al número <br> 960 192 400  </p>
+                  </div>
+                </mat-card>
+                </div>
                   <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
               
               </div>             
