@@ -32,6 +32,9 @@
   background-color: rgba(0, 0, 0, 0.853);
   
 }
+input{
+  color: black!important;
+}
   
   .mat-mdc-form-field {
     margin-top: 16px;
