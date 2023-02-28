@@ -181,7 +181,7 @@ fxLayout="column" fxLayoutAlign="center center"
 
           <div  fxLayout="column" fxLayoutAlign="center center">
 
-            <app-pasarela #pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" (pagoAceptado)="pagoAceptado($event,stepper)" (matricula)="matricula($event,stepper)"></app-pasarela>
+            <app-pasarela #pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" [fechaCalendario]="mesCalendario" (pagoAceptado)="pagoAceptado($event,stepper)" (matricula)="matricula($event,stepper)"></app-pasarela>
     
             
 

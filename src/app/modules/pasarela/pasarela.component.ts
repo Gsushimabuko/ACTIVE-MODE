@@ -13,6 +13,7 @@ export class PasarelaComponent implements OnInit {
   @Input() listaPagosPrecio: any;
   @Input() idUsuario!: number;
   @Input() monto!: number;
+  @Input() fechaCalendario!: Date;
   @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() matricula: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -37,6 +38,8 @@ export class PasarelaComponent implements OnInit {
       state: this._fb.control('', [Validators.required]),
       countryCode: this._fb.control('', [Validators.required]),
     });
+
+    
     
     
   }
@@ -96,6 +99,7 @@ export class PasarelaComponent implements OnInit {
 
   createToken() {
     this.errorFlag = false;
+
     this.getCardInfo();
 
     OpenPay.token.create(this.cardInfo, (response: any) => {
@@ -115,9 +119,11 @@ export class PasarelaComponent implements OnInit {
       //console.log(this.idUsuario);
       //console.log(response);
 
+      const ano = this.fechaCalendario.getFullYear()
+      const mes = this.fechaCalendario.getMonth()
 
       //Enviar formulario
-      this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario).subscribe((data) => {
+      this.pasarelaService.createPayment(chargeData, this.listaPagosPrecio, this.idUsuario,ano,mes).subscribe((data) => {
         //console.log(data);
         this.pagoAceptado.emit(true)
       }, (error: any) => {

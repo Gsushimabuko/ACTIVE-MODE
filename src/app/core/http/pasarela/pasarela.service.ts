@@ -10,7 +10,7 @@ export class PasarelaService {
 
   constructor(private _http: HttpClient) { }
 
-  createPayment(paymentData: any,cursos:any,idUsuario:number) {
-    return this._http.post(this.API_URL, { payment: paymentData, cursos:cursos, idUsuario:idUsuario });
+  createPayment(paymentData: any,cursos:any,idUsuario:number, ano:number,mes:number) {
+    return this._http.post(this.API_URL, { payment: paymentData, cursos:cursos, idUsuario:idUsuario, ano:ano, mes:mes });
   }
 }
