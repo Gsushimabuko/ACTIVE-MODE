@@ -30,10 +30,45 @@ export class MisCursosComponent {
   
     this.mesCalendario = this.fechaHoy
 
+    const mes = this.fechaHoy.getMonth()
+    const ano = this.fechaHoy.getFullYear()
+
+    let mesAnt
+    let anoAnt
+
+    if(mes == 0){
+      anoAnt = ano - 1
+      mesAnt = 11
+    }else{
+      anoAnt = ano
+      mesAnt = mes - 1
+    }
+
+    let mesPost
+    let anoPost
+
+    if(mes == 11){
+      anoPost = ano + 1
+      mesPost = 0
+    }else{
+      anoPost = ano
+      mesPost = mes + 1
+    }
+
+
+    this.meses =[
+    {periodo_fecha: new Date(anoAnt,mesAnt,15)},
+    {periodo_fecha: new Date(ano,mes,15)},
+    {periodo_fecha: new Date(anoPost,mesPost,15)}
+    ]
+    
+    /*
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
+      console.log(res)
       this.loader = false
     })
+    */
 
     this.mesForm = this.formBuilder.group({
       mes: [''],

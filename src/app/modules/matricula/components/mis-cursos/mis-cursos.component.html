@@ -26,7 +26,7 @@
                <mat-label>Elige mes</mat-label>
                <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
                    <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
-                       {{mes.mes}} - {{mes.ano}}
+                       {{mes.periodo_fecha | date: 'MMMM - y'}}
                    </mat-option>
                </mat-select>
              </mat-form-field>
