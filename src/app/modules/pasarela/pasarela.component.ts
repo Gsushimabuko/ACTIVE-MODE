@@ -86,7 +86,7 @@ export class PasarelaComponent implements OnInit {
         line1: this.form.get('line1')?.value,
         line2: this.form.get('line2')?.value,
         line3: this.form.get('line3')?.value,
-        postal_code: this.form.get('postalCode')?.value,
+        postal_code: '',//this.form.get('postalCode')?.value,
         state: this.form.get('state')?.value,
         country_code: 'PE',
       }
