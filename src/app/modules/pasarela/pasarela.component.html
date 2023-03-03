@@ -45,6 +45,8 @@
             <mat-label>CVV</mat-label>
             <input (keyup)="twoNumbersOnly($event, form.get('cvv2')?.value)" data-openpay-card="cvv2" type="number" minlength="3" maxlength="4" matInput formControlName="cvv2">
         </mat-form-field>
+
+        <!--
         
         <mat-form-field class="example-full-width">
           <mat-label>Calle</mat-label>
@@ -61,10 +63,11 @@
             <input data-openpay-card-address="line3" type="text" matInput formControlName="line3">
         </mat-form-field>
 
-        <mat-form-field class="example-full-width">
+         <mat-form-field class="example-full-width">
             <mat-label>Código postal</mat-label>
             <input (keyup)="twoNumbersOnly($event, form.get('postalCode')?.value)" data-openpay-card-address="postal_code" type="number" minlength="5" maxlength="5" matInput formControlName="postalCode">
-        </mat-form-field>
+        </mat-form-field> 
+    
 
         <mat-form-field class="example-full-width">
             <mat-label>Ciudad</mat-label>
@@ -79,6 +82,8 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
+
+        -->
 
     </form>
 

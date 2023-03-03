@@ -63,6 +63,7 @@ export class PasarelaComponent implements OnInit {
     expiration_year: '',
     expiration_month: '',
     cvv2: '',
+    /*
     address: {
       city: '',
       line1: '',
@@ -71,7 +72,7 @@ export class PasarelaComponent implements OnInit {
       postal_code: '',
       state: '',
       country_code: 'PE',
-    }
+    } */
   }
 
   getCardInfo() {
@@ -81,15 +82,17 @@ export class PasarelaComponent implements OnInit {
       expiration_year: this.form.get('yearExp')?.value,
       expiration_month: this.form.get('monthExp')?.value,
       cvv2: this.form.get('cvv2')?.value,
+      /*
       address: {
         city: this.form.get('city')?.value,
         line1: this.form.get('line1')?.value,
         line2: this.form.get('line2')?.value,
         line3: this.form.get('line3')?.value,
-        postal_code: this.form.get('postalCode')?.value,
+        postal_code: '15012',//this.form.get('postalCode')?.value,
         state: this.form.get('state')?.value,
         country_code: 'PE',
       }
+      */
     }
   }
 
