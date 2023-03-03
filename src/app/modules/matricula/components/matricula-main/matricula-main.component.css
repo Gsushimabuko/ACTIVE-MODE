@@ -83,3 +83,27 @@ input{
 .mat-vertical-stepper-header{
   pointer-events: none;
 }
+
+@media only screen and (max-width: 768px)  {
+  .form{
+    width: 210px;
+  }
+  .input-propiedades{
+    width: 130px;
+  }
+  .card{
+   width: 200px;
+  }
+  .boton-semifinal{
+    margin: 10px
+  }
+  .boton-monto{
+  height: 30px;
+  font-size: 12px;
+  
+}
+.mat-mdc-table .mdc-data-table__table .cdk-table .mat-elevation-z8 .demo-table{
+    font-size: 10px !important;
+}
+}
+

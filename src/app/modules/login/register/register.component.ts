@@ -31,7 +31,7 @@ export class RegisterComponent {
     sexo: ['', [Validators.required]],
 
     direccion: ['', [Validators.required]],
-    codigo :['', [Validators.required] ],
+    //codigo :['', [Validators.required] ],
     relacion: ['', [Validators.required]],
    
   })
@@ -52,7 +52,7 @@ export class RegisterComponent {
     private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private codigoService:ZCodigoService, private snackbar:MatSnackBar) {
       
      }
-
+/*
    checkCode(){
     this.codigoPermitido = false
     this.mensajeError = ""
@@ -89,9 +89,22 @@ export class RegisterComponent {
     }
 
    }
+*/
 
+checkTipoUsuario(){
+  const relacion = this.registerForm.value.relacion
+  if (relacion == "Externo" || relacion == "Otro" ){
+    this.id_tipo_usuario = 2
+  } else{
+    this.id_tipo_usuario = 1
+  }
+  console.log("TIPO USUARIO ", this.id_tipo_usuario )
+
+}
   
   checkForm()  {
+   
+    /*
     
     if(this.codigoPermitido == false){
       return
@@ -106,14 +119,15 @@ export class RegisterComponent {
     console.log("Paso codigo patch value")
 
     console.log("Si todo esta bien deberia ser false: ", this.registerForm.invalid )
-
+*/
     if (this.registerForm.invalid == true){
         this.mensajeError = "Rellena todos los campos"
         console.log("invalid form")
         return
     }
     
-    console.log("Paso invalid form")
+
+    this.checkTipoUsuario()
 
     this.register()
    
@@ -139,7 +153,7 @@ export class RegisterComponent {
       codigo :this.registerForm.value.codigo,
       relacion: this.registerForm.value.relacion,
 
-      id_codigo: this.id_codigo,
+      id_codigo: 1,
       id_rol: this.id_rol,
       id_tipo_usuario: this.id_tipo_usuario
     }

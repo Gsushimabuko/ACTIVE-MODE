@@ -25,7 +25,7 @@ fxLayout="column" fxLayoutAlign="center center"
           <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
             
             <!-- formularios -->
-            <div class="form">
+            <div class="form" fxFlexLayoutAlign.lt-md="center center" >
 
                   <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-evenly center">
                     <form [formGroup]="mesForm">
@@ -41,9 +41,9 @@ fxLayout="column" fxLayoutAlign="center center"
                   </div>
                   
     
-                  <mat-card *ngIf=" mesForm.controls['mes'].value != '' " class="card">
+                  <mat-card *ngIf=" mesForm.controls['mes'].value != '' " class="card" fxFlexLayoutAlign.lt-md="center center" >
                    
-                  <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign="start">
+                  <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign.lt-md="center center" fxLayoutAlign="start">
                     <b style="margin: 15px ;font-size:18px">Elige la fecha y hora</b>
                     <mat-form-field class="input-propiedades" appearance="outline" >
                       <mat-label>Curso</mat-label>
@@ -93,7 +93,7 @@ fxLayout="column" fxLayoutAlign="center center"
                   </mat-card>
                   </div>
                   
-                  <div class="botones" *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="row" fxLayoutAlign="center center">
+                  <div class="botones" *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center">
                     <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Seleccionar</button>
                     <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="nextStep(stepper)">Calcular monto</button>
                   </div>
