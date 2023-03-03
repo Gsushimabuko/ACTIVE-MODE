@@ -47,7 +47,7 @@ export class ZUsuarioService {
             direccion: resp.direccion,
             estado: resp.estado,
             id_rol: resp.id_rol,
-            id_tipo_usuario: resp.id_rol
+            id_tipo_usuario: resp.id_tipo_usuario
           }
           
         }
@@ -83,7 +83,7 @@ export class ZUsuarioService {
             direccion: resp.direccion,
             estado: resp.estado,
             id_rol: resp.id_rol,
-            id_tipo_usuario: resp.id_rol
+            id_tipo_usuario: resp.id_tipo_usuario
           }
 
           return resp.ok;
@@ -113,7 +113,7 @@ export class ZUsuarioService {
             direccion: resp.direccion,
             estado: resp.estado,
             id_rol: resp.id_rol,
-            id_tipo_usuario: resp.id_rol
+            id_tipo_usuario:resp.id_tipo_usuario
           } 
         }
 
@@ -149,7 +149,7 @@ export class ZUsuarioService {
             direccion: resp.direccion,
             estado: resp.estado,
             id_rol: resp.id_rol,
-            id_tipo_usuario: resp.id_rol
+            id_tipo_usuario: resp.id_tipo_usuario
           }
 
           //console.log("USUARIO ROL ID: ",this._usuario.id_rol)

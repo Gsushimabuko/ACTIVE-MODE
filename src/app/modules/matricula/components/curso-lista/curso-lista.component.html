@@ -1,9 +1,9 @@
 <div class="container">
     <b>Cursos por inscribirse</b>
     <div *ngFor="let curso of listaCursosNuevos">
-        <mat-card class="card-nuevo">
+        <mat-card class="card-nuevo" >
             <mat-card-header>
-                <mat-card-title-group>
+                <mat-card-title-group fxLayout.lt-md="column">
                     <p>{{curso.nombre | titlecase}}</p> 
                     <p>{{curso.horarioDias}} - {{curso.horarioHoras}}</p>
                     <div class="borrar" (click)="eliminarCurso(curso.idCursoPeriodo)">

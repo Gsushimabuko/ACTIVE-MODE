@@ -178,3 +178,8 @@
   font-size: large;
   font-weight: bold;
 }
+@media only screen and (max-width: 768px)  {
+  .method-card__inputs {
+    display: block;
+  }
+}

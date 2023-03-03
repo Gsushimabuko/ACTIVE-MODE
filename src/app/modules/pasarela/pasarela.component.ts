@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
 import { environment } from 'src/app/environments/environment';
@@ -16,7 +16,8 @@ export class PasarelaComponent implements OnInit {
   @Input() fechaCalendario!: Date;
   @Output() pagoAceptado: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() matricula: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @ViewChild('anoInput') anoInput!: ElementRef;
+  
   departments: string[] = ['Amazonas', 'Áncash', 'Apurímac', 'Arequipa', 'Ayacucho', 'Cajamarca', 'Callao', 'Cusco' , 'Huancavelica', 'Huánuco', 'Ica', 'Junín', 'La Libertad', 'Lambayeque', 'Lima', 'Loreto', '	Madre de Dios', 'Moquegua', 'Pasco', 'Piura', 'Puno', 'San Martín', 'Tacna', 'Tumbes', 'Ucayali'];
 
   errorFlag: boolean = false;
@@ -73,6 +74,11 @@ export class PasarelaComponent implements OnInit {
       state: '',
       country_code: 'PE',
     } */
+  }
+
+  checkLength(limite:number){
+    const valor = this.anoInput.nativeElement.value
+    this.anoInput.nativeElement.value = valor.slice(0, limite)
   }
 
   getCardInfo() {
@@ -152,19 +158,13 @@ export class PasarelaComponent implements OnInit {
   }
 
   twoNumbersOnly(event: any, value: string) {
-    const pattern = /[0-9]/;
-    let inputChar = String.fromCharCode(event.key);
-
-    
-    if (!pattern.test(inputChar)) {
+    if (value.toString().length >= 2) {
       event.preventDefault();
     }
-    
-    if(!value) {
-      return;
-    }
+  }
 
-    if (value.toString().length >= 2) {
+  creditCardOnly(event: any, value: string) {
+    if (value.toString().length >= 16) {
       event.preventDefault();
     }
   }

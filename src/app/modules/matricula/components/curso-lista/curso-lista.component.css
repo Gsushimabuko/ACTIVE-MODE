@@ -1,3 +1,4 @@
+
 .card{
     margin-bottom: 10px;
     padding: 5px;
@@ -7,11 +8,22 @@
 .card-nuevo{
     margin-bottom: 10px;
     margin-top: 10px;
-    padding: 5px;
-    
-    
+    padding: 5px; 
 }
 
 .icono-eliminado{
     cursor: pointer
 }
+
+@media only screen and (max-width: 768px)  {
+    .card-nuevo{
+        width: 150px;
+        margin:10px;
+       
+    }
+    .container{
+    width:100px !important;
+    
+    }
+    
+  }
