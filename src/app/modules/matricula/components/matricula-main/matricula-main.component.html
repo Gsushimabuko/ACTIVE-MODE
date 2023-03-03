@@ -139,7 +139,7 @@ fxLayout="column" fxLayoutAlign="center center"
           <div fxLayout="column" fxLayoutAlign="center center">
     
             <h3>Cursos inscritos</h3>
-            <table mat-table [dataSource]="MONTO_CURSO_DATA"   class="mat-elevation-z8 demo-table">
+            <table mat-table [dataSource]="MONTO_CURSO_DATA"  class="mat-elevation-z8 demo-table test-table">
               <ng-container matColumnDef="orden">
                   <th mat-header-cell *matHeaderCellDef> Orden </th>
                   <td mat-cell *matCellDef="let element"> {{element.orden}}

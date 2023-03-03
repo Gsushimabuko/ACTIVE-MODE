@@ -38,8 +38,9 @@
 
         <mat-form-field class="example-full-width">
             <mat-label>Año de Expiración</mat-label>
-            <input (keyup)="twoNumbersOnly($event, form.get('yearExp')?.value)" data-openpay-card="expiration_year" type="number" minlength="2" maxlength="2" matInput placeholder="AA" formControlName="yearExp">
+            <input #anoInput  (ngModelChange)="checkLength(2)" (keyup)="twoNumbersOnly($event, form.get('yearExp')?.value)" data-openpay-card="expiration_year" type="number" min="0" [maxlength]="2" matInput placeholder="AA" formControlName="yearExp">
         </mat-form-field>
+       
 
         <mat-form-field class="example-full-width">
             <mat-label>CVV</mat-label>

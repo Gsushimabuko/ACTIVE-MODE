@@ -100,10 +100,11 @@ input{
   .boton-monto{
   height: 30px;
   font-size: 12px;
-  
+  }
+
+.test-table{
+   font-size: 10px !important; 
 }
-.mat-mdc-table .mdc-data-table__table .cdk-table .mat-elevation-z8 .demo-table{
-    font-size: 10px !important;
-}
+
 }
 
