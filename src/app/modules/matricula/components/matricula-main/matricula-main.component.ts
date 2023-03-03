@@ -12,6 +12,7 @@ import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.service';
 import { PasarelaComponent } from '../../../pasarela/pasarela.component';
 import { CursoComponent } from '../curso/curso.component';
+import { Usuario } from '../../../../interfaces/usuario';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { CursoComponent } from '../curso/curso.component';
 export class MatriculaMainComponent {
 
   idUsuario!:number
+
   cursoForm!: FormGroup
   mesForm!: FormGroup
   idTipoUsuario: number
@@ -33,6 +35,7 @@ export class MatriculaMainComponent {
   flagDia:boolean=false
   tarifa:number = 0
   cantDias!:number
+  usuarios!:Usuario[]
   
 
   
@@ -53,15 +56,21 @@ export class MatriculaMainComponent {
 
 
   loader:boolean= true
+  idPadre: number;
 
 
   constructor(private formBuilder: FormBuilder,
     private usuarioService: ZUsuarioService,
     private cursoService:ZCursoService) {
 
-  
-    this.idUsuario= this.usuarioService.usuario.id
+
+    this.idPadre = this.usuarioService.usuario.id
+    
+    this.idUsuario= this.idPadre
+    
     this.idTipoUsuario=  this.usuarioService.usuario.id_tipo_usuario
+    
+    console.log(this.usuarioService.usuario)
 
     this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
 
@@ -69,8 +78,16 @@ export class MatriculaMainComponent {
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
-      this.loader = false
+
+      this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
+        this.usuarios = res
+        this.loader = false
+
+      })
+      
     })
+
+    
 
     this.cursoForm = this.formBuilder.group({
       curso: ['', [Validators.required]],
@@ -81,6 +98,42 @@ export class MatriculaMainComponent {
 
     this.mesForm = this.formBuilder.group({
       mes: [''],
+      usuario:[this.idPadre]
+    })
+
+  }
+
+  seleccionUsuario(){
+    this.loader=true
+    this.idUsuario = this.mesForm.controls['usuario'].value
+
+    this.listaCursos = []
+    this.listaCursosNuevos =[]
+    this.listaCursosTotales =[]
+    this.totalPagar = 0
+    this.costoPagarTemporal = 0
+    this.cursoPendiente ={}
+    this.MONTO_CURSO_DATA = [];
+    this.cantDiasTemporal = 0;
+    this.listaDeCursosPrecios = []
+
+    this.cursoForm.controls['curso'].setValue('')
+    this.cursoForm.controls['nivel'].setValue('')
+    this.cursoForm.controls['nivel'].disable()
+    this.cursoForm.controls['ratio'].setValue('')
+    this.cursoForm.controls['ratio'].disable()
+    this.cursoForm.controls['dia'].setValue('')
+    this.cursoForm.controls['dia'].disable()
+
+    this.cursoService.getCursos(this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
+      this.cursos = res
+
+      this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
+        this.listaCursos = res
+        this.actualizarCursosCalendario()
+        this.loader=false
+      })
+
     })
 
   }
@@ -116,6 +169,7 @@ export class MatriculaMainComponent {
         this.actualizarCursosCalendario()
         this.loader=false
       })
+
     })
 
   }
@@ -129,7 +183,7 @@ export class MatriculaMainComponent {
 
 
   cambioCurso(){
-
+    console.log(this.idUsuario)
     this.loader=true
     if(this.flagDia){
       this.listaCursosTotales.pop()
@@ -151,6 +205,7 @@ export class MatriculaMainComponent {
       }
     }
     
+    console.log(this.idTipoUsuario)
 
     this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value,idPeriodoCurso).subscribe(res =>{
       //console.log(res)

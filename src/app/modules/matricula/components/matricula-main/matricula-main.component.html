@@ -28,6 +28,7 @@ fxLayout="column" fxLayoutAlign="center center"
             <div class="form">
 
                   <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-evenly center">
+
                     <form [formGroup]="mesForm">
                       <mat-form-field class="input-propiedades" appearance="outline">
                         <mat-label>Mes</mat-label>
@@ -37,7 +38,19 @@ fxLayout="column" fxLayoutAlign="center center"
                             </mat-option>
                         </mat-select>
                       </mat-form-field>
+
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Familiar a matricular</mat-label>
+                        <mat-select formControlName="usuario" (selectionChange)="seleccionUsuario()">
+                            <mat-option *ngFor="let usuario of usuarios" [value]="usuario.id" >
+                                {{usuario.nombre}}  {{usuario.apellidop}}
+                            </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
                     </form>
+
+
                   </div>
                   
     

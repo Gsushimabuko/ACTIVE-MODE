@@ -18,6 +18,11 @@ export class ZUsuarioService {
     return {...this._usuario}
   }
 
+  getRelatives(idUsuario: number): Observable<Usuario[]>  {
+    return this.http.get<Usuario[]>(this.API_URL + '/familiares',{params:{idUsuario:idUsuario}})
+  }
+
+
   createUsuario(persona: any): Observable<any>  {
     return this.http.post<any>(this.API_URL + '/registro', persona)
   }
