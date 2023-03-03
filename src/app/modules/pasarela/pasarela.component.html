@@ -28,23 +28,23 @@
             
         <mat-form-field class="example-full-width">
             <mat-label>Número de tarjeta</mat-label>
-            <input data-openpay-card="card_number" type="number" matInput formControlName="cardNumber">
+            <input data-openpay-card="card_number" [OnlyNumber]="true" maxlength="20" matInput formControlName="cardNumber">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
             <mat-label>Mes de Expiración</mat-label>
-            <input (keyup)="twoNumbersOnly($event, form.get('monthExp')?.value)" data-openpay-card="expiration_month" type="number" minlength="2" maxlength="2" matInput placeholder="MM" formControlName="monthExp">
+            <input [OnlyNumber]="true" data-openpay-card="expiration_month" minlength="2" maxlength="2" matInput placeholder="MM" formControlName="monthExp">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
             <mat-label>Año de Expiración</mat-label>
-            <input #anoInput  (ngModelChange)="checkLength(2)" (keyup)="twoNumbersOnly($event, form.get('yearExp')?.value)" data-openpay-card="expiration_year" type="number" min="0" [maxlength]="2" matInput placeholder="AA" formControlName="yearExp">
+            <input [OnlyNumber]="true" data-openpay-card="expiration_year" min="0" [maxlength]="2" matInput placeholder="AA" formControlName="yearExp">
         </mat-form-field>
        
 
         <mat-form-field class="example-full-width">
             <mat-label>CVV</mat-label>
-            <input (keyup)="twoNumbersOnly($event, form.get('cvv2')?.value)" data-openpay-card="cvv2" type="number" minlength="3" maxlength="4" matInput formControlName="cvv2">
+            <input [OnlyNumber]="true" data-openpay-card="cvv2" minlength="3" maxlength="4" matInput formControlName="cvv2">
         </mat-form-field>
 
         <!--
