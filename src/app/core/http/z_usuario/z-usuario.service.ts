@@ -42,7 +42,7 @@ export class ZUsuarioService {
             direccion: resp.direccion,
             estado: resp.estado,
             id_rol: resp.id_rol,
-            id_tipo_usuario: resp.id_rol
+            id_tipo_usuario: resp.id_tipo_usuario
           }
           
         }
