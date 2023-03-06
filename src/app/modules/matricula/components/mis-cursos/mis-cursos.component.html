@@ -19,10 +19,9 @@
     
     <div fxLayout="row" fxLayoutGap="50" fxLayoutAlign="start center" >
       
-         <b>Mes: </b>
          <div>
            <form [formGroup]="mesForm">
-             <mat-form-field style="width:140px; height:70px; font-size: 12px" class="input-propiedades" appearance="fill">
+             <mat-form-field class="input-propiedades" appearance="outline">
                <mat-label>Elige mes</mat-label>
                <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
                    <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
@@ -30,6 +29,17 @@
                    </mat-option>
                </mat-select>
              </mat-form-field>
+
+             <mat-form-field class="input-propiedades" appearance="outline">
+              <mat-label>Familiar</mat-label>
+              <mat-select formControlName="usuario" (selectionChange)="seleccionUsuario()">
+                  <mat-option *ngFor="let usuario of usuarios" [value]="usuario.id" >
+                      {{usuario.nombre}}  {{usuario.apellidop}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
            </form>
          </div>
      

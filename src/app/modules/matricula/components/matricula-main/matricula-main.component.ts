@@ -87,8 +87,6 @@ export class MatriculaMainComponent {
       
     })
 
-    
-
     this.cursoForm = this.formBuilder.group({
       curso: ['', [Validators.required]],
       ratio: [{ value: '', disabled: true }, [Validators.required]],

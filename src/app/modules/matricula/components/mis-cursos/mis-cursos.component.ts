@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
+import { Usuario } from 'src/app/interfaces/usuario';
 import { CalendarMainComponent } from 'src/app/modules/calendar/calendar-main/calendar-main.component';
 
 @Component({
@@ -19,12 +20,17 @@ export class MisCursosComponent {
   loader:boolean = true
   mesForm:FormGroup
   listaCursos:any
+  idPadre: number;
+  usuarios!:Usuario[]
 
   constructor(private formBuilder: FormBuilder,
     private usuarioService: ZUsuarioService,
     private cursoService:ZCursoService) {
 
-    this.idUsuario= this.usuarioService.usuario.id
+
+    this.idPadre = this.usuarioService.usuario.id
+    
+    this.idUsuario= this.idPadre
 
     this.fechaHoy = new Date() 
   
@@ -72,7 +78,30 @@ export class MisCursosComponent {
 
     this.mesForm = this.formBuilder.group({
       mes: [''],
+      usuario:[this.idPadre]
     })
+
+    
+
+    this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
+      this.listaCursos = res
+      
+      this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
+        this.usuarios = res
+        this.loader = false
+  
+      })
+    })
+
+  }
+  
+  @ViewChild('calendario') calendario!: CalendarMainComponent;
+
+  seleccionUsuario(){
+    this.loader=true
+    this.idUsuario = this.mesForm.controls['usuario'].value
+
+    this.listaCursos = []
 
     this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
       this.listaCursos = res
@@ -80,9 +109,6 @@ export class MisCursosComponent {
     })
 
   }
-  
-  @ViewChild('calendario') calendario!: CalendarMainComponent;
-
 
   seleccionMes(){
     this.loader=true
