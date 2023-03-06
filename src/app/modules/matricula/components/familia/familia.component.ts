@@ -1,25 +1,36 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ZCodigoService } from 'src/app/core/http/z_codigo/z-codigo.service';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
+import { Usuario } from 'src/app/interfaces/usuario';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-familia',
+  templateUrl: './familia.component.html',
+  styleUrls: ['./familia.component.css']
 })
-export class RegisterComponent {
+export class FamiliaComponent {
+  loader:boolean= true
+  usuario! : Usuario
+  familia!: Usuario[]
+
+  constructor(private usuarioService: ZUsuarioService, private router: Router ,private fb: FormBuilder,   private codigoService:ZCodigoService, private snackbar:MatSnackBar){
+    this.usuario = usuarioService.usuario
+    this.usuarioService.getRelatives(this.usuario.id).subscribe((res => {
+      this.familia = res
+      this.loader =false
+    }))
+  }
 
   listaSexos = ["Masculino", "Femenino", "No desea especificar"]
-  listaRelaciones = ["Externo", "Alumno del colegio", "Ex Alumno del colegio", "Miembro de la cooperativa", "Personal", "Padre de familia" ,"Otro"]
+  listaRelaciones = ["Externo", "Alumno del colegio", "Ex Alumno del colegio", "Miembro de la cooperativa", "Personal", "Otro"]
   tieneCondicion = false
   registerForm: FormGroup = this.fb.group({
 
-    correo: ['', [Validators.required, Validators.email]],
-    contrasena: ['', [Validators.required] ],
+    
     dni: ['', [Validators.required, Validators.minLength(8)]],
 
     nombre: ['', [Validators.required, Validators.minLength(2)]],
@@ -47,49 +58,7 @@ export class RegisterComponent {
   hide = true;
   mensajeError: string = ""
   codigoPermitido = false
-  
-  constructor(
-    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private codigoService:ZCodigoService, private snackbar:MatSnackBar) {
-      
-     }
-/*
-   checkCode(){
-    this.codigoPermitido = false
-    this.mensajeError = ""
-
-    if(this.registerForm.value.codigo != '' && this.registerForm.value.codigo != "Ninguno" ){
-      //Check code
-      this.codigoService.checkCodigo((this.registerForm.value.codigo)).subscribe(
-        
-        (res:any)=>{
-          if(res.ok == true){
-            
-            this.codigoPermitido = true
-            this.id_tipo_usuario = 1
-            this.id_codigo = res.codigo.id
-            this.checkForm()
-          }
-         
-        },
-        (err:HttpErrorResponse)=>{
-          if(err.status == 404){
-            this.codigoPermitido = false
-            this.mensajeError = "Código inválido"
-          }
-          if(err.status == 500){
-            this.codigoPermitido = false
-            this.mensajeError = "Error en el servidor"
-          }
-      })
-
-    }else{
-      this.codigoPermitido = true
-      this.id_tipo_usuario = 2
-      this.checkForm()
-    }
-
-   }
-*/
+ 
 
 checkTipoUsuario(){
   const relacion = this.registerForm.value.relacion
@@ -101,25 +70,8 @@ checkTipoUsuario(){
   console.log("TIPO USUARIO ", this.id_tipo_usuario )
 
 }
-  
   checkForm()  {
-   
-    /*
-    
-    if(this.codigoPermitido == false){
-      return
-    }
 
-    console.log("Paso codigo perm")
-    
-    if(this.registerForm.value.codigo == ''){
-      this.registerForm.patchValue({codigo:"Ninguno"})
-    }
-
-    console.log("Paso codigo patch value")
-
-    console.log("Si todo esta bien deberia ser false: ", this.registerForm.invalid )
-*/
     if (this.registerForm.invalid == true){
         this.mensajeError = "Rellena todos los campos"
         console.log("invalid form")
@@ -136,9 +88,10 @@ checkTipoUsuario(){
 
   register(){
 
+   
+
     const usuario = { 
-      correo: this.registerForm.value.correo.toLowerCase(),
-      contrasena: this.registerForm.value.contrasena,
+      
 
       dni: this.registerForm.value.dni,
       nombre: this.registerForm.value.nombre,
@@ -155,21 +108,22 @@ checkTipoUsuario(){
 
       id_codigo: 1,
       id_rol: this.id_rol,
-      id_tipo_usuario: this.id_tipo_usuario
-    }
+      id_tipo_usuario: this.id_tipo_usuario,
+      id_padre: this.usuario.id
 
-    this.usuarioService.createUsuario(usuario).subscribe((res: any)=>{
+    }
+    console.log("usuario: ", usuario)
+
+    this.usuarioService.createRelativo(usuario).subscribe((res: any)=>{
       if (res.ok == true){
         this.openSnackBar("¡Registro Exitoso!", 5)
-        this.router.navigate(["/login"])
+        this.router.navigate(["/matricula/dashboard"])
       } 
     }, (err:HttpErrorResponse) => {
-      if(err.status == 403){
+      if(err.status == 500){
         this.mensajeError = "DNI o correo ya registrados"
       }
-      if(err.status == 500){
-        this.mensajeError = "Error en el servidor, intente más tarde"
-      }
+     
     })
     
     

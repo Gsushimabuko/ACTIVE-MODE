@@ -1,9 +1,27 @@
-<div class="container animate__animated animate__fadeIn animate__fast" >
+
+<div  fxLayout="column"  fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast" >
     <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
     <p class="welcome-text">¡Bienvenido <span> {{usuario.nombre}}</span>!</p>
     <p class="welcome-subtext">Elige una de las opciones </p> 
-
+    
+  
+    
     <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap="50" fxLayoutAlign="center center">
+        
+        
+        <div>
+            <button [routerLink] = "['/matricula/familia']" class="button-82-pushable" role="button">
+                <span class="button-82-shadow"></span>
+                <span class="button-82-edge"></span>
+                <span class="button-82-front text">
+                    <a [routerLink] = "['/matricula/familia']" style="padding:10px">
+                        <div style="margin-bottom:20px">Familia </div> 
+                        <div style="height: 25px"> </div>
+                        <div > <mat-icon>person_add</mat-icon>  </div>
+                    </a>
+                </span>
+            </button>
+        </div>
         <div>
             <button [routerLink] = "['/matricula']" class="button-82-pushable" role="button">
                 <span class="button-82-shadow"></span>
@@ -30,6 +48,7 @@
                 </span>
             </button>
         </div>
+        
         
         
     </div>

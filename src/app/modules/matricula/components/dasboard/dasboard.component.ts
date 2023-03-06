@@ -11,8 +11,10 @@ import { Usuario } from 'src/app/interfaces/usuario';
 export class DasboardComponent {
 
   usuario! : Usuario
+ 
   constructor(private usuarioService: ZUsuarioService, private router: Router){
     this.usuario = usuarioService.usuario
+    
   }
 
   logout(){

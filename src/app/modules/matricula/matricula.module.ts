@@ -15,6 +15,7 @@ import { PasarelaComponent } from '../pasarela/pasarela.component';
 import { PasarelaModule } from '../pasarela/pasarela.module';
 import { DasboardComponent } from './components/dasboard/dasboard.component';
 import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component';
+import { FamiliaComponent } from './components/familia/familia.component';
 
 
 
@@ -27,6 +28,7 @@ import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component
     CursoListaComponent,
     DasboardComponent,
     MisCursosComponent,
+    FamiliaComponent,
   ],
   imports: [
     CommonModule,

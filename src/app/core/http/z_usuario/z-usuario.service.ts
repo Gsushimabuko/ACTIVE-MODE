@@ -26,6 +26,9 @@ export class ZUsuarioService {
   createUsuario(persona: any): Observable<any>  {
     return this.http.post<any>(this.API_URL + '/registro', persona)
   }
+  createRelativo(persona: any): Observable<any>  {
+    return this.http.post<any>(this.API_URL + '/relativo', persona)
+  }
 
   login(usuario: any) {
     const url =  this.API_URL + '/login'
