@@ -10,11 +10,25 @@
     width: 20vw;
 }
 
+.container-fam{
+    color:white;
+    background-color: rgba(0, 0, 0, 0.853);
+    border-radius: 12px;
+    padding: 20px;
+}
+.texto-familia{
+    font-size: 40px;
+    font-weight: bold;
+}
+
 .card2{
-    width: 80%;
+    border: 2px white;
+    padding: 20px;
+    width: 200px;
+    color: white;
     margin: 50px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.853);
+   
     
 }
 
@@ -129,7 +143,24 @@ mat-label{
         padding: 20px;
         height: 100%;
     }
+    .container-fam{
+        text-align: center;
+        width: 200px;
+    }
 
+    .texto-familia{
+        font-size: 20px;
+    }
+
+    .card2{
+        text-align: center;
+        border: 2px white;
+        padding: 20px;
+        width: 80px;
+        color: white;
+        margin: 10px;
+        border-radius: 10px;   
+    }
    
     .row-section{
         margin: 0px;

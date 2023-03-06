@@ -11,15 +11,21 @@ fxLayout="column" fxLayoutAlign="center center"
 
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
     <div>
-        <div class="card2" fxLayout="column" fxLayoutAlign="center center">
+        <div  class="container-fam" fxLayout="column" fxLayoutAlign="center center">
             <p class="texto-familia"> 
                 Mi familia
             </p>
-    
-         
-            <div *ngFor="let miembro of familia">
-                <p style="color:white"> {{miembro.nombre}}</p>
+            
+            <div fxLayout="row" fxLayout.lt-md="column">
+                <div  class="card2"  *ngFor="let miembro of familia">
+                    <div fxLayout="column" fxLayoutAlign="center center" >
+                        <p style="color:white"> {{miembro.nombre}}</p>
+                        <mat-icon style="scale:transform(2)">accessibility</mat-icon>
+
+                    </div>
+                </div>
             </div>
+         
         </div>
     </div>
     
