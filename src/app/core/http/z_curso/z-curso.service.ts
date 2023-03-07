@@ -14,19 +14,16 @@ export class ZCursoService {
 
   getCursosHorarios(idTipoUsuario:number,mes:number,ano:number){
     const url = this.apiURL + "/cursos_horarios"
-    console.log(url)
     return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, mes:mes, ano:ano}})
   }
 
   getCursos(mes:number,ano:number){
     const url = this.apiURL + "/cursos"
-    console.log(url)
     return this.http.get<CursoPeriodo[]>(url,{params:{mes:mes, ano:ano}})
   }
 
   getCursoHorarios(idTipoUsuario:number,mes:number,ano:number,idCurso:number,idCursoPeriodo:number){
     const url = this.apiURL + "/cursos_horariosv2"
-    console.log(url)
     return this.http.get<CursoPeriodo[]>(url,{params:{idTipoUsuario: idTipoUsuario, mes:mes, ano:ano,idCurso:idCurso,idCursoPeriodo:idCursoPeriodo}})
   }
 

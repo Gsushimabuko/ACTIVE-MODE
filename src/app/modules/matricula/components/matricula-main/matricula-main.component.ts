@@ -57,6 +57,7 @@ export class MatriculaMainComponent {
 
   loader:boolean= true
   idPadre: number;
+  idTipoPadre: number;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -67,10 +68,10 @@ export class MatriculaMainComponent {
     this.idPadre = this.usuarioService.usuario.id
     
     this.idUsuario= this.idPadre
+
+    this.idTipoPadre =  this.usuarioService.usuario.id_tipo_usuario
     
-    this.idTipoUsuario=  this.usuarioService.usuario.id_tipo_usuario
-    
-    console.log(this.usuarioService.usuario)
+    this.idTipoUsuario = this.idTipoPadre
 
     this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
 
@@ -103,8 +104,9 @@ export class MatriculaMainComponent {
 
   seleccionUsuario(){
     this.loader=true
-    this.idUsuario = this.mesForm.controls['usuario'].value
-
+    this.idUsuario = this.mesForm.controls['usuario'].value.id
+    this.idTipoUsuario =  this.mesForm.controls['usuario'].value.id_tipo_usuario
+    
     this.listaCursos = []
     this.listaCursosNuevos =[]
     this.listaCursosTotales =[]
@@ -181,7 +183,7 @@ export class MatriculaMainComponent {
 
 
   cambioCurso(){
-    console.log(this.idUsuario)
+    
     this.loader=true
     if(this.flagDia){
       this.listaCursosTotales.pop()
@@ -202,8 +204,6 @@ export class MatriculaMainComponent {
         idPeriodoCurso = curso.idCursoPeriodo
       }
     }
-    
-    console.log(this.idTipoUsuario)
 
     this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value,idPeriodoCurso).subscribe(res =>{
       //console.log(res)

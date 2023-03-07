@@ -29,10 +29,7 @@ export class CalendarMainComponent {
 
   ngOnInit(): void {
     //this.actualizarHorario();
-    //console.log(this.horarios)
-  
-    this.innerWidth = window.innerWidth;
-    console.log(this.innerWidth)
+    this.innerWidth = window.innerWidth;  
   }
 
   ngOnChanges(changes: SimpleChanges): void {
