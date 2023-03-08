@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
 import { CursoPeriodo,CursoMatriculado } from 'src/app/modules/shared/interfaces/Curso';
+import { CursoParam } from '../../../modules/shared/interfaces/Curso';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,30 @@ export class ZCursoService {
     const url = this.apiURL + "/cursos"
     return this.http.get<CursoPeriodo[]>(url,{params:{mes:mes, ano:ano}})
   }
+
+  getCursosAll(){
+    const url = this.apiURL + "/cursos/param"
+    return this.http.get<CursoParam[]>(url)
+  }
+
+  createCurso(nombre:string){
+    const url = this.apiURL + "/cursos/param"
+    const data = {nombre:nombre}
+    return this.http.post<any>(url,data)
+  }
+
+  updateCurso(nombre:string,idCurso:number){
+    const url = this.apiURL + "/cursos/param/update"
+    const data = {nombre:nombre,idCurso:idCurso}
+    return this.http.put<any>(url,data)
+  }
+
+  ChangeStateCurso(idCurso:number){
+    const url = this.apiURL + "/cursos/param/state"
+    const data = {idCurso:idCurso}
+    return this.http.put<any>(url,data)
+  }
+
 
   getCursoHorarios(idTipoUsuario:number,mes:number,ano:number,idCurso:number,idCursoPeriodo:number){
     const url = this.apiURL + "/cursos_horariosv2"

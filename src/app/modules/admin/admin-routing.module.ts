@@ -13,6 +13,8 @@ const routes: Routes = [
   { path: 'alumnos', component: AlumnosComponent },
   { path: 'codigo', component: CodigosComponent },
   { path: 'cursos', component: CursosComponent }
+  ,{path: 'parametros', loadChildren: () =>
+  import('./parametros/parametros.module').then(m => m.ParametrosModule)}
 
 ];
 

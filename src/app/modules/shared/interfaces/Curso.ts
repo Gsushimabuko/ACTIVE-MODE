@@ -15,6 +15,12 @@ export interface CursoPeriodo {
     niveles:NivelPeriodo[]
 }
 
+export interface CursoParam {
+    id: number
+    nombre:string
+    estado:string
+}
+
 export interface CursoMatriculado {
     horarioHoras: string
     nombre:string
