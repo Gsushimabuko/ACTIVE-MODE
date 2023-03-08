@@ -59,7 +59,7 @@ export class CursosParamComponent{
 
     actualizarTabla(){
 
-      this.cursoService.getCursosAll().subscribe(res =>{
+      this.cursoService.getCursosParam().subscribe(res =>{
         this.dataSource.data = res
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -71,7 +71,7 @@ export class CursosParamComponent{
       
       for(var curso of this.formCursos.value.propiedades){
 
-        this.cursoService.createCurso(curso.nombre).subscribe(res=>{
+        this.cursoService.createCursoParam(curso.nombre).subscribe(res=>{
           console.log(res)
           this.eliminarPropiedad(0)
           this.actualizarTabla()
@@ -82,7 +82,7 @@ export class CursosParamComponent{
     }
 
     cambiarEstado(idCurso:number){
-      this.cursoService.ChangeStateCurso(idCurso).subscribe(res=>{
+      this.cursoService.changeStateCursoParam(idCurso).subscribe(res=>{
         this.actualizarTabla()
         
       })

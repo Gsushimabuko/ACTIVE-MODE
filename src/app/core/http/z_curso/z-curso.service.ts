@@ -23,25 +23,33 @@ export class ZCursoService {
     return this.http.get<CursoPeriodo[]>(url,{params:{mes:mes, ano:ano}})
   }
 
-  getCursosAll(){
+
+  //PARAMS
+
+  getCursosParam(){
     const url = this.apiURL + "/cursos/param"
     return this.http.get<CursoParam[]>(url)
   }
 
-  createCurso(nombre:string){
-    const url = this.apiURL + "/cursos/param"
+  getCursoParam(){
+    const url = this.apiURL + "/curso/param"
+    return this.http.get<CursoParam>(url)
+  }
+
+  createCursoParam(nombre:string){
+    const url = this.apiURL + "/curso/param"
     const data = {nombre:nombre}
     return this.http.post<any>(url,data)
   }
 
-  updateCurso(nombre:string,idCurso:number){
-    const url = this.apiURL + "/cursos/param/update"
+  updateCursoParam(nombre:string,idCurso:number){
+    const url = this.apiURL + "/curso/param/update"
     const data = {nombre:nombre,idCurso:idCurso}
     return this.http.put<any>(url,data)
   }
 
-  ChangeStateCurso(idCurso:number){
-    const url = this.apiURL + "/cursos/param/state"
+  changeStateCursoParam(idCurso:number){
+    const url = this.apiURL + "/curso/param/state"
     const data = {idCurso:idCurso}
     return this.http.put<any>(url,data)
   }
