@@ -13,6 +13,7 @@ import { DiaComponent } from './dia/dia.component';
 import { TipoUsuariosComponent } from './tipo-usuarios/tipo-usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { NivelesComponent } from './niveles/niveles.component';
+import { DiaGrupoComponent } from './dia-grupo/dia-grupo.component';
 
 
 
@@ -25,6 +26,7 @@ import { NivelesComponent } from './niveles/niveles.component';
     TipoUsuariosComponent,
     RolesComponent,
     NivelesComponent,
+    DiaGrupoComponent,
   ],
   imports: [
     CommonModule,
