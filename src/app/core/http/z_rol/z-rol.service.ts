@@ -5,38 +5,39 @@ import { environment } from 'src/app/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ZTipoUsuarioService {
+export class ZRolService {
 
   apiURL = environment.API_URL
 
   constructor(private http: HttpClient) { }
 
-  getTipoUsuariosParam(){
-    const url = this.apiURL + "/tipo-usuarios/param"
+  getRolesParam(){
+    const url = this.apiURL + "/roles/param"
     return this.http.get<any>(url)
   }
 
-  getTipoUsuarioParam(id:number){
-    const url = this.apiURL + "/tipo-usuario/param"
+  getRolParam(id:number){
+    const url = this.apiURL + "/rol/param"
     return this.http.get<any>(url,{params:{id:id}})
   }
 
-  createTipoUsuario(nombre:string){
-    const url = this.apiURL + "/tipo-usuario/param"
+  createRolParam(nombre:string){
+    const url = this.apiURL + "/rol/param"
     const data = {nombre:nombre}
     return this.http.post<any>(url,data)
   }
 
-  updateTipoUsuario(nombre:string,id:number){
-    const url = this.apiURL + "/tipo-usuario/param/update"
+  updateRolParam(nombre:string,id:number){
+    const url = this.apiURL + "/rol/param/update"
     const data = {nombre:nombre,id:id}
     return this.http.put<any>(url,data)
   }
 
-  changeStateTipoUsuario(id:number){
-    const url = this.apiURL + "/tipo-usuario/param/state"
+  changeStateRolParam(id:number){
+    const url = this.apiURL + "/rol/param/state"
     const data = {id:id}
     return this.http.put<any>(url,data)
   }
+
 
 }
