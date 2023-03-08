@@ -93,7 +93,10 @@ export class RegisterComponent {
 
 checkTipoUsuario(){
   const relacion = this.registerForm.value.relacion
-  if (relacion == "Externo" || relacion == "Otro" ){
+  if (relacion == "Personal" ){
+    this.id_tipo_usuario = 3
+  }
+  else if (relacion == "Externo" || relacion == "Otro" ){
     this.id_tipo_usuario = 2
   } else{
     this.id_tipo_usuario = 1
