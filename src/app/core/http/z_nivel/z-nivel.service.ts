@@ -27,9 +27,9 @@ export class ZNivelService {
     return this.http.post<any>(url,data)
   }
 
-  updateNivelParam(nivel:string,hora:string,id:number){
+  updateNivelParam(nivel:any,id:number){
     const url = this.apiURL + "/nivel/param/update"
-    const data = {nivel:nivel,hora:hora,id:id}
+    const data = {nivel:nivel.nivel,hora:nivel.hora,id:id}
     return this.http.put<any>(url,data)
   }
 

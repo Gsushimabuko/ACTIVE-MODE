@@ -42,9 +42,9 @@ export class ZCursoService {
     return this.http.post<any>(url,data)
   }
 
-  updateCursoParam(nombre:string,idCurso:number){
+  updateCursoParam(curso:any,idCurso:number){
     const url = this.apiURL + "/curso/param/update"
-    const data = {nombre:nombre,idCurso:idCurso}
+    const data = {nombre:curso.nombre,idCurso:idCurso}
     return this.http.put<any>(url,data)
   }
 

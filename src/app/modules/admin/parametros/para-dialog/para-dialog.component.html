@@ -2,7 +2,7 @@
     <div fxLayout="column" fxLayoutAlign="center stretch">
         <div fxLayoutAlign="center center">
 
-            <h4> Editar datos del Curso </h4>
+            <h4> Editar datos </h4>
 
             <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
                 <mat-icon>close</mat-icon>
@@ -12,10 +12,13 @@
 
             <mat-dialog-content>
                 <form [formGroup]="contenidoForm" fxLayout="column" fxLayoutAlign="space-around stretch"  fxLayoutGap="3px">
-                    <mat-form-field class="input-propiedades"  appearance="outline">
-                        <mat-label>Nombre del curso</mat-label>
-                        <input matInput placeholder="Nombre del curso" formControlName="nombre">
+
+
+                    <mat-form-field class="input-propiedades"  appearance="outline" *ngFor="let campo of campos">
+                        <mat-label>{{origen}} {{campo}}</mat-label>
+                        <input matInput placeholder="Ingrese {{campo}}" formControlName="{{campo}}">
                     </mat-form-field>
+
                 </form>
 
             </mat-dialog-content>

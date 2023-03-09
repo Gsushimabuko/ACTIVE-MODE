@@ -1,12 +1,11 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CursoParam } from '../../../shared/interfaces/Curso';
 import { ZCursoService } from '../../../../core/http/z_curso/z-curso.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { CursosDialogComponent } from './cursos-dialog/cursos-dialog.component';
+import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 @Component({
   selector: 'app-cursos-param',
@@ -43,13 +42,16 @@ export class CursosParamComponent{
 
     openDialog(curso:any): void {
 
-      var dialogRef = this.dialog.open(CursosDialogComponent, {
+      var dialogRef = this.dialog.open(ParaDialogComponent, {
         width: '400px',
     
         hasBackdrop:true,
         data: {
-          curso:curso
+          objeto: curso,
+          origen: "cursos",
+          listaCampos: ["nombre"]
         }
+        
       });
   
       dialogRef.afterClosed().subscribe(result => {

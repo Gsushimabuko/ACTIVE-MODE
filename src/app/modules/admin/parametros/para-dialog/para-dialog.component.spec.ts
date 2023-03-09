@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RolesDialogComponent } from './roles-dialog.component';
+import { ParaDialogComponent } from './para-dialog.component';
 
-describe('RolesDialogComponent', () => {
-  let component: RolesDialogComponent;
-  let fixture: ComponentFixture<RolesDialogComponent>;
+describe('ParaDialogComponent', () => {
+  let component: ParaDialogComponent;
+  let fixture: ComponentFixture<ParaDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RolesDialogComponent ]
+      declarations: [ ParaDialogComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RolesDialogComponent);
+    fixture = TestBed.createComponent(ParaDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

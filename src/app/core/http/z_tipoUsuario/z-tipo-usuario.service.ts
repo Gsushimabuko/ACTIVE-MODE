@@ -21,19 +21,19 @@ export class ZTipoUsuarioService {
     return this.http.get<any>(url,{params:{id:id}})
   }
 
-  createTipoUsuario(nombre:string){
+  createTipoUsuarioParam(nombre:string){
     const url = this.apiURL + "/tipo-usuario/param"
     const data = {nombre:nombre}
     return this.http.post<any>(url,data)
   }
 
-  updateTipoUsuario(nombre:string,id:number){
+  updateTipoUsuarioParam(tipoUsuario:any,id:number){
     const url = this.apiURL + "/tipo-usuario/param/update"
-    const data = {nombre:nombre,id:id}
+    const data = {nombre:tipoUsuario.nombre,id:id}
     return this.http.put<any>(url,data)
   }
 
-  changeStateTipoUsuario(id:number){
+  changeStateTipoUsuarioParam(id:number){
     const url = this.apiURL + "/tipo-usuario/param/state"
     const data = {id:id}
     return this.http.put<any>(url,data)

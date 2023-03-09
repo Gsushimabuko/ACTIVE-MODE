@@ -27,9 +27,9 @@ export class ZDiaGrupoService {
     return this.http.post<any>(url,data)
   }
 
-  updateDiaGrupoParam(nombre:string){
+  updateDiaGrupoParam(diaGrupo:any,id:number){
     const url = this.apiURL + "/dia-grupo/param/update"
-    const data = {nombre:nombre}
+    const data = {nombre:diaGrupo.nombre,id:id}
     return this.http.put<any>(url,data)
   }
 

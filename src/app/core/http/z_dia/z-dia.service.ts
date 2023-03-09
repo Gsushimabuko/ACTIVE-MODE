@@ -27,9 +27,9 @@ export class ZDiaService {
     return this.http.post<any>(url,data)
   }
 
-  updateDiaParam(dias_semana:string,dias_tarifa:number,id:number){
+  updateDiaParam(dia:any,id:number){
     const url = this.apiURL + "/dia/param/update"
-    const data = {dias_semana:dias_semana,dias_tarifa:dias_tarifa,id:id}
+    const data = {dias_semana:dia.dias_semana,dias_tarifa:dia.dias_tarifa,id:id}
     return this.http.put<any>(url,data)
   }
 

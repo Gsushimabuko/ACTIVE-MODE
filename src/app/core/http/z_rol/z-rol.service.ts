@@ -27,9 +27,9 @@ export class ZRolService {
     return this.http.post<any>(url,data)
   }
 
-  updateRolParam(nombre:string,id:number){
+  updateRolParam(rol:any,id:number){
     const url = this.apiURL + "/rol/param/update"
-    const data = {nombre:nombre,id:id}
+    const data = {nombre:rol.nombre,id:id}
     return this.http.put<any>(url,data)
   }
 
