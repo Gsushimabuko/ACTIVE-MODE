@@ -1,0 +1,24 @@
+.boton-check{
+    margin-right: 10px;
+}
+
+.icono-delete{
+    color: blue;
+}
+
+.boton-footer{
+    margin: 10px;
+}
+
+.container-cartilla{
+    margin: 10px;
+}
+
+.titulo-componente{
+    text-align: center;
+    color: white;
+}
+
+input{
+    color: black!important;
+  }

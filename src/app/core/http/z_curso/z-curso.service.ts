@@ -31,9 +31,9 @@ export class ZCursoService {
     return this.http.get<CursoParam[]>(url)
   }
 
-  getCursoParam(){
+  getCursoParam(id:number){
     const url = this.apiURL + "/curso/param"
-    return this.http.get<CursoParam>(url)
+    return this.http.get<CursoParam>(url,{params:{id:id}})
   }
 
   createCursoParam(nombre:string){

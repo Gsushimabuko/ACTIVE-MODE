@@ -5,6 +5,8 @@ import { ZCursoService } from '../../../../core/http/z_curso/z-curso.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { CursosDialogComponent } from './cursos-dialog/cursos-dialog.component';
 
 @Component({
   selector: 'app-cursos-param',
@@ -23,7 +25,8 @@ export class CursosParamComponent{
 
 
     constructor(private formBuilder: FormBuilder,
-    public cursoService: ZCursoService
+    public cursoService: ZCursoService,
+    public dialog: MatDialog,
     ){
 
 
@@ -36,6 +39,24 @@ export class CursosParamComponent{
       })
 
   
+    }
+
+    openDialog(curso:any): void {
+
+      var dialogRef = this.dialog.open(CursosDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          curso:curso
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      });
+
     }
 
     get propiedades() : FormArray {

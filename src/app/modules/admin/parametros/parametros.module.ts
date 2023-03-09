@@ -14,6 +14,12 @@ import { TipoUsuariosComponent } from './tipo-usuarios/tipo-usuarios.component';
 import { RolesComponent } from './roles/roles.component';
 import { NivelesComponent } from './niveles/niveles.component';
 import { DiaGrupoComponent } from './dia-grupo/dia-grupo.component';
+import { CursosDialogComponent } from './cursos/cursos-dialog/cursos-dialog.component';
+import { DiaDialogComponent } from './dia/dia-dialog/dia-dialog.component';
+import { NivelesDialogComponent } from './niveles/niveles-dialog/niveles-dialog.component';
+import { TipoUsuariosDialogComponent } from './tipo-usuarios/tipo-usuarios-dialog/tipo-usuarios-dialog.component';
+import { RolesDialogComponent } from './roles/roles-dialog/roles-dialog.component';
+import { PeriodosDialogComponent } from './periodos/periodos-dialog/periodos-dialog.component';
 
 
 
@@ -27,6 +33,12 @@ import { DiaGrupoComponent } from './dia-grupo/dia-grupo.component';
     RolesComponent,
     NivelesComponent,
     DiaGrupoComponent,
+    CursosDialogComponent,
+    DiaDialogComponent,
+    NivelesDialogComponent,
+    TipoUsuariosDialogComponent,
+    RolesDialogComponent,
+    PeriodosDialogComponent,
   ],
   imports: [
     CommonModule,

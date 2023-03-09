@@ -1,93 +1,102 @@
-<div class="container">
+<h2 class="titulo-componente">Gestión del parametro Cursos</h2>
+
+<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" >
+
+  <div class="container-cartilla">
+    <mat-card class="card-nuevo" >
+      <mat-card-content>
+        
+        <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
+              <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+              <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+              <td  mat-cell *matCellDef="let element">{{element.id}}</td>
+            </ng-container>
+      
+            <!-- Weight Column -->
+            <ng-container matColumnDef="info">
+              <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Editar</th>
+              <td class="boton-tabla" mat-cell *matCellDef="let element">
+                <div *ngIf="element.estado == 'ACTIVO'; else otro">
+                    <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
+                      <mat-icon>editar</mat-icon>
+                    </button>
+                    <button class="boton-check" mat-mini-fab color="warn" (click)="cambiarEstado(element.id)">
+                      <mat-icon>visibility_off</mat-icon>
+                      </button>
+                </div>
+                <ng-template #otro>
+                  <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
+                    <mat-icon>editar</mat-icon>
+                  </button>
+                    <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
+                      <mat-icon>visibility</mat-icon>
+                      </button>
+                </ng-template>
+
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 5]"
+                      showFirstLastButtons
+                      aria-label="Seleccionar página de alumnos">
+        </mat-paginator>   
+                              
+      </mat-card-content>
+  </mat-card>
+
+  </div>
+
+  <div class="container-cartilla">
+
+    <mat-card class="card-nuevo" >
+      <mat-card-content>
+        <form [formGroup]="formCursos">
+
+          <div formArrayName="propiedades">
+              <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
+                  <div [formGroupName]="i">
+                    <button class="boton-check" mat-mini-fab color="warn" disabled>
+                      {{i+1}}
+                      </button>
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Nombre del curso</mat-label>
+                          <input matInput placeholder="Escriba el nombre" formControlName="nombre">
+                      </mat-form-field>
     
-        <mat-card class="card-nuevo" >
-            <b>Parametros de cursos</b>
-            <mat-card-header>
-                
-                <mat-card-title-group fxLayout.lt-md="column">
+                      <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
+                  </div>
+                  
+              </div>
+          </div>
+              
+        </form>                
+      </mat-card-content>
 
-                    <div>
-                        <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
-                            <!-- Position Column -->
-                            <ng-container matColumnDef="nombre">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
-                              <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
-                            </ng-container>
-                          
-                            <!--No results-->
-                          
-                        
-         
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="estado">
-                              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-                              <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
-                            </ng-container>
-                      
-                            <ng-container matColumnDef="id">
-                              <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-                              <td  mat-cell *matCellDef="let element">{{element.id}}</td>
-                            </ng-container>
-                      
-                            <!-- Weight Column -->
-                            <ng-container matColumnDef="info">
-                              <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Info</th>
-                              <td class="boton-tabla" mat-cell *matCellDef="let element">
-                                <button class="boton-check" mat-mini-fab  color="primary"  [routerLink]="[element.id]"  >
-                                  <mat-icon>editar</mat-icon>
-                                </button>
-                                <div *ngIf="element.estado == 'ACTIVO'; else otro">
-                                    <button mat-raised-button color="warn" (click)="cambiarEstado(element.id)">
-                                        INACTIVAR
-                                      </button>
-                                </div>
-                                <ng-template #otro>
-                                    <button mat-raised-button color="primary" (click)="cambiarEstado(element.id)">
-                                        ACTIVAR
-                                      </button>
-                                </ng-template>
+      <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
 
-                              </td>
-                            </ng-container>
-                          
-                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                        </table>
+        <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Añadir nuevo</button>
+        <button class="boton-footer" mat-raised-button color="primary" (click)="save()">Guardar</button>
+      </mat-card-footer>
+  </mat-card>
+
     
-                        <mat-paginator [pageSizeOptions]="[10, 20, 5]"
-                                       showFirstLastButtons
-                                       aria-label="Seleccionar página de alumnos">
-                        </mat-paginator>   
-                                
-                    </div>
 
-                          
 
-                    <form [formGroup]="formCursos">
-
-                        <div formArrayName="propiedades">
-                            <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
-                                <div [formGroupName]="i">
-                                    <mat-form-field class="input-propiedades" >
-                                        <mat-label>Curso nuevo</mat-label>
-                                        <input matInput placeholder="Escriba el nombre del curso" formControlName="nombre">
-                                    </mat-form-field>
-                
-                                    <mat-icon (click)="eliminarPropiedad(i)">delete</mat-icon>
-                                </div>
-                                
-                            </div>
-                        </div>
+  </div>
     
-                        <button mat-raised-button color="primary" (click)="agregarPropiedad()">Añadir nuevo curso</button>
-                        
-                        <button mat-raised-button color="primary" (click)="save()">Guardar</button>
-
-                    </form>
-
-                    
-
-                </mat-card-title-group>
-            </mat-card-header>
-        </mat-card>
+        
 </div>

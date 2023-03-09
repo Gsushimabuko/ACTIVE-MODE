@@ -1,0 +1,47 @@
+.titulo{
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 15px;
+    font-weight: 500;
+    color: #E49F3B;
+    margin-bottom: 0.5rem;
+    
+}
+.titulo-descripcion{
+    font-family: 'Poppins';
+    font-weight: normal;
+    font-weight: 400;
+    font-size: 11px;
+    color: #212121;
+  
+}
+
+.boton-confirmar{
+    color: #212121;
+    background-color: #69d360;
+    width: 100px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+.boton-cancelar{
+    color: black;
+    background-color: white;
+    width: 100px;
+    border-radius: 2px;
+    font-weight: bold;
+    outline: 2px solid #69d360;
+    outline-offset: -2px;
+}
+.boton-cerrar{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.contenido{
+    position: relative;
+}
+
+input{
+    color: black!important;
+  }
+

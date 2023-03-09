@@ -1,0 +1,33 @@
+  
+    <div fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxLayoutAlign="center center">
+
+            <h4> Editar datos del Curso </h4>
+
+            <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button> 
+
+        </div>
+
+            <mat-dialog-content>
+                <form [formGroup]="contenidoForm" fxLayout="column" fxLayoutAlign="space-around stretch"  fxLayoutGap="3px">
+                    <mat-form-field class="input-propiedades"  appearance="outline">
+                        <mat-label>Nombre del curso</mat-label>
+                        <input matInput placeholder="Nombre del curso" formControlName="nombre">
+                    </mat-form-field>
+                </form>
+
+            </mat-dialog-content>
+            <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+
+                <button mat-stroked-button color="warn" (click)="enCancelar()">Cancelar</button>
+                <button mat-raised-button color="primary" [disabled]="!contenidoForm.valid" type="submit" (click)="enConfirmar()">Confirmar</button>
+            
+            </mat-dialog-actions>
+
+    </div>
+
+
+
+
