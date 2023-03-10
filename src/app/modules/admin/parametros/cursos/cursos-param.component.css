@@ -19,6 +19,13 @@
     color: white;
 }
 
+.input-propiedades{
+    margin-right: 10px;
+}
+
 input{
     color: black!important;
   }
+mat-divider{
+    margin-bottom: 15px;
+}

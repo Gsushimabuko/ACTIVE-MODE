@@ -1,0 +1,33 @@
+.boton-check{
+    margin-right: 10px;
+}
+
+.icono-delete{
+    color: blue;
+}
+
+.boton-footer{
+    margin: 10px;
+}
+
+.container-cartilla{
+    margin: 10px;
+}
+
+.titulo-componente{
+    text-align: center;
+    color: white;
+}
+
+.input-propiedades{
+    margin-right: 10px;
+}
+
+input{
+    color: black!important;
+  }
+
+  mat-divider{
+    margin-bottom: 15px;
+}
+  

@@ -70,7 +70,7 @@ export class ParaDialogComponent {
         
         break;
 
-      case "niveles":
+      case "nivel":
 
       this.nivelService.updateNivelParam(this.contenidoForm.value,this.id).subscribe(res =>{
         this.dialogRef.close(res);
@@ -78,7 +78,7 @@ export class ParaDialogComponent {
         
         break;
 
-      case "tipoUsuarios":
+      case "tipoUsuario":
 
       this.tipoUsuarioService.updateTipoUsuarioParam(this.contenidoForm.value,this.id).subscribe(res =>{
         this.dialogRef.close(res);
@@ -86,7 +86,7 @@ export class ParaDialogComponent {
         
         break;
     
-      case "roles":
+      case "rol":
 
       this.rolService.updateRolParam(this.contenidoForm.value,this.id).subscribe(res =>{
         this.dialogRef.close(res);

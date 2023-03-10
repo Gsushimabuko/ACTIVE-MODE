@@ -39,4 +39,9 @@ export class ZTipoUsuarioService {
     return this.http.put<any>(url,data)
   }
 
+  deleteTipoUsuarioParam(id:number){
+    const url = this.apiURL + "/tipo-usuario/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
+
 }

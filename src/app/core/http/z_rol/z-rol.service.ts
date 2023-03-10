@@ -39,5 +39,10 @@ export class ZRolService {
     return this.http.put<any>(url,data)
   }
 
+  deleteRolParam(id:number){
+    const url = this.apiURL + "/rol/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
+
 
 }

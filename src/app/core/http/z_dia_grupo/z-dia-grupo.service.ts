@@ -6,6 +6,9 @@ import { environment } from 'src/app/environments/environment';
   providedIn: 'root'
 })
 export class ZDiaGrupoService {
+  getDiasParam() {
+    throw new Error('Method not implemented.');
+  }
 
   apiURL = environment.API_URL
 
@@ -37,5 +40,10 @@ export class ZDiaGrupoService {
     const url = this.apiURL + "/dia-grupo/param/state"
     const data = {id:id}
     return this.http.put<any>(url,data)
+  }
+
+  deleteDiaGrupoParam(id:number){
+    const url = this.apiURL + "/dia-grupo/param"
+    return this.http.delete<any>(url,{params:{id:id}})
   }
 }

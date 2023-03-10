@@ -54,6 +54,10 @@ export class ZCursoService {
     return this.http.put<any>(url,data)
   }
 
+  deleteCursoParam(id:number){
+    const url = this.apiURL + "/curso/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
 
   getCursoHorarios(idTipoUsuario:number,mes:number,ano:number,idCurso:number,idCursoPeriodo:number){
     const url = this.apiURL + "/cursos_horariosv2"
@@ -65,7 +69,6 @@ export class ZCursoService {
     return this.http.get<CursoMatriculado[]>(url,{params:{idUsuario: idUsuario, mes:mes, ano:ano}})
   }
   
-
   createMatriculaHorario(curso:any,idPago:number,idUsuario:number){
     const url = this.apiURL + "/cursos_matricula"
     const data = {
@@ -95,9 +98,8 @@ export class ZCursoService {
   getOnlyHorario(idCursoPeriodo:number){
     const url = this.apiURL + "/horario-only"
     return this.http.get<any>(url,{params:{idCursoPeriodo:idCursoPeriodo}})
-
-
   }
+
   getOnlyAlumnosHorario(idHorario:number){
     const url = this.apiURL + "/horario-alumnos-only"
     return this.http.get<any>(url,{params:{idHorario:idHorario}})

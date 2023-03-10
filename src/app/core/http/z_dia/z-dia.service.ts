@@ -39,5 +39,11 @@ export class ZDiaService {
     return this.http.put<any>(url,data)
   }
 
+  deleteDiaParam(id:number){
+    const url = this.apiURL + "/dia/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
+
+
   
 }

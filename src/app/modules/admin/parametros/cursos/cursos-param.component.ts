@@ -51,7 +51,7 @@ export class CursosParamComponent{
           origen: "cursos",
           listaCampos: ["nombre"]
         }
-        
+
       });
   
       dialogRef.afterClosed().subscribe(result => {
@@ -110,6 +110,13 @@ export class CursosParamComponent{
         
       })
 
+    }
+
+    eliminarRegistro(id:number){
+      this.cursoService.deleteCursoParam(id).subscribe(res=>{
+        this.actualizarTabla()
+        
+      })
     }
 
 }

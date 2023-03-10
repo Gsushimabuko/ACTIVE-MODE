@@ -33,4 +33,9 @@ export class ZPeriodoService {
     return this.http.put<any>(url,data)
   }
 
+  deletePeriodoParam(id:number){
+    const url = this.apiURL + "/periodo/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
+
 }

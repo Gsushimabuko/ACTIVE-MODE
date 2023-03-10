@@ -1,1 +1,179 @@
-<p>dia-grupo works!</p>
+<h2 class="titulo-componente">Gestión del parametro Dia Grupo</h2>
+
+<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" >
+
+  <div class="container-cartilla">
+    <mat-card class="card-nuevo" >
+      <mat-card-content>
+        
+        <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Frecuencia semana</th>
+              <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+            </ng-container>
+
+              <ng-container matColumnDef="id_dia">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Veces semana</th>
+                <td  mat-cell *matCellDef="let element">{{element.z_dium.dias_semana}}</td>
+              </ng-container>
+
+
+            <ng-container matColumnDef="estado">
+              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+              <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
+            </ng-container>
+      
+            <!-- Weight Column -->
+            <ng-container matColumnDef="info">
+              <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Editar</th>
+              <td class="boton-tabla" mat-cell *matCellDef="let element">
+                <div *ngIf="element.estado == 'ACTIVO'; else otro">
+                    <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
+                      <mat-icon>editar</mat-icon>
+                    </button>
+                    <button class="boton-check" mat-mini-fab color="accent" (click)="cambiarEstado(element.id)">
+                      <mat-icon>visibility_off</mat-icon>
+                      </button>
+                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+    
+                </div>
+                <ng-template #otro>
+                  <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
+                    <mat-icon>editar</mat-icon>
+                  </button>
+                    <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
+                      <mat-icon>visibility</mat-icon>
+                      </button>
+                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+    
+                </ng-template>
+
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 5]"
+                      showFirstLastButtons
+                      aria-label="Seleccionar página de alumnos">
+        </mat-paginator>   
+                              
+      </mat-card-content>
+  </mat-card>
+
+  </div>
+
+  <div class="container-cartilla">
+
+    <mat-card class="card-nuevo" >
+      <mat-card-content>
+
+        <div *ngIf="formObjetos.value.propiedades.length == 0 || generadorFlag == true" >
+
+            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butLu,'1')" #butLu>
+                Lu
+                </button>
+                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMa,'2')" #butMa>
+                    Ma
+                    </button>
+                    <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMi,'3')" #butMi >
+                        Mi
+                        </button>
+                        <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butJu,'4')" #butJu>
+                            Ju
+                            </button>
+                            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butVi,'5')" #butVi>
+                                Vi
+                                </button>
+                                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butSa,'6')" #butSa>
+                                    Sa
+                                    </button>
+
+          </div>
+
+
+        <form [formGroup]="formObjetos">
+
+          <div formArrayName="propiedades">
+              <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
+                  <div [formGroupName]="i" fxLayout="row warp">
+                    <button class="boton-check" mat-mini-fab color="warn" disabled>
+                      {{i+1}}
+                      </button>
+
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                          <input matInput placeholder="" formControlName="nombre">
+                      </mat-form-field>     
+
+                      <mat-form-field class="input-propiedades" appearance="outline">
+
+                        <mat-label>Número clases al mes</mat-label>
+                          
+                        <mat-select formControlName="id_dia">
+                            <mat-option *ngFor="let dia of dias"  [value]="dia.id">
+                                {{dia.dias_semana}}
+                            </mat-option>
+                        </mat-select>
+
+                      </mat-form-field>
+
+
+                      <div *ngIf="!generadorFlag" >
+
+                        <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butLu,i,'1')" #butLu>
+                            Lu
+                            </button>
+                            <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butMa,i,'2')" #butMa>
+                                Ma
+                                </button>
+                                <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butMi,i,'3')" #butMi >
+                                    Mi
+                                    </button>
+                                    <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butJu,i,'4')" #butJu>
+                                        Ju
+                                        </button>
+                                        <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butVi,i,'5')" #butVi>
+                                            Vi
+                                            </button>
+                                            <button class="boton-check" mat-mini-fab color="accent" (click)="hizoClick(butSa,i,'6')" #butSa>
+                                                Sa
+                                                </button>
+    
+                      </div>
+
+                     
+
+                      <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
+
+                      <mat-divider></mat-divider>
+                  </div>
+                  
+              </div>
+          </div>
+              
+        </form>                
+      </mat-card-content>
+
+      <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
+
+        <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad('',null)">Añadir nuevo</button>
+        <button *ngIf="formObjetos.value.propiedades.length == 0" class="boton-footer" mat-raised-button color="primary" (click)="generarAuto()">Generar</button>
+        <button *ngIf="formObjetos.value.propiedades.length != 0" class="boton-footer" mat-raised-button color="accent" (click)="eliminarTodo()">Cancelar</button>
+        <button class="boton-footer" mat-raised-button color="primary" [disabled]="!formObjetos.valid || formObjetos.value.propiedades.length == 0" (click)="save()">Guardar</button>
+      </mat-card-footer>
+  </mat-card>
+
+    
+
+
+  </div>
+    
+        
+</div>

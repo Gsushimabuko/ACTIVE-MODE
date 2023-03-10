@@ -31,8 +31,11 @@
                     <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
                       <mat-icon>editar</mat-icon>
                     </button>
-                    <button class="boton-check" mat-mini-fab color="warn" (click)="cambiarEstado(element.id)">
+                    <button class="boton-check" mat-mini-fab color="accent" (click)="cambiarEstado(element.id)">
                       <mat-icon>visibility_off</mat-icon>
+                      </button>
+                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
+                        <mat-icon>delete</mat-icon>
                       </button>
                 </div>
                 <ng-template #otro>
@@ -41,7 +44,10 @@
                   </button>
                     <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
                       <mat-icon>visibility</mat-icon>
-                      </button>
+                    </button>
+                    <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
                 </ng-template>
 
               </td>
@@ -76,9 +82,10 @@
                         <mat-label>Nombre del curso</mat-label>
                           <input matInput placeholder="Escriba el nombre" formControlName="nombre">
                       </mat-form-field>
-    
                       <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
+                      <mat-divider></mat-divider>
                   </div>
+                  
                   
               </div>
           </div>
@@ -89,7 +96,7 @@
       <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
 
         <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Añadir nuevo</button>
-        <button class="boton-footer" mat-raised-button color="primary" (click)="save()">Guardar</button>
+        <button class="boton-footer" mat-raised-button color="primary" [disabled]="!formCursos.valid || formCursos.value.propiedades.length == 0" (click)="save()">Guardar</button>
       </mat-card-footer>
   </mat-card>
 

@@ -39,5 +39,10 @@ export class ZNivelService {
     return this.http.put<any>(url,data)
   }
 
+  deleteNivelParam(id:number){
+    const url = this.apiURL + "/nivel/param"
+    return this.http.delete<any>(url,{params:{id:id}})
+  }
+
 
 }
