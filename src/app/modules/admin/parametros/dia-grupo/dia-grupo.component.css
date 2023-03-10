@@ -30,4 +30,12 @@ input{
   mat-divider{
     margin-bottom: 15px;
 }
-  
+
+.cabecera-dias{
+    margin-bottom: 20px;
+}
+
+.inhabilitado{
+    cursor: not-allowed;
+    pointer-events:none;
+}

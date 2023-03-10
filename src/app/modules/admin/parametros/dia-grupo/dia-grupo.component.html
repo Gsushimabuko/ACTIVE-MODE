@@ -71,27 +71,27 @@
 
   <div class="container-cartilla">
 
-    <mat-card class="card-nuevo" >
-      <mat-card-content>
+    <mat-card class="card-nuevo"  >
+      <mat-card-content fxLayout="column" fxLayoutAlign="none center">
 
-        <div *ngIf="formObjetos.value.propiedades.length == 0 || generadorFlag == true" >
+        <div class="cabecera-dias" *ngIf="formObjetos.value.propiedades.length == 0 || generadorFlag == true"  >
 
-            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butLu,'1')" #butLu>
+            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butLu,'1')" #butLu  [ngClass]="{'inhabilitado': generadorFlag == true}">
                 Lu
                 </button>
-                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMa,'2')" #butMa>
+                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMa,'2')" #butMa [ngClass]="{'inhabilitado': generadorFlag == true}">
                     Ma
                     </button>
-                    <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMi,'3')" #butMi >
+                    <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butMi,'3')" #butMi [ngClass]="{'inhabilitado': generadorFlag == true}">
                         Mi
                         </button>
-                        <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butJu,'4')" #butJu>
+                        <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butJu,'4')" #butJu [ngClass]="{'inhabilitado': generadorFlag == true}">
                             Ju
                             </button>
-                            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butVi,'5')" #butVi>
+                            <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butVi,'5')" #butVi [ngClass]="{'inhabilitado': generadorFlag == true}">
                                 Vi
                                 </button>
-                                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butSa,'6')" #butSa>
+                                <button class="boton-check" mat-mini-fab color="accent" (click)="generador(butSa,'6')" #butSa [ngClass]="{'inhabilitado': generadorFlag == true}">
                                     Sa
                                     </button>
 
@@ -152,11 +152,17 @@
 
                       <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
 
-                      <mat-divider></mat-divider>
+                      
+                      
                   </div>
+                  <mat-divider></mat-divider>
                   
               </div>
+
+             
           </div>
+
+          
               
         </form>                
       </mat-card-content>
