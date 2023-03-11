@@ -93,7 +93,7 @@ export class NivelesComponent {
       for(var objeto of this.formObjetos.value.propiedades){
 
         this.objetoService.createNivelParam(objeto.nivel,objeto.hora).subscribe(res=>{
-          console.log(res)
+      
           this.eliminarPropiedad(0)
           this.actualizarTabla()
         })

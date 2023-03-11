@@ -92,7 +92,7 @@ export class RolesComponent {
       for(var objeto of this.formObjetos.value.propiedades){
 
         this.objetoService.createRolParam(objeto.nombre).subscribe(res=>{
-          console.log(res)
+        
           this.eliminarPropiedad(0)
           this.actualizarTabla()
         })

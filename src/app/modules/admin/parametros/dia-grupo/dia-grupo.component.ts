@@ -118,7 +118,6 @@ export class DiaGrupoComponent {
         let serieValor = this.listaClase[index].split('').join(',')
         
         this.objetoService.createDiaGrupoParam(objeto.nombre,serieValor,parseInt(objeto.id_dia)).subscribe(res=>{
-          console.log(res)
           this.eliminarPropiedad(0)
           this.actualizarTabla()
           this.listaDiasGenerador = ""

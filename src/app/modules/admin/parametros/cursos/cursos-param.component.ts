@@ -15,7 +15,7 @@ import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 export class CursosParamComponent{
   formCursos: FormGroup;
 
-  displayedColumns: string[] = ['nombre','estado','id','info'];
+  displayedColumns: string[] = ['nombre','estado','info'];
   dataSource:any = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -95,7 +95,7 @@ export class CursosParamComponent{
       for(var curso of this.formCursos.value.propiedades){
 
         this.cursoService.createCursoParam(curso.nombre).subscribe(res=>{
-          console.log(res)
+    
           this.eliminarPropiedad(0)
           this.actualizarTabla()
         })

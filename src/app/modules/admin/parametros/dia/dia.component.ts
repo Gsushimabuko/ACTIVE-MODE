@@ -93,7 +93,7 @@ export class DiaComponent {
       for(var objeto of this.formObjetos.value.propiedades){
 
         this.objetoService.createDiaParam(objeto.dias_semana,parseInt(objeto.dias_tarifa)).subscribe(res=>{
-          console.log(res)
+    
           this.eliminarPropiedad(0)
           this.actualizarTabla()
         })

@@ -91,7 +91,7 @@ export class TipoUsuariosComponent {
       for(var objeto of this.formObjetos.value.propiedades){
 
         this.objetoService.createTipoUsuarioParam(objeto.nombre).subscribe(res=>{
-          console.log(res)
+        
           this.eliminarPropiedad(0)
           this.actualizarTabla()
         })
