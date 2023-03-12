@@ -15,6 +15,7 @@ import { RolesComponent } from './roles/roles.component';
 import { NivelesComponent } from './niveles/niveles.component';
 import { DiaGrupoComponent } from './dia-grupo/dia-grupo.component';
 import { ParaDialogComponent } from './para-dialog/para-dialog.component';
+import { ElimDialogComponent } from './elim-dialog/elim-dialog.component';
 
 
 
@@ -29,6 +30,7 @@ import { ParaDialogComponent } from './para-dialog/para-dialog.component';
     NivelesComponent,
     DiaGrupoComponent,
     ParaDialogComponent,
+    ElimDialogComponent,
   ],
   imports: [
     CommonModule,

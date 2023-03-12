@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ZDiaService } from 'src/app/core/http/z_dia/z-dia.service';
 import { ZDiaGrupoService } from 'src/app/core/http/z_dia_grupo/z-dia-grupo.service';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 
@@ -137,10 +138,27 @@ export class DiaGrupoComponent {
     }
 
     eliminarRegistro(id:number){
-      this.objetoService.deleteDiaGrupoParam(id).subscribe(res=>{
+      
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "diaGrupo",
+        }
+        
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
         this.actualizarTabla()
-        this.listaDiasGenerador = ""
-      })
+      });
+
     }
 
     hizoClick(button:MatButton ,index:number,num:string){

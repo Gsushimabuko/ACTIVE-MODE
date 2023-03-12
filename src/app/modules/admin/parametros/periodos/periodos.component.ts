@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ZPeriodoService } from 'src/app/core/http/z_periodo/z-periodo.service';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 @Component({
@@ -108,9 +109,24 @@ export class PeriodosComponent {
     }
 
     eliminarRegistro(id:number){
-      this.objetoService.deletePeriodoParam(id).subscribe(res=>{
-        this.actualizarTabla()
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "periodo",
+        }
         
-      })
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      });
     }
 }

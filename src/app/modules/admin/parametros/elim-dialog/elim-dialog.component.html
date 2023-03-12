@@ -1,0 +1,24 @@
+  
+    <div fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxLayoutAlign="center center">
+
+            <h4> Eliminar datos</h4>
+
+            <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
+                <mat-icon>close</mat-icon>
+            </button> 
+
+        </div>
+
+            <mat-dialog-content>
+                <p> ¿Estas seguro(a) que quieres eliminar este {{origen}}?</p>
+
+            </mat-dialog-content>
+            <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+
+                <button mat-stroked-button color="warn" (click)="enCancelar()">No</button>
+                <button mat-raised-button color="primary" (click)="enConfirmar()">Si</button>
+            
+            </mat-dialog-actions>
+
+    </div>

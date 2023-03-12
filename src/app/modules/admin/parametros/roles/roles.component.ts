@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ZRolService } from 'src/app/core/http/z_rol/z-rol.service';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 @Component({
@@ -110,10 +111,25 @@ export class RolesComponent {
     }
 
     eliminarRegistro(id:number){
-      this.objetoService.deleteRolParam(id).subscribe(res=>{
-        this.actualizarTabla()
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "rol",
+        }
         
-      })
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      });
     }
 
 }

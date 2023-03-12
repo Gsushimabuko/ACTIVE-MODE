@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ZTipoUsuarioService } from '../../../../core/http/z_tipoUsuario/z-tipo-usuario.service';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 @Component({
@@ -109,9 +110,24 @@ export class TipoUsuariosComponent {
     }
 
     eliminarRegistro(id:number){
-      this.objetoService.deleteTipoUsuarioParam(id).subscribe(res=>{
-        this.actualizarTabla()
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "tipoUsuario",
+        }
         
-      })
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      });
     }
 }

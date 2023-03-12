@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ZDiaService } from 'src/app/core/http/z_dia/z-dia.service';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
 
 @Component({
@@ -20,6 +21,7 @@ export class DiaComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort!: MatSort;
+
   
 
 
@@ -111,9 +113,28 @@ export class DiaComponent {
     }
 
     eliminarRegistro(id:number){
-      this.objetoService.deleteDiaParam(id).subscribe(res=>{
-        this.actualizarTabla()
+
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "dia",
+        }
         
-      })
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log(result)
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      }
+      );
+
     }
 }

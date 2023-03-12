@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ParaDialogComponent } from '../para-dialog/para-dialog.component';
+import { ElimDialogComponent } from '../elim-dialog/elim-dialog.component';
 
 @Component({
   selector: 'app-cursos-param',
@@ -113,10 +114,27 @@ export class CursosParamComponent{
     }
 
     eliminarRegistro(id:number){
-      this.cursoService.deleteCursoParam(id).subscribe(res=>{
-        this.actualizarTabla()
+      
+      let objeto = {
+        id: id
+      }
+
+      var dialogRef = this.dialog.open(ElimDialogComponent, {
+        width: '400px',
+    
+        hasBackdrop:true,
+        data: {
+          objeto: objeto,
+          origen: "cursos",
+        }
         
-      })
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.actualizarTabla()
+      });
+
     }
 
 }
