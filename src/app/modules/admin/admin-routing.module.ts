@@ -4,6 +4,7 @@ import { AdminComponent } from "../login/admin/admin.component";
 import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.component";
 import { AlumnosComponent } from "./alumnos/alumnos.component";
 import { CodigosComponent } from "./codigos/codigos.component";
+import { CreacionCursosComponent } from "./creacion-cursos/creacion-cursos.component";
 import { CursosComponent } from "./cursos/cursos.component";
 
 
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'dashboard', component: AdminDashboardComponent}, 
   { path: 'alumnos', component: AlumnosComponent },
   { path: 'codigo', component: CodigosComponent },
-  { path: 'cursos', component: CursosComponent }
+  { path: 'cursos', component: CursosComponent },
+  { path: 'creacion', component: CreacionCursosComponent }
   ,{path: 'parametros', loadChildren: () =>
   import('./parametros/parametros.module').then(m => m.ParametrosModule)}
 

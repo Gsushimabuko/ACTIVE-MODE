@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CursosParamComponent } from './parametros/cursos/cursos-param.component';
 import { ParametrosModule } from './parametros/parametros.module';
+import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.component';
 
 
 
@@ -22,7 +23,8 @@ import { ParametrosModule } from './parametros/parametros.module';
     AdminDashboardComponent,
     CursosComponent,
     AlumnosComponent,
-    CodigosComponent
+    CodigosComponent,
+    CreacionCursosComponent
   ],
   imports: [
     CommonModule,
