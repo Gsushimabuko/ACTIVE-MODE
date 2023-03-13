@@ -108,7 +108,7 @@ fxLayout="column" fxLayoutAlign="center center"
                                     {{deporte.horarios[3].nivel }}
                                     <ul>
                                         <li>N. alumnos: {{deporte.horarios[3].cantidad}} </li>
-                                        <li *ngFor="let persona of deporte.horarios[0].usuarios">
+                                        <li *ngFor="let persona of deporte.horarios[3].usuarios">
                                             {{persona | json}}
                                         </li>
                                     </ul>
