@@ -21,6 +21,11 @@ export class ZPeriodoService {
     return this.http.get<any>(url,{params:{id:id}})
   }
 
+  getPeriodoTiempos() {
+    const url = this.apiURL + "/periodo/tiempos";
+    return this.http.get<any>(url);
+  }
+
   createPeriodoParam(mes:number,ano:number){
     const url = this.apiURL + "/periodo/param"
     const data = {mes:mes,ano:ano}

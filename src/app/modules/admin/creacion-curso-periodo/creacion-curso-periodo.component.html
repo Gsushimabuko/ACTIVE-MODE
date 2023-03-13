@@ -1,0 +1,31 @@
+<h2 class="titulo-componente">Gestión de Cursos por Periodo</h2>
+
+<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" fxLayoutGap="20">
+  <div class="container-cartilla">
+    <mat-card class="card-nuevo">
+        <mat-card-content>
+            <form>
+                <div formArrayName="propiedades">
+                    <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
+                        <div [formGroupName]="i">
+                            <button class="boton-check" mat-mini-fab color="warn" disabled>
+                                {{i+1}}
+                            </button>
+                            
+                            <mat-form-field class="input-propiedades" appearance="outline">
+                              <mat-label>Nombre del curso</mat-label>
+                              <input matInput placeholder="Escriba el nombre" formControlName="nombre">
+                            </mat-form-field>
+
+                            <mat-icon class="icono-delete" >delete</mat-icon>
+                            <mat-divider></mat-divider>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        
+            
+        </mat-card-content> 
+    </mat-card>
+  </div>
+</div>

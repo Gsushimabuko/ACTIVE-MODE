@@ -93,8 +93,13 @@ export class ZCursoService {
   getOnlyCursoPeriodo (idCurso: number){
     const url = this.apiURL + "/curso-periodo-only"
     return this.http.get<any>(url,{params:{idCurso:idCurso}})
-
   }
+
+  getCursoPeriodo (mes: number, ano: number){
+    const url = this.apiURL + "/curso-periodo";
+    return this.http.get<any>(url, { params: { mes: mes, ano: ano } });
+  }
+
   getOnlyHorario(idCursoPeriodo:number){
     const url = this.apiURL + "/horario-only"
     return this.http.get<any>(url,{params:{idCursoPeriodo:idCursoPeriodo}})

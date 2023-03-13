@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { CursosParamComponent } from './parametros/cursos/cursos-param.component';
 import { ParametrosModule } from './parametros/parametros.module';
 import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.component';
+import { CreacionCursoPeriodoComponent } from './creacion-curso-periodo/creacion-curso-periodo.component';
 
 
 
@@ -24,7 +25,8 @@ import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.compo
     CursosComponent,
     AlumnosComponent,
     CodigosComponent,
-    CreacionCursosComponent
+    CreacionCursosComponent,
+    CreacionCursoPeriodoComponent
   ],
   imports: [
     CommonModule,
