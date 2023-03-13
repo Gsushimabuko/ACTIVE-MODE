@@ -4,9 +4,11 @@ mat-icon{
 
 .background{
     background-image: linear-gradient(0deg, #7b2fec 19.53125%, #2545e7 100%);
-    height: 100%;
-    width: 100%;
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #d3d3d3;
 }
  .logo{
     margin:25px;

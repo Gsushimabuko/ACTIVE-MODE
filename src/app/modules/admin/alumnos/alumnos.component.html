@@ -1,1 +1,135 @@
-<p>alumnos works!</p>
+<div *ngIf="loader" class="loader-spinner"
+fxLayout="column" fxLayoutAlign="center center"
+>
+<mat-spinner color="primary"></mat-spinner>
+</div>
+<div  fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center start">
+        <mat-card fxLayout="column"  fxLayoutAlign="center center" style=" width: 700px; height: 500px; margin:40px; padding:20px">
+            <div style="text-align:center;">
+                <h2>Seleccionar mes</h2>
+            </div>
+            <div fxLayout="row"  fxLayoutAlign="center start">
+                
+                <mat-form-field  *ngIf="calendario" appearance="outline">
+                    <mat-label>Selecciona el mes</mat-label>
+                    <mat-select (selectionChange)="cambiarMes($event)">
+                        <div *ngFor="let key of Object.keys(calendario) ; let i = index">
+                            <mat-option *ngIf="key != 'year'" [value]="key" >
+                                {{key}}
+                            </mat-option>
+                        </div>
+                    </mat-select>
+                </mat-form-field>
+      
+            </div>
+            <div style="text-align:center;">
+                <h2>Día seleccionado:</h2>
+                <div *ngIf="fechaBuscada">
+                    {{fechaBuscada}}
+                </div>
+            </div>
+        
+    
+            <div>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Domingo</th>
+                            <th>Lunes</th>
+                            <th>Martes</th>
+                            <th>Miércoles</th>
+                            <th>Jueves</th>
+                            <th>Viernes</th>
+                            <th>Sábado</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="calendarioMes">
+                        <tr class="trTable">
+                            <td *ngFor="let dia of calendarioMes.semana1" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
+                        <tr  class="trTable" >
+                            <td *ngFor="let dia of calendarioMes.semana2" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
+                        <tr class="trTable" >
+                            <td *ngFor="let dia of calendarioMes.semana3" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
+                        <tr  class="trTable" >
+                            <td *ngFor="let dia of calendarioMes.semana4" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </div>
+            
+        </mat-card>
+        
+    
+    </div>
+    <div  fxLayout="column"  fxLayoutAlign="center center" *ngIf="reporte">
+    
+            <div  *ngFor="let deporte of reporte">
+                <div>
+                    <mat-card style=" width: 1000px; margin:10px; padding:10px;">
+                       <h3 style="text-align: center; "> {{deporte.nombre}} </h3>
+                       <table>
+                            <thead>
+                                <th *ngIf="deporte.horarios[0]">
+                                    {{deporte.horarios[0].nivel}}
+                                    <ul>
+                                        <li>N. alumnos: {{deporte.horarios[0].cantidad}} </li>
+                                        <li *ngFor="let persona of deporte.horarios[0].usuarios">
+                                            {{persona | json}}
+                                        </li>
+    
+                                    </ul>
+                                    
+                                </th>
+                                <th *ngIf="deporte.horarios[1]">
+                                    {{deporte.horarios[1].nivel}}
+                                    <ul>
+                                        <li>N. alumnos: {{deporte.horarios[1].cantidad}} </li>
+                                        <li *ngFor="let persona of deporte.horarios[1].usuarios">
+                                            {{persona | json}}
+                                        </li>
+                                    </ul>
+                                </th>
+                                <th *ngIf="deporte.horarios[2]">
+                                    {{deporte.horarios[2].nivel}}
+                                    <ul>
+                                        <li>N. alumnos: {{deporte.horarios[2].cantidad}} </li>
+                                        <li *ngFor="let persona of deporte.horarios[2].usuarios">
+                                            {{persona | json}}
+                                        </li>
+                                    </ul>
+                                </th>
+                                <th *ngIf="deporte.horarios[3]">
+                                    {{deporte.horarios[3].nivel }}
+                                    <ul>
+                                        <li>N. alumnos: {{deporte.horarios[3].cantidad}} </li>
+                                        <li *ngFor="let persona of deporte.horarios[0].usuarios">
+                                            {{persona | json}}
+                                        </li>
+                                    </ul>
+                                </th>
+                            </thead> 
+                            <tbody>
+                               
+                            </tbody>
+                        
+    
+                            
+                       </table>
+    
+                    </mat-card>
+                    
+                   
+                </div>
+                
+            </div>
+                
+    </div>
+
+</div>
+
