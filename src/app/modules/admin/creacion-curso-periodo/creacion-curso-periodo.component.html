@@ -18,7 +18,7 @@
 
                 <mat-form-field class="input-propiedades" appearance="outline">
                     <mat-label>Cupo máximo</mat-label>
-                    <input matInput formControlName="cupo" OnlyNumber>
+                    <input matInput formControlName="cupo" [OnlyNumber]="true">
                 </mat-form-field>
 
                 <mat-form-field class="input-propiedades" appearance="outline">
@@ -34,7 +34,7 @@
 
                 <mat-form-field class="input-propiedades" appearance="outline">
                     <mat-label>Costo mensual base</mat-label>
-                    <input matInput formControlName="monto" OnlyNumber="true">
+                    <input matInput formControlName="monto" [OnlyNumber]="true">
                 </mat-form-field>
 
                 <mat-form-field class="input-propiedades" appearance="outline">

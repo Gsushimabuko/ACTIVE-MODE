@@ -5,14 +5,14 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
-import { OnlyNumber } from 'src/app/directives/only-number.directive';
+import { OnlyNumberDirective } from 'src/app/directives/only-number.directive';
 
 
 
 @NgModule({
   declarations: [
     PasarelaComponent,
-    OnlyNumber
+    OnlyNumberDirective
   ],
   imports: [
     CommonModule,
@@ -22,7 +22,8 @@ import { OnlyNumber } from 'src/app/directives/only-number.directive';
     MaterialModule,
   ],
   exports:[
-    PasarelaComponent
+    PasarelaComponent,
+    OnlyNumberDirective
   ]
 })
 export class PasarelaModule { }

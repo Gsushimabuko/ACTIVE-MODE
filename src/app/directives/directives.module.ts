@@ -12,7 +12,7 @@ import { OnlyNumberDirective } from './only-number.directive';
     CommonModule
   ],
   exports: [
-    
+    OnlyNumberDirective
   ]
 })
 export class DirectivesModule { }
