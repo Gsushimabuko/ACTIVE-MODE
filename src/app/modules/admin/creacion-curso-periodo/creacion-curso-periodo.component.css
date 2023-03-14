@@ -4,6 +4,7 @@
 
 .icono-delete {
     color: blue;
+    cursor: pointer;
 }
 
 .boton-footer {

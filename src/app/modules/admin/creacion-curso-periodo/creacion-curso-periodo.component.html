@@ -4,27 +4,102 @@
   <div class="container-cartilla">
     <mat-card class="card-nuevo">
         <mat-card-content>
-            <form>
-                <div formArrayName="propiedades">
-                    <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
-                        <div [formGroupName]="i">
-                            <button class="boton-check" mat-mini-fab color="warn" disabled>
-                                {{i+1}}
-                            </button>
-                            
-                            <mat-form-field class="input-propiedades" appearance="outline">
-                              <mat-label>Nombre del curso</mat-label>
-                              <input matInput placeholder="Escriba el nombre" formControlName="nombre">
-                            </mat-form-field>
+            <form [formGroup]="formCursoPeriodo">
+                <h3>Datos del curso en el periodo</h3>
 
-                            <mat-icon class="icono-delete" >delete</mat-icon>
-                            <mat-divider></mat-divider>
-                        </div>
-                    </div>
-                </div>
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Curso</mat-label>
+                    <mat-select formControlName="cursoId">
+                      <mat-option *ngFor="let curso of cursos" [value]="curso.id">
+                        {{curso.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Cupo máximo</mat-label>
+                    <input matInput formControlName="cupo" OnlyNumber>
+                </mat-form-field>
+
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Nombre del profesor</mat-label>
+                    <input matInput formControlName="profesor">
+                </mat-form-field>
             </form>
-        
+
+            <mat-divider></mat-divider>
             
+            <form [formGroup]="formTarifa">
+                <h3>Datos de la tarifa del curso</h3>
+
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Costo mensual base</mat-label>
+                    <input matInput formControlName="monto" OnlyNumber="true">
+                </mat-form-field>
+
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Días a la semana</mat-label>
+                    <mat-select formControlName="diaId">
+                      <mat-option *ngFor="let dia of dias" [value]="dia.id">
+                        {{dia.dias_semana}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="input-propiedades" appearance="outline">
+                    <mat-label>Tipo de usuario</mat-label>
+                    <mat-select formControlName="tipoUsuarioId">
+                      <mat-option *ngFor="let tipo of tipoUsuarios" [value]="tipo.id">
+                        {{tipo.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+
+            <mat-divider></mat-divider>
+
+            <div>
+                <h3>Horarios</h3>
+
+                <div>
+                    <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Elegir nivel</mat-label>
+                        <mat-select [(value)]="nivelElegido">
+                          <mat-option *ngFor="let nivel of niveles" [value]="nivel">
+                            {{nivel.nivel}} - {{nivel.hora}}
+                          </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Agregar nuevo horario</button>
+                </div>
+
+                <mat-card class="card-nuevo">
+                    <mat-card-content>
+                        <div>
+                            <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let nivel of nivelesElegidos; let i= index">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <button class="boton-check" mat-mini-fab color="warn" disabled>
+                                        {{i+1}}
+                                    </button>
+
+                                    <div>{{nivel.nivel}} - {{nivel.hora}}</div>
+
+                                    <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
+                                    
+                                    <mat-divider></mat-divider>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
+                <button class="boton-footer" mat-raised-button color="primary" (click)="crearCursoPeriodo()">Guardar</button>
+            </mat-card-footer>
+
         </mat-card-content> 
     </mat-card>
   </div>
