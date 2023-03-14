@@ -12,8 +12,6 @@ export class OnlyNumberDirective {
   @HostListener('keydown', ['$event']) onKeyDown(event: any) {
     let e = <KeyboardEvent> event;
 
-    console.log('Directiva gaaaaa');
-
     if (this.OnlyNumber) {
       if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||
         // Allow: Ctrl+A

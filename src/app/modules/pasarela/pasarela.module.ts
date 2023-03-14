@@ -6,13 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
 import { OnlyNumberDirective } from 'src/app/directives/only-number.directive';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 
 @NgModule({
   declarations: [
     PasarelaComponent,
-    OnlyNumberDirective
   ],
   imports: [
     CommonModule,
@@ -20,10 +20,10 @@ import { OnlyNumberDirective } from 'src/app/directives/only-number.directive';
     ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
+    DirectivesModule
   ],
   exports:[
     PasarelaComponent,
-    OnlyNumberDirective
   ]
 })
 export class PasarelaModule { }

@@ -17,6 +17,7 @@ import { ParametrosModule } from './parametros/parametros.module';
 import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.component';
 import { CreacionCursoPeriodoComponent } from './creacion-curso-periodo/creacion-curso-periodo.component';
 import { PasarelaModule } from '../pasarela/pasarela.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 
 
@@ -34,7 +35,7 @@ import { PasarelaModule } from '../pasarela/pasarela.module';
     AdminRoutingModule,
     MaterialModule,
     FlexLayoutModule,
-    PasarelaModule
+    DirectivesModule
   ]
 })
 export class AdminModule { }
