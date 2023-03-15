@@ -17,7 +17,7 @@ export class NivelesComponent {
 
   formObjetos: FormGroup;
 
-  displayedColumns: string[] = ['nivel','hora','estado','info'];
+  displayedColumns: string[] = ['nivel','hora','hora_inicio','hora_fin','estado','info'];
   dataSource:any = new MatTableDataSource<any>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -67,7 +67,9 @@ export class NivelesComponent {
     nuevaPropiedad(): FormGroup {
       return this.formBuilder.group({
         nivel: ["", [Validators.required]],
-        hora: ["", [Validators.required]]
+        hora: ["", [Validators.required]],
+        hora_inicio: ["", [Validators.required]],
+        hora_fin: ["", [Validators.required]]
       })
     }
     
@@ -93,7 +95,12 @@ export class NivelesComponent {
       
       for(var objeto of this.formObjetos.value.propiedades){
 
-        this.objetoService.createNivelParam(objeto.nivel,objeto.hora).subscribe(res=>{
+        console.log(objeto)
+
+        const horaInicio =  parseInt(objeto.hora_inicio.replace(":",""))
+        const horaFin =  parseInt(objeto.hora_fin.replace(":",""))
+   
+        this.objetoService.createNivelParam(objeto.nivel,objeto.hora,horaInicio,horaFin).subscribe(res=>{
       
           this.eliminarPropiedad(0)
           this.actualizarTabla()

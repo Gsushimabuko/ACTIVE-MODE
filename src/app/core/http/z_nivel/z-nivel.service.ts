@@ -21,9 +21,9 @@ export class ZNivelService {
     return this.http.get<any>(url,{params:{id:id}})
   }
 
-  createNivelParam(nivel:string,hora:string){
+  createNivelParam(nivel:string,hora:string,horaInicio:number,horaFin:number){
     const url = this.apiURL + "/nivel/param"
-    const data = {nivel:nivel,hora:hora}
+    const data = {nivel:nivel,hora:hora,horaInicio:horaInicio,horaFin:horaFin}
     return this.http.post<any>(url,data)
   }
 

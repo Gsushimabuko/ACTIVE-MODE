@@ -18,6 +18,17 @@
                 <td  mat-cell *matCellDef="let element">{{element.hora}}</td>
               </ng-container>
 
+              <ng-container matColumnDef="hora_inicio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Inicio</th>
+                <td  mat-cell *matCellDef="let element">{{element.hora_inicio}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="hora_fin">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Termino</th>
+                <td  mat-cell *matCellDef="let element">{{element.hora_fin}}</td>
+              </ng-container>
+
+
             <ng-container matColumnDef="estado">
               <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
               <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
@@ -82,13 +93,23 @@
                       </button>
 
                       <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Nivel</mat-label>
+                        <mat-label>Nivel Muestra</mat-label>
                           <input matInput placeholder="" formControlName="nivel">
                       </mat-form-field>
 
                       <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Horario</mat-label>
+                        <mat-label>Horario Muestra</mat-label>
                           <input matInput placeholder="" formControlName="hora">
+                      </mat-form-field>
+
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Hora inicio en horas</mat-label>
+                          <input matInput type="time" placeholder="" formControlName="hora_inicio">
+                      </mat-form-field>
+
+                      <mat-form-field class="input-propiedades" appearance="outline">
+                        <mat-label>Hora fin en horas</mat-label>
+                          <input matInput type="time" placeholder="" formControlName="hora_fin">
                       </mat-form-field>
 
                       <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
