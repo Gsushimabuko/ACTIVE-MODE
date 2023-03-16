@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'codigo', component: CodigosComponent },
   { path: 'cursos', component: CursosComponent },
   { path: 'creacion', component: CreacionCursosComponent },
-  { path: 'creacion-form', component: CreacionCursoPeriodoComponent },
+  { path: 'creacion-form/:periodoId', component: CreacionCursoPeriodoComponent },
   {path: 'parametros', loadChildren: () =>
   import('./parametros/parametros.module').then(m => m.ParametrosModule)}
 

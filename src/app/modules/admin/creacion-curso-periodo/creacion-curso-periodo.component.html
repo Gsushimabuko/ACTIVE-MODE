@@ -5,95 +5,145 @@
     <mat-card class="card-nuevo">
         <mat-card-content>
             <form [formGroup]="formCursoPeriodo">
-                <h3>Datos del curso en el periodo</h3>
+              <h3>Datos del curso en el periodo</h3>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Curso</mat-label>
-                    <mat-select formControlName="cursoId">
-                      <mat-option *ngFor="let curso of cursos" [value]="curso.id">
-                        {{curso.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
+              <mat-form-field class="input-propiedades" appearance="outline">
+                <mat-label>Curso</mat-label>
+                <mat-select formControlName="cursoId">
+                  <mat-option *ngFor="let curso of cursos" [value]="curso.id">
+                    {{curso.nombre}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Cupo máximo</mat-label>
-                    <input matInput formControlName="cupo" [OnlyNumber]="true">
-                </mat-form-field>
+              <mat-form-field class="input-propiedades" appearance="outline">
+                  <mat-label>Cupo máximo</mat-label>
+                  <input matInput formControlName="cupo" [OnlyNumber]="true">
+              </mat-form-field>
+              
+              <mat-form-field class="input-propiedades" appearance="outline">
+                  <mat-label>Nombre del profesor</mat-label>
+                  <input matInput formControlName="profesor">
+              </mat-form-field>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Nombre del profesor</mat-label>
-                    <input matInput formControlName="profesor">
-                </mat-form-field>
             </form>
 
             <mat-divider></mat-divider>
             
-            <form [formGroup]="formTarifa">
-                <h3>Datos de la tarifa del curso</h3>
+            <div>
+              <h3>Datos de la tarifa del curso</h3>
+  
+              <div style="margin-bottom: 10px;">
+                Defina las tarifas del curso para cada uno de los tipos de usuario según los días a la semana.
+              </div>
+  
+              <div>
+                <form [formGroup]="formTarifa">
+                  <mat-form-field class="input-propiedades" appearance="outline">
+                      <mat-label>Días a la semana</mat-label>
+                      <mat-select formControlName="diaId" multiple>
+                        <mat-option *ngFor="let dia of dias" [value]="{id: dia.id, nombre: dia.dias_semana}">
+                          {{dia.dias_semana}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+    
+                  <mat-form-field class="input-propiedades" appearance="outline">
+                      <mat-label>Tipo de usuario</mat-label>
+                      <mat-select formControlName="tipoUsuarioId" multiple>
+                        <mat-option *ngFor="let tipo of tipoUsuarios" [value]="{id: tipo.id, nombre: tipo.nombre}">
+                          {{tipo.nombre}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                </form>
+  
+                <button class="boton-footer" mat-raised-button color="primary" (click)="generarTarifas()">Generar tarifas</button>
+              </div>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Costo mensual base</mat-label>
-                    <input matInput formControlName="monto" [OnlyNumber]="true">
-                </mat-form-field>
+            </div>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Días a la semana</mat-label>
-                    <mat-select formControlName="diaId">
-                      <mat-option *ngFor="let dia of dias" [value]="dia.id">
-                        {{dia.dias_semana}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div *ngFor="let tarifa of tarifasElegidas; let i = index">
+              <button class="boton-check" mat-mini-fab color="warn" disabled>
+                {{i+1}}
+              </button>
 
-                <mat-form-field class="input-propiedades" appearance="outline">
-                    <mat-label>Tipo de usuario</mat-label>
-                    <mat-select formControlName="tipoUsuarioId">
-                      <mat-option *ngFor="let tipo of tipoUsuarios" [value]="tipo.id">
-                        {{tipo.nombre}}
-                      </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </form>
+              <mat-form-field class="input-propiedades" appearance="outline">
+                <mat-label>Costo mensual base</mat-label>
+                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.monto">
+              </mat-form-field>
+
+              <mat-form-field class="input-propiedades" appearance="outline">
+                <mat-label>Días a la semana</mat-label>
+                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.dia" [readonly]="true">
+              </mat-form-field>
+                
+              <mat-form-field class="input-propiedades" appearance="outline">
+                <mat-label>Tipo de usuario</mat-label>
+                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.tipoUsuario" [readonly]="true">
+              </mat-form-field>
+            </div>
+
 
             <mat-divider></mat-divider>
 
             <div>
-                <h3>Horarios</h3>
+              <h3>Días disponibles</h3>
 
-                <div>
-                    <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Elegir nivel</mat-label>
-                        <mat-select [(value)]="nivelElegido">
-                          <mat-option *ngFor="let nivel of niveles" [value]="nivel">
-                            {{nivel.nivel}} - {{nivel.hora}}
-                          </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+              <div style="margin-bottom: 10px;">
+                Defina los días en el que se realizará el curso.
+              </div>
 
-                    <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Agregar nuevo horario</button>
-                </div>
+              <form [formGroup]="formDias">
+                <mat-form-field class="input-propiedades" appearance="outline">
+                  <mat-label>Días</mat-label>
+                  <mat-select formControlName="dias" multiple>
+                    <mat-option *ngFor="let dia of diasSemana" [value]="dia">
+                      {{dia.dia}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            </div>
 
-                <mat-card class="card-nuevo">
-                    <mat-card-content>
-                        <div>
-                            <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let nivel of nivelesElegidos; let i= index">
-                                <div fxLayout="row" fxLayoutAlign="center center">
-                                    <button class="boton-check" mat-mini-fab color="warn" disabled>
-                                        {{i+1}}
-                                    </button>
+            <mat-divider></mat-divider>
 
-                                    <div>{{nivel.nivel}} - {{nivel.hora}}</div>
+            <div>
+              <h3>Horarios</h3>
+              
+              <div>
+                  <mat-form-field class="input-propiedades" appearance="outline">
+                      <mat-label>Elegir nivel</mat-label>
+                      <mat-select [(value)]="nivelElegido">
+                        <mat-option *ngFor="let nivel of niveles" [value]="nivel">
+                          {{nivel.nivel}} - {{nivel.hora}}
+                        </mat-option>
+                      </mat-select>
+                  </mat-form-field>
 
-                                    <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
-                                    
-                                    <mat-divider></mat-divider>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </mat-card-content>
-                </mat-card>
+                  <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Agregar nuevo horario</button>
+                  <button class="boton-footer" mat-raised-button color="primary">Crear nivel</button>
+              </div>
+              
+              <mat-card class="card-nuevo">
+                <mat-card-content>
+                  <div>
+                    <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let nivel of nivelesElegidos; let i= index">
+                      <div fxLayout="row" fxLayoutAlign="center center">
+                          <button class="boton-check" mat-mini-fab color="warn" disabled>
+                              {{i+1}}
+                          </button>
+  
+                          <div>{{nivel.nivel}} - {{nivel.hora}}</div>
+  
+                          <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
+                          
+                          <mat-divider></mat-divider>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
             </div>
 
             <mat-card-footer fxLayout="row" fxLayoutAlign="center center">

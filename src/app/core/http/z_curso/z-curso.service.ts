@@ -79,6 +79,15 @@ export class ZCursoService {
     return this.http.post<any>(url,data)
   }
 
+  createCursoPeriodo (cursoPeriodo: any, tarifas: any, niveles: any) {
+    const url = this.apiURL + "/curso-periodo";
+    return this.http.post<any>(url, {
+      cursoPeriodo: cursoPeriodo,
+      tarifas: tarifas,
+      niveles: niveles
+    });
+  }
+
   getMatriculaActiva(){
     const url = this.apiURL + "/matricula_activa"
     return this.http.get<any>(url)

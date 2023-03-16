@@ -15,6 +15,8 @@ export class CreacionCursosComponent {
   anos: any[] = [];
   meses: any[] = [];
 
+  periodoId: number = 1;
+
   anoElegido: number = 2023;
   mesElegido: number = 1;
 
@@ -53,6 +55,12 @@ export class CreacionCursosComponent {
     }, error => {
       console.log(error);
       this.loading = false;
+    });
+  }
+
+  getPeriodo() {
+    this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
+      this.periodoId = data;
     });
   }
 }
