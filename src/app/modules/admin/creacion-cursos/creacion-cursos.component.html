@@ -31,7 +31,7 @@
     <mat-card class="card-nuevo">
       <mat-card-header fxLayout="row" fxLayoutAlign="center center">
         <button class="boton-footer" mat-raised-button color="primary" (click)="redirectToCursoNuevo()">Crear nuevo curso</button>
-        <button class="boton-footer" mat-raised-button color="primary" (click)="duplicarPeriodoAnterior()">Duplicar</button>
+        <button class="boton-footer" mat-raised-button color="primary" (click)="duplicarPeriodoAnterior()">Duplicar mes anterior</button>
       </mat-card-header>
     </mat-card>
   </div>
@@ -66,24 +66,24 @@
               <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Editar</th>
               <td class="boton-tabla" mat-cell *matCellDef="let element">
                 <div *ngIf="element.estado == 'ACTIVO'; else otro">
-                    <button class="boton-check" mat-mini-fab  color="primary">
+                    <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
                       <mat-icon>editar</mat-icon>
                     </button>
-                    <button class="boton-check" mat-mini-fab color="accent">
+                    <button class="boton-check" mat-mini-fab color="accent" (click)="cambiarEstado(element.id)">
                       <mat-icon>visibility_off</mat-icon>
                       </button>
-                      <button class="boton-check" mat-mini-fab color="warn">
+                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
                         <mat-icon>delete</mat-icon>
                       </button>
                 </div>
                 <ng-template #otro>
-                  <button class="boton-check" mat-mini-fab  color="primary">
+                  <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
                     <mat-icon>editar</mat-icon>
                   </button>
-                    <button class="boton-check" mat-mini-fab color="primary">
+                    <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
                       <mat-icon>visibility</mat-icon>
                     </button>
-                    <button class="boton-check" mat-mini-fab color="warn">
+                    <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
                       <mat-icon>delete</mat-icon>
                     </button>
                 </ng-template>

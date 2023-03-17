@@ -18,6 +18,7 @@ import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.compo
 import { CreacionCursoPeriodoComponent } from './creacion-curso-periodo/creacion-curso-periodo.component';
 import { PasarelaModule } from '../pasarela/pasarela.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
+import { EditarCursoPeriodoComponent } from './editar-curso-periodo/editar-curso-periodo.component';
 
 
 
@@ -28,7 +29,8 @@ import { DirectivesModule } from 'src/app/directives/directives.module';
     AlumnosComponent,
     CodigosComponent,
     CreacionCursosComponent,
-    CreacionCursoPeriodoComponent
+    CreacionCursoPeriodoComponent,
+    EditarCursoPeriodoComponent
   ],
   imports: [
     CommonModule,

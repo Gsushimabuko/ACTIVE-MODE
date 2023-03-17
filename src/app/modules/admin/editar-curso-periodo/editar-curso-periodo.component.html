@@ -1,0 +1,55 @@
+<div fxLayout="column" fxLayoutAlign="center stretch">
+    <div fxLayoutAlign="center center">
+
+        <h4> Editar datos </h4>
+
+        <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button> 
+
+    </div>
+    
+    <mat-dialog-content>
+        <form fxLayout="column" fxLayoutAlign="space-around stretch"  fxLayoutGap="3px">
+
+
+            <mat-form-field class="input-propiedades"  appearance="outline">
+                <mat-label></mat-label>
+                <input matInput placeholder="Ingrese">
+            </mat-form-field>
+
+        </form>
+
+        <h4>Tarifas</h4>
+
+        <div *ngFor="">
+            <mat-form-field class="input-propiedades"  appearance="outline">
+                <mat-label></mat-label>
+                <input matInput [readonly]="true">
+            </mat-form-field>
+
+        </div>
+
+
+        <h4>Días disponibles</h4>
+
+
+
+        <h4>Horarios y niveles</h4>
+
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-stroked-button color="warn">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit">Confirmar</button>
+    
+    </mat-dialog-actions>
+
+</div>
+
+
+
+
+

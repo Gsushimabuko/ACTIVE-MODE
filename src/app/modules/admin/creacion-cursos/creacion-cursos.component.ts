@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
 import { ZPeriodoService } from 'src/app/core/http/z_periodo/z-periodo.service';
+import { EditarCursoPeriodoComponent } from '../editar-curso-periodo/editar-curso-periodo.component';
+import { ElimDialogComponent } from '../parametros/elim-dialog/elim-dialog.component';
+import { ParaDialogComponent } from '../parametros/para-dialog/para-dialog.component';
 
 @Component({
   selector: 'app-creacion-cursos',
@@ -26,12 +30,15 @@ export class CreacionCursosComponent {
   constructor(private _periodoService: ZPeriodoService,
     private _cursoService: ZCursoService,
     private _route: ActivatedRoute,
-    private _router: Router) {
+    private _router: Router,
+    public dialog: MatDialog,) {
     this.loading = true;
 
     this._route.queryParams.subscribe(params => {
-      this.anoElegido = parseInt(params['ano']);
-      this.mesElegido = parseInt(params['mes']);
+      if (params['ano'] && params['mes']) {
+        this.anoElegido = parseInt(params['ano']);
+        this.mesElegido = parseInt(params['mes']);
+      }
     });
 
     this.getTiempos();
@@ -107,5 +114,57 @@ export class CreacionCursosComponent {
     }, error => {
       console.log(error);
     })
+  }
+
+  openDialog(curso: any): void {
+
+    var dialogRef = this.dialog.open(ParaDialogComponent, {
+      width: '400px',
+  
+      hasBackdrop:true,
+      data: {
+        objeto: curso,
+        origen: "curso-periodo",
+        listaCampos: ['profesor', 'cupo_max']
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getCursosPeriodos()
+    });
+
+  }
+
+  cambiarEstado(id: number){
+    this._cursoService.changeStateCursoPeriodo(id).subscribe(data => {
+      this.getCursosPeriodos()
+    });
+
+  }
+
+  eliminarRegistro(id: number){
+    
+    let objeto = {
+      id: id
+    }
+
+    var dialogRef = this.dialog.open(ElimDialogComponent, {
+      width: '400px',
+  
+      hasBackdrop: true,
+      data: {
+        objeto: objeto,
+        origen: "curso-periodo",
+      }
+      
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.getCursosPeriodos()
+    });
+
   }
 }

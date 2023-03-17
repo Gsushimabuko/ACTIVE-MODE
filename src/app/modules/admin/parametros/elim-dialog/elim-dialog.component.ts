@@ -143,6 +143,15 @@ export class ElimDialogComponent {
         
         break;
 
+      case "curso-periodo":
+      
+      this.cursoService.deleteCursoPeriodo(this.id).subscribe({
+        next: res => this.handleRespOk(res),
+        error: error => this.handleError(error),
+        complete: () => console.log()
+      });
+        
+        break;
 
       default:
         break;

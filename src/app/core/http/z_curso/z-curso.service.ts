@@ -48,15 +48,32 @@ export class ZCursoService {
     return this.http.put<any>(url,data)
   }
 
+  updateCursoPeriodoParam(cursoPeriodo: any, id: number){
+    const url = this.apiURL + "/curso-periodo/param/update"
+    const data = { profesor: cursoPeriodo.profesor, cupo_max: cursoPeriodo.cupo_max, id: id}
+    return this.http.put<any>(url,data)
+  }
+
   changeStateCursoParam(idCurso:number){
     const url = this.apiURL + "/curso/param/state"
     const data = {idCurso:idCurso}
     return this.http.put<any>(url,data)
   }
 
+  changeStateCursoPeriodo(id: number){
+    const url = this.apiURL + "/curso-periodo/param/state"
+    const data = {id: id}
+    return this.http.put<any>(url, data)
+  }
+
   deleteCursoParam(id:number){
     const url = this.apiURL + "/curso/param"
     return this.http.delete<any>(url,{params:{id:id}})
+  }
+
+  deleteCursoPeriodo(id: number){
+    const url = this.apiURL + "/curso-periodo";
+    return this.http.delete<any>(url,{ body: { id: id } });
   }
 
   getCursoHorarios(idTipoUsuario:number,mes:number,ano:number,idCurso:number,idCursoPeriodo:number){
