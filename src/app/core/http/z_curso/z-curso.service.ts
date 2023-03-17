@@ -126,4 +126,18 @@ export class ZCursoService {
     const url = this.apiURL + "/horario-alumnos-only"
     return this.http.get<any>(url,{params:{idHorario:idHorario}})
   }
+
+  inactiveMatriculaExtemporanea(idCursoPeriodo:number,idUsuario:number){
+    const url = this.apiURL + "/curso/matricula/delete"
+    const data={
+      idCursoPeriodo:idCursoPeriodo,idUsuario :idUsuario
+    }
+    return this.http.put<any>(url,data)
+  }
+
+  matriculaExtemporanea(cursos:any,idUsuario:number, ano:number,mes:number){
+    const url = this.apiURL + "/curso/matricula/create"
+    const data={ cursos:cursos, idUsuario:idUsuario, ano:ano, mes:mes }
+    return this.http.post<any>(url,data)
+  }
 }

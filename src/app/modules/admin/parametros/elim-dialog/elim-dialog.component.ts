@@ -19,6 +19,9 @@ export class ElimDialogComponent {
   origen!:string;
   id!:number;
 
+  idCursoPeriodo!:number
+  idUsuario!:number
+
   constructor(
     public dialogRef: MatDialogRef<ElimDialogComponent>,
     private cursoService: ZCursoService,
@@ -34,14 +37,16 @@ export class ElimDialogComponent {
     this.id = data.objeto.id
     this.origen = data.origen
 
+    this.idCursoPeriodo = data.objeto.idCursoPeriodo
+    this.idUsuario = data.objeto.idUsuario
+
   }
 
   enCancelar(): void{
     this.dialogRef.close('se cerro');
   }
 
-  handleRespOk(resp: any){
-    this.dialogRef.close(resp)
+  handleRespOk(res: any){
     
   }
 
@@ -78,7 +83,7 @@ export class ElimDialogComponent {
       this.cursoService.deleteCursoParam(this.id).subscribe(  {
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -88,7 +93,7 @@ export class ElimDialogComponent {
       this.diaService.deleteDiaParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -98,7 +103,7 @@ export class ElimDialogComponent {
       this.nivelService.deleteNivelParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -108,7 +113,7 @@ export class ElimDialogComponent {
       this.tipoUsuarioService.deleteTipoUsuarioParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -118,7 +123,7 @@ export class ElimDialogComponent {
       this.rolService.deleteRolParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -128,7 +133,7 @@ export class ElimDialogComponent {
       this.diaGrupoService.deleteDiaGrupoParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       })
         
         break;
@@ -138,7 +143,17 @@ export class ElimDialogComponent {
       this.periodoService.deletePeriodoParam(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
+      })
+        
+        break;
+
+      case "matriculaExtemporanea":
+
+      this.cursoService.inactiveMatriculaExtemporanea(this.idCursoPeriodo,this.idUsuario).subscribe({
+        next: res => this.handleRespOk(res),
+        error: error => this.handleError(error),
+        complete: () => this.dialogRef.close(true)
       })
         
         break;

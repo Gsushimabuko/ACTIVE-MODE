@@ -37,6 +37,11 @@ import { FamiliaComponent } from './components/familia/familia.component';
     MatriculaRoutingModule,
     CalendarModule,
     PasarelaModule
+  ],
+  exports:[
+    CursoListaComponent,
+    CursoComponent
   ]
+
 })
 export class MatriculaModule { }

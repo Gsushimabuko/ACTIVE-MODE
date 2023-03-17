@@ -22,4 +22,5 @@ export class ZMatriculaService {
   getFullYear2023() :  Observable<any[]> {
     return this.http.get<any[]>('https://calendar-json-api.up.railway.app/fullyear')
   }
+
 }

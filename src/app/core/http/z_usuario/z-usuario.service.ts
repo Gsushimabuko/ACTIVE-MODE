@@ -18,6 +18,10 @@ export class ZUsuarioService {
     return {...this._usuario}
   }
 
+  getUsuariosFiltros(nombre:string,apellidop:string,apellidom:string,dni:string){
+    return this.http.get<Usuario[]>(this.API_URL + '/filtros',{params:{nombre:nombre,apellidop:apellidop,apellidom:apellidom,dni:dni}})
+  }
+
   getRelatives(idUsuario: number): Observable<Usuario[]>  {
     return this.http.get<Usuario[]>(this.API_URL + '/familiares',{params:{idUsuario:idUsuario}})
   }

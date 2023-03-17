@@ -1,3 +1,4 @@
+
 <div class="container"  fxLayout="column"  fxLayoutAlign="center center" >
     <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
     <p class="welcome-text">Panel de parametros </p>
@@ -8,11 +9,11 @@
         <div routerLink= "./cursos" class="div-card" >
                 <mat-card >
                     <div fxLayout="column" >
-                        <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                            Parmetro cursos
+                        <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                            Definir cursos
                         </div>
                        <div>
-                           <mat-icon>recent_actors</mat-icon>
+                           <mat-icon>school</mat-icon>
                        </div>
     
                     </div>
@@ -22,11 +23,11 @@
         <div routerLink="./dia" class="div-card">
             <mat-card >
                 <div fxLayout="column" >
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Parmetro dias a la semana
+                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                        Definir días y frecuencias
                     </div>
                    <div>
-                    <mat-icon>person</mat-icon>
+                    <mat-icon>date_range</mat-icon>
                    </div>
 
                 </div>
@@ -35,8 +36,8 @@
         <div routerLink="./periodos" class="div-card">
             <mat-card >
                 <div fxLayout="column" >
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Parametro periodos-matrícula
+                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                        Definir meses de matrícula
                     </div>
                    <div>
                     <mat-icon>list</mat-icon>
@@ -49,11 +50,11 @@
         <div routerLink="./roles" class="div-card">
             <mat-card >
                 <div fxLayout="column" >
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Parametro roles
+                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                        Definir roles
                     </div>
                    <div>
-                    <mat-icon>settings</mat-icon>
+                    <mat-icon>people</mat-icon>
                    </div>
 
                 </div>
@@ -63,11 +64,11 @@
         <div routerLink="./tipo-usuarios" class="div-card">
             <mat-card >
                 <div fxLayout="column" >
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Parametro tipos usuarios
+                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                        Definir tipos de usuarios
                     </div>
                    <div>
-                    <mat-icon>settings</mat-icon>
+                    <mat-icon>people_outline</mat-icon>
                    </div>
 
                 </div>
@@ -77,19 +78,24 @@
         <div routerLink="./niveles" class="div-card">
             <mat-card >
                 <div fxLayout="column" >
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Parametro niveles por horario
+                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
+                        Definir horarios disponibles
                     </div>
                    <div>
-                    <mat-icon>settings</mat-icon>
+                    <mat-icon>access_time</mat-icon>
                    </div>
 
                 </div>
             </mat-card>
         </div>
-        
-        
+
         
     </div>
+
+    <div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
+        <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
+          <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
+        </button> 
+      </div>
 
 </div>

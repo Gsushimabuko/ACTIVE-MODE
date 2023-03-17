@@ -18,6 +18,10 @@ import { CreacionCursosComponent } from './creacion-cursos/creacion-cursos.compo
 import { CreacionCursoPeriodoComponent } from './creacion-curso-periodo/creacion-curso-periodo.component';
 import { PasarelaModule } from '../pasarela/pasarela.module';
 import { DirectivesModule } from 'src/app/directives/directives.module';
+import { MatriculaExtemporaneaComponent } from './matricula-extemporanea/matricula-extemporanea.component';
+import { DialogMatriculaComponent } from './dialog-matricula/dialog-matricula.component';
+import { MatriculaModule } from '../matricula/matricula.module';
+import { CalendarModule } from '../calendar/calendar.module';
 
 
 
@@ -28,14 +32,18 @@ import { DirectivesModule } from 'src/app/directives/directives.module';
     AlumnosComponent,
     CodigosComponent,
     CreacionCursosComponent,
-    CreacionCursoPeriodoComponent
+    CreacionCursoPeriodoComponent,
+    MatriculaExtemporaneaComponent,
+    DialogMatriculaComponent
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
     MaterialModule,
     FlexLayoutModule,
-    DirectivesModule
+    DirectivesModule,
+    MatriculaModule,
+    CalendarModule
   ]
 })
 export class AdminModule { }
