@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
 import { ZDiaService } from 'src/app/core/http/z_dia/z-dia.service';
 import { ZDiaGrupoService } from 'src/app/core/http/z_dia_grupo/z-dia-grupo.service';
@@ -45,9 +45,15 @@ export class CreacionCursoPeriodoComponent {
     day: 'Saturday',
   }]
 
+  noNivelError: boolean = false;
+  noTarifaError: boolean = false;
+
+  mes: number = -1;
+  ano: number = -1;
+
   nivelesElegidos: any[] = [];
 
-  periodoId: string;
+  periodoId: number;
 
   loading: boolean = true;
 
@@ -63,10 +69,11 @@ export class CreacionCursoPeriodoComponent {
     private _diaService: ZDiaService,
     private _nivelService: ZNivelService,
     private _fb: FormBuilder,
-    private _route: ActivatedRoute) {
+    private _route: ActivatedRoute,
+    private _router: Router) {
     this.loading = true;
 
-    this.periodoId = _route.snapshot.paramMap.get('periodoId')!!.toString();
+    this.periodoId = parseInt(_route.snapshot.paramMap.get('periodoId')!!);
 
     this.formCursoPeriodo = this._fb.group({
       cursoId: ['', Validators.required],
@@ -87,6 +94,15 @@ export class CreacionCursoPeriodoComponent {
     this.getTipoUsuario();
     this.getDia();
     this.getNiveles();
+    this.getPeriodo();
+  }
+
+  getPeriodo() {
+    this._periodoService.getPeriodoParam(this.periodoId).subscribe(data => {
+      console.log(data);
+      this.mes = data.mes;
+      this.ano = data.ano;
+    });
   }
 
   getCursos() {
@@ -151,6 +167,7 @@ export class CreacionCursoPeriodoComponent {
       return;
     }
 
+    this.noTarifaError = false;
     this.tarifasElegidas = [];
 
     for(let dia of dias) {
@@ -184,6 +201,7 @@ export class CreacionCursoPeriodoComponent {
       return;
     }
 
+    this.noNivelError = false;
     this.nivelesElegidos.push(this.nivelElegido);
   }
 
@@ -192,6 +210,45 @@ export class CreacionCursoPeriodoComponent {
   }
 
   crearCursoPeriodo() {
+    if (!this.formCursoPeriodo.valid) {
+      this.formCursoPeriodo.markAllAsTouched();
+      return;
+    }
+
+    if (this.tarifasElegidas.length == 0) {
+      this.noTarifaError = true;
+      return;
+    }
+
+    this.noTarifaError = false;
+
+    if (!this.formDias.valid) {
+      this.formDias.markAllAsTouched();
+      return;
+    }
+    
+    if (this.nivelesElegidos.length == 0) {
+      this.noNivelError = true;
+      return;
+    }
+
+    this.noNivelError = false;
+
+    let diasMax = 0;
+
+    for (let dia of this.formTarifa.get('diaId')?.value) {
+      let num = parseInt(dia.nombre.replace(/^\D+/g, ''));
+
+      if (num > diasMax) {
+        diasMax = num;
+      }
+    }
+
+    if (!(this.formDias.get('dias')?.value.length == diasMax)) {
+      alert('El número de dias a la semana (' + this.formDias.get('dias')?.value.length + ') no corresponde con las tarifas seleccionadas (' + diasMax + ' días a la semana)');
+      return;
+    }
+
     let dias = "";
 
     for (let dia of this.formDias.get('dias')?.value) {
@@ -208,13 +265,20 @@ export class CreacionCursoPeriodoComponent {
       profesor: this.formCursoPeriodo.get('profesor')?.value,
       cupo: this.formCursoPeriodo.get('cupo')?.value,
       periodoId: this.periodoId,
-      mes: 1,
-      ano: 2021,
+      mes: this.mes,
+      ano: this.ano,
       dias: dias
     }
     
     this._cursoService.createCursoPeriodo(cursoPeriodoData, this.tarifasElegidas, this.nivelesElegidos).subscribe(data => {
-      console.log(data);
+      //console.log(data);
+
+      this._router.navigate(['admin/creacion'], {
+        queryParams: {
+          mes: this.mes,
+          ano: this.ano
+        }
+      });
     })
   }
 

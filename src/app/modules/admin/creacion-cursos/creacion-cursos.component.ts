@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
 import { ZPeriodoService } from 'src/app/core/http/z_periodo/z-periodo.service';
 
@@ -23,10 +24,18 @@ export class CreacionCursosComponent {
   loading: boolean = true;
 
   constructor(private _periodoService: ZPeriodoService,
-    private _cursoService: ZCursoService) {
+    private _cursoService: ZCursoService,
+    private _route: ActivatedRoute,
+    private _router: Router) {
     this.loading = true;
 
+    this._route.queryParams.subscribe(params => {
+      this.anoElegido = parseInt(params['ano']);
+      this.mesElegido = parseInt(params['mes']);
+    });
+
     this.getTiempos();
+    this.getCursosPeriodos();
   }
 
   getTiempos() {
@@ -60,7 +69,43 @@ export class CreacionCursosComponent {
 
   getPeriodo() {
     this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
-      this.periodoId = data;
+      console.log(data);
+      this.periodoId = data.id;
     });
+  }
+
+  redirectToCursoNuevo() {
+    this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
+      //console.log(data);
+      this.periodoId = data.id;
+      this._router.navigate(['admin/creacion-form/' + this.periodoId]);
+    });
+  }
+
+  duplicarPeriodoAnterior() {
+    let mesAnt = -1;
+    let anoAnt = -1;
+
+    if (this.mesElegido == 1) {
+      mesAnt = 12;
+      anoAnt = this.anoElegido - 1;
+    }
+    else {
+      mesAnt = this.mesElegido - 1;
+      anoAnt = this.anoElegido;
+    }
+
+    this._periodoService.getPeriodo(mesAnt, anoAnt).subscribe(periodoAnt => {
+      if (!periodoAnt) return;
+      
+      this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(periodo => {
+        this._cursoService.duplicateCursoPeriodo(periodo, periodoAnt).subscribe(data => {
+          console.log(data);
+        });
+
+      });
+    }, error => {
+      console.log(error);
+    })
   }
 }

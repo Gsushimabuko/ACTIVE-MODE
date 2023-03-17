@@ -30,8 +30,8 @@
   <div class="container-cartilla">
     <mat-card class="card-nuevo">
       <mat-card-header fxLayout="row" fxLayoutAlign="center center">
-        <button class="boton-footer" mat-raised-button color="primary" routerLink="../creacion-form/{{periodoId}}">Crear nuevo curso</button>
-        <button class="boton-footer" mat-raised-button color="primary">Duplicar</button>
+        <button class="boton-footer" mat-raised-button color="primary" (click)="redirectToCursoNuevo()">Crear nuevo curso</button>
+        <button class="boton-footer" mat-raised-button color="primary" (click)="duplicarPeriodoAnterior()">Duplicar</button>
       </mat-card-header>
     </mat-card>
   </div>
@@ -52,13 +52,13 @@
             </ng-container>
 
             <ng-container matColumnDef="profesor">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Profesor</th>
               <td  mat-cell *matCellDef="let element">{{element.profesor}}</td>
             </ng-container>
   
             <ng-container matColumnDef="cupos">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-              <td  mat-cell *matCellDef="let element">{{element.cupos_max}}</td>
+              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Cupos</th>
+              <td  mat-cell *matCellDef="let element">{{element.cupo_max}}</td>
             </ng-container>
 
             <!-- Weight Column -->

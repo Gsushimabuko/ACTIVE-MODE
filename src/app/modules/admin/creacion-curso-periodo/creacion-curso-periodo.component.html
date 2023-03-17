@@ -41,7 +41,7 @@
                 <form [formGroup]="formTarifa">
                   <mat-form-field class="input-propiedades" appearance="outline">
                       <mat-label>Días a la semana</mat-label>
-                      <mat-select formControlName="diaId" multiple>
+                      <mat-select formControlName="diaId" multiple (selectionChange)="generarTarifas()">
                         <mat-option *ngFor="let dia of dias" [value]="{id: dia.id, nombre: dia.dias_semana}">
                           {{dia.dias_semana}}
                         </mat-option>
@@ -50,7 +50,7 @@
     
                   <mat-form-field class="input-propiedades" appearance="outline">
                       <mat-label>Tipo de usuario</mat-label>
-                      <mat-select formControlName="tipoUsuarioId" multiple>
+                      <mat-select formControlName="tipoUsuarioId" multiple (selectionChange)="generarTarifas()">
                         <mat-option *ngFor="let tipo of tipoUsuarios" [value]="{id: tipo.id, nombre: tipo.nombre}">
                           {{tipo.nombre}}
                         </mat-option>
@@ -58,9 +58,12 @@
                   </mat-form-field>
                 </form>
   
-                <button class="boton-footer" mat-raised-button color="primary" (click)="generarTarifas()">Generar tarifas</button>
+                <!-- <button class="boton-footer" mat-raised-button color="primary" (click)="generarTarifas()">Generar tarifas</button> -->
               </div>
 
+              <mat-error *ngIf="noTarifaError" style="margin-bottom: 10px;">
+                <small>Defina las tarifas para el curso</small>
+              </mat-error>
             </div>
 
             <div *ngFor="let tarifa of tarifasElegidas; let i = index">
@@ -124,6 +127,10 @@
                   <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Agregar nuevo horario</button>
                   <button class="boton-footer" mat-raised-button color="primary">Crear nivel</button>
               </div>
+
+              <mat-error *ngIf="noNivelError" style="margin-bottom: 10px;">
+                <small>Elija al menos un nivel para el horario</small>
+              </mat-error>
               
               <mat-card class="card-nuevo">
                 <mat-card-content>

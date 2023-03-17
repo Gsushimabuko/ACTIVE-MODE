@@ -88,6 +88,14 @@ export class ZCursoService {
     });
   }
 
+  duplicateCursoPeriodo(periodo: any, periodoAnt: any) {
+    const url = this.apiURL + "/curso-periodo-duplicado";
+    return this.http.post<any>(url, {
+      periodo: periodo,
+      periodoAnt: periodoAnt,
+    });
+  }
+
   getMatriculaActiva(){
     const url = this.apiURL + "/matricula_activa"
     return this.http.get<any>(url)
