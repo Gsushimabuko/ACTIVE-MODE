@@ -22,6 +22,7 @@ import { MatriculaExtemporaneaComponent } from './matricula-extemporanea/matricu
 import { DialogMatriculaComponent } from './dialog-matricula/dialog-matricula.component';
 import { MatriculaModule } from '../matricula/matricula.module';
 import { CalendarModule } from '../calendar/calendar.module';
+import { EditarCursoPeriodoComponent } from './editar-curso-periodo/editar-curso-periodo.component';
 
 
 
@@ -34,7 +35,8 @@ import { CalendarModule } from '../calendar/calendar.module';
     CreacionCursosComponent,
     CreacionCursoPeriodoComponent,
     MatriculaExtemporaneaComponent,
-    DialogMatriculaComponent
+    DialogMatriculaComponent,
+    EditarCursoPeriodoComponent
   ],
   imports: [
     CommonModule,

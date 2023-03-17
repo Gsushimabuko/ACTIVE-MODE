@@ -51,16 +51,16 @@ export class CreacionCursoPeriodoComponent {
   mes: number = -1;
   ano: number = -1;
 
-  nivelesElegidos: any[] = [];
-
+  
   periodoId: number;
-
+  
   loading: boolean = true;
-
+  
   formCursoPeriodo: FormGroup;
   formTarifa: FormGroup;
   formDias: FormGroup;
-
+  
+  nivelesElegidos: any[] = [];
   tarifasElegidas: any[] = [];
 
   constructor(private _periodoService: ZPeriodoService,

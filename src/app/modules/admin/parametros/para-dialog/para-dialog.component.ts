@@ -96,10 +96,16 @@ export class ParaDialogComponent {
     
       case "diaGrupo":
 
-      this.diaGrupoService.updateDiaGrupoParam(this.contenidoForm.value,this.id).subscribe(res =>{
-        this.dialogRef.close(res);
-      })
-        
+        this.diaGrupoService.updateDiaGrupoParam(this.contenidoForm.value,this.id).subscribe(res =>{
+          this.dialogRef.close(res);
+        });
+          
+        break;
+
+      case "curso-periodo":
+        this.cursoService.updateCursoPeriodoParam(this.contenidoForm.value, this.id).subscribe(res =>{
+          this.dialogRef.close(res);
+        });
         break;
 
       default:
