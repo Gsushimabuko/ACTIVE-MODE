@@ -207,8 +207,10 @@ export class MatriculaMainComponent {
 
     this.cursoService.getCursoHorarios(this.idTipoUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear(),this.cursoForm.controls['curso'].value,idPeriodoCurso).subscribe(res =>{
       //console.log(res)
+      if(res[0].niveles!=undefined){
+        this.niveles = res[0].niveles
+      }
       this.curso = res[0]
-      this.niveles = res[0].niveles
       this.loader=false
     })
 
