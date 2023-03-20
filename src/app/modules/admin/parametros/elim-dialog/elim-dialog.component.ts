@@ -18,6 +18,7 @@ import { ZPeriodoService } from '../../../../core/http/z_periodo/z-periodo.servi
 export class ElimDialogComponent {
   origen!:string;
   id!:number;
+  loader:boolean= false;
 
   idCursoPeriodo!:number
   idUsuario!:number
@@ -47,13 +48,14 @@ export class ElimDialogComponent {
   }
 
   handleRespOk(res: any){
-    
+    this.loader = false
   }
 
   handleError(error:any){
 
     let mensaje = ""
     let codigo
+    this.loader = false
 
     if(error.error.code == "23503"){
       
@@ -75,6 +77,7 @@ export class ElimDialogComponent {
   }
 
   enConfirmar(): void{
+    this.loader = true
 
 
     switch (this.origen) {

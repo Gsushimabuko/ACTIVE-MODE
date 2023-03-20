@@ -21,6 +21,9 @@ export class MatriculaExtemporaneaComponent {
   horarioElegidoId!: any
   listaAlumnos! :any[]
   filterForm!: FormGroup
+  displayedColumns: string[] = ['nombre', 'apellidop', 'apellidom', 'dni', 'accion'];
+  dataSource:any = new MatTableDataSource<any>();
+
 
   noResults = true
 
@@ -28,9 +31,7 @@ export class MatriculaExtemporaneaComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'apellidop', 'apellidom', 'dni', 'accion'];
-  dataSource:any = new MatTableDataSource<any>();
-
+  
 
  constructor(private usuarioService : ZUsuarioService,
   public dialog: MatDialog,
@@ -44,29 +45,15 @@ export class MatriculaExtemporaneaComponent {
       apellidom:['']
     })
 
-    const nombre = this.filterForm.controls['nombre'].value
-    const apellidop = this.filterForm.controls['apellidop'].value
-    const apellidom = this.filterForm.controls['apellidom'].value
-    const dni = this.filterForm.controls['dni'].value
-
-    this.usuarioService.getUsuariosFiltros(nombre,apellidop,apellidom,dni).subscribe((res) => {
-
-      this.dataSource.data = res
-      if(this.dataSource.data[0] == undefined){
-        this.noResults = false
-      }else{
-        this.noResults = true
-      }
-    })
-
-
+    this.buscarAlumnos()
  }
 
   ngOnInit(): void {
 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    
   }
+
+
 
   buscarAlumnos(){
 
@@ -75,15 +62,22 @@ export class MatriculaExtemporaneaComponent {
     const apellidom = this.filterForm.controls['apellidom'].value.trim()
     const dni = this.filterForm.controls['dni'].value.trim()
 
-    this.usuarioService.getUsuariosFiltros(nombre,apellidop,apellidom,dni).subscribe((res) => {
-
-      this.dataSource.data = res
-      if(this.dataSource.data[0] == undefined){
-        this.noResults = false
-      }else{
-        this.noResults = true
-      }
-    })
+    this.usuarioService.getUsuariosFiltros(nombre,apellidop,apellidom,dni).subscribe({
+      next: res => {
+        this.dataSource.data = res
+        this.dataSource.paginator = this.paginator
+        this.dataSource.sort = this.sort  
+      },
+      error: error => console.log(error),
+      complete: () => {
+        if(this.dataSource.data[0] == undefined){
+          this.noResults = false
+        }else{
+          this.noResults = true
+        }
+      },
+    }
+)
   }
 
   openDialogMatricula(usuario:any){
