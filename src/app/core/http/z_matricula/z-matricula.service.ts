@@ -23,4 +23,11 @@ export class ZMatriculaService {
     return this.http.get<any[]>('https://calendar-json-api.up.railway.app/fullyear')
   }
 
+  getGeneralMatriculaExcel()  {
+    return this.http.get(this.API_URL+ '/matriculas-pagos-usuarios',{responseType:'blob'})
+  }
+
+
+
+
 }

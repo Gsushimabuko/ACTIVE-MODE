@@ -1,3 +1,8 @@
+<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
+    <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
+      <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
+    </button> 
+  </div>
 <div *ngIf="loader" class="loader-spinner"
 fxLayout="column" fxLayoutAlign="center center"
 >
@@ -5,7 +10,7 @@ fxLayout="column" fxLayoutAlign="center center"
 </div>
 <div  fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="center start">
-        <mat-card fxLayout="column"  fxLayoutAlign="center center" style=" width: 700px; height: 500px; margin:40px; padding:20px">
+        <mat-card fxLayout="column"  fxLayoutAlign="center center" style=" width: 700px; height: 550px; margin:40px; padding:20px">
             <div style="text-align:center;">
                 <h2>Seleccionar mes</h2>
             </div>
@@ -57,6 +62,9 @@ fxLayout="column" fxLayoutAlign="center center"
                         </tr>
                         <tr  class="trTable" >
                             <td *ngFor="let dia of calendarioMes.semana4" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
+                        <tr  class="trTable" >
+                            <td *ngFor="let dia of calendarioMes.semana5" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
                         </tr>
                        
                     </tbody>

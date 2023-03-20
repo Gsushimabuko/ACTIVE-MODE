@@ -75,11 +75,13 @@ export class AlumnosComponent {
     const s2 = mes[1]
     const s3 = mes[2]
     const s4 = mes[3]
+    const s5 = mes[4]
     this.calendarioMes = {
       semana1: s1,
       semana2: s2,
       semana3: s3,
-      semana4: s4
+      semana4: s4,
+      semana5:s5
     }
   }
 }

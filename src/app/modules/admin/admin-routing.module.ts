@@ -8,6 +8,7 @@ import { CreacionCursoPeriodoComponent } from "./creacion-curso-periodo/creacion
 import { CreacionCursosComponent } from "./creacion-cursos/creacion-cursos.component";
 import { CursosComponent } from "./cursos/cursos.component";
 import { MatriculaExtemporaneaComponent } from './matricula-extemporanea/matricula-extemporanea.component';
+import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'cursos', component: CursosComponent },
   { path: 'creacion', component: CreacionCursosComponent },
   { path: 'matricula-extemporanea', component: MatriculaExtemporaneaComponent },
+  {path: 'reporte-general', component:ReporteGeneralComponent},
   { path: 'creacion-form/:periodoId', component: CreacionCursoPeriodoComponent },
   {path: 'parametros', loadChildren: () =>
   import('./parametros/parametros.module').then(m => m.ParametrosModule)}
