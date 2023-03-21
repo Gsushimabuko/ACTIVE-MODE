@@ -66,6 +66,10 @@ fxLayout="column" fxLayoutAlign="center center"
                           </mat-option>
                       </mat-select>
                     </mat-form-field>
+
+                    <div *ngIf="curso!= undefined && !curso.hayTarifa">
+                      No hay tarifa designada para tu tipo de usuario en este curso
+                    </div>
                     <mat-form-field class="input-propiedades" appearance="outline">
                       <mat-label>Horario</mat-label>
                       <mat-select formControlName="nivel" (selectionChange)="cambioNivel()">

@@ -211,6 +211,7 @@ export class MatriculaMainComponent {
         this.niveles = res[0].niveles
       }
       this.curso = res[0]
+      //console.log(res[0].hayTarifa)
       this.loader=false
     })
 

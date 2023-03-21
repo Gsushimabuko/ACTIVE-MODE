@@ -12,6 +12,7 @@ export interface CursoPeriodo {
     year:number
     state:string
     cupoMax:number
+    hayTarifa:boolean
     niveles:NivelPeriodo[]
 }
 
