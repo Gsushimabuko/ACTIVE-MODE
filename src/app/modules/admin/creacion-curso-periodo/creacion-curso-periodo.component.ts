@@ -109,6 +109,8 @@ export class CreacionCursoPeriodoComponent {
     this._cursoService.getOnlyCursos().subscribe(data => {
       console.log(data);
       this.cursos = data.cursosActivos;
+
+      this.loading = false;
     });
   }
 
@@ -157,6 +159,8 @@ export class CreacionCursoPeriodoComponent {
   }
 
   generarTarifas() {
+    this.tarifasElegidas = [];
+
     const dias = this.formTarifa.get('diaId')?.value;
     const tipoUsuarios = this.formTarifa.get('tipoUsuarioId')?.value;
 
@@ -168,7 +172,6 @@ export class CreacionCursoPeriodoComponent {
     }
 
     this.noTarifaError = false;
-    this.tarifasElegidas = [];
 
     for(let dia of dias) {
       for (let tipo of tipoUsuarios) {
@@ -210,6 +213,8 @@ export class CreacionCursoPeriodoComponent {
   }
 
   crearCursoPeriodo() {
+    this.loading = true;
+
     if (!this.formCursoPeriodo.valid) {
       this.formCursoPeriodo.markAllAsTouched();
       return;
@@ -272,6 +277,7 @@ export class CreacionCursoPeriodoComponent {
     
     this._cursoService.createCursoPeriodo(cursoPeriodoData, this.tarifasElegidas, this.nivelesElegidos).subscribe(data => {
       //console.log(data);
+      this.loading = false;
 
       this._router.navigate(['admin/creacion'], {
         queryParams: {

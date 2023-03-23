@@ -166,7 +166,7 @@ export class ElimDialogComponent {
       this.cursoService.deleteCursoPeriodo(this.id).subscribe({
         next: res => this.handleRespOk(res),
         error: error => this.handleError(error),
-        complete: () => console.log()
+        complete: () => this.dialogRef.close(true)
       });
         
         break;

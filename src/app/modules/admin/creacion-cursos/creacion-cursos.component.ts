@@ -90,6 +90,8 @@ export class CreacionCursosComponent {
   }
 
   duplicarPeriodoAnterior() {
+    this.loading = true;
+
     let mesAnt = -1;
     let anoAnt = -1;
 
@@ -108,11 +110,18 @@ export class CreacionCursosComponent {
       this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(periodo => {
         this._cursoService.duplicateCursoPeriodo(periodo, periodoAnt).subscribe(data => {
           console.log(data);
+          this.loading = false;
+          this.getCursosPeriodos();
+        }, error => {
+          this.loading = false;
         });
 
+      }, error => {
+        this.loading = false;
       });
     }, error => {
       console.log(error);
+      this.loading = false;
     })
   }
 
@@ -121,7 +130,7 @@ export class CreacionCursosComponent {
     var dialogRef = this.dialog.open(ParaDialogComponent, {
       width: '400px',
   
-      hasBackdrop:true,
+      hasBackdrop: true,
       data: {
         objeto: curso,
         origen: "curso-periodo",
@@ -131,15 +140,18 @@ export class CreacionCursosComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.loading = true;
       console.log('The dialog was closed');
-      this.getCursosPeriodos()
+      this.getCursosPeriodos();
     });
 
   }
 
-  cambiarEstado(id: number){
+  cambiarEstado(id: number) {
+    this.loading = true;
+
     this._cursoService.changeStateCursoPeriodo(id).subscribe(data => {
-      this.getCursosPeriodos()
+      this.getCursosPeriodos();
     });
 
   }
@@ -162,8 +174,9 @@ export class CreacionCursosComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.loading = true;
       console.log('The dialog was closed');
-      this.getCursosPeriodos()
+      this.getCursosPeriodos();
     });
 
   }
