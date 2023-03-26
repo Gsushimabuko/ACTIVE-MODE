@@ -15,6 +15,7 @@ import { PasarelaModule } from '../pasarela/pasarela.module';
 import { DasboardComponent } from './components/dasboard/dasboard.component';
 import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component';
 import { FamiliaComponent } from './components/familia/familia.component';
+import { TycDialogComponent } from './components/tyc-dialog/tyc-dialog.component';
 
 
 
@@ -27,6 +28,7 @@ import { FamiliaComponent } from './components/familia/familia.component';
     DasboardComponent,
     MisCursosComponent,
     FamiliaComponent,
+    TycDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -13,6 +13,11 @@ import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.servi
 import { PasarelaComponent } from '../../../pasarela/pasarela.component';
 import { CursoComponent } from '../curso/curso.component';
 import { Usuario } from '../../../../interfaces/usuario';
+import { MatDialog } from '@angular/material/dialog';
+import { TycDialogComponent } from '../tyc-dialog/tyc-dialog.component';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -62,8 +67,13 @@ export class MatriculaMainComponent {
 
   constructor(private formBuilder: FormBuilder,
     private usuarioService: ZUsuarioService,
-    private cursoService:ZCursoService) {
+    private cursoService:ZCursoService,
+    public dialog: MatDialog,
+    public router: Router,
+    public snackbar: MatSnackBar
+    ) {
 
+    this.abrirTycDialog()
 
     this.idPadre = this.usuarioService.usuario.id
     
@@ -100,6 +110,20 @@ export class MatriculaMainComponent {
       usuario:[this.idPadre]
     })
 
+  }
+  
+
+  abrirTycDialog(){
+  
+      const dialogRef = this.dialog.open(TycDialogComponent);
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result != true){
+          this.router.navigateByUrl('/matricula/dashboard')
+          this.openSnackBar("Debes aceptar los términos y condiciones", 5)
+        }
+      });
+   
   }
 
   seleccionUsuario(){
@@ -541,6 +565,10 @@ export class MatriculaMainComponent {
 
   displayedColumns: string[] = ['orden','curso', 'dias', 'monto'];
   
-  
+  openSnackBar(message: string, seconds: number) {
+    this.snackbar.open(message, 'X', {
+      duration: seconds * 1000,
+    });
+  }
   
 }
