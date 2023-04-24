@@ -66,12 +66,19 @@
 }
 
 .method-card__images {
-  width: 100%;
+
+  align-items: center; 
   max-width: 998px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.logo-tarjeta{
+  width: 10%;
+  height: 10%;
+  
 }
 
 .method-card__images img {
@@ -124,13 +131,15 @@
   min-height: 500px;
 }
 .openpay-logo-container{
-  background-color:  #004080;
+  border: 1px solid #989898;
+  background-color:  #f7f7f7;
   color: white;
-  padding: 10px;
+  padding: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
   border-radius: 8px;
 }
+
 
 .method-digital__images {
   width: 100%;
@@ -181,5 +190,10 @@
 @media only screen and (max-width: 768px)  {
   .method-card__inputs {
     display: block;
+  }
+  .logo-tarjeta{
+    width: 30%;
+    height: 30%;
+    
   }
 }
