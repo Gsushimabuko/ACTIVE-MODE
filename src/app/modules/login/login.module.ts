@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
+import { CambiarContrasenaComponent } from './cambiar-contrasena/cambiar-contrasena.component';
+import { CorreoContrasenaComponent } from './correo-contrasena/correo-contrasena.component';
 
 
 
@@ -15,7 +17,9 @@ import { AdminComponent } from './admin/admin.component';
   declarations: [
     LoginComponent,
     RegisterComponent,
-    AdminComponent
+    AdminComponent,
+    CambiarContrasenaComponent,
+    CorreoContrasenaComponent
   ],
   imports: [
     CommonModule,

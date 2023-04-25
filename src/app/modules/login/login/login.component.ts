@@ -4,6 +4,8 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
+import { CorreoContrasenaComponent } from '../correo-contrasena/correo-contrasena.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,7 @@ export class LoginComponent {
   hide = true;
   mensaje: string = ""
   constructor(
-    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private snackbar:MatSnackBar) { }
+    private router: Router, public dialog: MatDialog, private fb: FormBuilder,  private usuarioService: ZUsuarioService, private snackbar:MatSnackBar) { }
 
   login(){
 
@@ -55,6 +57,12 @@ export class LoginComponent {
   openSnackBar(message: string, seconds: number) {
     this.snackbar.open(message, 'X', {
       duration: seconds * 1000,
+    });
+  }
+
+  openDialog() {
+    this.dialog.open(CorreoContrasenaComponent, {
+      data: {}
     });
   }
 
