@@ -45,6 +45,11 @@ export class CorreoContrasenaComponent {
 
       this.loading = false;
       this.correoEnviado = true;
+    }, error => {
+      console.log(error);
+
+      this.loading = false;
+      this.errorCorreo = true;
     });
   }
 }
