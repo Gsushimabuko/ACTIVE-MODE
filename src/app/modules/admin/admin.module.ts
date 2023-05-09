@@ -24,6 +24,7 @@ import { MatriculaModule } from '../matricula/matricula.module';
 import { CalendarModule } from '../calendar/calendar.module';
 import { EditarCursoPeriodoComponent } from './editar-curso-periodo/editar-curso-periodo.component';
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
+import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
 
 
 
@@ -38,7 +39,8 @@ import { ReporteGeneralComponent } from './reporte-general/reporte-general.compo
     MatriculaExtemporaneaComponent,
     DialogMatriculaComponent,
     EditarCursoPeriodoComponent,
-    ReporteGeneralComponent
+    ReporteGeneralComponent,
+    DiasHabilesComponent
   ],
   imports: [
     CommonModule,

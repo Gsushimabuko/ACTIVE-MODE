@@ -60,11 +60,14 @@
                         </div>
                     </div>
                 </div>
-                <div  fxLayout="column" fxLayoutGap="30" fxFlex="30" fxLayoutAlign="center center" >
+                <div  fxLayout="column" fxLayoutGap="15" fxFlex="30" fxLayoutAlign="center center" >
                     <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button >
                         Iniciar sesión
                     </button>
-                    
+                    <div>
+                        <span style="color:white">¿Olvidaste tu contraseña? </span>
+                        <span><a style="color:#672fce; cursor: pointer;" (click)="openDialog()">Recupera tu contraseña</a></span>
+                    </div>
                     <div class="texto-sugerencia">
                         <span style="color:white"> ¿No tienes cuenta? </span>
                         <span> <a style="color:#672fce" routerLink="/login/registro"> Registrate </a> </span>

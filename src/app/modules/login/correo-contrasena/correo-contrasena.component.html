@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Cambiar contraseña</h1>
+<div *ngIf="!correoEnviado">
+    <div mat-dialog-content>
+      <p>Le mandaremos un enlace para cambiar su contraseña.</p>
+      <form [formGroup]="correoForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Correo</mat-label>
+          <input matInput formControlName="correo" required>
+        </mat-form-field>
+        </form>
+        <div *ngIf="errorCorreo" style="color: red" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>info</mat-icon>
+            <small>Correo inválido</small>
+        </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Volver</button>
+      <button *ngIf="!loading" mat-button cdkFocusInitial (click)="sendEmail()">Enviar correo</button>
+      <button *ngIf="loading" mat-button cdkFocusInitial>Enviando</button>
+    </div>
+</div>
+
+<div *ngIf="correoEnviado">
+    <div mat-dialog-content>
+        <p>Se ha enviado exitosamente el correo.</p>
+    </div>
+
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Volver</button>
+    </div>
+</div>

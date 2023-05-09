@@ -1,0 +1,87 @@
+
+<form [formGroup] ="contrasenaForm" *ngIf="!cambio">
+     <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast">
+        
+        <mat-card class="login-card">
+            <div style="color: white;" fxLayout="column" fxLayoutAlign="center center">
+                <h2>Cambiar contraseña</h2>
+            </div>
+            
+            <div>
+                <hr>
+            </div>
+
+            <div fxLayout="column" fxFlex="0" fxLayoutAlign="start center">
+            
+                <div fxFlex="100" fxLayoutAlign="center center" >
+                    <div fxLayoutAlign="center center"   fxLayout="column"  >
+                        <div>
+                            <mat-form-field class="login-input" appearance="outline">
+                                <mat-label>Nueva contraseña</mat-label>
+                                <input matInput formControlName="contrasena" required>
+                                
+                                <mat-error *ngIf="contrasenaForm.controls['contrasena'].hasError('minlength')">
+                                    Ingrese una contraseña válida
+                                </mat-error>
+                                <mat-error *ngIf="contrasenaForm.controls['contrasena'].hasError('required')">
+                                    Ingrese una contraseña
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxFlex="100" fxLayoutAlign="center center" >
+                    <div fxLayoutAlign="center center"   fxLayout="column"  >
+                        <div>
+                            <mat-form-field class="login-input" appearance="outline">
+                                <mat-label>Confirmar contraseña</mat-label>
+                                <input matInput formControlName="contrasena2" required>
+                                
+                                <mat-error *ngIf="contrasenaForm.controls['contrasena2'].hasError('minlength')">
+                                    Ingrese una contraseña válida
+                                </mat-error>
+                                <mat-error *ngIf="contrasenaForm.controls['contrasena2'].hasError('required')">
+                                    Ingrese una contraseña
+                                </mat-error>
+                                <mat-error *ngIf="contrasenaForm.controls['contrasena2'].hasError('matchError')">
+                                    Las contraseñas no coinciden
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="error" style="color: red; margin-bottom: 15px;" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon style="color: red">info</mat-icon>
+                    <small>Error al cambiar la contraseña</small>
+                </div>
+
+                <div  fxLayout="column" fxLayoutGap="15" fxFlex="30" fxLayoutAlign="center center" >
+                    <button class="boton-login" [disabled]="contrasenaForm.invalid" (click)="cambiarContrasena()" mat-button >
+                        Cambiar contraseña
+                    </button>
+                </div>
+            </div>   
+        </mat-card>
+    </div>
+</form>
+
+<div *ngIf="cambio">
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast">
+        
+        <mat-card class="login-card">
+            <div style="color: white;" fxLayout="column" fxFlex="0" fxLayoutAlign="start center">
+                <h3>Contraseña cambiada exitosamente</h3>
+                <mat-icon>check_circle</mat-icon>
+            </div>
+            
+            <div  fxLayout="column" fxLayoutGap="15" fxFlex="30" fxLayoutAlign="center center" >
+                <button class="boton-login" routerLink="/login" mat-button >
+                    Regresar
+                </button>
+            </div>
+        </mat-card>
+
+    </div>
+</div>

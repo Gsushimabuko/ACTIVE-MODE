@@ -175,6 +175,14 @@ export class ZUsuarioService {
           return of(false) })
   )}
 
+  enviarCorreoContrasena(correo: any) {
+    return this.http.post<any>(this.API_URL + '/recuperar-cuenta', correo)
+  }
+
+  cambiarContrasena(contrasena: any, token: any) {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(this.API_URL + '/cambiar-contrasena', contrasena, { headers: headers });
+  }
 
 
 }
