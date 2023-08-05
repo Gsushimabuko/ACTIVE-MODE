@@ -20,6 +20,7 @@ registerLocaleData(localeEs, 'es-PE');
     AppComponent,
   ],
   imports: [
+   
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,

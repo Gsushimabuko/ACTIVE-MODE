@@ -9,10 +9,14 @@ import { CreacionCursosComponent } from "./creacion-cursos/creacion-cursos.compo
 import { CursosComponent } from "./cursos/cursos.component";
 import { MatriculaExtemporaneaComponent } from './matricula-extemporanea/matricula-extemporanea.component';
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
+import { PuertaComponent } from "./puerta/puerta.component";
+import { MenuPuertaComponent } from "./menu-puerta/menu-puerta.component";
 
 
 const routes: Routes = [
 
+  { path: 'menu-puerta', component: MenuPuertaComponent}, 
+  { path: 'puerta', component: PuertaComponent}, 
   { path: 'dashboard', component: AdminDashboardComponent}, 
   { path: 'alumnos', component: AlumnosComponent },
   { path: 'codigo', component: CodigosComponent },
