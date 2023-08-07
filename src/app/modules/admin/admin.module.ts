@@ -27,6 +27,7 @@ import { ReporteGeneralComponent } from './reporte-general/reporte-general.compo
 import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
 import { PuertaComponent } from './puerta/puerta.component';
 import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
+import { EntradasComponent } from './entradas/entradas/entradas.component';
 
 
 
@@ -44,7 +45,8 @@ import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
     ReporteGeneralComponent,
     DiasHabilesComponent,
     PuertaComponent,
-    MenuPuertaComponent
+    MenuPuertaComponent,
+    EntradasComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
     FlexLayoutModule,
     DirectivesModule,
     MatriculaModule,
-    CalendarModule
+    CalendarModule,
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }

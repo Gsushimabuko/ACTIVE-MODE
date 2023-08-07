@@ -1,8 +1,4 @@
-mat-card{
-    width: 50%;
-    height: 60%;
-    margin: 5%;
-}
+
 .loader-spinner{
     position:absolute;
     z-index: 200;
@@ -15,35 +11,49 @@ mat-card{
     
 }
 .icon{
-    width: 70%;
+    width: 35%;
     padding: 20px;
 }
-.red-snack{
-    width: 500px;
-    background: rgb(231, 120, 120) !important;
+.boton-search{
+    height: 60px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    background-color: aquamarine;
 }
-.gray-snack{
-    width: 500px;
-    background: azure !important;
-}
-.green-snack{
-    max-width: 100% !important;
-    width: 100% !important;
-    background: rgb(179, 218, 121) !important;
-}
+
 
 @media (max-width: 768px) {
 
     mat-card{
-        width: 75%;
+        width: 90%;
         height: 60%;
-        margin: 8%;
         padding: 8px;
+        margin: 20px;
     }
 
     .pueta-input{
         width: 300px !important;
-        background-color: blue !important; 
+      
+    }
+}
+
+@media (min-width: 768px) {
+
+    mat-card{
+        width: 40%;
+        height: 60%;
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .pueta-input{
+        width: 300px !important;
+     
+    }
+
+    .icon{
+        width: 35%;
+        padding: 20px;
     }
 }
 

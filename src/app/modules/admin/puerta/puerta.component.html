@@ -11,46 +11,94 @@ fxLayout="column" fxLayoutAlign="center center"
 >
 <mat-spinner color="primary"></mat-spinner>
 </div>
-<div fxLayout="row" fxLayoutAlign="center center" >
+<div fxLayout="column" fxLayoutAlign="center center" >
+    <mat-card fxLayout="column" fxLayoutAlign="center center">
+        <h2>Configuración</h2>
+        <div>
+            <mat-form-field appearance="outline" class="puerta-input">
+                <mat-label>Puerta</mat-label>
+                <mat-select [(ngModel)]="puerta">
+                <mat-option [value]="1">
+                1
+                </mat-option>
+                <mat-option [value]="2">
+                2
+                </mat-option>
+                <mat-option [value]="3">
+                3
+                </mat-option>
+                <mat-option [value]="4">
+                4
+                </mat-option>
+                <mat-option [value]="5">
+                5
+                </mat-option>
+                
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-radio-group [(ngModel)]="estado" aria-label="Seleccione entrada o salida">
+                <mat-radio-button  style="margin: 5px;" value="1">Entrada</mat-radio-button>
+                <mat-radio-button style="margin: 5px;" value="2">Salida</mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </mat-card>
+
     <mat-card>
         <div style="text-align:center">
             <img class="card-img-top" class="icon" 
             src="https://cdn-icons-png.flaticon.com/512/1652/1652004.png" alt="Card image cap">
             
-            <div>
-                <mat-form-field appearance="outline" class="puerta-input">
-                    <mat-label>Puerta</mat-label>
-                    <mat-select [(ngModel)]="puerta">
-                      <mat-option [value]="1">
-                       1
-                      </mat-option>
-                      <mat-option [value]="2">
-                       2
-                      </mat-option>
-                      <mat-option [value]="3">
-                       3
-                      </mat-option>
-                      <mat-option [value]="4">
-                       4
-                      </mat-option>
-                      <mat-option [value]="5">
-                       5
-                      </mat-option>
-                      
-                    </mat-select>
-                </mat-form-field>
-            </div>
-
-            <div>
-                <mat-radio-group [(ngModel)]="estado" aria-label="Seleccione entrada o salida">
-                    <mat-radio-button  style="margin: 5px;" value="1">Entrada</mat-radio-button>
-                    <mat-radio-button style="margin: 5px;" value="2">Salida</mat-radio-button>
-                  </mat-radio-group>
-            </div>
-            
-            <p class="card-text" style="text-align : center">Apunta hacia el QR y verás el mensaje que te indicará si la persona puede entrar o no.
+            <p class="card-text" style="text-align : center; font-size: 20px;">Apunta hacia el QR y verás el mensaje que te indicará si la persona puede entrar o no.
                 <b>¡LUEGO DE 2 SEGUNDOS, EL MENSAJE DESAPARECERÁ!</b>
             </p>
+        </div>
+    </mat-card>
+    <mat-card>
+        <div style="text-align:center">
+            <h1>Ingreso manual</h1>
+            
+            <form (ngSubmit)="marcarAsistenciaExterno()" [formGroup] ="loginForm">
+                <div fxLayout="row" fxFlex="100" 
+                 fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast">
+                        <div fxLayoutAlign="center center"  fxLayoutGap="10" fxLayout="row" fxLayout.lt-md="column"  >
+                            <div>
+                                    <mat-form-field class="login-input" appearance="outline">
+                                        <mat-label>DNI
+                                        </mat-label>
+                                        <input matInput formControlName="correo" required>
+                                        
+                                        <mat-error *ngIf="loginForm.controls['correo'].hasError('email')">
+                                            Ingrese un DNI válido
+                                        </mat-error>
+                                        <mat-error *ngIf="loginForm.controls['correo'].hasError('required')">
+                                            Ingrese un DNI válido
+                                        </mat-error>
+                                    </mat-form-field>
+                            </div>
+                            <div>
+                                    <mat-form-field class="login-input" appearance="outline">
+                                        <mat-label>Nombre
+                                        </mat-label>
+                                        <input matInput formControlName="nombre" required>
+                                        
+            
+                                        <mat-error *ngIf="loginForm.controls['nombre'].hasError('required')">
+                                            Ingrese un nombre
+                                        </mat-error>
+                                    </mat-form-field>
+                            </div>
+                            <div  fxLayout="column" fxLayoutAlign="center center" >
+                                <button class="boton-search" type="submit" mat-button >
+                                    <mat-icon>https</mat-icon>
+                                </button>
+                            </div>
+
+                        </div>
+               </div>
+           </form>
+
         </div>
     </mat-card>
 </div>

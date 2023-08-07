@@ -14,5 +14,13 @@ export class XPuertaService {
   checkAsistencia(body: any){
     return this.http.post<any>(this.API_URL , body)
   }
+  checkAsistenciaExterno(body: any){
+    return this.http.post<any>(this.API_URL + "/externo" , body)
+  }
 
+  getRegistrosIndex(inicio:any,fin:any){
+    return this.http.get<any>(this.API_URL + "/index" , {params:{inicio:inicio, fin:fin}})
+  }
+
+ 
 }

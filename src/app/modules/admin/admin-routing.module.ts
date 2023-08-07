@@ -11,10 +11,12 @@ import { MatriculaExtemporaneaComponent } from './matricula-extemporanea/matricu
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
 import { PuertaComponent } from "./puerta/puerta.component";
 import { MenuPuertaComponent } from "./menu-puerta/menu-puerta.component";
+import { EntradasComponent } from "./entradas/entradas/entradas.component";
 
 
 const routes: Routes = [
 
+  { path: 'entradas', component: EntradasComponent}, 
   { path: 'menu-puerta', component: MenuPuertaComponent}, 
   { path: 'puerta', component: PuertaComponent}, 
   { path: 'dashboard', component: AdminDashboardComponent}, 

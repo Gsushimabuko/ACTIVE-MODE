@@ -1,0 +1,120 @@
+<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
+    <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
+      <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
+    </button> 
+</div>
+<div *ngIf="loader" class="loader-spinner"
+fxLayout="column" fxLayoutAlign="center center"
+>
+<mat-spinner color="primary"></mat-spinner>
+</div>
+
+<div class="welcome-text" fxLayoutAlign="center center">
+    <h1>Reporte de entradas</h1>
+</div>
+
+<div class="container" fxLayoutGap="20" fxLayoutAlign="center start">
+    
+    <div>
+        <form [formGroup]="fechas">
+    
+        <mat-card class="filters">
+            <div  fxLayout="column" fxLayoutAlign="center center"> 
+                <h2>Fechas</h2>
+            </div>
+            <div>
+            <mat-form-field appearance="outline" >
+                <mat-label>Inicio</mat-label>
+                <mat-select formControlName="inicio" name="inicio">
+                    <mat-option *ngFor="let fechaAno of listaFechasAno" [value]="fechaAno ">
+                        {{fechaAno}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="fechas.controls['inicio'].hasError('required')">
+                   Seleccione fecha
+                </mat-error>
+            </mat-form-field>
+            </div>
+            <div>
+            <mat-form-field appearance="outline" >
+                <mat-label>Fin</mat-label>
+                <mat-select formControlName="fin" name="fin">
+                    <mat-option *ngFor="let fechaAno of listaFechasAno" [value]="fechaAno ">
+                        {{fechaAno}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="fechas.controls['fin'].hasError('required')">
+                   Seleccione fecha
+                </mat-error>
+            </mat-form-field>
+            </div>
+            <div fxLayoutAlign="center center">
+                <button (click)="buscarRegistros()" mat-button style="font-weight: bold;background-color:rgb(72, 87, 226)">Buscar</button>
+            </div>
+
+        </mat-card>
+
+    </form>    
+    </div>
+
+
+    <div  fxLayout="column" fxLayoutAlign="center center">
+
+           <div class="mat-elevation-z8">
+               <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
+                   <!-- Position Column -->
+                   <ng-container matColumnDef="fecha">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha|Hora</th>
+                     <td mat-cell *matCellDef="let element">{{element.fecha | date:'medium'}} 	</td>
+                   </ng-container>
+
+                   <!-- Name Column -->
+                   <ng-container matColumnDef="puerta">
+                     <th  mat-header-cell *matHeaderCellDef mat-sort-header>Puerta</th>
+                     <td  mat-cell *matCellDef="let element">{{element.puerta}}</td>
+                   </ng-container>
+                   
+             
+                   <ng-container matColumnDef="tipoRegistro">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+                     <td  mat-cell *matCellDef="let element">  {{ element.tipoRegistro == 1 ? 'Entrada' : 'Salida' }}</td>
+                   </ng-container>
+             
+                   <ng-container matColumnDef="codigoLeido">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Lectura</th>
+                     <td mat-cell *matCellDef="let element">{{element.codigoLeido}}</td>
+                   </ng-container>
+                   <ng-container matColumnDef="nombrePersona">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>nombrePersona</th>
+                     <td mat-cell *matCellDef="let element">{{element.nombrePersona}}</td>
+                   </ng-container>
+                   <ng-container matColumnDef="tipoPersona">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+                     <td mat-cell *matCellDef="let element">{{element.tipoPersona}}</td>
+                   </ng-container>
+                   <ng-container matColumnDef="nombreHijo">
+                     <th mat-header-cell *matHeaderCellDef mat-sort-header>nombreHijo</th>
+                     <td mat-cell *matCellDef="let element">{{element.nombreHijo}}</td>
+                   </ng-container>
+                 
+                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+               </table>
+               <mat-paginator [pageSizeOptions]="[10, 20, 5]"
+                              showFirstLastButtons
+                              aria-label="Seleccionar página de alumnos">
+               </mat-paginator>
+               </div>
+        
+               <div *ngIf="message" fxLayout="row" fxLayoutAlign="center center">
+                <h2>{{message}}</h2>
+               </div>
+    </div>
+
+        
+        
+</div>
+
+
+
+

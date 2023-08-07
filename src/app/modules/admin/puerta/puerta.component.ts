@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition, } from '@angular/material/snack-bar';
 import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
@@ -21,11 +22,47 @@ export class PuertaComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
+  loginForm: FormGroup = this.fb.group({
+    correo: ['', [Validators.required, Validators.minLength(5)]],
+    nombre: ['', [Validators.required ]],
+  })
 
-  constructor(private snackbar: MatSnackBar ,private puertaService: XPuertaService) { }
+  constructor(private fb: FormBuilder, private snackbar: MatSnackBar ,private puertaService: XPuertaService) { }
 
   ngOnInit(): void {
     this.leer()
+  }
+
+  marcarAsistenciaExterno(){
+
+    this.loader = true
+
+    const body = { 
+      dni: this.loginForm.value.correo,
+      nombre: this.loginForm.value.nombre,
+      puerta : this.puerta,
+      tipoRegistro : this.estado,
+    }
+
+    if(!body.dni || !body.nombre|| !this.estado || !this.puerta){
+      this.loader = false
+      this.openSnackBarERROR("RELLENA TODOS LOS CAMPOS", 3)
+      return 
+    }
+
+    this.puertaService.checkAsistenciaExterno(body).subscribe((res => {
+      this.loader = false
+      console.log(res)
+      const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
+      this.openSnackBarOK(mensaje, 3)
+    }
+    ),(err: HttpErrorResponse) =>{
+      this.loader = false
+      if(err.status == 500){
+        this.openSnackBarERROR("Error, vuelva intentarlo más tarde",  3)
+      }
+    })
+
   }
 
   leer = () => {
@@ -40,7 +77,7 @@ export class PuertaComponent implements OnInit {
         if(evt.code == "Enter" || evt.key == 'Alt'){
             if(barcode)
                 console.log("SE APRETÓ ENTER")
-                this.marcarAsistencia(/*barcode.toString()*/"47562431")
+                this.marcarAsistencia(barcode.toString())
                 barcode =''
             return
 
@@ -83,6 +120,7 @@ export class PuertaComponent implements OnInit {
     })
   }
 
+  
   openSnackBarOK(message: string, seconds: number) {
   
     this.snackbar.open(message, 'OK', {
@@ -110,5 +148,6 @@ export class PuertaComponent implements OnInit {
       verticalPosition: this.verticalPosition,
     }, );
   }
+
 
 }
