@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import * as saveAs from 'file-saver';
 import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
 
 @Component({
@@ -42,6 +43,29 @@ export class EntradasComponent {
       dateArray.push(formattedDate);
     }
     this.listaFechasAno = dateArray
+  }
+
+  downloadFile(){
+
+    const body =  {
+      inicio:  this.fechas.value.inicio,
+      fin: this.fechas.value.fin,
+    }
+   
+    console.log(body)
+    if(!body.inicio || !body.fin){
+      return
+    }
+
+    this.loader = true
+    
+    this.xPuertaService.getRegistrosIndexReporte(body).subscribe((res:any)=>{
+        this.loader = false
+        let blob:any = new Blob([res], { type: 'text/json; charset=utf-8application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        saveAs(blob, 'ReporteExcel.xlsx');
+      }),(error: any) => {
+        this.loader = false
+        console.log(error)}
   }
 
   buscarRegistros(){

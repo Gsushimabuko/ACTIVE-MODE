@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 
 @Injectable({
@@ -20,6 +21,19 @@ export class XPuertaService {
 
   getRegistrosIndex(inicio:any,fin:any){
     return this.http.get<any>(this.API_URL + "/index" , {params:{inicio:inicio, fin:fin}})
+  }
+  getRegistrosIndexReporte(body:any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    const options = {
+      headers: headers,
+      responseType: 'blob' as 'json'
+    };
+
+    return this.http.post<Blob>(this.API_URL+'/reporte', body, options);
+
   }
 
  
