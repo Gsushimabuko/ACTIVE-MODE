@@ -24,7 +24,7 @@ export class PuertaComponent implements OnInit {
 
   loginForm: FormGroup = this.fb.group({
     correo: ['', [Validators.required, Validators.minLength(5)]],
-    nombre: ['', [Validators.required ]],
+    //nombre: ['', [Validators.required ]],
   })
 
   constructor(private fb: FormBuilder, private snackbar: MatSnackBar ,private puertaService: XPuertaService) { }
@@ -36,21 +36,19 @@ export class PuertaComponent implements OnInit {
   marcarAsistenciaExterno(){
 
     this.loader = true
-
-    const body = { 
-      dni: this.loginForm.value.correo,
-      nombre: this.loginForm.value.nombre,
-      puerta : this.puerta,
-      tipoRegistro : this.estado,
-    }
-
-    if(!body.dni || !body.nombre|| !this.estado || !this.puerta){
+    if(!this.estado || !this.puerta){
       this.loader = false
-      this.openSnackBarERROR("RELLENA TODOS LOS CAMPOS", 3)
-      return 
+      this.openSnackBarERROR("SELECCIONE LA PUERTA Y LA ENTRADA/SALIDA", 3)
+      return
     }
 
-    this.puertaService.checkAsistenciaExterno(body).subscribe((res => {
+    const body = {
+      dni: this.loginForm.value.correo,
+      puerta: this.puerta,
+      tipoRegistro: this.estado
+    }
+
+    this.puertaService.checkAsistencia(body).subscribe((res => {
       this.loader = false
       console.log(res)
       const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
@@ -60,8 +58,13 @@ export class PuertaComponent implements OnInit {
       this.loader = false
       if(err.status == 500){
         this.openSnackBarERROR("Error, vuelva intentarlo más tarde",  3)
+      }else if (err.status == 404){
+        this.openSnackBarFAIL("¡ACCESO RESTRINGIDO!",  3)
       }
     })
+
+
+
 
   }
 

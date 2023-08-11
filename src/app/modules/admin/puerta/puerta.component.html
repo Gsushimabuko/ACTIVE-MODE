@@ -77,18 +77,21 @@ fxLayout="column" fxLayoutAlign="center center"
                                         </mat-error>
                                     </mat-form-field>
                             </div>
-                            <div>
-                                    <mat-form-field class="login-input" appearance="outline">
-                                        <mat-label>Nombre
-                                        </mat-label>
-                                        <input matInput formControlName="nombre" required>
-                                        
-            
-                                        <mat-error *ngIf="loginForm.controls['nombre'].hasError('required')">
-                                            Ingrese un nombre
-                                        </mat-error>
-                                    </mat-form-field>
-                            </div>
+                            <!-- 
+                                <div>
+                                        <mat-form-field class="login-input" appearance="outline">
+                                            <mat-label>Nombre
+                                            </mat-label>
+                                            <input matInput formControlName="nombre" required>
+                                            
+                
+                                            <mat-error *ngIf="loginForm.controls['nombre'].hasError('required')">
+                                                Ingrese un nombre
+                                            </mat-error>
+                                        </mat-form-field>
+                                </div>
+
+                            -->
                             <div  fxLayout="column" fxLayoutAlign="center center" >
                                 <button class="boton-search" type="submit" mat-button >
                                     <mat-icon>https</mat-icon>
