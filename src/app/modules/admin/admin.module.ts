@@ -25,6 +25,7 @@ import { CalendarModule } from '../calendar/calendar.module';
 import { EditarCursoPeriodoComponent } from './editar-curso-periodo/editar-curso-periodo.component';
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
 import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
+import { PuertaComponent } from './puerta/puerta.component';
 
 
 
@@ -40,7 +41,8 @@ import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
     DialogMatriculaComponent,
     EditarCursoPeriodoComponent,
     ReporteGeneralComponent,
-    DiasHabilesComponent
+    DiasHabilesComponent,
+    PuertaComponent
   ],
   imports: [
     CommonModule,
