@@ -26,6 +26,9 @@ import { EditarCursoPeriodoComponent } from './editar-curso-periodo/editar-curso
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
 import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
 import { PuertaComponent } from './puerta/puerta.component';
+import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
+import { EntradasComponent } from './entradas/entradas/entradas.component';
+
 
 
 
@@ -42,7 +45,9 @@ import { PuertaComponent } from './puerta/puerta.component';
     EditarCursoPeriodoComponent,
     ReporteGeneralComponent,
     DiasHabilesComponent,
-    PuertaComponent
+    PuertaComponent,
+    MenuPuertaComponent,
+    EntradasComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +56,8 @@ import { PuertaComponent } from './puerta/puerta.component';
     FlexLayoutModule,
     DirectivesModule,
     MatriculaModule,
-    CalendarModule
+    CalendarModule,
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }

@@ -1,0 +1,54 @@
+<div class="container"  fxLayout="column"  fxLayoutAlign="center center" >
+    <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
+    <p class="welcome-text">Panel de administración </p>
+    <p class="welcome-subtext">Elige una de las opciones </p> 
+
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center">
+      <!-- 
+          <div routerLink="/admin/codigo" class="div-card" >
+                  <mat-card >
+                      <div fxLayout="column" >
+                          <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
+                              Gestión de Códigos
+                          </div>
+                         <div>
+                             <mat-icon>recent_actors</mat-icon>
+                         </div>
+      
+                      </div>
+                  </mat-card>
+          </div>
+
+      -->
+    
+        <div routerLink="/admin/puerta" class="div-card">
+            <mat-card >
+                <div fxLayout="column" >
+                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
+                        Puerta padres
+                    </div>
+                   <div>
+                    <mat-icon>person</mat-icon>
+                   </div>
+
+                </div>
+            </mat-card>
+        </div>
+
+        
+        
+        
+    </div>
+    <div style="margin: 40px;">
+        <button (click)="logout()" routerLink="login" class="button-83-pushable" role="button">
+            <span class="button-83-shadow"></span>
+            <span class="button-83-edge"></span>
+            <span class="button-83-front text">
+            
+                    <div>Cerrar sesión</div> 
+                
+            </span>
+        </button>
+    </div>
+
+</div>

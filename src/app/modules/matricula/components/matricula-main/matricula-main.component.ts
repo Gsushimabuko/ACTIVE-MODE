@@ -43,7 +43,7 @@ export class MatriculaMainComponent {
   usuarios!:Usuario[]
   
 
-  
+  extra:number
   fechaHoy:Date
   mesCalendario!:Date
   meses:any
@@ -85,7 +85,8 @@ export class MatriculaMainComponent {
 
     this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
 
-    this.fechaHoy = new Date() 
+    this.fechaHoy = new Date()
+    this.extra = 15*60*1000 // prorroga:  (+) aumenta prorroga, (-) disminuye prorroga 
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
@@ -333,7 +334,7 @@ export class MatriculaMainComponent {
       if(dia.idDias == this.cursoForm.controls['dia'].value){
         let schedule = [] //este es el horario que se envia al front
         for(var evento of dia.schedule){
-          if(new Date(evento.start).getTime() > this.fechaHoy.getTime()){
+          if(new Date(evento.start).getTime() > (this.fechaHoy.getTime() - this.extra)){
             schedule.push(evento)
           }  
         }
@@ -387,7 +388,7 @@ export class MatriculaMainComponent {
       if(dia.idDias == this.cursoForm.controls['dia'].value){
         let schedule = [] //este es el horario que se envia al front
         for(var evento of dia.schedule){
-          if(new Date(evento.start).getTime() > this.fechaHoy.getTime()){
+          if(new Date(evento.start).getTime() > (this.fechaHoy.getTime() - this.extra)){
             schedule.push(evento)
           }  
         }

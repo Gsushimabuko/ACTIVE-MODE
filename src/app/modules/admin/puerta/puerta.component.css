@@ -1,0 +1,59 @@
+
+.loader-spinner{
+    position:absolute;
+    z-index: 200;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    align-items: center;
+    background-color:rgba(248, 183, 18, 0.668);
+    
+}
+.icon{
+    width: 35%;
+    padding: 20px;
+}
+.boton-search{
+    height: 60px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    background-color: aquamarine;
+}
+
+
+@media (max-width: 768px) {
+
+    mat-card{
+        width: 90%;
+        height: 60%;
+        padding: 8px;
+        margin: 20px;
+    }
+
+    .pueta-input{
+        width: 300px !important;
+      
+    }
+}
+
+@media (min-width: 768px) {
+
+    mat-card{
+        width: 40%;
+        height: 60%;
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .pueta-input{
+        width: 300px !important;
+     
+    }
+
+    .icon{
+        width: 35%;
+        padding: 20px;
+    }
+}
+

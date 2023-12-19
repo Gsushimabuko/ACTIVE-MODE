@@ -1,0 +1,60 @@
+.container{
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+ }
+ 
+.loader-spinner{
+    position:absolute;
+    z-index: 200;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    align-items: center;
+    background-color:rgba(248, 183, 18, 0.668);
+    
+}
+ .filters{
+     width: 300px;
+     padding: 30px;
+ }
+ .welcome-text{
+     margin-top: 30px;
+     font-weight: 500;
+     font-size: 30px;
+ }
+ 
+ table {
+ padding: 20px;
+ 
+ }
+ 
+ /* Structure */
+ .example-container {
+     position: relative;
+   }
+   
+   .example-table-container {
+     position: relative;
+     min-height: 200px;
+     max-height: 400px;
+     overflow: auto;
+   }
+ 
+   
+   .example-rate-limit-reached {
+     max-width: 360px;
+     text-align: center;
+   }
+   
+   /* Column Widths */
+   .mat-column-number,
+   .mat-column-state {
+     max-width: 64px;
+   }
+   
+   .mat-column-created {
+     max-width: 124px;
+   }
+   

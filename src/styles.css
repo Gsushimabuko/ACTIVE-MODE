@@ -18,3 +18,40 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color:rgba(248, 183, 18, 0.668);
     
 }
+.snackbar-error button {
+    background: #9d9d9d !important ;
+    color: rgb(0, 0, 0) !important;
+    border: none;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold; 
+}
+.snackbar-fail button {
+    background-color: #F44336;
+    color: rgb(0, 0, 0) !important;
+    border: none;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold; 
+}
+.snackbar-success button {
+    background-color: #36f44f;
+    color: rgb(0, 0, 0) !important;
+    border: none;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold;
+}
+.snackbar-error div{
+    background: #9d9d9d !important ;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold;
+}
+.snackbar-fail div{
+    background: #F44336 !important ;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold;
+}
+
+.snackbar-success div{
+    background:  #36f44f !important ;
+    color: rgb(0, 0, 0) !important ;
+    font-weight: bold;
+}

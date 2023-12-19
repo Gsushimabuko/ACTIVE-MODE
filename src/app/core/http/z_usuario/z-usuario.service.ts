@@ -160,6 +160,11 @@ export class ZUsuarioService {
           }
 
           //console.log("USUARIO ROL ID: ",this._usuario.id_rol)
+            //console.log("PUERTA")
+          if(this._usuario.id_rol == 3){
+            //console.log("USUARIO ADMINISTRADOR")
+            return resp.ok;
+          }
 
           if(this._usuario.id_rol == 2){
             //console.log("USUARIO ADMINISTRADOR")

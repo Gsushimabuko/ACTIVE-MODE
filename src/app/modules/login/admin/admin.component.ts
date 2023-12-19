@@ -32,10 +32,15 @@ export class AdminComponent {
     }
     
     this.usuarioService.login(usuario).subscribe(res=>{
-     console.log("RES: ", res)
+
       //si respuesta es igual a true
       if (res == true) {
-        if(this.usuarioService.usuario.id_rol != 2){
+       
+        if(this.usuarioService.usuario.id_rol == 3){
+         
+          this.router.navigateByUrl('/admin/menu-puerta')
+          //this.router.navigateByUrl('/admin/dashboard')
+        }else if(this.usuarioService.usuario.id_rol != 2){
           this.mensaje = "Usuario no administrador"
         }else{
           this.router.navigateByUrl('/admin/dashboard')
