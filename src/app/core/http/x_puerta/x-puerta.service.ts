@@ -15,6 +15,9 @@ export class XPuertaService {
   checkAsistencia(body: any){
     return this.http.post<any>(this.API_URL , body)
   }
+  checkAsistenciaAK(body: any){
+    return this.http.post<any>(this.API_URL + "/AK"  , body)
+  }
   checkAsistenciaExterno(body: any){
     return this.http.post<any>(this.API_URL + "/externo" , body)
   }

@@ -32,7 +32,7 @@ export class PuertaComponent implements OnInit {
   ngOnInit(): void {
     this.leer()
   }
-
+/*
   marcarAsistenciaExterno(){
 
     this.loader = true
@@ -67,7 +67,7 @@ export class PuertaComponent implements OnInit {
 
 
   }
-
+*/
   leer = () => {
             
     let barcode = ""
@@ -107,7 +107,7 @@ export class PuertaComponent implements OnInit {
       tipoRegistro: this.estado
     }
 
-    this.puertaService.checkAsistencia(body).subscribe((res => {
+    this.puertaService./*checkAsistencia(body) CAMBIAR AK*/ checkAsistenciaAK(body).subscribe((res => {
       this.loader = false
       console.log(res)
       const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
@@ -117,7 +117,11 @@ export class PuertaComponent implements OnInit {
       this.loader = false
       if(err.status == 500){
         this.openSnackBarERROR("Error, vuelva intentarlo más tarde",  3)
-      }else if (err.status == 404){
+      }
+      else if (err.status == 403){
+        this.openSnackBarERROR("Datos incompletos",  3)
+      }
+      else if (err.status == 404){
         this.openSnackBarFAIL("¡ACCESO RESTRINGIDO!",  3)
       }
     })
