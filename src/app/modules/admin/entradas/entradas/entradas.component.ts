@@ -34,8 +34,8 @@ export class EntradasComponent {
  }
 
   ngOnInit(): void {    
-    const startDate = new Date('2023-08-04');
-    const endDate = new Date('2023-12-25');
+    const startDate = new Date('2024-01-01');
+    const endDate = new Date('2024-04-01');
     const dateArray = [];
 
     for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
