@@ -542,12 +542,15 @@ export class MatriculaMainComponent {
 
     this.listaDeCursosPrecios = this.listaCursosNuevos
 
-    for(var curso of this.listaDeCursosPrecios){
+    for(let [i,curso] of this.listaDeCursosPrecios.entries()){
       let diasMax = curso.diasMax
       let costoMes = curso.tarifa
       
       let cantDias = curso.diasEvento.length
       let montoCurso = Number((costoMes*(cantDias/diasMax)).toFixed(2))
+
+      this.listaDeCursosPrecios[i].monto = montoCurso
+
       listaCalculada.push({
         orden: orden,
         curso: curso.nombre + " " + curso.horarioDias + " " + curso.horarioHoras,
