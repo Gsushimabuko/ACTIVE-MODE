@@ -24,7 +24,7 @@ export class PuertaComponent implements OnInit {
 
   loginForm: FormGroup = this.fb.group({
     correo: ['', [Validators.required, Validators.minLength(5)]],
-    //nombre: ['', [Validators.required ]],
+    nombre: ['', [Validators.required ]],
   })
 
   constructor(private fb: FormBuilder, private snackbar: MatSnackBar ,private puertaService: XPuertaService) { }
@@ -32,7 +32,7 @@ export class PuertaComponent implements OnInit {
   ngOnInit(): void {
     this.leer()
   }
-/*
+
   marcarAsistenciaExterno(){
 
     this.loader = true
@@ -67,7 +67,7 @@ export class PuertaComponent implements OnInit {
 
 
   }
-*/
+
   leer = () => {
             
     let barcode = ""
@@ -107,7 +107,7 @@ export class PuertaComponent implements OnInit {
       tipoRegistro: this.estado
     }
 
-    this.puertaService./*checkAsistencia(body) CAMBIAR AK*/ checkAsistenciaAK(body).subscribe((res => {
+    this.puertaService.checkAsistencia(body).subscribe((res => {
       this.loader = false
       console.log(res)
       const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
