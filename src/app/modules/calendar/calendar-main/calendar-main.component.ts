@@ -17,18 +17,16 @@ export class CalendarMainComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-  this.innerWidth = window.innerWidth;
+    this.innerWidth = window.innerWidth;
   }
 
   constructor() {
-
     this.talleres = [];
   }
   
   minPixelRatio = 1.25;
 
   ngOnInit(): void {
-    //this.actualizarHorario();
     this.innerWidth = window.innerWidth;  
   }
 
@@ -37,7 +35,6 @@ export class CalendarMainComponent {
   }
 
   actualizarHorario() {
-
     this.generadorCalendarioMes()
     
     if(this.listaCursosTotales[0]!=undefined){
@@ -60,7 +57,6 @@ export class CalendarMainComponent {
         horariosCurso.push(cursoDatos)  
 
         for(var semana of this.HORARIO_DATA){
-
           let diasSemana = Object.keys(semana)
           for(var diaSem of diasSemana){
             if(cursoDatos.eventos.includes(semana[diaSem].dia)){
@@ -74,7 +70,6 @@ export class CalendarMainComponent {
         }
 
         cursosEvento.push(cursoDatos)
-
       }
 
       this.listaCursosModificados= cursosEvento
@@ -82,15 +77,13 @@ export class CalendarMainComponent {
     }else{
       this.listaCursosModificados =[]
     }
-
-    
   }
 
-  displayedColumns: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+  displayedColumns: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
   
   horarios: any;
 
-  dias: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];
+  dias: string[] = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
   colores: string[] = [
     'rgb(252, 192, 0)',
     'rgb(244, 110, 108)',
@@ -125,12 +118,9 @@ export class CalendarMainComponent {
       for(let i = 1; i < diasMes+1; i++){
         let dia = new Date(fechaHoy.getFullYear(),fechaHoy.getMonth(),i).getDay()
         if(dia==0){
-          if(i==1){
-            //no pasa nada 
-          }else{
-            calendarioMes.push(semana)
-            semana={} as any
-          }
+          semana['domingo'] = {dia:i,cursos:[]}
+          calendarioMes.push(semana)
+          semana={} as any
         }else{
           switch (dia) {
             case 1:
@@ -148,15 +138,19 @@ export class CalendarMainComponent {
             case 5:
               semana['viernes'] = {dia:i,cursos:[]}
               break;
+            case 6:
+              semana['sabado'] = {dia:i,cursos:[]}
+              break;
             default:
               break;
           }
         } 
       }
-      calendarioMes.push(semana)
+      if(Object.keys(semana).length > 0){
+        calendarioMes.push(semana)
+      }
       this.HORARIO_DATA = calendarioMes
     }
-    
   }
 
   parseHoraStringToNumber(hora: string) {
@@ -167,5 +161,4 @@ export class CalendarMainComponent {
     let minutes = (parseInt(times[0], 10) * 60) + (parseInt(times[1], 10));
     return minutes;
   }
-
 }

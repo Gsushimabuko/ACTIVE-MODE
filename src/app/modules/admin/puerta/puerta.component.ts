@@ -48,7 +48,7 @@ export class PuertaComponent implements OnInit {
       tipoRegistro: this.estado
     }
 
-    this.puertaService.checkAsistenciaAK(body).subscribe((res => {
+    this.puertaService.checkAsistencia(body).subscribe((res => {
       this.loader = false
       console.log(res)
       const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
@@ -107,7 +107,7 @@ export class PuertaComponent implements OnInit {
       tipoRegistro: this.estado
     }
 
-    this.puertaService.checkAsistenciaAK(body).subscribe((res => {
+    this.puertaService.checkAsistencia(body).subscribe((res => {
       this.loader = false
       console.log(res)
       const mensaje = res.registros.nombrePersona + " " + "BIENVENIDO"
