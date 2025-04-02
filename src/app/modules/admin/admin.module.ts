@@ -28,6 +28,7 @@ import { DiasHabilesComponent } from './dias-habiles/dias-habiles.component';
 import { PuertaComponent } from './puerta/puerta.component';
 import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
 import { EntradasComponent } from './entradas/entradas/entradas.component';
+import { PagosComponent } from './pagos/pagos.component';
 
 
 
@@ -47,7 +48,8 @@ import { EntradasComponent } from './entradas/entradas/entradas.component';
     DiasHabilesComponent,
     PuertaComponent,
     MenuPuertaComponent,
-    EntradasComponent
+    EntradasComponent,
+    PagosComponent
   ],
   imports: [
     CommonModule,

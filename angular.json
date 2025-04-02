@@ -31,7 +31,9 @@
             ],
             "scripts": [
               "src/assets/js/openpay.v1.min.js",
-              "src/assets/js/openpay-data.v1.min.js"
+              "src/assets/js/openpay-data.v1.min.js",
+              "src/assets/js/static-content.vnforapps.com_v2_js_checkout.js",
+              "src/assets/js/static-content-qas.vnforapps.com_v2_js_checkout.js"
             ]
           },
           "configurations": {

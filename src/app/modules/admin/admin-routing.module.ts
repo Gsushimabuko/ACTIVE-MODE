@@ -12,6 +12,7 @@ import { PuertaComponent } from "./puerta/puerta.component";
 import { ReporteGeneralComponent } from './reporte-general/reporte-general.component';
 import { MenuPuertaComponent } from "./menu-puerta/menu-puerta.component";
 import { EntradasComponent } from "./entradas/entradas/entradas.component";
+import { PagosComponent } from "./pagos/pagos.component";
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'alumnos', component: AlumnosComponent },
   { path: 'codigo', component: CodigosComponent },
   { path: 'cursos', component: CursosComponent },
+  { path: 'pagos', component: PagosComponent },
   { path: 'creacion', component: CreacionCursosComponent },
   { path: 'matricula-extemporanea', component: MatriculaExtemporaneaComponent },
   {path: 'reporte-general', component:ReporteGeneralComponent},

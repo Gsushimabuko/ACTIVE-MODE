@@ -1,0 +1,64 @@
+<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
+    <button routerLink="../dashboard" mat-button style="transform:scale(2);">
+        <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
+    </button>
+</div>
+
+<div class="welcome-text" fxLayoutAlign="center center">
+    <h1>Generación de pago</h1>
+</div>
+
+<form [formGroup]="pagoForm">
+    <div class="container" fxLayoutGap="20" fxLayoutAlign="center start">
+
+        <div>
+
+            <mat-card class="filters">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <h2>Detalles del pago</h2>
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="var_email">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Descripción del pago</mat-label>
+                    <input matInput formControlName="var_description">
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Monto</mat-label>
+                    <input matInput formControlName="num_amount" (input)="calculateAmounts()">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Comisión (%)</mat-label>
+                    <input matInput formControlName="num_commission_percentage" (input)="calculateAmounts()">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Comisión</mat-label>
+                    <input matInput [value]="commission | number: '1.2-2':'en-US'">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Total</mat-label>
+                    <input matInput [value]="total | number: '1.2-2':'en-US'">
+                </mat-form-field>
+
+                <mat-error *ngIf="error" style="margin-bottom: 15px;">
+                    <span>{{ error }}</span>
+                </mat-error>
+
+                <button (click)="generarPago()" mat-button style="font-weight: bold;background-color:rgb(72, 87, 226)">
+                    Generar pago
+                </button>
+            </mat-card>
+        </div>
+
+    </div>
+
+</form>

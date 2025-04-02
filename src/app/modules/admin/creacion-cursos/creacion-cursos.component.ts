@@ -127,7 +127,7 @@ export class CreacionCursosComponent {
 
   openDialog(curso: any): void {
 
-    var dialogRef = this.dialog.open(ParaDialogComponent, {
+    let dialogRef = this.dialog.open(ParaDialogComponent, {
       width: '400px',
   
       hasBackdrop: true,
