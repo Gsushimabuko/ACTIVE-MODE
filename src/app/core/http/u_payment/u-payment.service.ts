@@ -14,7 +14,7 @@ export class UPaymentService {
 		return this._http.post(`${this.API_URL}/payment`, { paymentData });
 	}
 
-	public getPaymentStatus(paymentUuid: string) {
-		return this._http.get(`${this.API_URL}/payment/${paymentUuid}/status`);
+	public getPaymentData(paymentUuid: string) {
+		return this._http.get(`${this.API_URL}/payment/${paymentUuid}`);
 	}
 }

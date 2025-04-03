@@ -1,7 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { NiubizService } from 'src/app/core/http/niubiz/niubiz.service';
 import { ScriptService } from 'src/app/core/scripts/script.service';
 import { environment } from 'src/app/environments/environment';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
 	selector: 'app-boton-pago',
@@ -16,6 +19,7 @@ export class BotonPagoComponent {
 	constructor(
 		private readonly niubizService: NiubizService,
 		private readonly script: ScriptService,
+		private dialog: MatDialog,
 	) {
 		this.configurePayGate();
 	}
@@ -23,10 +27,10 @@ export class BotonPagoComponent {
 	configurePayGate() {
 		this.script
 			.load('niubiz')
-		  	.then((data) => {
+			.then((data) => {
 				console.log('Script loaded');
 			})
-		  	.catch((error) => {
+			.catch((error) => {
 				console.log('Script not loaded');
 			});
 	}
@@ -49,7 +53,7 @@ export class BotonPagoComponent {
 					this.pago.num_total = parseFloat(this.pago.num_total);
 
 					console.log(data);
-					
+
 					VisanetCheckout.configure({
 						sessiontoken: this.accessToken.sessionKey,
 						channel: 'web',
@@ -69,14 +73,31 @@ export class BotonPagoComponent {
 
 					VisanetCheckout.configuration.complete = (data: any) => {
 						console.log(data);
-						alert(data)
-						
+
 						this.niubizService.payPayment(this.pago.var_uuid, data).subscribe({
 							next: (data: any) => {
-								console.log(data);
+								this.openSuccessDialog();
+								this.refreshInFive();
 							},
 							error: (error: any) => {
 								console.log(error);
+								
+								let errorMessage: string = '';
+								if (error.status == 400) {
+									errorMessage = 'Está intentando pagar un pago que no es válido porque ha sido pagado o anulado. No se ha realizado ningún pago desde su tarjeta.'
+								}
+								else if (error.status == 500) {
+									errorMessage = 'Ha ocurrido un error en nuestros servidores. No se ha realizado ningún pago desde su tarjeta. \nPor favor, inténtelo otra vez.'
+								}
+								else if (error.status == 422) {
+									errorMessage = 'La tarjeta ingresada es inválida. Por favor, inténtelo otra vez con una tarjeta diferente.'
+								}
+								else {
+									errorMessage = 'Ha ocurrido un error. No se ha realizado el pago.'
+								}
+
+								this.openErrorDialog(errorMessage);
+								this.refreshInFive();
 							},
 						});
 					};
@@ -87,6 +108,41 @@ export class BotonPagoComponent {
 					console.log(error);
 				},
 			}
-		);
+			);
+	}
+
+
+	openSuccessDialog() {
+		const dialogRef = this.dialog.open(InfoDialogComponent, {
+			width: '300px',
+			data: {
+				title: 'El pago se realizó con éxito',
+				message: 'Se ha enviado un correo de confirmación del pago',
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(res => {
+			console.log("Closed");
+		});
+	}
+
+	openErrorDialog(error: string) {
+		const dialogRef = this.dialog.open(ErrorDialogComponent, {
+			width: '300px',
+			data: {
+				title: 'Ocurrió un error',
+				message: error,
+			}
+		});
+
+		dialogRef.afterClosed().subscribe(res => {
+			console.log("Closed");
+		});
+	}
+
+	refreshInFive() {
+		setTimeout(() => {
+			location.reload();
+		}, 5000);
 	}
 }

@@ -1,3 +1,54 @@
-<p>pagos works!</p>
+<div class="container" fxLayoutGap="20" fxLayoutAlign="center start" *ngIf="paymentData.var_status == 'PENDING'">
 
-<app-boton-pago [uuid]="uuid"></app-boton-pago>
+    <div>
+        <mat-card class="filters">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <h2>Detalles del pago</h2>
+            </div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Descripción del pago</mat-label>
+                <textarea matInput readonly>{{ paymentData.var_description || '-' }}</textarea>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Total</mat-label>
+                <input matInput readonly [value]="'S/.' + (paymentData.num_total | number: '1.2-2':'en-US')">
+            </mat-form-field>
+
+            <app-boton-pago fxLayout="column" fxLayoutAlign="center center" [uuid]="uuid"></app-boton-pago>
+        </mat-card>
+    </div>
+</div>
+
+<div class="container" fxLayoutGap="20" fxLayoutAlign="center start" *ngIf="paymentData.var_status == 'PAID'">
+    <div>
+        <mat-card class="filters">
+            <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 10px;">
+                <h2 style="color: #28a745; text-align: center;">El pago ya ha sido realizado con éxito</h2>
+                <mat-icon class="success-icon">check_circle</mat-icon>
+            </div>
+
+            <div style="color: gray; text-align: center;">
+                ¡Muchas gracias por su pago!
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<div class="container" fxLayoutGap="20" fxLayoutAlign="center start" *ngIf="paymentData.var_status != 'PENDING' && paymentData.var_status != 'PAID'">
+    <div>
+        <mat-card class="filters">
+            <div fxLayout="column" fxLayoutAlign="center center" style="margin-bottom: 10px;">
+                <h2 style="color: #d32f2f; text-align: center;">Pago inválido</h2>
+                <mat-icon class="error-icon">error</mat-icon>
+            </div>
+
+            <div style="color: gray; text-align: center;">
+                Este pago ha sido cancelado o no existe.
+            </div>
+        </mat-card>
+    </div>
+</div>
+

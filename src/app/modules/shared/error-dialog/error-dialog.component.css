@@ -1,0 +1,38 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.error-icon {
+    color: #f44336;
+    transform: scale(1.5);
+}
+
+.dialog-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #d32f2f;
+    /* Darker red */
+    margin-bottom: 10px;
+}
+
+.dialog-message {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    background-color: #f44336;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.close-button:hover {
+    background-color: #d32f2f;
+}

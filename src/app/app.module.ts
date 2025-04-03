@@ -15,6 +15,8 @@ import { HomeModule } from './modules/home/home.module';
 import { registerLocaleData } from '@angular/common';
 import { BotonPagoComponent } from './modules/shared/boton-pago/boton-pago.component';
 import { PagosComponent } from './modules/pagos/pagos.component';
+import { InfoDialogComponent } from './modules/shared/info-dialog/info-dialog.component';
+import { ErrorDialogComponent } from './modules/shared/error-dialog/error-dialog.component';
 registerLocaleData(localeEs, 'es-PE');
 
 @NgModule({
@@ -22,6 +24,8 @@ registerLocaleData(localeEs, 'es-PE');
     AppComponent,
     BotonPagoComponent,
     PagosComponent,
+    InfoDialogComponent,
+    ErrorDialogComponent,
   ],
   imports: [
    
