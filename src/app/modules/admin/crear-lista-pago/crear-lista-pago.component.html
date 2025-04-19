@@ -1,0 +1,126 @@
+<div class="container">
+  <!-- Left Section: Form -->
+  <div class="left-section">
+    <h2>Crear nueva lista</h2>
+    <form (ngSubmit)="onSubmit()" #listaPagoForm="ngForm">
+      <div class="form-group">
+        <label for="nombre">Nombre de la lista</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="formData.nombre" required />
+      </div>
+      <div class="form-group">
+        <label for="detalles">Detalles</label>
+        <textarea id="detalles" name="detalles" [(ngModel)]="formData.detalles" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="padre">Padre responsable</label>
+        <input type="text" id="padre" name="padre" [(ngModel)]="formData.padre" required />
+      </div>
+
+      <!-- Row for Cuota, Comisión, Total + Comisión, and Button -->
+      <div class="form-row">
+        <div class="form-group small">
+          <label for="cuota">Cuota total</label>
+          <input type="number" id="cuota" name="cuota" [(ngModel)]="formData.cuota" (input)="calculateTotal()" step="0.01" required />
+        </div>
+        <div class="form-group small">
+          <label for="comision">Comisión (%)</label>
+          <input type="number" id="comision" name="comision" [(ngModel)]="formData.comision" (input)="calculateTotal()" step="0.01" required />
+        </div>
+        <div class="form-group small">
+          <label for="total">Total + Comisión</label>
+          <input type="text" id="total" name="total" [value]="totalWithComision" readonly />
+        </div>
+        <div class="form-group small">
+          <label for="total">Actualizar cuotas</label>
+          <button type="button" class="calculate-button" (click)="calculateCuotas()">Calcular</button>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-button">Crear Lista</button>
+    </form>
+  </div>
+
+  <!-- Right Section: Table -->
+  <div class="right-section">
+    <h2>Estudiantes ({{ filteredStudents.length }})</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Grado</th>
+          <th>Sección</th>
+          <th>Padre</th>
+          <th>Madre</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Cuota</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of paginatedStudents">
+          <td>{{ student.nombre }}</td>
+          <td>{{ student.apellido }}</td>
+          <td>{{ student.grado }}</td>
+          <td>{{ student.seccion }}</td>
+          <td>{{ student.padre }}</td>
+          <td>{{ student.madre }}</td>
+          <td>{{ student.correo }}</td>
+          <td>{{ student.telefono }}</td>
+          <td>{{ student.cuota }}</td>
+          <td>
+            <button (click)="removeStudent(student.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="clear-table-button" (click)="clearTable()">Limpiar Tabla</button>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button *ngFor="let page of totalPages" (click)="changePage(page)" [class.active]="currentPage === page">
+        {{ page }}
+      </button>
+    </div>
+
+    <!-- Dropdowns for Grade and Section -->
+    <div class="dropdowns">
+      <div class="form-group">
+        <label for="grade">Grado</label>
+        <select id="grade" [(ngModel)]="selectedGrade" name="grade">
+          <option value="" disabled selected>Seleccione un grado</option>
+          <option *ngFor="let grade of grades" [value]="grade">{{ grade }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="section">Sección</label>
+        <select id="section" [(ngModel)]="selectedSection" name="section">
+          <option value="" disabled selected>Seleccione una sección</option>
+          <option *ngFor="let section of sections" [value]="section">{{ section }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="section">Agregar alumnos</label>
+        <button type="button" class="add-students-button" (click)="addStudents()">Enviar</button>
+      </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+      <label for="search">Buscar por apellido:</label>
+      <input
+        type="text"
+        id="search"
+        (input)="onSearchInputChange($event)"
+        placeholder="Ingrese apellido"
+      />
+      <ul>
+        <li *ngFor="let student of searchResults">
+          {{ student.nombre }} {{ student.apellido }}
+          <button (click)="addStudentFromSearch(student)">Agregar</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

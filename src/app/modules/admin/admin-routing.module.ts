@@ -13,7 +13,10 @@ import { ReporteGeneralComponent } from './reporte-general/reporte-general.compo
 import { MenuPuertaComponent } from "./menu-puerta/menu-puerta.component";
 import { EntradasComponent } from "./entradas/entradas/entradas.component";
 import { PagosComponent } from "./pagos/pagos.component";
-
+import { ColectasComponent } from "./colectas/colectas.component";
+import { CrearListaPagoComponent } from './crear-lista-pago/crear-lista-pago.component';
+import { EditListaPagoComponent } from './edit-lista-pago/edit-lista-pago.component';
+import { ReporteriaComponent } from './reporteria/reporteria.component';
 
 const routes: Routes = [
 
@@ -30,7 +33,11 @@ const routes: Routes = [
   {path: 'reporte-general', component:ReporteGeneralComponent},
   { path: 'creacion-form/:periodoId', component: CreacionCursoPeriodoComponent },
   {path: 'parametros', loadChildren: () =>
-  import('./parametros/parametros.module').then(m => m.ParametrosModule)}
+  import('./parametros/parametros.module').then(m => m.ParametrosModule)},
+  { path: 'colectas', component: ColectasComponent },
+  { path: 'crear-lista-pago', component: CrearListaPagoComponent },
+  { path: 'edit-lista-pago', component: EditListaPagoComponent },
+  { path: 'reportería', component: ReporteriaComponent }
 
 ];
 

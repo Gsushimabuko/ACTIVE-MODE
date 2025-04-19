@@ -1,0 +1,182 @@
+/* General container */
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffa500; /* Fondo naranja */
+  color: #000; /* Texto negro */
+}
+
+/* Left section (form) */
+.left-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.left-section h2 {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin: 20px 20px 0px 0px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Right section (table and dropdowns) */
+.right-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.right-section h2 {
+  margin-bottom: 20px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #f4f4f4;
+}
+
+.clear-table-button,
+.add-students-button,
+.calculate-button,
+.submit-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+.clear-table-button:hover,
+.add-students-button:hover,
+.calculate-button:hover,
+.submit-button:hover {
+  background-color: #218838;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.pagination button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #0056b3;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.dropdowns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Back button */
+.back-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+/* Pagination styles */
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.searchbar {
+  display: flex;
+  align-items: center;
+  margin-top: 20px; /* Espacio entre la barra de búsqueda y la tabla */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr; /* Cambia a diseño vertical en pantallas pequeñas */
+  }
+
+  .left-section,
+  .right-section {
+    max-width: 100%; /* Ocupan todo el ancho */
+  }
+}

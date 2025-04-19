@@ -1,38 +1,30 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
-    <div class="logo"><img
+    <div class="logo">
+        <img
             src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png">
     </div>
     <p class="welcome-text">Panel de administración </p>
     <p class="welcome-subtext">Elige una de las opciones </p>
 
-    <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center">
-        <!-- 
-          <div routerLink="/admin/codigo" class="div-card" >
-                  <mat-card >
-                      <div fxLayout="column" >
-                          <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                              Gestión de Códigos
-                          </div>
-                         <div>
-                             <mat-icon>recent_actors</mat-icon>
-                         </div>
-      
-                      </div>
-                  </mat-card>
-          </div>
-
-      -->
-
+    <div class="dashboard-grid" fxLayout="row" fxLayoutWrap fxLayoutAlign="center center">
         <div routerLink="/admin/alumnos" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Ver alumnos matriculados
-                    </div>
+                    <div class="card-title">Ver alumnos matriculados</div>
                     <div>
                         <mat-icon>person</mat-icon>
                     </div>
+                </div>
+            </mat-card>
+        </div>
 
+        <div routerLink="/admin/colectas" class="div-card">
+            <mat-card>
+                <div fxLayout="column">
+                    <div class="card-title">Gestión de Colectas</div>
+                    <div>
+                        <mat-icon>volunteer_activism</mat-icon>
+                    </div>
                 </div>
             </mat-card>
         </div>
@@ -40,13 +32,10 @@
         <div routerLink="/admin/matricula-extemporanea" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Matricula extemporanea
-                    </div>
+                    <div class="card-title">Matricula extemporanea</div>
                     <div>
                         <mat-icon>add_to_queue</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
@@ -54,13 +43,10 @@
         <div routerLink="/admin/creacion" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Gestión de cursos
-                    </div>
+                    <div class="card-title">Gestión de cursos</div>
                     <div>
                         <mat-icon>add_to_queue</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
@@ -68,13 +54,10 @@
         <div routerLink="/admin/parametros" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Gestión de Parametros
-                    </div>
+                    <div class="card-title">Gestión de Parametros</div>
                     <div>
                         <mat-icon>settings</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
@@ -82,13 +65,10 @@
         <div routerLink="/admin/reporte-general" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Reporte general pagos
-                    </div>
+                    <div class="card-title">Reporte general pagos</div>
                     <div>
                         <mat-icon>list</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
@@ -96,43 +76,33 @@
         <div routerLink="/admin/entradas" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Entradas
-                    </div>
+                    <div class="card-title">Entradas</div>
                     <div>
                         <mat-icon>https</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
-
 
         <div routerLink="/admin/pagos" class="div-card">
             <mat-card>
                 <div fxLayout="column">
-                    <div style="margin: 30px 0px 30px 0px; font-weight: bold;">
-                        Generación de pagos
-                    </div>
+                    <div class="card-title">Generación de pagos</div>
                     <div>
                         <mat-icon>payment</mat-icon>
                     </div>
-
                 </div>
             </mat-card>
         </div>
-
     </div>
+
     <div style="margin: 40px;">
         <button (click)="logout()" routerLink="login" class="button-83-pushable" role="button">
             <span class="button-83-shadow"></span>
             <span class="button-83-edge"></span>
             <span class="button-83-front text">
-
                 <div>Cerrar sesión</div>
-
             </span>
         </button>
     </div>
-
 </div>

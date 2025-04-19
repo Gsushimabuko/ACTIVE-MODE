@@ -1,65 +1,124 @@
-.container{
+.container {
     text-align: center;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     color: rgb(255, 255, 255);
-  display: block;
-    
+    display: block;
 }
 
-.welcome-text{
+/* Welcome text styles */
+.welcome-text {
     font-weight: 500;
-    font-size: 3vw;
-}
-.welcome-subtext{
-    font-weight: 300;
-    font-size: 2vw;
-    margin-bottom: 50px;
+    font-size: 2.5vw;
+    margin-bottom: 10px;
 }
 
-.welcome-subtext2{
+.welcome-subtext {
+    font-weight: 300;
+    font-size: 1.8vw;
+    margin-bottom: 30px;
+}
+
+.welcome-subtext2 {
     font-weight: 300;
     font-size: 1.5vw;
     margin-top: 75px;
     margin-bottom: 75px;
 }
-.logo{
-    margin:25px;
+
+/* Logo styles */
+.logo {
+    margin: 25px;
 }
-.logo img{
-    width: 20vw;
+
+.logo img {
+    width: 15vw;
+    max-width: 200px;
 }
 
-a:link { text-decoration: none; }
-
-
-a:visited { text-decoration: none; }
-
-a {color: white; transition: 0.25s;}
-.login-animation:hover { color: rgb(0, 84, 240);}
-
-
-a:active { text-decoration: none; }
-
-.div-card{
-    margin: 20px;
+a:link {
+    text-decoration: none;
 }
-mat-card{
-    width: 200px;
-    height: 200px;
+
+a:visited {
+    text-decoration: none;
+}
+
+a {
+    color: white;
+    transition: 0.25s;
+}
+
+.login-animation:hover {
+    color: rgb(0, 84, 240);
+}
+
+a:active {
+    text-decoration: none;
+}
+
+/* Card styles */
+.div-card {
+    margin: 15px; /* Reduced margin for smaller cards */
+    width: 200px; /* Reduced card width */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    margin: 10px 0 5px; /* Adjusted spacing between title and icon */
+    font-weight: bold;
+    text-align: center;
+    font-size: 1rem; /* Slightly smaller font size */
+    color: #333;
+}
+
+mat-card {
+    width: 100%;
+    height: 180px; /* Reduced card height */
     color: black;
     font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 8px; /* Slightly rounded corners */
+    background: #f5f5f5; /* Flat background color */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
-mat-card:hover{
-    cursor:pointer;
+
+mat-card:hover {
+    cursor: pointer;
+    background: #eaeaea; /* Slightly darker background on hover */
 }
 
-mat-icon{
-    transform: scale(3);
+mat-icon {
+    transform: scale(2); /* Reduced icon size */
+    color: #555;
+    margin-top: 10px; /* Added padding above the icon */
+    margin-bottom: 5px; /* Adjusted spacing below the icon */
 }
 
+/* Grid layout for cards */
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Reduced gap between cards */
+    justify-content: center;
+}
 
-
-
+/* Button styles */
 .button-83-pushable {
     position: relative;
     border: none;
@@ -71,9 +130,9 @@ mat-icon{
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-  }
-  
-  .button-83-shadow {
+}
+
+.button-83-shadow {
     position: absolute;
     top: 0;
     left: 0;
@@ -83,13 +142,10 @@ mat-icon{
     background: hsl(0deg 0% 0% / 0.25);
     will-change: transform;
     transform: translateY(2px);
-    transition:
-      transform
-      600ms
-      cubic-bezier(.3, .7, .4, 1);
-  }
-  
-  .button-83-edge {
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+.button-83-edge {
     position: absolute;
     top: 0;
     left: 0;
@@ -97,15 +153,15 @@ mat-icon{
     height: 100%;
     border-radius: 12px;
     background: linear-gradient(
-      to left,
-      rgb(178, 4, 4) 0%,
-      rgb(213, 51, 43) 8%,
-      rgb(218, 29, 29) 92%,
-      rgb(227, 54, 54) 100%
+        to left,
+        rgb(178, 4, 4) 0%,
+        rgb(213, 51, 43) 8%,
+        rgb(218, 29, 29) 92%,
+        rgb(227, 54, 54) 100%
     );
-  }
-  
-  .button-83-front {
+}
+
+.button-83-front {
     display: block;
     position: relative;
     padding: 12px 27px;
@@ -115,43 +171,71 @@ mat-icon{
     background: rgb(218, 60, 60);
     will-change: transform;
     transform: translateY(-4px);
-    transition:
-      transform
-      600ms
-      cubic-bezier(.3, .7, .4, 1);
-  }
+    transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
 
-  .button-83-pushable:hover {
+.button-83-pushable:hover {
     filter: brightness(110%);
     -webkit-filter: brightness(110%);
-  }
-  
-  .button-83-pushable:hover .button-83-front {
+}
+
+.button-83-pushable:hover .button-83-front {
     transform: translateY(-6px);
-    transition:
-      transform
-      250ms
-      cubic-bezier(.3, .7, .4, 1.5);
-  }
-  
-  .button-83-pushable:active .button-83-front {
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-83-pushable:active .button-83-front {
     transform: translateY(-2px);
     transition: transform 34ms;
-  }
-  
-  .button-83-pushable:hover .button-83-shadow {
+}
+
+.button-83-pushable:hover .button-83-shadow {
     transform: translateY(4px);
-    transition:
-      transform
-      250ms
-      cubic-bezier(.3, .7, .4, 1.5);
-  }
-  
-  .button-83-pushable:active .button-83-shadow {
+    transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.button-83-pushable:active .button-83-shadow {
     transform: translateY(1px);
     transition: transform 34ms;
-  }
-  
-  .button-83-pushable:focus:not(:focus-visible) {
+}
+
+.button-83-pushable:focus:not(:focus-visible) {
     outline: none;
-  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .div-card {
+        width: 180px; /* Smaller cards for medium screens */
+    }
+
+    .welcome-text {
+        font-size: 4vw;
+    }
+
+    .welcome-subtext {
+        font-size: 3vw;
+    }
+
+    .logo img {
+        width: 25vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .div-card {
+        width: 100%; /* Full-width cards for small screens */
+    }
+
+    .welcome-text {
+        font-size: 5vw;
+    }
+
+    .welcome-subtext {
+        font-size: 4vw;
+    }
+
+    .logo img {
+        width: 40vw;
+    }
+}

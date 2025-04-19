@@ -29,6 +29,10 @@ import { PuertaComponent } from './puerta/puerta.component';
 import { MenuPuertaComponent } from './menu-puerta/menu-puerta.component';
 import { EntradasComponent } from './entradas/entradas/entradas.component';
 import { PagosComponent } from './pagos/pagos.component';
+import { ColectasComponent } from './colectas/colectas.component';
+import { CrearListaPagoComponent } from './crear-lista-pago/crear-lista-pago.component';
+import { EditListaPagoComponent } from './edit-lista-pago/edit-lista-pago.component';
+import { ReporteriaComponent } from './reporteria/reporteria.component';
 
 
 
@@ -49,7 +53,11 @@ import { PagosComponent } from './pagos/pagos.component';
     PuertaComponent,
     MenuPuertaComponent,
     EntradasComponent,
-    PagosComponent
+    PagosComponent,
+    ColectasComponent,
+    CrearListaPagoComponent,
+    EditListaPagoComponent,
+    ReporteriaComponent
   ],
   imports: [
     CommonModule,

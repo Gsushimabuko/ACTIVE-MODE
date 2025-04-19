@@ -1,0 +1,97 @@
+/* General container styling */
+.container {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header section */
+.header {
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Button grid */
+.button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Action buttons */
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 220px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background: #007bff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.action-button:hover {
+  background: #0056b3;
+  transform: translateY(-3px);
+}
+
+.action-button:active {
+  transform: translateY(1px);
+}
+
+.action-button mat-icon {
+  font-size: 1.5rem;
+  color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .action-button {
+    width: 180px;
+    font-size: 0.9rem;
+  }
+
+  .action-button mat-icon {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo {
+    width: 100px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .action-button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
