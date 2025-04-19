@@ -5,6 +5,7 @@ import { ScriptService } from 'src/app/core/scripts/script.service';
 import { environment } from 'src/app/environments/environment';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
+import { LoaderService } from '../loaderService/loader.service';
 
 @Component({
 	selector: 'app-boton-pago',
@@ -19,6 +20,7 @@ export class BotonPagoComponent {
 	constructor(
 		private readonly niubizService: NiubizService,
 		private readonly script: ScriptService,
+		private readonly loaderService: LoaderService,
 		private dialog: MatDialog,
 	) {
 		this.configurePayGate();
@@ -45,6 +47,8 @@ export class BotonPagoComponent {
 			return;
 		}
 
+		this.loaderService.show();
+
 		this.niubizService.generateSessionToken(this.uuid)
 			.subscribe({
 				next: (data: any) => {
@@ -69,6 +73,7 @@ export class BotonPagoComponent {
 
 					VisanetCheckout.configuration.cancel = () => {
 						console.log('Cancel');
+						this.loaderService.hide();
 					};
 
 					VisanetCheckout.configuration.complete = (data: any) => {

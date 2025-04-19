@@ -6,6 +6,8 @@ import { UPaymentService } from 'src/app/core/http/u_payment/u-payment.service';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { ErrorDialogComponent } from '../../shared/error-dialog/error-dialog.component';
+import { LoaderService } from '../../shared/loaderService/loader.service';
+import { finalize } from 'rxjs';
 
 @Component({
 	selector: 'app-pagos',
@@ -28,6 +30,7 @@ export class PagosComponent {
 	constructor(
 		private readonly paymentService: UPaymentService,
 		private readonly usuarioService: ZUsuarioService,
+		private readonly loaderService: LoaderService,
 		public dialog: MatDialog,
 	) { }
 
@@ -57,6 +60,8 @@ export class PagosComponent {
 			return;
 		}
 
+		this.loaderService.show();
+
 		const paymentData = {
 			var_description: this.pagoForm.get('var_description')?.value,
 			num_amount: Number(this.pagoForm.get('num_amount')?.value),
@@ -66,7 +71,11 @@ export class PagosComponent {
 			var_admin_email: this.usuarioService.usuario.correo,
 		}
 		
-		this.paymentService.generatePayment(paymentData).subscribe({
+		this.paymentService.generatePayment(paymentData).pipe(
+			finalize(() => {
+				this.loaderService.hide();
+			})
+		).subscribe({
 			next: () => {
 				console.log("Success");
 				this.resetForm();
@@ -90,7 +99,7 @@ export class PagosComponent {
 		const dialogRef = this.dialog.open(InfoDialogComponent, {
 			width: '300px',
 			data: {
-				title: 'El pago se realizó con éxito',
+				title: 'El pago se creó con éxito',
 				message: 'Se notificará al usuario del pago generado por correo',
 			}
 		});

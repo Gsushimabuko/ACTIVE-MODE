@@ -31,7 +31,7 @@
 
                 <mat-form-field appearance="outline">
                     <mat-label>Monto</mat-label>
-                    <input matInput formControlName="num_amount" (input)="calculateAmounts()">
+                    <input #amount matInput formControlName="num_amount" (click)="amount.select()" (input)="calculateAmounts()">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
@@ -41,12 +41,12 @@
 
                 <mat-form-field appearance="outline">
                     <mat-label>Comisión</mat-label>
-                    <input matInput [value]="commission | number: '1.2-2':'en-US'">
+                    <input matInput readonly [value]="commission | number: '1.2-2':'en-US'">
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Total</mat-label>
-                    <input matInput [value]="total | number: '1.2-2':'en-US'">
+                    <input matInput readonly [value]="total | number: '1.2-2':'en-US'">
                 </mat-form-field>
 
                 <mat-error *ngIf="error" style="margin-bottom: 15px;">
