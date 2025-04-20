@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+import { environment } from 'src/app/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +13,17 @@ export class UListasService {
     { id: 3, nombre: 'María2', apellido: 'Gómez', grado: '6to', seccion: 'B', padre: 'Luis Gómez', madre: 'Carmen Díaz', correo: 'maria.gomez@example.com', telefono: '987654321', cuota: 'Sin calcular' },
     // Más datos de ejemplo...
   ];
+  private readonly API_URL = environment.API_URL + '/student'
 
-  constructor() {}
+  constructor(private readonly _http: HttpClient) { }
 
   getStudentsByGradeAndSection(grado: string, seccion: string) {
     console.log("TRAYENDO A TODOS LOS ALUMNOS DE UNA SECCIÓN Y GRADO", this.allStudents)
     return this.allStudents.filter(student => student.grado === grado && student.seccion === seccion);
+    return this._http.get(`${this.API_URL}/classroom?grade=${grado}&section=${seccion}`);
   }
 
   searchStudentsByLastName(apellido: string) {
- 
-    const results = this.allStudents.filter(student =>
-      student.apellido.toLowerCase().includes(apellido.toLowerCase())
-    );
-    console.log("BUSCANDO POR APELLIDO: ", results)
-    return of(results);
+    return this._http.get(`${this.API_URL}/lastname?lastname=${apellido}`);
   }
 }

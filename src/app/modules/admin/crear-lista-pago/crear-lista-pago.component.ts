@@ -43,12 +43,17 @@ export class CrearListaPagoComponent implements OnInit {
   selectedGrade: string = '';
   selectedSection: string = '';
 
-  constructor(private location: Location, private uListasService: UListasService) {}
+  constructor(
+    private readonly location: Location, 
+    private readonly uListasService: UListasService
+  ) {}
 
   ngOnInit() {
     this.searchSubject.pipe(debounceTime(500)).subscribe((searchTerm) => {
-      this.uListasService.searchStudentsByLastName(searchTerm).subscribe((results) => {
-        this.searchResults = results;
+      this.uListasService.searchStudentsByLastName(searchTerm).subscribe({
+        next: (result) => {
+          this.searchResults = result as any[];
+        }
       });
     });
   }
@@ -83,9 +88,9 @@ export class CrearListaPagoComponent implements OnInit {
       return;
     }
 
-    const newStudents = this.uListasService.getStudentsByGradeAndSection(this.selectedGrade, this.selectedSection);
+    const newStudents: any = this.uListasService.getStudentsByGradeAndSection(this.selectedGrade, this.selectedSection);
 
-    const uniqueStudents = newStudents.filter(newStudent => 
+    const uniqueStudents = newStudents.filter((newStudent: any) => 
       !this.students.some(existingStudent => existingStudent.id === newStudent.id)
     );
 

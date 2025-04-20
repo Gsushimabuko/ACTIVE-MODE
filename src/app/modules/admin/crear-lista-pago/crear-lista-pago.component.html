@@ -117,7 +117,7 @@
       />
       <ul>
         <li *ngFor="let student of searchResults">
-          {{ student.nombre }} {{ student.apellido }}
+          {{ student.var_name | properName }} {{ student.var_lastname | properName }}
           <button (click)="addStudentFromSearch(student)">Agregar</button>
         </li>
       </ul>

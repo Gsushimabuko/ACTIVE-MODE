@@ -33,6 +33,7 @@ import { ColectasComponent } from './colectas/colectas.component';
 import { CrearListaPagoComponent } from './crear-lista-pago/crear-lista-pago.component';
 import { EditListaPagoComponent } from './edit-lista-pago/edit-lista-pago.component';
 import { ReporteriaComponent } from './reporteria/reporteria.component';
+import { ProperNamePipe } from '../shared/pipes/proper-name.pipe';
 
 
 
@@ -57,7 +58,8 @@ import { ReporteriaComponent } from './reporteria/reporteria.component';
     ColectasComponent,
     CrearListaPagoComponent,
     EditListaPagoComponent,
-    ReporteriaComponent
+    ReporteriaComponent,
+    ProperNamePipe,
   ],
   imports: [
     CommonModule,
