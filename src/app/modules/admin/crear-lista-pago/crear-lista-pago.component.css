@@ -1,3 +1,19 @@
+.title{
+
+  padding: 20px;
+}
+.volver-btn {
+  width: 100px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 /* General container */
 .container {
   display: grid;
@@ -21,7 +37,7 @@
 }
 
 .form-group {
-  margin: 20px 20px 0px 0px;
+  margin: 20px 20px 20px 0px;
 }
 
 .form-row {
@@ -84,7 +100,7 @@
   padding: 10px 15px;
   border-radius: 4px;
   cursor: pointer;
-
+  margin: 10px;
 }
 
 .clear-table-button:hover,
@@ -92,6 +108,7 @@
 .calculate-button:hover,
 .submit-button:hover {
   background-color: #218838;
+  margin: 10px;
 }
 
 .pagination {
@@ -107,6 +124,7 @@
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+  margin: 10px;
 }
 
 .pagination button.active {
@@ -121,6 +139,31 @@
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+/* Contenedor para los dropdowns y el botón */
+.dropdown-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dropdown-container div {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-container select {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.dropdown-container .btn {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Back button */
@@ -167,6 +210,49 @@
   display: flex;
   align-items: center;
   margin-top: 20px; /* Espacio entre la barra de búsqueda y la tabla */
+}
+
+/* Botón azul */
+.btn-blue {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-blue:hover {
+  background-color: #0056b3;
+}
+
+/* Botón rojo */
+.btn-red {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.btn-red:hover {
+  background-color: #a71d2a;
+}
+
+/* Botón verde */
+.btn-green {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-green:hover {
+  background-color: #1e7e34;
 }
 
 /* Responsive Design */

@@ -1,4 +1,85 @@
-<div class="container">
+<div class="title">
   <h1>Editar Lista de Pago</h1>
-  <p>Esta es la página para editar una lista de pago.</p>
+  <button class="volver-btn" (click)="volver()">Volver</button>
+</div>
+
+<div class="container" *ngIf="!isLoading">
+  <!-- Mensaje de error -->
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+  <!-- Tabla de listas de pago -->
+  <div class="left-section">
+    <h2>Listas de Pago</h2>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th>Fecha de creación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lista of listasDePago">
+          <td>{{ lista.var_name }}</td>
+          <td>{{ lista.num_amount_collected > 0 ? 'Cerrado' : 'Pendiente' }}</td>
+          <td>{{ lista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <button (click)="seleccionarLista(lista)">Seleccionar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Detalle de la lista seleccionada -->
+  <div class="right-section" *ngIf="selectedLista">
+    <h2>Detalle de lista: {{ selectedLista.var_name }}</h2>
+    <p>Descripción: {{ selectedLista.var_description }}</p>
+    <p>Estado: {{ selectedLista.var_status }}</p>
+    <p>Fecha de creación: {{ selectedLista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</p>
+    <p>Total de pagos: {{ selectedLista.num_total_count }}</p>
+    <p>Pagos realizados: {{ selectedLista.num_paid_count }}</p>
+    <p>Pagos pendientes: {{ selectedLista.num_pending_count }}</p>
+    <p>Monto total: {{ selectedLista.num_total_amount | currency: 'PEN' }}</p>
+
+    <!-- Tabla de pagos -->
+    <h3>Pagos</h3>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Nombre completo</th>
+          <th>Grado</th>
+          <th>Sección</th>
+          <th>Padre</th>
+          <th>Correo Padre</th>
+          <th>Madre</th>
+          <th>Correo Madre</th>
+          <th>Monto</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pago of estudiantes">
+          <td>{{ pago.var_name }}</td>
+          <td>{{ pago.var_grade }}</td>
+          <td>{{ pago.var_section }}</td>
+          <td>{{ pago.father?.var_name }}</td>
+          <td>{{ pago.father?.var_email }}</td>
+          <td>{{ pago.mother?.var_name }}</td>
+          <td>{{ pago.mother?.var_email }}</td>
+          <td>{{ pago.num_total | currency: 'PEN' }}</td>
+          <td>{{ pago.var_status }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Botón para enviar recordatorios -->
+    <button class="recordatorio-btn" (click)="enviarRecordatorioMasivo()">Enviar Recordatorio Masivo</button>
+  </div>
+</div>
+
+<!-- Loader -->
+<div *ngIf="isLoading" class="fullscreen-loader">
+  <div class="spinner"></div>
 </div>

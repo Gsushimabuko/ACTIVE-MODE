@@ -1,0 +1,15 @@
+<div class="search-section">
+  <label for="search">Buscar:</label>
+  <input
+    type="text"
+    id="search"
+    (input)="onInputChange($event)"
+    [placeholder]="placeholder"
+  />
+  <ul>
+    <li *ngFor="let item of searchResults">
+      {{ item.nombre }} {{ item.apellido }}
+      <button (click)="onAddItem(item)">Agregar</button>
+    </li>
+  </ul>
+</div>

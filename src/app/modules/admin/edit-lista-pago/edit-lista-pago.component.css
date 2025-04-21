@@ -1,0 +1,148 @@
+.title{
+
+  padding: 20px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left-section,
+.right-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: #f4f4f4;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.volver-btn {
+  width: 100px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.volver-btn:hover {
+  background-color: #0056b3;
+}
+
+.recordatorio-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recordatorio-btn:hover {
+  background-color: #218838;
+}
+
+/* Loader de pantalla completa */
+.fullscreen-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que esté por encima de todo */
+}
+
+/* Spinner */
+.spinner {
+  border: 8px solid #f3f3f3; /* Color del borde */
+  border-top: 8px solid #007bff; /* Color del borde superior */
+  border-radius: 50%; /* Forma circular */
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite; /* Animación de giro */
+}
+
+/* Animación del spinner */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Card inferior */
+.search-card {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.search-card h3 {
+  margin-bottom: 15px;
+}
+
+.search-card .form-group {
+  margin-bottom: 15px;
+}
+
+.search-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.search-card li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search-card .btn {
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
