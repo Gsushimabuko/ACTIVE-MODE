@@ -56,7 +56,8 @@ import { SharedModule } from '../shared/shared.module';
     ColectasComponent,
     CrearListaPagoComponent,
     EditListaPagoComponent,
-    ReporteriaComponent
+    ReporteriaComponent,
+    ProperNamePipe,
   ],
   imports: [
     CommonModule,
