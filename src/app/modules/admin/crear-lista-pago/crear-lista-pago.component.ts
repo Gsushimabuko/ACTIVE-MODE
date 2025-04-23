@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UListasService } from 'src/app/core/http/u_listas/u-listas.service';
 import { debounceTime, Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 
 @Component({
   selector: 'app-crear-lista-pago',
@@ -13,6 +14,7 @@ export class CrearListaPagoComponent implements OnInit {
     nombre: '',
     detalles: '',
     padre: '',
+    FK_parent: null, // ID del padre seleccionado
     cuota: 0,
     comision: 0
   };
@@ -20,20 +22,28 @@ export class CrearListaPagoComponent implements OnInit {
   students: any[] = [];
   filteredStudents: any[] = [];
   searchResults: any[] = [];
+  parentSearchResults: any[] = []; // Resultados de búsqueda de padres
   searchTerm: string = '';
+  parentSearchTerm: string = ''; // Término de búsqueda para padres
   searchSubject = new Subject<string>();
+  parentSearchSubject = new Subject<string>(); // Subject para búsqueda de padres
 
-  grades: any[] = []; // Lista de grados
-  sections: any[] = []; // Lista de secciones asociadas al grado seleccionado
-  selectedGrade: any = null; // Grado seleccionado
-  selectedSection: any = null; // Sección seleccionada
+  grades: any[] = [];
+  sections: any[] = [];
+  selectedGrade: any = null;
+  selectedSection: any = null;
 
-  constructor(private uListasService: UListasService, private location: Location) {}
+  constructor(
+    private uListasService: UListasService,
+    private location: Location,
+    private usuarioService: ZUsuarioService
+  ) {}
 
   ngOnInit() {
     this.initializeSearch();
-    this.loadGradesAndSections(); // Cargar grados y secciones al iniciar
-    this.filteredStudents = [...this.students]; // Inicializar la tabla con todos los estudiantes
+    this.initializeSearchParents(); // Inicializar búsqueda de padres
+    this.loadGradesAndSections();
+    this.filteredStudents = [...this.students];
   }
 
   // Cargar grados y secciones desde el servicio
@@ -114,9 +124,66 @@ export class CrearListaPagoComponent implements OnInit {
   }
 
   onSubmit() {
-    this.calculateCuotas();
-    console.log('Formulario enviado:', this.formData, this.students);
-    // Aquí puedes agregar la lógica para enviar los datos al backend
+    // Validaciones
+    if (!this.formData.nombre.trim()) {
+      alert('El nombre de la lista no puede estar vacío.');
+      return;
+    }
+
+    if (!this.formData.detalles.trim()) {
+      alert('Los detalles de la lista no pueden estar vacíos.');
+      return;
+    }
+
+    if (!this.formData.padre.trim()) {
+      alert('Debe seleccionar un padre responsable.');
+      return;
+    }
+
+    if (this.students.length === 0) {
+      alert('Debe agregar al menos un estudiante a la lista.');
+      return;
+    }
+
+    // Calcular valores globales
+    const num_amount = parseFloat(this.formData.cuota.toFixed(2)); // Cuota base (sin comisión)
+    const num_commission = parseFloat(((num_amount * this.formData.comision) / 100).toFixed(2)); // Comisión total
+    const num_total = parseFloat((num_amount + num_commission).toFixed(2)); // Total (cuota + comisión)
+
+    // Calcular valores individuales
+    const num_individual_amount = parseFloat((num_amount / this.students.length).toFixed(2)); // Cuota base por estudiante
+    const num_individual_commission = parseFloat((num_commission / this.students.length).toFixed(2)); // Comisión por estudiante
+    const num_individual_total = parseFloat((num_individual_amount + num_individual_commission).toFixed(2)); // Total por estudiante
+
+    // Preparar los datos para enviar
+    const collectionData = {
+      var_name: this.formData.nombre,
+      var_description: this.formData.detalles,
+      num_total: num_total, // Total (cuota + comisión)
+      num_commission: num_commission, // Comisión total
+      num_amount: num_amount, // Cuota base
+      FK_parent: this.formData.FK_parent || null, // ID del padre (opcional)
+      var_admin_email: 'shimabukogabriel@gmail.com', // Correo del administrador
+      num_individual_amount: num_individual_amount, // Cuota base por estudiante
+      num_individual_commission: num_individual_commission, // Comisión por estudiante
+      num_individual_total: num_individual_total, // Total por estudiante
+      students: this.students.map(student => ({ FK_student: student.id }))
+    };
+
+    console.log('Datos de la colección a enviar:', collectionData);
+
+    // Enviar los datos al backend
+    this.uListasService.createCollection(collectionData).subscribe({
+      next: (response) => {
+        console.log('Respuesta del backend:', response);
+        alert('La lista de pago se creó exitosamente.');
+        this.volver(); // Navegar de regreso después de la creación exitosa
+      },
+      error: (error) => {
+        console.error('Error al crear la lista de pago:', error);
+        alert('Ocurrió un error al crear la lista de pago. Por favor, intente nuevamente.');
+      }
+    });
   }
 
   // Métodos relacionados con la barra de búsqueda
@@ -139,6 +206,26 @@ export class CrearListaPagoComponent implements OnInit {
     });
   }
 
+  // Inicializar búsqueda de padres
+  initializeSearchParents() {
+    this.parentSearchSubject.pipe(debounceTime(500)).subscribe((searchTerm) => {
+      if (searchTerm.trim() === '') {
+        this.parentSearchResults = [];
+        return;
+      }
+
+      this.uListasService.getParentsByLastName(searchTerm).subscribe({
+        next: (results) => {
+          this.parentSearchResults = results;
+          console.log('Resultados de búsqueda de padres:', results);
+        },
+        error: (error) => {
+          console.error('Error al buscar padres por apellido:', error);
+        }
+      });
+    });
+  }
+
   handleSearchInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement) {
@@ -151,6 +238,30 @@ export class CrearListaPagoComponent implements OnInit {
     console.log('Término de búsqueda:', searchTerm);
     this.searchTerm = searchTerm;
     this.searchSubject.next(searchTerm);
+  }
+
+  // Manejar entrada en el buscador de padres
+  handleParentSearchInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      const searchTerm = inputElement.value.trim();
+      this.onParentSearchInputChange(searchTerm);
+    }
+  }
+
+  // Actualizar término de búsqueda de padres
+  onParentSearchInputChange(searchTerm: string) {
+    console.log('Término de búsqueda de padres:', searchTerm);
+    this.parentSearchTerm = searchTerm;
+    this.parentSearchSubject.next(searchTerm);
+  }
+
+  // Seleccionar un padre de los resultados de búsqueda
+  selectParent(parent: any) {
+    this.formData.padre = `${parent.var_name} ${parent.var_lastname}`;
+    this.formData.FK_parent = parent.PK_parent; // Asignar el ID del padre al formulario
+    this.parentSearchResults = []; // Limpiar resultados de búsqueda
+    console.log('Padre seleccionado:', parent);
   }
 
   loadStudentsByClassroom() {

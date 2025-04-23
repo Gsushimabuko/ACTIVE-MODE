@@ -18,8 +18,22 @@
         <textarea id="detalles" name="detalles" [(ngModel)]="formData.detalles" required></textarea>
       </div>
       <div class="form-group">
-        <label for="padre">Padre responsable:</label>
-        <input type="text" id="padre" name="padre" [(ngModel)]="formData.padre" required />
+        <label for="padre">Padre Responsable (apellido):</label>
+        <input
+          type="text"
+          id="padre"
+          name="padre"
+          [(ngModel)]="formData.padre"
+          (input)="handleParentSearchInput($event)"
+          placeholder="Buscar padre por apellido"
+          required
+        />
+        <!-- Resultados de búsqueda de padres -->
+        <ul *ngIf="parentSearchResults.length > 0" class="search-results">
+          <li *ngFor="let parent of parentSearchResults" (click)="selectParent(parent)">
+            {{ parent.var_name }} {{ parent.var_lastname }}
+          </li>
+        </ul>
       </div>
       <div class="form-group">
         <label for="cuota">Cuota:</label>

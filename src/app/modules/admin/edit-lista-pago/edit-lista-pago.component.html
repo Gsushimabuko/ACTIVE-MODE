@@ -68,14 +68,30 @@
           <td>{{ pago.father?.var_email }}</td>
           <td>{{ pago.mother?.var_name }}</td>
           <td>{{ pago.mother?.var_email }}</td>
-          <td>{{ pago.num_total | currency: 'PEN' }}</td>
-          <td>{{ pago.var_status }}</td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="pago.num_total"
+              [readonly]="!isEditing"
+              (blur)="formatMonto(pago)"
+            />
+          </td>
+          <td>
+            <select [(ngModel)]="pago.var_status" [disabled]="!isEditing">
+              <option value="PENDING">Pendiente</option>
+              <option value="PAID">Pagado</option>
+              <option value="CANCELLED">Cancelado</option>
+            </select>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Botón para enviar recordatorios -->
+    <!-- Botones -->
     <button class="recordatorio-btn" (click)="enviarRecordatorioMasivo()">Enviar Recordatorio Masivo</button>
+    <button class="editar-btn" (click)="toggleEditTable()">
+      {{ isEditing ? 'Guardar' : 'Editar Tabla' }}
+    </button>
   </div>
 </div>
 

@@ -1,9 +1,18 @@
+:host {
+  display: block;
+  min-height: 100vh; /* Ensure the component covers the full viewport height */
+  background-color: #ffffff; /* Set the background color for this component */
+  padding: 20px; /* Add padding for content */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
 .title{
 
   padding: 20px;
 }
 
 .container {
+
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 20px;
@@ -15,7 +24,8 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc; /* Updated border color to gray */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .custom-table {
@@ -68,6 +78,15 @@ button:hover {
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.editar-btn {
+  margin: 20px 0px 0px 10px;
+  padding: 10px 20px;
+  background-color:#0056b3;
   color: white;
   border: none;
   border-radius: 5px;

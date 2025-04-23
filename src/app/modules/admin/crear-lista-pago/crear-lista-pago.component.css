@@ -12,6 +12,11 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+}
+
+.volver-btn:hover {
+  background-color: #0056b3;
 }
 
 /* General container */
@@ -217,7 +222,8 @@
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
+  padding: 5px 5px;
+  margin: 3px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -253,6 +259,42 @@
 
 .btn-green:hover {
   background-color: #1e7e34;
+}
+
+.submit-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-btn:hover {
+  background-color: #218838;
+}
+
+.search-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+}
+
+.search-results li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.search-results li:hover {
+  background-color: #f0f0f0;
 }
 
 /* Responsive Design */

@@ -13,6 +13,7 @@ export class EditListaPagoComponent implements OnInit {
   listasDePago: any[] = []; // Listas de pago disponibles
   isLoading: boolean = false; // Estado de carga
   errorMessage: string = ''; // Mensaje de error
+  isEditing: boolean = false; // Estado de edición de la tabla
 
   constructor(private uListasService: UListasService, private location: Location) {}
 
@@ -73,6 +74,26 @@ export class EditListaPagoComponent implements OnInit {
     });
   }
 
+  // Alternar entre editar y guardar
+  toggleEditTable() {
+    if (this.isEditing) {
+      // Guardar los datos actualizados
+      const updatedData = {
+        PK_collection: this.selectedLista.PK_collection,
+        var_name: this.selectedLista.var_name,
+        var_description: this.selectedLista.var_description,
+        num_amount_collected: this.selectedLista.num_amount_collected,
+        var_status: this.selectedLista.var_status,
+        tsp_fec_creacion: this.selectedLista.tsp_fec_creacion,
+        payments: this.estudiantes // Datos actualizados de la tabla
+      };
+
+      console.log('Datos actualizados:', updatedData);
+    }
+
+    this.isEditing = !this.isEditing; // Cambiar el estado de edición
+  }
+
   // Enviar recordatorio masivo
   enviarRecordatorioMasivo() {
     if (!this.selectedLista || !this.selectedLista.PK_collection) {
@@ -97,6 +118,13 @@ export class EditListaPagoComponent implements OnInit {
   // Volver a la página anterior
   volver() {
     this.location.back();
+  }
+
+  // Formatear el monto de un pago
+  formatMonto(pago: any): void {
+    if (pago.num_total) {
+      pago.num_total = parseFloat(pago.num_total.toFixed(2));
+    }
   }
 }
 

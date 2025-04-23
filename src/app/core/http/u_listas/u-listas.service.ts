@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
@@ -10,12 +9,7 @@ import { environment } from 'src/app/environments/environment';
 export class UListasService {
   private API_URL = environment.API_URL + '/collection'; 
   
-  private allStudents = [
-    { id: 1, nombre: 'Juan', apellido: 'Pérez', grado: '5to', seccion: 'A', padre: 'Carlos Pérez', madre: 'Ana López', correo: 'juan.perez@example.com', telefono: '123456789', cuota: 'Sin calcular' },
-    { id: 2, nombre: 'María', apellido: 'Gómez', grado: '6to', seccion: 'B', padre: 'Luis Gómez', madre: 'Carmen Díaz', correo: 'maria.gomez@example.com', telefono: '987654321', cuota: 'Sin calcular' },
-    { id: 3, nombre: 'María2', apellido: 'Gómez', grado: '6to', seccion: 'B', padre: 'Luis Gómez', madre: 'Carmen Díaz', correo: 'maria.gomez@example.com', telefono: '987654321', cuota: 'Sin calcular' },
-    // Más datos de ejemplo...
-  ];
+
 
   constructor(private http: HttpClient) {}
 
@@ -38,6 +32,13 @@ export class UListasService {
     console.log("Realizando búsqueda por apellido en el backend:", url);
     return this.http.get<any[]>(url);
   }
+  
+  getParentsByLastName(apellido: string): Observable<any[]> {
+    const url = `${environment.API_URL}/parent/lastname?lastname=${apellido}`;
+    console.log("Realizando búsqueda por apellido en el backend:", url);
+    return this.http.get<any[]>(url);
+  }
+
 
   getGradesAndSections(): Observable<any[]> {
     const url = `${environment.API_URL}/student/grades-sections`;
@@ -51,4 +52,9 @@ export class UListasService {
     return this.http.get<any[]>(url);
   }
   
+  createCollection(collectionData: any): Observable<any> {
+    const url = `${this.API_URL}`;
+    console.log("Enviando datos de la colección al backend:", collectionData);
+    return this.http.post<any>(url, { collectionData });
+  }
 }
