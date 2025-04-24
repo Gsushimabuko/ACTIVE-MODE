@@ -89,6 +89,17 @@ export class EditListaPagoComponent implements OnInit {
       };
 
       console.log('Datos actualizados:', updatedData);
+
+      // Realizar la petición HTTP para actualizar los datos
+      this.uListasService.updateListaDePago(updatedData).subscribe({
+        next: () => {
+          alert('La lista de pago se actualizó correctamente.');
+        },
+        error: (error) => {
+          console.error('Error al actualizar la lista de pago:', error);
+          alert('Ocurrió un error al actualizar la lista de pago. Por favor, intente nuevamente.');
+        }
+      });
     }
 
     this.isEditing = !this.isEditing; // Cambiar el estado de edición

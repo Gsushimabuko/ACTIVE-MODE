@@ -57,4 +57,9 @@ export class UListasService {
     console.log("Enviando datos de la colección al backend:", collectionData);
     return this.http.post<any>(url, { collectionData });
   }
+
+  updateListaDePago(updatedData: any): Observable<any> {
+    const url = `http://localhost:5000/api/collection/${updatedData.PK_collection}`;
+    return this.http.put<any>(url, updatedData);
+  }
 }

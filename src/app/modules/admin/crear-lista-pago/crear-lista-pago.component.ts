@@ -163,7 +163,8 @@ export class CrearListaPagoComponent implements OnInit {
       num_commission: num_commission, // Comisión total
       num_amount: num_amount, // Cuota base
       FK_parent: this.formData.FK_parent || null, // ID del padre (opcional)
-      var_admin_email: 'shimabukogabriel@gmail.com', // Correo del administrador
+      var_admin_email: // Correo del administrador (opcional, si se desea enviar un recordatorio)
+        this.usuarioService.usuario.correo || null,
       num_individual_amount: num_individual_amount, // Cuota base por estudiante
       num_individual_commission: num_individual_commission, // Comisión por estudiante
       num_individual_total: num_individual_total, // Total por estudiante
