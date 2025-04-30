@@ -1,110 +1,162 @@
+/* Asegúrate de que el contenedor ocupe toda la pantalla */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Alinea el contenido al inicio */
+  min-height: 100vh; /* Ocupa al menos toda la altura de la ventana */
 
-
-.logo{
-    margin:25px;
-}
-.logo img{
-    width: 20vw;
-}
-
-.card{
-    width: 80%;
-    height: 90%;
-    margin: 50px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.853);
-    
-}
-hr{
-    border: none;
-    height: 1px;
-    /* Set the hr color */
-    color: rgb(249, 249, 249); /* old IE */
-    background-color: rgb(255, 255, 255);
-    width:50%;
+  padding: 20px; /* Espaciado interno */
+  box-sizing: border-box; /* Incluye el padding en el cálculo del tamaño */
 }
 
-.row-section{
-    margin: 75px;
-}
-mat-label{
-    color:white !important;
-}
-input{
-    color: white !important;
-}
+/* Fondo para toda la pantalla */
+body {
+  margin: 0;
+  padding: 0;
 
-::ng-deep .mdc-notched-outline__leading{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
-    
+  color: #333; /* Texto oscuro para buen contraste */
+  height: 100%; /* Asegúrate de que el fondo cubra toda la pantalla */
 }
 
-::ng-deep .mdc-notched-outline__notch{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
+/* Tarjeta de registro */
+.card-login {
+  width: 750px;
+  max-width: 100%; /* Asegúrate de que no exceda el ancho de la pantalla */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff; /* Fondo blanco para buen contraste */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px; /* Espaciado desde la parte superior */
 }
 
-::ng-deep .mdc-notched-outline__trailing{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
+/* Logo */
+.logo img {
+  width: 300px;
+  max-width: 100%; /* Asegúrate de que el logo no exceda el ancho disponible */
+  margin: 0 auto 20px auto;
+  display: block;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.5));
 }
 
-/*SELECTS OPTION BLANCOS */
-
-::ng-deep .mat-mdc-select-value-text{
-    color: white;
+/* Título */
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 20px;
+  color: #333; /* Texto oscuro */
 }
 
-mat-icon{
-    color:white !important
+/* Inputs */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
+  gap: 20px; /* Espaciado entre inputs */
 }
 
-mat-form-field{
-   color: white; 
-    width: 19vw;
-    font-size: 14px;
-    margin-left: 20px ;
-    margin-right:  20px ;
+.login-input {
+  width: 100%;
 }
 
-
-.boton-registro{
-    width: 200px;
-    height: 40px;
-    font-size: 14px;
-    font-weight: bold;
-    color: black;
-    background-color:rgb(126, 108, 228); ;
-}
-mat-label{
-    font-size: 95%;
+.mat-form-field {
+  color: #333; /* Texto oscuro */
 }
 
-@media (max-width: 950px) {
-    .logo img{
-        width: 150px;
-    }
-    mat-form-field{
-        color: white;
-        width: 200px;
-        font-size: 12px;
-        margin-bottom: 10px !important;
-        
-    }
-    .card{
-        
-        height: 95%;
-    }
+.mat-form-field .mat-label {
+  color: #666; /* Etiquetas con buen contraste */
+}
 
-   
-    .row-section{
-        margin: 0px;
-    }
+.mat-form-field .mat-input-element {
+  color: #333; /* Texto del input */
+}
 
-    hr{
-        margin-bottom: 30px;
-    }
-    
-    
+.mat-form-field .mat-error {
+  color: #e53935; /* Mensajes de error en rojo */
+}
+
+/* Botones */
+.boton-login {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.boton-login:hover {
+  background-color: #005a9e;
+}
+
+.extra-buttons {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.back-button {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  color: #0078d4;
+  border: 1px solid #0078d4;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #0078d4;
+  color: white;
+}
+
+.error-message {
+  color: #e53935; /* Rojo para el mensaje de error */
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 1024px) {
+  .card-login {
+    width: 90%; /* Reduce el ancho de la tarjeta en pantallas medianas */
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .card-login {
+    width: 100%; /* Ancho completo en pantallas pequeñas */
+    padding: 20px; /* Reduce el padding */
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+  }
+
+  .logo img {
+    width: 200px; /* Reduce el tamaño del logo */
+  }
+
+  .login-title {
+    font-size: 20px; /* Reduce el tamaño del título */
+    text-align: center; /* Centra el título */
+  }
+
+  .boton-login,
+  .back-button {
+    font-size: 14px; /* Reduce el tamaño de fuente de los botones */
+    padding: 8px; /* Reduce el padding de los botones */
+  }
 }

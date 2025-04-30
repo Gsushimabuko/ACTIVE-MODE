@@ -1,128 +1,75 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 
-
-mat-icon{
-    cursor:pointer;
-    color:white;
- }
- .logo{
-    margin:20px;
-}
-.logo img{
-    width: 18vw;
 }
 
-hr{
-    border: none;
-    height: 1px;
-    /* Set the hr color */
-    color: rgb(249, 249, 249); /* old IE */
-    background-color: rgb(255, 255, 255);
-    width:50%;
-    margin-bottom: 40px;
+.card-login {
+  width: 400px;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.login-card{
-    width: 40%;
-    height: 90%;
-    margin: 30px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.853);
-    padding: 20px 20px 100px 20px;
-}
-h2{
-    font-size: 30px;
-}
-mat-card{
-    border-radius: 30px;
-    padding: 50px;
-}
-.boton-login{
-    width: 150px;
-    height: 40px;
-    font-size: 14px;
-    font-weight: bold;
-    background-color:rgb(126, 108, 228); }
-
-.texto-sugerencia{
-    font-size: 12px;
-    margin-bottom: 10px;
+.logo img {
+  width: 200px;
+  margin: 0 auto 20px auto;
+  display: block;
+  /* add drop shadow to the logo */
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.50));
 }
 
-input{
-    height: 20px;
-    color: white !important;
-   
+.login-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 20px;
 }
 
-.login-input{
-    width: 300px;
-    height: 80px;
-    margin: 20px;
-   
+.login-input {
+  width: 100%;
 }
 
-mat-label{
-    color:white;
-}
-::ng-deep .mdc-notched-outline__leading{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
-    
-}
-::ng-deep .mdc-notched-outline__notch{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
-}
-::ng-deep .mdc-notched-outline__trailing{
-    border-color: rgba(255, 255, 255, 0.804)!important;
-    color: white;
-}
-::ng-deep .mat-mdc-select-value .ng-tns-c134-9{
-color: white!important;
+.error-message {
+  color: rgb(228, 46, 46);
+  text-align: center;
 }
 
-
-@media only screen and (max-width: 768px)  {
-
-    .logo img{
-        width: 200px;
-
-    }
-    mat-error{
-        font-size: 10px;
-        margin: 5px;
-    }
-
-    .container{
-        height: 750px; 
-     }
-    
-    .login-card{
-        width: 80%;
-        height: 75%;
-        margin: 20px;
-        border-radius: 10px;
-        background-color: rgba(0, 0, 0, 0.853);
-    }
-    hr{
-        border: none;
-        height: 1px;
-        /* Set the hr color */
-        color: rgb(249, 249, 249); /* old IE */
-        background-color: rgb(255, 255, 255);
-        width:70%;
-        margin-bottom: 0px;
-    }
-
-    h2{
-        text-align: center;
-        font-size: 20px;
-    }
-
-    .login-input{
-        width: 200px !important;
-        height: 80px;
-        margin: 10px;
-       
-    }
+.boton-login {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
+
+.boton-login:hover {
+  background-color: #005a9e;
+}
+
+.links {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.links a {
+  color: #0078d4;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+

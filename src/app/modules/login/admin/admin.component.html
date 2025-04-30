@@ -1,71 +1,67 @@
 <div class="background">
 
-    <form (ngSubmit)="login()" [formGroup] ="loginForm">
-        <div fxLayout="row" fxFlex="100" 
-         fxLayoutAlign="center center" class="container">
-           <mat-card class="login-card">
-               <div fxLayout="column" fxLayoutAlign="center center">
-                   <div fxLayout="column" fxLayoutAlign="center center" class="logo">
-                       <img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png">
-                       
-                   </div>
-               </div>
-               
-               <div>
-                   <hr>
-               </div>
-    
-           <div fxLayout="column" fxFlex="50" fxLayoutAlign="start center">
-               
-               <div fxFlex="100" fxLayoutAlign="center center" >
-                   <div fxLayoutAlign="center center"   fxLayout="column"  >
-                           <div>
-                               <mat-form-field style="margin:20px" appearance="outline">
-                                   <mat-label> E-mail
-                                   </mat-label>
-                                   <input matInput formControlName="correo" required>
-                                   
-                                   <mat-error *ngIf="loginForm.controls['correo'].hasError('email')">
-                                       Ingrese un correo válido
-                                   </mat-error>
-                                   <mat-error *ngIf="loginForm.controls['correo'].hasError('required')">
-                                       Ingrese un correo
-                                   </mat-error>
-                               </mat-form-field>
-                           </div>
-                           <div>
-                               <mat-form-field style="margin:20px"  appearance="outline">
-                                   <mat-label> Contraseña
-                                   </mat-label>
-                                   <input  type="password" [type]="hide ? 'password' : 'text'" matInput formControlName="contrasena" required>
-                                  
-                                   <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}  
-                                   </mat-icon>
-                                   <mat-error *ngIf="loginForm.controls['contrasena'].hasError('required')">
-                                           Contraseña requerida
-                                   </mat-error>
-                                   <mat-error *ngIf="loginForm.controls['contrasena'].hasError('minlength')">
-                                           Ingrese una contraseña válida
-                                   </mat-error>
-                               </mat-form-field>
-                           </div>
-                           
-                           <div style=" margin-bottom: 15px;text-align: center; color: rgb(228, 46, 46)">
-                               <mat-error  *ngIf="mensaje">
-                                   {{mensaje}}
-                               </mat-error>
-                           </div>
-                       </div>
-                   </div>
-                   <div  fxLayout="column" fxLayoutGap="30" fxFlex="30" fxLayoutAlign="center center" >
-                       <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button >
-                           Iniciar sesión
-                       </button>
-                       
-                       
-                   </div>
-               </div>   
-           </mat-card>
-       </div>
-    </form>
+    <form (ngSubmit)="login()" [formGroup]="loginForm" class="login-form">
+  <div class="container">
+    <mat-card class="card-login">
+      <!-- Logo -->
+      <div class="logo">
+        <img
+          src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"
+          alt="Admin Logo"
+        />
+      </div>
+
+      <!-- Title -->
+      <h2 class="login-title">Iniciar sesión - Admin</h2>
+
+      <!-- Email Input -->
+      <mat-form-field class="login-input" appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput formControlName="correo" required />
+        <mat-error *ngIf="loginForm.controls['correo'].hasError('email')">
+          Ingrese un correo válido
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['correo'].hasError('required')">
+          Ingrese un correo
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password Input -->
+      <mat-form-field class="login-input" appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input
+          type="password"
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          formControlName="contrasena"
+          required
+        />
+        <mat-icon matSuffix (click)="hide = !hide">
+          {{ hide ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+        <mat-error *ngIf="loginForm.controls['contrasena'].hasError('required')">
+          Contraseña requerida
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['contrasena'].hasError('minlength')">
+          Ingrese una contraseña válida
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Error Message -->
+      <div class="error-message" *ngIf="mensaje">
+        <mat-error>{{ mensaje }}</mat-error>
+      </div>
+
+      <!-- Submit Button -->
+      <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button>
+        Iniciar sesión
+      </button>
+
+      <!-- Back Button -->
+      <div class="extra-buttons">
+        <button mat-button class="back-button" routerLink="/">Volver</button>
+      </div>
+    </mat-card>
+  </div>
+</form>
 </div>

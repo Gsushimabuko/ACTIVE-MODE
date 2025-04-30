@@ -1,4 +1,3 @@
-
 .loader-spinner{
     position:absolute;
     z-index: 200;
@@ -55,5 +54,43 @@
         width: 35%;
         padding: 20px;
     }
+}
+
+.puerta-input {
+  width: 100%; /* Asegura que el ancho sea consistente */
+  max-width: 300px; /* Limita el ancho máximo */
+  margin: 10px 0; /* Espaciado vertical */
+}
+
+.mat-form-field {
+  background-color: #fff; /* Fondo blanco para evitar conflictos */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ccc; /* Color del borde */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  border-color: #0062ff; /* Color del borde cuando está activo */
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+.mat-select {
+  color: #333; /* Color del texto */
+}
+
+.mat-select:hover {
+  background-color: #f0f0f0; /* Fondo al pasar el mouse */
+}
+
+.mat-select-panel {
+  background-color: #fff; /* Fondo del panel desplegable */
+  color: #333; /* Color del texto del panel */
+  border: 1px solid #ccc; /* Borde del panel */
 }
 
