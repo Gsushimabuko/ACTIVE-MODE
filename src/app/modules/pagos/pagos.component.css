@@ -57,3 +57,26 @@
     color: #d32f2f;
     transform: scale(1.5)
 }
+
+.terms {
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.terms a {
+  color: #3f51b5;
+  text-decoration: underline;
+}
+
+.terms a:hover {
+  text-decoration: none;
+}
+
+.warning-text {
+  color: #e53935; /* red */
+  font-size: 0.85rem;
+  margin-top: 8px;
+}

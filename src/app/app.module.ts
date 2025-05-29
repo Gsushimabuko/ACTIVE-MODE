@@ -19,6 +19,8 @@ import { InfoDialogComponent } from './modules/shared/info-dialog/info-dialog.co
 import { ErrorDialogComponent } from './modules/shared/error-dialog/error-dialog.component';
 import { LoaderComponent } from './modules/shared/loader/loader.component';
 import { ProperNamePipe } from './modules/shared/pipes/proper-name.pipe';
+import { TextDialogComponent } from './modules/shared/text-dialog/text-dialog.component';
+import { TransactionComponent } from './modules/transaction/transaction.component';
 registerLocaleData(localeEs, 'es-PE');
 
 @NgModule({
@@ -29,7 +31,8 @@ registerLocaleData(localeEs, 'es-PE');
     InfoDialogComponent,
     ErrorDialogComponent,
     LoaderComponent,
-
+    TextDialogComponent,
+    TransactionComponent,
   ],
   imports: [
     BrowserModule,

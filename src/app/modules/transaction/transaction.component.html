@@ -1,0 +1,22 @@
+<div class="transaction-result-container" *ngIf="transaction">
+    <div *ngIf="status === 'success'; else failureTemplate" class="success-box">
+        <h2>✅ Pago realizado con éxito</h2>
+        <p><strong>Número de pedido:</strong> {{ transaction.orderUuid }}</p>
+        <p><strong>Fecha y hora del pedido:</strong> {{ transaction.date | date:'medium' }}</p>
+        <p><strong>Tarjeta:</strong> {{ transaction.card }} ({{ transaction.brand }})</p>
+        <p><strong>Monto:</strong> S/. {{ transaction.amount | number:'1.2-2' }}</p>
+    </div>
+
+    <ng-template #failureTemplate>
+        <div class="error-box">
+            <h2>❌ {{ transaction.errorMessage }}</h2>
+            <p><strong>Número de pedido:</strong> {{ transaction.orderUuid }}</p>
+            <p><strong>Fecha y hora del pedido:</strong> {{ transaction.date | date:'medium' }}</p>
+            <p><strong>Tarjeta:</strong> {{ transaction.card }} ({{ transaction.brand }})</p>
+        </div>
+    </ng-template>
+</div>
+
+<div *ngIf="!transaction">
+    <p>Cargando resultado de la transacción...</p>
+</div>

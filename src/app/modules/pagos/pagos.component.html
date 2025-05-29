@@ -17,7 +17,15 @@
                 <input matInput readonly [value]="'S/.' + (paymentData.num_total | number: '1.2-2':'en-US')">
             </mat-form-field>
 
-            <app-boton-pago fxLayout="column" fxLayoutAlign="center center" [uuid]="uuid"></app-boton-pago>
+            <div style="margin-bottom: 15px;">
+                <mat-checkbox [(ngModel)]="agreedToTerms" color="primary" class="terms" required>He leido y acepto los <a href="#" (click)="openTermsDialog(); $event.preventDefault()">términos y condiciones</a></mat-checkbox>
+            </div>
+
+            <div style="margin-bottom: 10px;" *ngIf="!agreedToTerms && showTermsWarning" class="warning-text">
+            ⚠️ Debe aceptar los términos y condiciones para proceder con el pago
+            </div>
+            
+            <app-boton-pago [token]="token" (clicked)="onPayButtonClicked()" [disabled]="!agreedToTerms" matTooltip="You must agree to the terms." fxLayout="column" fxLayoutAlign="center center" [uuid]="uuid"></app-boton-pago>
         </mat-card>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NiubizService } from 'src/app/core/http/niubiz/niubiz.service';
 import { ScriptService } from 'src/app/core/scripts/script.service';
@@ -6,6 +6,7 @@ import { environment } from 'src/app/environments/environment';
 import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 import { LoaderService } from '../loaderService/loader.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-boton-pago',
@@ -13,7 +14,11 @@ import { LoaderService } from '../loaderService/loader.service';
 	styleUrls: ['./boton-pago.component.css']
 })
 export class BotonPagoComponent {
+	@Output() clicked = new EventEmitter<void>();
+
 	@Input() uuid: string = '';
+	@Input() token: string = '';
+	@Input() disabled = false;
 	pago: any = {};
 	accessToken: any = {};
 
@@ -21,7 +26,8 @@ export class BotonPagoComponent {
 		private readonly niubizService: NiubizService,
 		private readonly script: ScriptService,
 		private readonly loaderService: LoaderService,
-		private dialog: MatDialog,
+		private readonly dialog: MatDialog,
+		private readonly router: Router,
 	) {
 		this.configurePayGate();
 	}
@@ -38,6 +44,9 @@ export class BotonPagoComponent {
 	}
 
 	pay() {
+		this.clicked.emit();
+		
+		if (this.disabled) return;
 		this.openForm();
 	}
 
@@ -49,7 +58,7 @@ export class BotonPagoComponent {
 
 		this.loaderService.show();
 
-		this.niubizService.generateSessionToken(this.uuid)
+		this.niubizService.generateSessionToken(this.uuid, this.token)
 			.subscribe({
 				next: (data: any) => {
 					this.accessToken = data.data;
@@ -81,28 +90,23 @@ export class BotonPagoComponent {
 
 						this.niubizService.payPayment(this.pago.var_uuid, data).subscribe({
 							next: (data: any) => {
-								this.openSuccessDialog();
-								this.refreshInFive();
+								this.loaderService.hide();
+								this.router.navigate([`/transaccion/${data.transactionUuid}`]);
 							},
 							error: (error: any) => {
 								console.log(error);
 								
 								let errorMessage: string = '';
-								if (error.status == 400) {
-									errorMessage = 'Está intentando pagar un pago que no es válido porque ha sido pagado o anulado. No se ha realizado ningún pago desde su tarjeta.'
-								}
-								else if (error.status == 500) {
-									errorMessage = 'Ha ocurrido un error en nuestros servidores. No se ha realizado ningún pago desde su tarjeta. \nPor favor, inténtelo otra vez.'
-								}
-								else if (error.status == 422) {
-									errorMessage = 'La tarjeta ingresada es inválida. Por favor, inténtelo otra vez con una tarjeta diferente.'
-								}
-								else {
-									errorMessage = 'Ha ocurrido un error. No se ha realizado el pago.'
+								if (error.status == 500) {
+									errorMessage = 'Ha ocurrido un error en nuestros servidores. No se ha realizado ningún pago desde su tarjeta. \nPor favor, inténtelo otra vez. \nLa página se refrescará en 5 segundos.'
+									
+									this.openErrorDialog(errorMessage);
+									this.refreshInFive();
+									return;
 								}
 
-								this.openErrorDialog(errorMessage);
-								this.refreshInFive();
+								this.loaderService.hide();
+								this.router.navigate([`/transaccion/${error.error.transactionUuid}`]);
 							},
 						});
 					};
@@ -111,6 +115,7 @@ export class BotonPagoComponent {
 				},
 				error: (error: any) => {
 					console.log(error);
+					this.loaderService.hide();
 				},
 			}
 			);

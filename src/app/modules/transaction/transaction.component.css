@@ -1,0 +1,26 @@
+.success-box, .error-box {
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.success-box {
+  background-color: #e6ffed;
+  color: #2d7a46;
+  border: 1px solid #9ae6b4;
+}
+
+.error-box {
+  background-color: #ffe6e6;
+  color: #a33;
+  border: 1px solid #f5c2c7;
+}
+
+.transaction-result-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 50px;
+}

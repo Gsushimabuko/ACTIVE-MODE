@@ -14,8 +14,8 @@ export class NiubizService {
 		return this._http.post(`${this.API_URL}/test2/${idCompra}`, { transactionData  });
 	}
 
-	public generateSessionToken(paymentUuid: string) {
-		return this._http.post(`${this.API_URL}/payment/session`, { uuid: paymentUuid });
+	public generateSessionToken(paymentUuid: string, token: string) {
+		return this._http.post(`${this.API_URL}/payment/session?token=${token}`, { uuid: paymentUuid });
 	}
 
 	public payPayment(paymentUuid: string, transactionData: any) {

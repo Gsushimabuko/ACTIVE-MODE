@@ -9,8 +9,6 @@ import { environment } from 'src/app/environments/environment';
 export class UListasService {
   private API_URL = environment.API_URL + '/collection'; 
   
-
-
   constructor(private http: HttpClient) {}
 
   // Método para obtener las listas de pago desde el backend

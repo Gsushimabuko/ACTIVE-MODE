@@ -9,6 +9,7 @@ import { TycComponent } from './modules/home/tyc/tyc.component';
 import { PasarelaComponent } from './modules/pasarela/pasarela.component';
 import { BotonPagoComponent } from './modules/shared/boton-pago/boton-pago.component';
 import { PagosComponent } from './modules/pagos/pagos.component';
+import { TransactionComponent } from './modules/transaction/transaction.component';
 
 
 const routes: Routes = [
@@ -29,6 +30,7 @@ const routes: Routes = [
   //Not Guarded
   { path: 'test', component: BotonPagoComponent },
   { path: 'pagos/:id', component: PagosComponent },
+  { path: 'transaccion/:uuid', component: TransactionComponent },
   {
     path: 'login', loadChildren: () =>
       import('./modules/login/login.module').then(m => m.LoginModule)
