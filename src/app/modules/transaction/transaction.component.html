@@ -8,13 +8,18 @@
     </div>
 
     <ng-template #failureTemplate>
-        <div class="error-box">
-            <h2>❌ {{ transaction.errorMessage }}</h2>
-            <p><strong>Número de pedido:</strong> {{ transaction.orderUuid }}</p>
-            <p><strong>Fecha y hora del pedido:</strong> {{ transaction.date | date:'medium' }}</p>
-            <p><strong>Tarjeta:</strong> {{ transaction.card }} ({{ transaction.brand }})</p>
+        <div class="container">
+            <div class="error-box">
+                <h2>❌ {{ transaction.errorMessage }}</h2>
+                <p><strong>Número de pedido:</strong> {{ transaction.orderUuid }}</p>
+                <p><strong>Fecha y hora del pedido:</strong> {{ transaction.date | date:'medium' }}</p>
+                <p><strong>Tarjeta:</strong> {{ transaction.card }} ({{ transaction.brand }})</p>
+            </div>
+    
+            <button mat-button style="font-weight: bold; background-color:rgb(72, 87, 226); color: white;" id="pago_pasarela" class="boton" mat-flat-button (click)="goBack()">Intentar con otra tarjeta</button>
         </div>
     </ng-template>
+
 </div>
 
 <div *ngIf="!transaction">

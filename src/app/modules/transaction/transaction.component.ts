@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UTransactionService } from 'src/app/core/http/u_transaction/u-transaction.service';
 import { LoaderService } from '../shared/loaderService/loader.service';
 import { finalize } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-transaction',
@@ -12,20 +13,13 @@ import { finalize } from 'rxjs';
 export class TransactionComponent {
   uuid: string = this._route.snapshot.params['uuid'];
   status: string = '';
-  transaction: any = {
-    uuid: 0,
-    orderUuid: 0,
-    amount: 0,
-    date: new Date(),
-    card: '',
-    brand: '',
-    errorMessage: ''
-  }
+  transaction: any;
 
   constructor(
     private readonly _route: ActivatedRoute,
     private readonly _transactionService: UTransactionService,
     private readonly _loaderService: LoaderService,
+    private readonly _location: Location,
   ) {
     this._loaderService.show();
 
@@ -63,5 +57,9 @@ export class TransactionComponent {
     const second = parseInt(customDate.slice(10, 12), 10);
 
     return new Date(year, month, day, hour, minute, second);
+  }
+
+  goBack() {
+    this._location.back();
   }
 }

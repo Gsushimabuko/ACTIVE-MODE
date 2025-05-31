@@ -34,7 +34,7 @@ export class BotonPagoComponent {
 
 	configurePayGate() {
 		this.script
-			.load('niubiz')
+			.load('niubiz-script', 'niubiz')
 			.then((data) => {
 				console.log('Script loaded');
 			})
@@ -154,5 +154,10 @@ export class BotonPagoComponent {
 		setTimeout(() => {
 			location.reload();
 		}, 5000);
+	}
+
+	ngOnDestroy() {
+		this.script.unloadScript('niubiz-script');
+		this.script.cleanupNiubizArtifacts();
 	}
 }
