@@ -86,6 +86,7 @@ export class BotonPagoComponent {
 					};
 
 					VisanetCheckout.configuration.complete = (data: any) => {
+						data.tokenUuid = this.token;
 						console.log(data);
 
 						this.niubizService.payPayment(this.pago.var_uuid, data).subscribe({
@@ -106,7 +107,11 @@ export class BotonPagoComponent {
 								}
 
 								this.loaderService.hide();
-								this.router.navigate([`/transaccion/${error.error.transactionUuid}`]);
+								this.router.navigate([`/transaccion/${error.error.transactionUuid}`], {
+									queryParams: {
+										token: this.token
+									}
+								});
 							},
 						});
 					};

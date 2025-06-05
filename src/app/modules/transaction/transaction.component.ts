@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UTransactionService } from 'src/app/core/http/u_transaction/u-transaction.service';
 import { LoaderService } from '../shared/loaderService/loader.service';
 import { finalize } from 'rxjs';
@@ -17,6 +17,7 @@ export class TransactionComponent {
 
   constructor(
     private readonly _route: ActivatedRoute,
+    private readonly _router: Router,
     private readonly _transactionService: UTransactionService,
     private readonly _loaderService: LoaderService,
     private readonly _location: Location,
@@ -60,6 +61,12 @@ export class TransactionComponent {
   }
 
   goBack() {
-    this._location.back();
+    this._router.navigate(['/pagos/' + this.transaction.orderUuid], {
+      queryParams: { token: this._route.snapshot.queryParamMap.get('token') ?? null }
+    });
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   }
 }
