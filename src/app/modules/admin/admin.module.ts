@@ -36,6 +36,7 @@ import { ReporteriaComponent } from './reporteria/reporteria.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { ProperNamePipe } from '../shared/pipes/proper-name.pipe';
+import { PuertaAltComponent } from './puerta-alt/puerta-alt.component';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { ProperNamePipe } from '../shared/pipes/proper-name.pipe';
     EditListaPagoComponent,
     ReporteriaComponent,
     ProperNamePipe,
+    PuertaAltComponent,
   ],
   imports: [
     CommonModule,

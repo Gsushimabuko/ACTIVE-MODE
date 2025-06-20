@@ -17,12 +17,14 @@ import { ColectasComponent } from "./colectas/colectas.component";
 import { CrearListaPagoComponent } from './crear-lista-pago/crear-lista-pago.component';
 import { EditListaPagoComponent } from './edit-lista-pago/edit-lista-pago.component';
 import { ReporteriaComponent } from './reporteria/reporteria.component';
+import { PuertaAltComponent } from "./puerta-alt/puerta-alt.component";
 
 const routes: Routes = [
 
   { path: 'entradas', component: EntradasComponent}, 
   { path: 'menu-puerta', component: MenuPuertaComponent}, 
   { path: 'puerta', component: PuertaComponent}, 
+  { path: 'puerta-alt', component: PuertaAltComponent}, 
   { path: 'dashboard', component: AdminDashboardComponent}, 
   { path: 'alumnos', component: AlumnosComponent },
   { path: 'codigo', component: CodigosComponent },

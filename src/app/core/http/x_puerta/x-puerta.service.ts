@@ -21,6 +21,9 @@ export class XPuertaService {
   checkAsistenciaExterno(body: any){
     return this.http.post<any>(this.API_URL + "/externo" , body)
   }
+  createRegistroCSV(body: any): Observable<any> {
+    return this.http.post(this.API_URL + "/evento" , body)
+  }
 
   getRegistrosIndex(inicio:any,fin:any){
     return this.http.get<any>(this.API_URL + "/index" , {params:{inicio:inicio, fin:fin}})
