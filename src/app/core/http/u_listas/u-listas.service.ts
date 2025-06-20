@@ -57,7 +57,7 @@ export class UListasService {
   }
 
   updateListaDePago(updatedData: any): Observable<any> {
-    const url = `http://localhost:5000/api/collection/${updatedData.PK_collection}`;
+    const url = `${this.API_URL}/${updatedData.PK_collection}`;
     return this.http.put<any>(url, updatedData);
   }
 }

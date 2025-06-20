@@ -22,7 +22,7 @@
       <tbody>
         <tr *ngFor="let lista of listasDePago">
           <td>{{ lista.var_name }}</td>
-          <td>{{ lista.num_amount_collected > 0 ? 'Cerrado' : 'Pendiente' }}</td>
+          <td>{{ lista.num_pending_count == 0 ? 'Cerrado' : 'Pendiente' }}</td>
           <td>{{ lista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</td>
           <td>
             <button (click)="seleccionarLista(lista)">Seleccionar</button>
@@ -41,6 +41,7 @@
     <p>Total de pagos: {{ selectedLista.num_total_count }}</p>
     <p>Pagos realizados: {{ selectedLista.num_paid_count }}</p>
     <p>Pagos pendientes: {{ selectedLista.num_pending_count }}</p>
+    <p>Pagos cancelados: {{ selectedLista.num_cancelled_count }}</p>
     <p>Monto total: {{ selectedLista.num_total_amount | currency: 'PEN' }}</p>
 
     <!-- Tabla de pagos -->
