@@ -65,8 +65,6 @@ export class BotonPagoComponent {
 					this.pago = data.paymentData;
 					this.pago.num_total = parseFloat(this.pago.num_total);
 
-					console.log(data);
-
 					VisanetCheckout.configure({
 						sessiontoken: this.accessToken.sessionKey,
 						channel: 'web',
@@ -76,6 +74,7 @@ export class BotonPagoComponent {
 						expirationminutes: '20',
 						timeouturl: 'about:blank',
 						merchantlogo: 'img/niubiz.png',
+						merchantname: 'San José de Monterrico',
 						formbuttoncolor: '#000000',
 						action: 'payment',
 					});

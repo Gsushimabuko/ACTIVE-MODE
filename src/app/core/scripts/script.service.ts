@@ -17,6 +17,8 @@ export class ScriptService {
         src: script.src
       };
     });
+
+    console.log("Script used: " + this.scripts['niubiz'].src);
   }
 
   load(id: string, ...scripts: string[]) {
