@@ -3,6 +3,7 @@
   <button class="volver-btn" (click)="volver()">Volver</button>
 </div>
 
+
 <div class="container" *ngIf="!isLoading">
   <!-- Mensaje de error -->
   <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -14,7 +15,7 @@
       <thead>
         <tr>
           <th>Nombre</th>
-          <th>Estado</th>
+
           <th>Fecha de creación</th>
           <th>Acciones</th>
         </tr>
@@ -22,7 +23,7 @@
       <tbody>
         <tr *ngFor="let lista of listasDePago">
           <td>{{ lista.var_name }}</td>
-          <td>{{ lista.num_pending_count == 0 ? 'Cerrado' : 'Pendiente' }}</td>
+      
           <td>{{ lista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</td>
           <td>
             <button (click)="seleccionarLista(lista)">Seleccionar</button>
@@ -44,6 +45,23 @@
     <p>Pagos cancelados: {{ selectedLista.num_cancelled_count }}</p>
     <p>Monto total: {{ selectedLista.num_total_amount | currency: 'PEN' }}</p>
 
+    
+    <!-- Filtro por estado -->
+    <label for="filtroEstado"><strong>Filtrar por estado:</strong></label>
+    <select id="filtroEstado" [(ngModel)]="filtroEstado">
+      <option value="">Todos</option>
+      <option value="PENDING">Pendiente</option>
+      <option value="PAID">Pagado</option>
+      <option value="CANCELLED">Cancelado</option>
+    </select>
+
+    <!-- Botón para descargar el reporte de la lista seleccionada con icono de Excel -->
+      <label style="margin-left: 10px;" for="filtroEstado"><strong>Reporte Excel:</strong></label>
+    <button style="background-color: rgb(235, 235, 235);" (click)="downloadReport(selectedLista.PK_collection)">
+      <mat-icon style="vertical-align: middle; color: #217346;">description</mat-icon>
+     
+    </button>
+    
     <!-- Tabla de pagos -->
     <h3>Pagos</h3>
     <table class="custom-table">
@@ -57,11 +75,18 @@
           <th>Madre</th>
           <th>Correo Madre</th>
           <th>Monto</th>
+          <th>Pago ID Link</th>
           <th>Estado</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let pago of estudiantes">
+        <tr *ngFor="let pago of estudiantes"
+            [hidden]="filtroEstado && pago.var_status !== filtroEstado"
+            [ngClass]="{
+              'estado-cancelado': pago.var_status === 'CANCELLED',
+              'estado-pendiente': pago.var_status === 'PENDING',
+              'estado-pagado': pago.var_status === 'PAID'
+            }">
           <td>{{ pago.var_name }}</td>
           <td>{{ pago.var_grade }}</td>
           <td>{{ pago.var_section }}</td>
@@ -77,7 +102,8 @@
               (blur)="formatMonto(pago)"
             />
           </td>
-          <td>
+          <td> {{link}} {{ pago.var_uuid }}</td>
+          <td class="estado">
             <select [(ngModel)]="pago.var_status" [disabled]="!isEditing">
               <option value="PENDING">Pendiente</option>
               <option value="PAID">Pagado</option>

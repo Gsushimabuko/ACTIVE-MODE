@@ -1,4 +1,3 @@
-
 .title{
 
   padding: 20px;
@@ -157,4 +156,14 @@ button:hover {
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.estado-cancelado {
+  background-color: #ffcccc !important; /* rojo claro */
+}
+.estado-pendiente {
+  background-color: #fff9c4 !important; /* amarillo claro */
+}
+.estado-pagado {
+  background-color: #c8e6c9 !important; /* verde claro */
 }
