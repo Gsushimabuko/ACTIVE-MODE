@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { of, Observable } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
@@ -60,4 +60,12 @@ export class UListasService {
     const url = `${this.API_URL}/${updatedData.PK_collection}`;
     return this.http.put<any>(url, updatedData);
   }
+  getReport( id:any){
+    return this.http.get(`${environment.API_URL}/download/collection/${id}`, {
+    responseType: 'blob'
+  });
+  }
+
+
+
 }

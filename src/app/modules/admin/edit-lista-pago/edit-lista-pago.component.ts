@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { UListasService } from 'src/app/core/http/u_listas/u-listas.service';
+import * as saveAs from 'file-saver';
+import { environment } from 'src/app/environments/environment';
 
 @Component({
   selector: 'app-edit-lista-pago',
@@ -14,7 +16,8 @@ export class EditListaPagoComponent implements OnInit {
   isLoading: boolean = false; // Estado de carga
   errorMessage: string = ''; // Mensaje de error
   isEditing: boolean = false; // Estado de edición de la tabla
-
+  filtroEstado: string = '';
+  link: string = environment.API_URL_FRONT + "/pagos/";
   constructor(private uListasService: UListasService, private location: Location) {}
 
   ngOnInit() {
@@ -137,7 +140,18 @@ export class EditListaPagoComponent implements OnInit {
       pago.num_total = parseFloat(pago.num_total.toFixed(2));
     }
   }
+
+
+
+downloadReport(id: number) {
+    this.uListasService.getReport(id).subscribe((blob: Blob | MediaSource) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Reporte_${id}.xlsx`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
 }
-
-
 
