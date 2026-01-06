@@ -1,0 +1,120 @@
+/* Fondo general para toda la pantalla */
+.puerta-activekids-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e8f5e9 0%, #fffde7 100%);
+}
+.config-card {
+  background: #fff !important;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(67,160,71,0.08);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.puerta-activekids-wrapper mat-card {
+  background: #fff !important;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+/* Centrado general del contenedor principal */
+.puerta-activekids-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc;
+}
+.loader-spinner{
+    /* Copiado de puerta padres */
+    position:absolute;
+    z-index: 200;
+    top:0px;
+    right:0px;
+    bottom:0px;
+    left:0px;
+    align-items: center;
+    background-color:rgba(67, 160, 71, 0.15);
+}
+.icon{
+    width: 35%;
+    padding: 20px;
+}
+.boton-search{
+    height: 60px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    background-color: #43a047;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    mat-card{
+        width: 90%;
+        height: 60%;
+        padding: 8px;
+        margin: 20px;
+    }
+    .puerta-input{
+        width: 300px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    mat-card{
+        width: 40%;
+        height: 60%;
+        padding: 15px;
+        margin: 20px;
+    }
+    .puerta-input{
+        width: 300px !important;
+    }
+    .icon{
+        width: 35%;
+        padding: 20px;
+    }
+}
+
+.puerta-input {
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+.mat-form-field {
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ccc;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  border-color: #43a047;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 4px;
+}
+
+.mat-select {
+  color: #333;
+}
+
+.mat-select:hover {
+  background-color: #f0f0f0;
+}
+
+.mat-select-panel {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #43a047;
+}

@@ -23,6 +23,7 @@ const routes: Routes = [
 
   { path: 'entradas', component: EntradasComponent}, 
   { path: 'menu-puerta', component: MenuPuertaComponent}, 
+  { path: 'puerta-activekids', loadChildren: () => import('./puerta-activekids/puerta-activekids.module').then(m => m.PuertaActivekidsModule)},
   { path: 'puerta', component: PuertaComponent}, 
   { path: 'puerta-alt', component: PuertaAltComponent}, 
   { path: 'dashboard', component: AdminDashboardComponent}, 
