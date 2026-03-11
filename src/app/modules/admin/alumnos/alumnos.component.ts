@@ -22,26 +22,38 @@ export class AlumnosComponent {
 
   cargarCalendario2023(){
     this.loader = true
-  
-    this.calendario = {
-        "year": 2025,
-        "January": [[0,0,0,1,2,3,4],[5,6,7,8,9,10,11],[12,13,14,15,16,17,18],[19,20,21,22,23,24,25],[26,27,28,29,30,31,0]],
-        "February": [[0,0,0,0,0,0,1],[2,3,4,5,6,7,8],[9,10,11,12,13,14,15],[16,17,18,19,20,21,22],[23,24,25,26,27,28,0]],
-        "March": [[0,0,0,0,0,0,1],[2,3,4,5,6,7,8],[9,10,11,12,13,14,15],[16,17,18,19,20,21,22],[23,24,25,26,27,28,29],[30,31,0,0,0,0,0]],
-        "April": [[0,0,1,2,3,4,5],[6,7,8,9,10,11,12],[13,14,15,16,17,18,19],[20,21,22,23,24,25,26],[27,28,29,30,0,0,0]],
-        "May": [[0,0,0,0,1,2,3],[4,5,6,7,8,9,10],[11,12,13,14,15,16,17],[18,19,20,21,22,23,24],[25,26,27,28,29,30,31]],
-        "June": [[1,2,3,4,5,6,7],[8,9,10,11,12,13,14],[15,16,17,18,19,20,21],[22,23,24,25,26,27,28],[29,30,0,0,0,0,0]],
-        "July": [[0,0,1,2,3,4,5],[6,7,8,9,10,11,12],[13,14,15,16,17,18,19],[20,21,22,23,24,25,26],[27,28,29,30,31,0,0]],
-        "August": [[0,0,0,0,0,1,2],[3,4,5,6,7,8,9],[10,11,12,13,14,15,16],[17,18,19,20,21,22,23],[24,25,26,27,28,29,30],[31,0,0,0,0,0,0]],
-        "September": [[0,1,2,3,4,5,6],[7,8,9,10,11,12,13],[14,15,16,17,18,19,20],[21,22,23,24,25,26,27],[28,29,30,0,0,0,0]],
-        "October": [[0,0,0,1,2,3,4],[5,6,7,8,9,10,11],[12,13,14,15,16,17,18],[19,20,21,22,23,24,25],[26,27,28,29,30,31,0]],
-        "November": [[0,0,0,0,0,0,1],[2,3,4,5,6,7,8],[9,10,11,12,13,14,15],[16,17,18,19,20,21,22],[23,24,25,26,27,28,29],[30,0,0,0,0,0,0]],
-        "December": [[0,1,2,3,4,5,6],[7,8,9,10,11,12,13],[14,15,16,17,18,19,20],[21,22,23,24,25,26,27],[28,29,30,31,0,0,0]]
-      };
-
+    this.calendario = this.generarCalendario(new Date().getFullYear());
     this.loader = false
+  }
 
-  
+  generarCalendario(year: number): any {
+    const meses = ["January","February","March","April","May","June",
+                   "July","August","September","October","November","December"];
+    const calendario: any = { year };
+    for (const mes of meses) {
+      const mesIndex = meses.indexOf(mes);
+      const primerDia = new Date(year, mesIndex, 1).getDay();
+      const diasEnMes = new Date(year, mesIndex + 1, 0).getDate();
+      const semanas: number[][] = [];
+      let semana: number[] = new Array(7).fill(0);
+      let diaActual = 1;
+      for (let i = primerDia; i < 7; i++) {
+        semana[i] = diaActual++;
+      }
+      semanas.push(semana);
+      while (diaActual <= diasEnMes) {
+        semana = new Array(7).fill(0);
+        for (let i = 0; i < 7 && diaActual <= diasEnMes; i++) {
+          semana[i] = diaActual++;
+        }
+        semanas.push(semana);
+      }
+      while (semanas.length < 5) {
+        semanas.push([0,0,0,0,0,0,0]);
+      }
+      calendario[mes] = semanas;
+    }
+    return calendario;
   }
   buscarResultadosDia(dia:number){
     this.loader = true
@@ -76,10 +88,10 @@ export class AlumnosComponent {
     }
     console.log("DIA: ", dia, "MES: ", codMes)
     
-    this.matriculadosService.getMatriculadosReporte(dia,codMes,2025).subscribe((res) => {
+    this.matriculadosService.getMatriculadosReporte(dia,codMes,this.calendario.year).subscribe((res) => {
       this.reporte = res
       this.loader = false
-      this.fechaBuscada = dia.toString()+ " " + this.mesSeleccionado + "  " + '2025'
+      this.fechaBuscada = dia.toString()+ " " + this.mesSeleccionado + "  " + this.calendario.year
       })
   }
   cambiarMes(mesNombreEvt:any){
@@ -95,7 +107,8 @@ export class AlumnosComponent {
       semana2: s2,
       semana3: s3,
       semana4: s4,
-      semana5:s5
+      semana5: s5,
+      semana6: mes[5] || null
     }
   }
 }

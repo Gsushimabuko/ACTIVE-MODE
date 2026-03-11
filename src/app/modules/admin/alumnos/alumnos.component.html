@@ -66,6 +66,9 @@ fxLayout="column" fxLayoutAlign="center center"
                         <tr  class="trTable" >
                             <td *ngFor="let dia of calendarioMes.semana5" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
                         </tr>
+                        <tr *ngIf="calendarioMes.semana6" class="trTable" >
+                            <td *ngFor="let dia of calendarioMes.semana6" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
+                        </tr>
                        
                     </tbody>
                 </table>
