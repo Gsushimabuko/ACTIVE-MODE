@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import localeEs from '@angular/common/locales/es';
 import { PasarelaComponent } from './modules/pasarela/pasarela.component';
-import { ScriptService2 } from './services/script.service';
 import { PasarelaModule } from './modules/pasarela/pasarela.module';
 import { HomeModule } from './modules/home/home.module';
 import { registerLocaleData } from '@angular/common';
@@ -44,7 +43,7 @@ registerLocaleData(localeEs, 'es-PE');
     PasarelaModule,
     HomeModule
   ],
-  providers: [ScriptService2,
+  providers: [
     { provide: LOCALE_ID, useValue: 'es-PE' }
   ],
   bootstrap: [AppComponent]

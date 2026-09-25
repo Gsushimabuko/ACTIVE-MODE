@@ -1,100 +1,21 @@
 <div class="container">
-    
-
-    <div class="openpay-logo-container">
-        
-        
-        <img src="assets/images/openpay.png" class="logo">
-        
-    </div>
-
     <div class='method-card' id='method-card'>
         <div class='method-card__images'>
-          <img class="logo-tarjeta" src="assets/images/visa.png" alt="visa">
-          <img  class="logo-tarjeta" src="assets/images/mastercard.png"alt="mastercard">
-          <img  class="logo-tarjeta" src="assets/images/ae.png" alt="american-express">
-          <img  class="logo-tarjeta" src="assets/images/diners.png" alt="diners">
+            <img class="logo-tarjeta" src="assets/images/visa.png" alt="visa">
+            <img class="logo-tarjeta" src="assets/images/mastercard.png" alt="mastercard">
+            <img class="logo-tarjeta" src="assets/images/ae.png" alt="american-express">
+            <img class="logo-tarjeta" src="assets/images/diners.png" alt="diners">
+        </div>
+
+        <p class='method-card__description'>
+            Pago seguro con Cobrana. Te llevaremos al formulario de Niubiz y volverás aquí al terminar.
+        </p>
     </div>
-    
-    <p class='method-card__description'>
-      Recuerda que algunas tarjetas cuentan con el código de seguridad o CVV Dinámico,
-      consúltalo desde el App de tu banco.
-    </p>
-
-    <form [formGroup]="form" id="formId" name="formId" class='method-card__inputs' >
-        <mat-form-field class="example-full-width">
-            <mat-label>Titular de la tarjeta</mat-label>
-            <input data-openpay-card="holder_name" type="text" matInput formControlName="holderName">
-        </mat-form-field>
-            
-        <mat-form-field class="example-full-width">
-            <mat-label>Número de tarjeta</mat-label>
-            <input data-openpay-card="card_number" [OnlyNumber]="true" maxlength="20" matInput formControlName="cardNumber">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Mes de Expiración</mat-label>
-            <input [OnlyNumber]="true" data-openpay-card="expiration_month" minlength="2" maxlength="2" matInput placeholder="MM" formControlName="monthExp">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Año de Expiración</mat-label>
-            <input [OnlyNumber]="true" data-openpay-card="expiration_year" min="0" [maxlength]="2" matInput placeholder="AA" formControlName="yearExp">
-        </mat-form-field>
-       
-
-        <mat-form-field class="example-full-width">
-            <mat-label>CVV</mat-label>
-            <input [OnlyNumber]="true" data-openpay-card="cvv2" minlength="3" maxlength="4" matInput formControlName="cvv2">
-        </mat-form-field>
-
-        <!--
-        
-        <mat-form-field class="example-full-width">
-          <mat-label>Calle</mat-label>
-          <input data-openpay-card-address="line1" type="text" matInput formControlName="line1">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Número</mat-label>
-            <input data-openpay-card-address="line2" type="text" matInput formControlName="line2">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Referencia</mat-label>
-            <input data-openpay-card-address="line3" type="text" matInput formControlName="line3">
-        </mat-form-field>
-
-         <mat-form-field class="example-full-width">
-            <mat-label>Código postal</mat-label>
-            <input (keyup)="twoNumbersOnly($event, form.get('postalCode')?.value)" data-openpay-card-address="postal_code" type="number" minlength="5" maxlength="5" matInput formControlName="postalCode">
-        </mat-form-field> 
-    
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Ciudad</mat-label>
-            <input data-openpay-card-address="city" type="text" matInput formControlName="city">
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width">
-            <mat-label>Departamento</mat-label>
-            <mat-select data-openpay-card-address="state" formControlName="state">
-              <mat-option *ngFor="let department of departments" [value]="department">
-                {{department}}
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        -->
-
-    </form>
 
     <div fxLayout="row" fxLayoutAlign="center center" style="vertical-align: middle; color: red" *ngIf="errorFlag">
         <mat-icon style="vertical-align: middle;">info</mat-icon>
         <span>{{ errorMessage }}</span>
     </div>
-    
-    <button  class="boton-monto" mat-raised-button color="primary"   mat-button (click)="sendSignal()" >Pagar</button>
+
+    <button class="boton-monto" mat-raised-button color="primary" [disabled]="procesando" (click)="sendSignal()">Pagar</button>
 </div>
-
-

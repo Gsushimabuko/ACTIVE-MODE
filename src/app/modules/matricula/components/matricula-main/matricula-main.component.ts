@@ -513,12 +513,8 @@ export class MatriculaMainComponent {
   matricula(respuesta:boolean, stepper: MatStepper){
 
     this.loader=true
-    
-    const resp = this.pasarela.createToken()
-    if(resp!){
-      stepper.selected!.completed = true;
-    }
-    
+    this.pasarela.pagar()
+
   }
 
   pagoAceptado(respuesta:boolean,stepper: MatStepper):void{
