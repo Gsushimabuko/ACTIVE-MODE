@@ -1,113 +1,288 @@
-mat-form-field{
-  border: black;
+.matricula {
+  min-height: 100vh;
+  background: var(--am-surface);
 }
 
-.mat-stepper-vertical {
-    margin-top: 8px;
-  }
-.card{
-  padding-left: 10px;
-  padding-right: 10px;
-
-  margin-bottom: 10px;
-  margin-top: 10px;
+.matricula__contenido {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.aviso{
-  padding-left: 10px;
-  padding-right: 10px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.botones{
-  margin: 20px;
-}
-.texto-aviso{
-  color: black;
-  font-weight: bolder;
+.matricula__cargando {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
 }
 
-.card-general{
-  width: 85%;
-  height: 90%;
-  margin: 90px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.853);
-  
-}
-input{
-  color: black!important;
-}
-  
-  .mat-mdc-form-field {
-    margin-top: 16px;
-  }
-
-.border{
-  border: solid 2px green;
+.matricula__inicio {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--am-text-2);
 }
 
-.boton-semifinal{
-  margin-right: 20px;
+.matricula__inicio:hover {
+  color: var(--am-text);
 }
 
-.boton-monto{
-  margin-top: 20px;
-  font-size: large;
-  font-weight: bold;
+/* Encabezado */
+
+.matricula__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.form{
-  width: 350px;
-  padding-left: 0px;
-  padding-right: 0px;
+.matricula__titulos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.info{
-  width: 350px;
-  padding-left: 0px;
-  padding-right: 0px;
+.matricula__titulo {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-.calendario{
-  width: 700px;
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-top:10px;
+.matricula__subtitulo {
+  margin: 0;
+  font-size: 15px;
+  color: var(--am-text-2);
 }
 
-.mat-step-header {
+/* Paso 1 */
+
+.paso1 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.paso1__principal {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+}
+
+.paso1__curso {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.seccion__titulo {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.seccion__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--am-text-label);
+}
+
+.campo__control {
+  position: relative;
+  display: block;
+}
+
+.campo select {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 16px;
+  border: 1px solid var(--am-border-strong);
+  border-radius: 8px;
+  background: var(--am-surface);
+  color: var(--am-text);
+  font-family: inherit;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.campo select:focus {
+  outline: none;
+  border-color: var(--am-brand);
+  box-shadow: 0 0 0 3px var(--am-brand-soft);
+}
+
+.campo__flecha {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--am-text-3);
   pointer-events: none;
 }
 
-.mat-step {
-  pointer-events: none;
-}
-.mat-vertical-stepper-header{
-  pointer-events: none;
-}
-
-@media only screen and (max-width: 768px)  {
-  .form{
-    width: 210px;
-  }
-  .input-propiedades{
-    width: 130px;
-  }
-  .card{
-   width: 200px;
-  }
-  .boton-semifinal{
-    margin: 10px
-  }
-  .boton-monto{
-  height: 30px;
-  font-size: 12px;
-  }
-
-.test-table{
-   font-size: 10px !important; 
+.curso-elegido {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border: 1px solid var(--am-border);
+  border-radius: 8px;
+  background: var(--am-surface-alt);
 }
 
+.curso-elegido__nombre {
+  font-size: 14px;
+  font-weight: 600;
 }
 
+.curso-elegido__meta {
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.curso-elegido__aviso {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--am-brand-dark);
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opciones__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--am-text-label);
+}
+
+.opciones__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.opciones__fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.monto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--am-border);
+  border-radius: 8px;
+  background: var(--am-surface-alt);
+  font-size: 14px;
+  color: var(--am-text-label);
+}
+
+.monto b {
+  font-weight: 700;
+  color: var(--am-text);
+}
+
+.monto__boton {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+.nota {
+  display: flex;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--am-surface-muted);
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.nota .am-icon {
+  color: var(--am-text-3);
+}
+
+.nota b {
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+/* Responsive */
+
+@media (max-width: 1024px) {
+  .paso1 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+}
+
+@media (max-width: 640px) {
+  .matricula__contenido {
+    padding: 24px 16px;
+  }
+
+  .matricula__titulo {
+    font-size: 26px;
+  }
+
+  .tarjeta {
+    padding: 16px;
+  }
+
+  .seccion__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+
+  .monto__boton {
+    width: 100%;
+  }
+}

@@ -1,229 +1,162 @@
-
-<!--loader-->
-<div *ngIf="loader" class="loader-spinner"
-fxLayout="column" fxLayoutAlign="center center"
->
-<mat-spinner color="primary"></mat-spinner>
-</div>
-
-
-
-<div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" class="container-general animate__animated animate__fadeIn animate__fast">
-  <div style="margin:40px" fxLayout="row" fxLayoutAlign="center center">
-    <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
-      <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
-    </button> 
+<div class="am matricula">
+  <div *ngIf="loader" class="matricula__cargando" role="status" aria-live="polite">
+    <span class="am-spinner" aria-hidden="true"></span>
+    <span class="am-sr">Cargando</span>
   </div>
-  <mat-card class="card-general">
-    <mat-stepper orientation="vertical" [linear]="true" #stepper>
-      <mat-step fxFill="80" [editable]="esEditable" completed = "false">
-        <ng-template matStepLabel>Seleccionar el mes y los cursos a matricular</ng-template>
 
-        
-        
-        <div  fxLayout="column" fxLayoutAlign="space-evenly">
-          
-          <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
-            
-            <!-- formularios -->
-            <div class="form" fxFlexLayoutAlign.lt-md="center center" >
+  <div class="matricula__contenido">
+    <a class="matricula__inicio" routerLink="/matricula/dashboard">
+      <span class="am-icon" aria-hidden="true">arrow_back</span>Inicio
+    </a>
 
-                  <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-evenly center">
+    <header class="matricula__header">
+      <div class="matricula__titulos">
+        <h1 class="matricula__titulo">Matrícula</h1>
+        <p class="matricula__subtitulo">Elige el periodo, el familiar y los cursos. Pagas todo en un solo paso.</p>
+      </div>
 
-                    <form [formGroup]="mesForm">
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Mes</mat-label>
-                        <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
-                            <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
-                                {{mes.mes}} - {{mes.ano}}
-                            </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+      <app-pasos-matricula [paso]="paso"></app-pasos-matricula>
+    </header>
 
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Familiar a matricular</mat-label>
-                        <mat-select formControlName="usuario" (selectionChange)="seleccionUsuario()">
-                            <mat-option *ngFor="let usuario of usuarios" [value]="usuario" >
-                                {{usuario.nombre}}  {{usuario.apellidop}}
-                            </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+    <!-- Paso 1: cursos -->
+    <div *ngIf="paso === 1" class="paso1">
+      <div class="paso1__principal">
+        <section class="tarjeta">
+          <div class="seccion">
+            <h2 class="seccion__titulo">1. Alumno</h2>
+            <form [formGroup]="mesForm" class="seccion__grid">
+              <label class="campo">Periodo
+                <span class="campo__control">
+                  <select formControlName="mes" (change)="seleccionMes()">
+                    <option value="" disabled>Selecciona</option>
+                    <option *ngFor="let mes of meses" [value]="mes.periodo_fecha">{{ mes.mes }} {{ mes.ano }}</option>
+                  </select>
+                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                </span>
+              </label>
+              <label class="campo">Familiar a matricular
+                <span class="campo__control">
+                  <select formControlName="usuario" (change)="seleccionUsuario()">
+                    <option [ngValue]="idPadre" disabled>Selecciona</option>
+                    <option *ngFor="let usuario of usuarios" [ngValue]="usuario">{{ usuario.nombre }} {{ usuario.apellidop }}</option>
+                  </select>
+                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                </span>
+              </label>
+            </form>
+          </div>
 
-                    </form>
+          <form *ngIf="mesForm.controls['mes'].value != ''" [formGroup]="cursoForm" class="paso1__curso">
+            <div class="seccion">
+              <h2 class="seccion__titulo">2. Curso</h2>
+              <label class="campo">Curso
+                <span class="campo__control">
+                  <select formControlName="curso" (change)="cambioCurso()">
+                    <option value="" disabled>Selecciona un curso</option>
+                    <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">
+                      {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}
+                    </option>
+                  </select>
+                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                </span>
+              </label>
 
-
-                  </div>
-                  
-    
-                  <mat-card *ngIf=" mesForm.controls['mes'].value != '' " class="card" fxFlexLayoutAlign.lt-md="center center" >
-                   
-                  <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign.lt-md="center center" fxLayoutAlign="start">
-                    <b style="margin: 15px ;font-size:18px">Elige la fecha y hora</b>
-                    <mat-form-field class="input-propiedades" appearance="outline" >
-                      <mat-label>Curso</mat-label>
-                      <mat-select formControlName="curso" (selectionChange)="cambioCurso()" >
-                          <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso"  [disabled]="curso.state=='CERRADO'">
-                              {{curso.name | titlecase}} - {{curso.month}} {{(curso.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-
-                    <div *ngIf="curso!= undefined && !curso.hayTarifa">
-                      No hay tarifa designada para tu tipo de usuario en este curso
-                    </div>
-                    <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Horario</mat-label>
-                      <mat-select formControlName="nivel" (selectionChange)="cambioNivel()">
-                          <mat-option *ngFor="let nivel of niveles" [value]="nivel.idNivel" [disabled]="nivel.state=='CERRADO'">
-                              {{nivel.time}} ({{nivel.name}}) {{(nivel.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Veces por semana</mat-label>
-                      <mat-select formControlName="ratio" (selectionChange)="cambioRatio()">
-                          <mat-option *ngFor="let ratio of ratios" [value]="ratio.idRatio" [disabled]="ratio.state=='CERRADO'">
-                              {{ratio.ratio}} {{(ratio.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Dias</mat-label>
-                      <mat-select formControlName="dia" (selectionChange)="eleccionDia()">
-                          <mat-option *ngFor="let dia of dias" [value]="dia.idDias" [disabled]="dia.state=='CERRADO'">
-                              {{dia.name}} {{(dia.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                          </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                  </form>
-    
-                </mat-card>
-
-                  <div class="info">
-                    <mat-card class="card" *ngIf=" mesForm.controls['mes'].value != '' ">
-        
-                    <!-- lista de cursos inscritos -->
-                    <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
-                    <!-- info del curso actual -->
-                    
-                    <app-curso  *ngIf="this.cursoForm.controls['curso'].value !='' && curso!=undefined" [curso]="curso" [tarifa]="tarifa" [dias]="cantDias" ></app-curso>
-                    
-                  </mat-card>
-                  </div>
-                  
-                  <div class="botones" *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center">
-                    <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Seleccionar</button>
-                    <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="nextStep(stepper)">Calcular monto</button>
-                  </div>
-
-                </div>
-            
-    
-            
-    
-    
-        
-    
-                <!-- calendario -->
-              <div class="calendario" *ngIf=" mesForm.controls['mes'].value != '' " >
-                <div>
-                <mat-card fxLayout="row"  class= "aviso">
-                  <div>
-                    <mat-icon style="color:rgb(222, 112, 112); margin-top:20px; margin-right: 20px ;">info</mat-icon>
-                  </div>
-                  <div>
-                    <p class="texto-aviso"> En caso de que el curso al que quiera matricularse aparezca cerrado, escriba al número <br> 960 192 400  </p>
-                  </div>
-                </mat-card>
-                </div>
-                  <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
-              
-              </div>             
+              <div *ngIf="cursoForm.controls['curso'].value != '' && curso" class="curso-elegido">
+                <b class="curso-elegido__nombre">{{ curso.name | titlecase }}</b>
+                <span class="curso-elegido__meta">Prof. {{ curso.instructor | titlecase }}</span>
+                <span *ngIf="!curso.hayTarifa" class="curso-elegido__aviso">
+                  No hay tarifa para el tipo de usuario de este familiar en este curso.
+                </span>
+              </div>
             </div>
-            <!-- botones -->
-            
+
+            <div *ngIf="cursoForm.controls['curso'].value != '' && niveles?.length" class="seccion">
+              <h2 class="seccion__titulo">3. Horario</h2>
+
+              <div class="opciones" role="group" aria-labelledby="lbl-nivel">
+                <span id="lbl-nivel" class="opciones__label">Nivel y hora</span>
+                <div class="opciones__grid">
+                  <button type="button" *ngFor="let n of niveles" class="am-opcion am-opcion--doble"
+                    [class.am-opcion--activa]="cursoForm.controls['nivel'].value == n.idNivel"
+                    [attr.aria-pressed]="cursoForm.controls['nivel'].value == n.idNivel"
+                    [disabled]="n.state == 'CERRADO'" (click)="elegirNivel(n.idNivel)">
+                    <b>{{ n.name }}</b>
+                    <span>{{ n.time }}{{ n.state == 'CERRADO' ? ' · Cerrado' : '' }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="cursoForm.controls['nivel'].value != ''" class="opciones" role="group" aria-labelledby="lbl-ratio">
+                <span id="lbl-ratio" class="opciones__label">Veces por semana</span>
+                <div class="opciones__fila">
+                  <button type="button" *ngFor="let r of ratios" class="am-opcion"
+                    [class.am-opcion--activa]="cursoForm.controls['ratio'].value == r.idRatio"
+                    [attr.aria-pressed]="cursoForm.controls['ratio'].value == r.idRatio"
+                    [disabled]="r.state == 'CERRADO'" (click)="elegirRatio(r.idRatio)">
+                    {{ r.ratio }}{{ r.state == 'CERRADO' ? ' · Cerrado' : '' }}
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="cursoForm.controls['ratio'].value != ''" class="opciones" role="group" aria-labelledby="lbl-dia">
+                <span id="lbl-dia" class="opciones__label">Días</span>
+                <div class="opciones__fila">
+                  <button type="button" *ngFor="let d of dias" class="am-opcion"
+                    [class.am-opcion--activa]="cursoForm.controls['dia'].value == d.idDias"
+                    [attr.aria-pressed]="cursoForm.controls['dia'].value == d.idDias"
+                    [disabled]="d.state == 'CERRADO'" (click)="elegirDia(d.idDias)">
+                    {{ d.name }}{{ d.state == 'CERRADO' ? ' · Cerrado' : '' }}
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="cursoForm.controls['dia'].value != '' && tarifa != 0" class="monto">
+                <span>Monto por mes: <b>S/ {{ tarifa | number: '1.2-2' : 'en-US' }}</b> por {{ cantDias }} clases</span>
+                <button type="button" class="am-btn am-btn--primary monto__boton" (click)="agregarCurso()">
+                  <span class="am-icon" aria-hidden="true">add</span>Agregar a mi matrícula
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="nota">
+            <span class="am-icon" aria-hidden="true">info</span>
+            <span>Si el curso que buscas aparece cerrado, escríbenos al <b>960 192 400</b>.</span>
           </div>
-    
-          
-    
-          
-    
-        </mat-step>
-        
-    
-        <mat-step [editable]="false" completed="false">
-          <ng-template matStepLabel>Monto</ng-template>
-    
-          <div fxLayout="column" fxLayoutAlign="center center">
-    
-            <h3>Cursos inscritos</h3>
-            <table mat-table [dataSource]="MONTO_CURSO_DATA"  class="mat-elevation-z8 demo-table test-table">
-              <ng-container matColumnDef="orden">
-                  <th mat-header-cell *matHeaderCellDef> Orden </th>
-                  <td mat-cell *matCellDef="let element"> {{element.orden}}
-                      
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="curso">
-                  <th mat-header-cell *matHeaderCellDef> Curso </th>
-                  <td mat-cell *matCellDef="let element"> {{element.curso}}
-                
-                  </td>
-                </ng-container>
-              
-                <ng-container matColumnDef="dias">
-                  <th mat-header-cell *matHeaderCellDef> Días </th>
-                  <td mat-cell *matCellDef="let element"> {{element.dias}}
-                      
-                  </td>
-                </ng-container>
-            
-                <ng-container matColumnDef="monto">
-                    <th mat-header-cell *matHeaderCellDef> Monto </th>
-                    <td mat-cell *matCellDef="let element"> {{element.monto | currency: 'S/. '}}
-                     
-                    </td>
-                </ng-container>
-            
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-      
-          <button class="boton-monto" mat-raised-button color="primary"  mat-button (click)="realizarPago(stepper)"> Total a cancelar : {{totalPagar | currency: 'S/. ' }}</button>
-      
-          </div>
-    
-          
-    
-        </mat-step>
-    
-        
-        <mat-step [editable]="false" completed="false">
-          <ng-template matStepLabel>Pago</ng-template>
+        </section>
 
-          <div  fxLayout="column" fxLayoutAlign="center center">
+        <section *ngIf="mesForm.controls['mes'].value != ''" class="paso1__calendario">
+          <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
+        </section>
+      </div>
 
-            <app-pasarela #pasarela *ngIf="listaDeCursosPrecios[0] != undefined" [monto]="totalPagar" [listaPagosPrecio]="listaDeCursosPrecios" [idUsuario]="idUsuario" [fechaCalendario]="mesCalendario" (pagoAceptado)="pagoAceptado($event,stepper)" (matricula)="matricula($event,stepper)"></app-pasarela>
-    
-            
+      <app-carrito-matricula
+        [cursos]="listaCursosNuevos"
+        [alumno]="nombreAlumno"
+        [periodo]="mesForm.controls['mes'].value != '' ? mesCalendario : null"
+        [total]="totalPagar"
+        (quitar)="eliminar($event)"
+        (continuar)="paso = 2">
+      </app-carrito-matricula>
+    </div>
 
-          </div>
+    <!-- Paso 2: pago -->
+    <app-pasarela *ngIf="paso === 2"
+      [cursos]="listaDeCursosPrecios"
+      [alumno]="nombreAlumno"
+      [monto]="totalPagar"
+      [idUsuario]="idUsuario"
+      [fechaCalendario]="mesCalendario"
+      (volver)="paso = 1"
+      (verTerminos)="verTerminos()"
+      (resultado)="mostrarResultado($event)">
+    </app-pasarela>
 
-          
-    
-        </mat-step>
-    
-        <mat-step [editable]="false" completed="false">
-          <ng-template matStepLabel>Matricula finalizada</ng-template>
-          
-          <div fxLayout="column" fxLayoutAlign="center center">
-            <p>Se ha inscrito satisfactoriamente</p>
-            <button mat-button  mat-raised-button color="primary" [routerLink] = "['/matricula/dashboard']">Regresar al perfil</button>
-          </div>
-        </mat-step>
-      </mat-stepper>
-    </mat-card>
-
+    <!-- Paso 3: confirmación -->
+    <app-estado-pago *ngIf="paso === 3 && resultado"
+      [resultado]="resultado"
+      (reintentar)="paso = 2"
+      (editar)="paso = 1">
+    </app-estado-pago>
+  </div>
 </div>
-  
-

@@ -1,0 +1,32 @@
+<aside class="carrito" aria-labelledby="titulo-carrito">
+  <div class="carrito__header">
+    <h2 id="titulo-carrito" class="carrito__titulo">Tu matrícula</h2>
+    <span *ngIf="periodo" class="carrito__periodo">{{ periodo | date: 'MMMM y' | titlecase }}</span>
+  </div>
+
+  <div *ngIf="!cursos.length" class="carrito__vacio">
+    <span class="am-icon carrito__vacio-icono" aria-hidden="true">shopping_bag</span>
+    <span>Aún no agregas cursos. Elige uno y pulsa “Agregar a mi matrícula”.</span>
+  </div>
+
+  <div *ngFor="let c of cursos" class="carrito__fila">
+    <div class="carrito__fila-texto">
+      <b>{{ c.nombre | titlecase }}</b>
+      <span *ngIf="alumno">{{ alumno }}</span>
+      <span>{{ c.horarioDias }} · {{ c.horarioHoras }}</span>
+    </div>
+    <div class="carrito__fila-lado">
+      <b class="carrito__monto">S/ {{ c.monto | number: '1.2-2' : 'en-US' }}</b>
+      <button type="button" class="carrito__quitar" (click)="quitar.emit(c.idCursoPeriodo)"
+        [attr.aria-label]="'Quitar ' + c.nombre">Quitar</button>
+    </div>
+  </div>
+
+  <div class="carrito__total">
+    <span>Total</span>
+    <b>S/ {{ total | number: '1.2-2' : 'en-US' }}</b>
+  </div>
+
+  <button type="button" class="am-btn am-btn--primary carrito__continuar"
+    [disabled]="!cursos.length" (click)="continuar.emit()">Continuar al pago</button>
+</aside>

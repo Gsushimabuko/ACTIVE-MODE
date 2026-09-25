@@ -1,21 +1,59 @@
-<div class="container">
-    <div class='method-card' id='method-card'>
-        <div class='method-card__images'>
-            <img class="logo-tarjeta" src="assets/images/visa.png" alt="visa">
-            <img class="logo-tarjeta" src="assets/images/mastercard.png" alt="mastercard">
-            <img class="logo-tarjeta" src="assets/images/ae.png" alt="american-express">
-            <img class="logo-tarjeta" src="assets/images/diners.png" alt="diners">
+<section class="am pago">
+  <ng-container *ngIf="!procesando; else redirigiendo">
+    <header class="pago__header">
+      <h2 class="pago__titulo">Resumen y pago</h2>
+      <p class="pago__periodo">Periodo {{ fechaCalendario | date: 'MMMM y' | titlecase }}</p>
+    </header>
+
+    <div class="pago__detalle">
+      <div class="pago__fila" *ngFor="let curso of cursos">
+        <div class="pago__fila-texto">
+          <b class="pago__fila-nombre">{{ curso.nombre | titlecase }}<ng-container *ngIf="alumno"> · {{ alumno }}</ng-container></b>
+          <span class="pago__fila-meta">{{ curso.horarioDias }} · {{ curso.horarioHoras }} · {{ curso.diasEvento.length }} clases</span>
         </div>
-
-        <p class='method-card__description'>
-            Pago seguro con Cobrana. Te llevaremos al formulario de Niubiz y volverás aquí al terminar.
-        </p>
+        <b class="pago__monto">S/ {{ curso.monto | number: '1.2-2' : 'en-US' }}</b>
+      </div>
+      <div class="pago__total">
+        <span>Total a pagar</span>
+        <b class="pago__total-monto">S/ {{ monto | number: '1.2-2' : 'en-US' }}</b>
+      </div>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" style="vertical-align: middle; color: red" *ngIf="errorFlag">
-        <mat-icon style="vertical-align: middle;">info</mat-icon>
-        <span>{{ errorMessage }}</span>
+    <div class="pago__seguro">
+      <div class="pago__seguro-cabecera">
+        <span class="am-icon pago__seguro-icono" aria-hidden="true">lock</span>
+        <div class="pago__seguro-texto">
+          <b>Pago seguro con Cobrana</b>
+          <span>Pagarás en el formulario de Niubiz, que se abre en una pestaña nueva.</span>
+        </div>
+      </div>
+      <div class="pago__tarjetas">
+        <img src="assets/images/visa.png" alt="Visa">
+        <img src="assets/images/mastercard.png" alt="Mastercard">
+        <img src="assets/images/ae.png" alt="American Express">
+        <img src="assets/images/diners.png" alt="Diners Club">
+      </div>
     </div>
 
-    <button class="boton-monto" mat-raised-button color="primary" [disabled]="procesando" (click)="sendSignal()">Pagar</button>
-</div>
+    <label class="pago__terminos">
+      <input type="checkbox" [checked]="aceptaTerminos" (change)="aceptaTerminos = !aceptaTerminos">
+      <span>Acepto los <a href="#" (click)="$event.preventDefault(); verTerminos.emit()">términos y condiciones</a> y el reglamento de los talleres.</span>
+    </label>
+
+    <div class="pago__acciones">
+      <button type="button" class="am-btn am-btn--secondary" (click)="volver.emit()">Volver</button>
+      <button type="button" class="am-btn am-btn--primary" [disabled]="!aceptaTerminos" (click)="pagar()">
+        Pagar S/ {{ monto | number: '1.2-2' : 'en-US' }}
+        <span class="am-icon" aria-hidden="true">open_in_new</span>
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #redirigiendo>
+    <div class="pago__redirigiendo" role="status" aria-live="polite">
+      <span class="am-spinner" aria-hidden="true"></span>
+      <b class="pago__redirigiendo-titulo">Te estamos llevando a la pasarela segura…</b>
+      <span class="pago__redirigiendo-texto">Se abrirá en una pestaña nueva. No cierres esta.</span>
+    </div>
+  </ng-template>
+</section>

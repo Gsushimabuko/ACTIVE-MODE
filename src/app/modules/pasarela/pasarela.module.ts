@@ -5,25 +5,22 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from '../material/material.module';
-import { OnlyNumberDirective } from 'src/app/directives/only-number.directive';
-import { DirectivesModule } from 'src/app/directives/directives.module';
-
-
+import { EstadoPagoComponent } from './estado-pago/estado-pago.component';
 
 @NgModule({
   declarations: [
     PasarelaComponent,
+    EstadoPagoComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule,
     HttpClientModule,
     MaterialModule,
-    DirectivesModule
   ],
   exports:[
     PasarelaComponent,
+    EstadoPagoComponent,
   ]
 })
 export class PasarelaModule { }

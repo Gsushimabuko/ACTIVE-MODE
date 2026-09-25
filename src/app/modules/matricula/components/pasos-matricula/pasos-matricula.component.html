@@ -1,0 +1,13 @@
+<ol class="pasos" aria-label="Progreso de la matrícula">
+  <li *ngFor="let p of pasos; let ultimo = last" class="pasos__item"
+    [class.pasos__item--hecho]="paso > p.n" [class.pasos__item--actual]="paso === p.n"
+    [attr.aria-current]="paso === p.n ? 'step' : null">
+    <span class="pasos__circulo" aria-hidden="true">
+      <span *ngIf="paso > p.n; else numero" class="am-icon">check</span>
+      <ng-template #numero>{{ p.n }}</ng-template>
+    </span>
+    <span class="pasos__label">{{ p.label }}</span>
+    <span class="am-sr" *ngIf="paso > p.n">, completado</span>
+    <span *ngIf="!ultimo" class="pasos__separador" aria-hidden="true"></span>
+  </li>
+</ol>

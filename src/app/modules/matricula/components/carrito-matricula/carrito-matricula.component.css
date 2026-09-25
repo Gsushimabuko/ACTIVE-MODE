@@ -1,0 +1,130 @@
+:host {
+  display: block;
+  position: sticky;
+  top: 24px;
+}
+
+.carrito {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+}
+
+.carrito__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.carrito__titulo {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.carrito__periodo {
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.carrito__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 8px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.carrito__vacio-icono {
+  font-size: 32px;
+  color: #C9C0B8;
+}
+
+.carrito__fila {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--am-divider);
+}
+
+.carrito__fila-texto {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--am-text-2);
+}
+
+.carrito__fila-texto b {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+.carrito__fila-lado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.carrito__monto {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.carrito__quitar {
+  min-height: 32px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--am-text-3);
+  cursor: pointer;
+}
+
+.carrito__quitar:hover {
+  color: var(--am-error);
+}
+
+.carrito__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  color: var(--am-text-2);
+}
+
+.carrito__total b {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--am-text);
+}
+
+.carrito__continuar {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  :host {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .carrito {
+    padding: 16px;
+  }
+}

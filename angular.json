@@ -26,8 +26,8 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-              "src/styles.css"
-              
+              "src/styles.css",
+              "src/am-theme.css"
             ],
             "scripts": [
               "src/assets/js/static-content.vnforapps.com_v2_js_checkout.js",

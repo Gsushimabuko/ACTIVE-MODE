@@ -6,11 +6,10 @@ import { NivelPeriodo } from '../../../shared/interfaces/Nivel';
 import { RatioPeriodo } from '../../../shared/interfaces/Ratio';
 import { DiaPeriodo } from '../../../shared/interfaces/Dia';
 import { CalendarMainComponent } from '../../../calendar/calendar-main/calendar-main.component';
-import { MatStepper } from '@angular/material/stepper';
 import { HorarioPeriodo } from '../../../shared/interfaces/Horario';
 import { CursoListaComponent } from '../curso-lista/curso-lista.component';
 import { ZUsuarioService } from '../../../../core/http/z_usuario/z-usuario.service';
-import { PasarelaComponent } from '../../../pasarela/pasarela.component';
+import { ResultadoPago } from '../../../pasarela/pasarela.component';
 import { CursoComponent } from '../curso/curso.component';
 import { Usuario } from '../../../../interfaces/usuario';
 import { MatDialog } from '@angular/material/dialog';
@@ -47,7 +46,7 @@ export class MatriculaMainComponent {
   fechaHoy:Date
   mesCalendario!:Date
   meses:any
-  esEditable:boolean = true
+  paso: 1 | 2 | 3 = 1
 
   listaCursos:any = []
   listaCursosNuevos:any=[]
@@ -55,9 +54,9 @@ export class MatriculaMainComponent {
   totalPagar:number = 0
   costoPagarTemporal:number = 0
   cursoPendiente:any={}
-  MONTO_CURSO_DATA: any[] = [];
   cantDiasTemporal!: number;
   listaDeCursosPrecios:any = []
+  resultado?: ResultadoPago
 
 
   loader:boolean= true
@@ -72,8 +71,6 @@ export class MatriculaMainComponent {
     public router: Router,
     public snackbar: MatSnackBar
     ) {
-
-    this.abrirTycDialog()
 
     this.idPadre = this.usuarioService.usuario.id
     
@@ -114,18 +111,6 @@ export class MatriculaMainComponent {
   }
   
 
-  abrirTycDialog(){
-  
-      const dialogRef = this.dialog.open(TycDialogComponent);
-  
-      dialogRef.afterClosed().subscribe(result => {
-        if(result != true){
-          this.router.navigateByUrl('/matricula/dashboard')
-          this.openSnackBar("Debes aceptar los términos y condiciones", 5)
-        }
-      });
-   
-  }
 
   seleccionUsuario(){
     this.loader=true
@@ -138,7 +123,6 @@ export class MatriculaMainComponent {
     this.totalPagar = 0
     this.costoPagarTemporal = 0
     this.cursoPendiente ={}
-    this.MONTO_CURSO_DATA = [];
     this.cantDiasTemporal = 0;
     this.listaDeCursosPrecios = []
 
@@ -173,7 +157,6 @@ export class MatriculaMainComponent {
     this.totalPagar = 0
     this.costoPagarTemporal = 0
     this.cursoPendiente ={}
-    this.MONTO_CURSO_DATA = [];
     this.cantDiasTemporal = 0;
     this.listaDeCursosPrecios = []
 
@@ -204,7 +187,6 @@ export class MatriculaMainComponent {
   }
 
   @ViewChild('calendario') calendario!: CalendarMainComponent;
-  @ViewChild('pasarela') pasarela!:PasarelaComponent
 
 
   cambioCurso(){
@@ -498,42 +480,38 @@ export class MatriculaMainComponent {
 
   }
 
-  nextStep(stepper: MatStepper) {
-
-    stepper.selected!.completed = true;
-    stepper.next();
+  elegirNivel(id: number) {
+    this.cursoForm.controls['nivel'].setValue(id)
+    this.cambioNivel()
   }
 
-  realizarPago(stepper: MatStepper){
-    this.esEditable=false
-    stepper.selected!.completed = true;
-    stepper.next();
+  elegirRatio(id: number) {
+    this.cursoForm.controls['ratio'].setValue(id)
+    this.cambioRatio()
   }
 
-  matricula(respuesta:boolean, stepper: MatStepper){
-
-    this.loader=true
-    this.pasarela.pagar()
-
+  elegirDia(id: number) {
+    this.cursoForm.controls['dia'].setValue(id)
+    this.eleccionDia()
   }
 
-  pagoAceptado(respuesta:boolean,stepper: MatStepper):void{
-    //console.log("entro a pago aceptado")
-    this.loader=false
-    //console.log(respuesta)
-    if(respuesta){
-      stepper.selected!.completed = true;
-      stepper.next();
-    }else{
-      //console.log("dio Error")
-    }
-    
+  get nombreAlumno(): string {
+    const alumno = this.mesForm?.controls['usuario'].value
+    return alumno && typeof alumno === 'object' ? `${alumno.nombre} ${alumno.apellidop}` : ''
+  }
+
+  // La pantalla "pendiente" no ofrece volver atrás: otro "Pagar" crearía un segundo cargo.
+  mostrarResultado(resultado: ResultadoPago) {
+    this.resultado = resultado
+    this.paso = 3
+  }
+
+  verTerminos() {
+    this.dialog.open(TycDialogComponent)
   }
 
 
   calcularMontoCurso(){
-    let orden = 1
-    let listaCalculada =[]
     let total = 0
 
     this.listaDeCursosPrecios = this.listaCursosNuevos
@@ -547,24 +525,12 @@ export class MatriculaMainComponent {
 
       this.listaDeCursosPrecios[i].monto = montoCurso
 
-      listaCalculada.push({
-        orden: orden,
-        curso: curso.nombre + " " + curso.horarioDias + " " + curso.horarioHoras,
-        dias:cantDias,
-        monto: montoCurso
-      })
-
       total = total + montoCurso
-      orden = orden + 1
     }
 
     this.totalPagar = total
-  
-    this.MONTO_CURSO_DATA = listaCalculada
   }
 
-  displayedColumns: string[] = ['orden','curso', 'dias', 'monto'];
-  
   openSnackBar(message: string, seconds: number) {
     this.snackbar.open(message, 'X', {
       duration: seconds * 1000,

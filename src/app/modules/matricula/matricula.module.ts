@@ -16,11 +16,13 @@ import { DasboardComponent } from './components/dasboard/dasboard.component';
 import { MisCursosComponent } from './components/mis-cursos/mis-cursos.component';
 import { FamiliaComponent } from './components/familia/familia.component';
 import { TycDialogComponent } from './components/tyc-dialog/tyc-dialog.component';
-
-
+import { PasosMatriculaComponent } from './components/pasos-matricula/pasos-matricula.component';
+import { CarritoMatriculaComponent } from './components/carrito-matricula/carrito-matricula.component';
 
 @NgModule({
   declarations: [
+    PasosMatriculaComponent,
+    CarritoMatriculaComponent,
     MatriculaMainComponent,
     CursoComponent,
     FormularioMatriculaComponent,
