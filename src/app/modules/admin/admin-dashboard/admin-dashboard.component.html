@@ -1,108 +1,87 @@
-<div class="container" fxLayout="column" fxLayoutAlign="center center">
-    <div class="logo">
-        <img
-            src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png">
+<div class="am-pagina">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Resumen</h1>
+      <p class="am-sub">Actividad del periodo en un vistazo.</p>
     </div>
-    <p class="welcome-text">Panel de administración </p>
-    <p class="welcome-subtext">Elige una de las opciones </p>
+    <div class="acciones">
+      <app-selector-periodo (cambio)="cargar($event)"></app-selector-periodo>
+      <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="exportar()" [disabled]="exportando">
+        <span class="am-icon" aria-hidden="true">download</span>{{ exportando ? 'Exportando…' : 'Exportar Excel' }}
+      </button>
+    </div>
+  </header>
 
-    <div class="dashboard-grid" fxLayout="row" fxLayoutWrap fxLayoutAlign="center center">
-        <div routerLink="/admin/alumnos" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Ver alumnos matriculados</div>
-                    <div>
-                        <mat-icon>person</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
+  <div *ngIf="cargando" class="cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando resumen</span>
+  </div>
 
-        <div routerLink="/admin/colectas" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Gestión de Colectas</div>
-                    <div>
-                        <mat-icon>volunteer_activism</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
+  <div *ngIf="!cargando && error" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span>
+    <span>No pudimos cargar el resumen. Si tu sesión venció, vuelve a iniciar sesión.</span>
+  </div>
 
-        <div routerLink="/admin/matricula-extemporanea" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Matricula extemporanea</div>
-                    <div>
-                        <mat-icon>add_to_queue</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="/admin/creacion" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Gestión de cursos</div>
-                    <div>
-                        <mat-icon>add_to_queue</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="/admin/parametros" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Gestión de Parametros</div>
-                    <div>
-                        <mat-icon>settings</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="/admin/reporte-general" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Reporte general pagos</div>
-                    <div>
-                        <mat-icon>list</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="/admin/entradas" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Entradas</div>
-                    <div>
-                        <mat-icon>https</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="/admin/pagos" class="div-card">
-            <mat-card>
-                <div fxLayout="column">
-                    <div class="card-title">Generación de pagos</div>
-                    <div>
-                        <mat-icon>payment</mat-icon>
-                    </div>
-                </div>
-            </mat-card>
-        </div>
+  <ng-container *ngIf="!cargando && resumen">
+    <div class="am-kpis">
+      <div class="am-kpi">
+        <div class="am-kpi__cabecera"><span>Alumnos matriculados</span><span class="am-icon" aria-hidden="true">groups</span></div>
+        <b class="am-kpi__valor">{{ resumen.kpis.alumnos }}</b>
+        <span class="am-kpi__nota">{{ resumen.kpis.matriculas }} matrículas en cursos</span>
+      </div>
+      <div class="am-kpi">
+        <div class="am-kpi__cabecera"><span>Recaudado</span><span class="am-icon" aria-hidden="true">account_balance_wallet</span></div>
+        <b class="am-kpi__valor">S/ {{ resumen.kpis.recaudado | number: '1.2-2' : 'en-US' }}</b>
+        <span class="am-kpi__nota">Pagos confirmados del periodo</span>
+      </div>
+      <div class="am-kpi">
+        <div class="am-kpi__cabecera"><span>Pagos pendientes</span><span class="am-icon" aria-hidden="true">hourglass_top</span></div>
+        <b class="am-kpi__valor">{{ resumen.kpis.pendientes.cantidad }}</b>
+        <span class="am-kpi__nota">S/ {{ resumen.kpis.pendientes.monto | number: '1.2-2' : 'en-US' }} por confirmar en Cobrana</span>
+      </div>
+      <div class="am-kpi">
+        <div class="am-kpi__cabecera"><span>Cursos abiertos</span><span class="am-icon" aria-hidden="true">school</span></div>
+        <b class="am-kpi__valor">{{ resumen.kpis.cursosAbiertos }} / {{ resumen.kpis.cursosTotal }}</b>
+        <span class="am-kpi__nota">Periodo {{ etiqueta(periodo) }}</span>
+      </div>
     </div>
 
-    <div style="margin: 40px;">
-        <button (click)="logout()" routerLink="login" class="button-83-pushable" role="button">
-            <span class="button-83-shadow"></span>
-            <span class="button-83-edge"></span>
-            <span class="button-83-front text">
-                <div>Cerrar sesión</div>
-            </span>
-        </button>
+    <div class="columnas">
+      <section class="panel">
+        <header class="panel__cabecera">
+          <h2 class="panel__titulo">Ocupación por curso</h2>
+          <a routerLink="/admin/creacion">Gestionar</a>
+        </header>
+        <p *ngIf="!resumen.cursos.length" class="panel__vacio">No hay cursos en este periodo.</p>
+        <div *ngFor="let c of resumen.cursos" class="curso">
+          <div class="curso__texto">
+            <b>{{ c.nombre | titlecase }}</b>
+            <span>{{ c.alumnos }} alumnos · cupo {{ c.cupoPorGrupo }} por grupo</span>
+          </div>
+          <div class="am-barra" [class.am-barra--alta]="c.ocupacion >= 80" role="img" [attr.aria-label]="c.ocupacion + '% de cupos ocupados'">
+            <span [style.width.%]="c.ocupacion"></span>
+          </div>
+          <b class="curso__pct">{{ c.ocupacion }}%</b>
+        </div>
+      </section>
+
+      <section class="panel">
+        <header class="panel__cabecera">
+          <h2 class="panel__titulo">Últimos pagos</h2>
+          <a routerLink="/admin/pagos-matricula" queryParamsHandling="preserve">Ver todos</a>
+        </header>
+        <p *ngIf="!ultimosPagos.length" class="panel__vacio">Todavía no hay pagos en este periodo.</p>
+        <div *ngFor="let p of ultimosPagos" class="pago">
+          <div class="pago__texto">
+            <b>{{ p.titular || 'Sin titular' }}</b>
+            <span>{{ p.fecha | date: 'd MMM y' }}</span>
+          </div>
+          <span class="am-estado" [class.am-estado--ok]="p.estado === 'pagado'" [class.am-estado--pendiente]="p.estado === 'pendiente'">
+            <span class="am-icon" aria-hidden="true">{{ p.estado === 'pagado' ? 'check_circle' : 'hourglass_top' }}</span>
+            {{ p.estado === 'pagado' ? 'Pagado' : 'Pendiente' }}
+          </span>
+          <b class="pago__monto">S/ {{ p.monto | number: '1.2-2' : 'en-US' }}</b>
+        </div>
+      </section>
     </div>
+  </ng-container>
 </div>

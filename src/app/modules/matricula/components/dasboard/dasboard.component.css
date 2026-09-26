@@ -103,12 +103,24 @@
 }
 
 .curso__visual {
+  position: relative;
   aspect-ratio: 16 / 10;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #F3E3D8 0%, var(--am-brand-soft) 100%);
+}
+
+.curso__visual--foto {
+  background-size: cover;
+  background-position: center;
+}
+
+.curso__categoria {
+  position: absolute;
+  top: 12px;
+  left: 12px;
 }
 
 .curso__visual-icono {

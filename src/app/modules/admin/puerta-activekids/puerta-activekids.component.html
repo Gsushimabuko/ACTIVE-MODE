@@ -1,73 +1,54 @@
-<div class="puerta-activekids-wrapper">
-	<div fxLayout="row" fxLayoutAlign="center center" style="text-align:center;">
-		<button routerLink="/admin/menu-puerta" mat-button style="width: 40px; height:40px; margin-left: -50px;">
-			<mat-icon style="transform: scale(2); color: #43a047">keyboard_arrow_left</mat-icon>
-		</button>
-		<h1>Escanear QR ActiveKids</h1>
-	</div>
-	<div *ngIf="loader" class="loader-spinner" fxLayout="column" fxLayoutAlign="center center">
-		<mat-spinner color="accent"></mat-spinner>
-	</div>
-	<div style="width:100%;display:flex;flex-direction:column;align-items:center;">
-		<mat-card class="config-card" fxLayout="column" fxLayoutAlign="center center">
-			<h2>Configuración</h2>
-			<div>
-				<mat-form-field appearance="outline" class="puerta-input">
-					<mat-label>Puerta</mat-label>
-					<mat-select [(ngModel)]="puerta">
-						<mat-option [value]="1">1</mat-option>
-						<mat-option [value]="2">2</mat-option>
-						<mat-option [value]="3">3</mat-option>
-						<mat-option [value]="4">4</mat-option>
-						<mat-option [value]="5">5</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div>
-				<mat-radio-group [(ngModel)]="estado" aria-label="Seleccione entrada o salida">
-					<mat-radio-button style="margin: 5px;" value="1">Entrada</mat-radio-button>
-					<mat-radio-button style="margin: 5px;" value="2">Salida</mat-radio-button>
-				</mat-radio-group>
-			</div>
-		</mat-card>
-		<mat-card>
-			<div style="text-align:center">
-				<img class="card-img-top icon" src="https://cdn-icons-png.flaticon.com/512/1652/1652004.png" alt="Card image cap">
-				<p class="card-text" style="text-align : center; font-size: 20px;">Apunta hacia el QR y verás el mensaje que te indicará si la persona puede entrar o no.
-					<b>¡LUEGO DE 2 SEGUNDOS, EL MENSAJE DESAPARECERÁ!</b>
-				</p>
-			</div>
-		</mat-card>
-		<mat-card>
-			<div style="text-align:center">
-				<h1>Ingreso manual</h1>
-				<form (ngSubmit)="marcarAsistenciaExterno()" [formGroup]="loginForm">
-					<div fxLayout="row" fxFlex="100" fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast">
-						<div fxLayoutAlign="center center" fxLayoutGap="10" fxLayout="row" fxLayout.lt-md="column">
-							<div>
-								<mat-form-field class="login-input" appearance="outline">
-									<mat-label>DNI</mat-label>
-									<input matInput formControlName="correo" required>
-									<mat-error *ngIf="loginForm.controls['correo'].hasError('email')">Ingrese un DNI válido</mat-error>
-									<mat-error *ngIf="loginForm.controls['correo'].hasError('required')">Ingrese un DNI válido</mat-error>
-								</mat-form-field>
-							</div>
-							<div>
-								<mat-form-field class="login-input" appearance="outline">
-									<mat-label>Nombre</mat-label>
-									<input matInput formControlName="nombre" required>
-									<mat-error *ngIf="loginForm.controls['nombre'].hasError('required')">Ingrese un nombre</mat-error>
-								</mat-form-field>
-							</div>
-							<div fxLayout="column" fxLayoutAlign="center center">
-								<button class="boton-search" type="submit" mat-button>
-									<mat-icon>https</mat-icon>
-								</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</mat-card>
-	</div>
+<div class="am am-kiosco">
+  <div *ngIf="loader" class="am-cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Verificando</span>
+  </div>
+
+  <header class="am-kiosco__barra">
+    <a class="am-volver" routerLink="/admin/menu-puerta"><span class="am-icon" aria-hidden="true">arrow_back</span>Puerta</a>
+    <h1 class="am-kiosco__titulo">Puerta ActiveKids</h1>
+  </header>
+
+  <main class="am-kiosco__cuerpo">
+    <div class="am-kiosco__lateral">
+      <section class="am-tarjeta am-form">
+        <h2 class="am-h2">Configuración</h2>
+        <label class="am-campo">Puerta
+          <span class="am-campo__control">
+            <select [(ngModel)]="puerta">
+              <option [ngValue]="undefined" disabled>Selecciona</option>
+              <option *ngFor="let n of [1, 2, 3, 4, 5]" [ngValue]="n">Puerta {{ n }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <div class="am-kiosco__opciones" role="group" aria-label="Tipo de registro">
+          <button type="button" class="am-opcion" [class.am-opcion--activa]="estado == 1" [attr.aria-pressed]="estado == 1" (click)="estado = $any('1'); $any($event.currentTarget).blur()">Entrada</button>
+          <button type="button" class="am-opcion" [class.am-opcion--activa]="estado == 2" [attr.aria-pressed]="estado == 2" (click)="estado = $any('2'); $any($event.currentTarget).blur()">Salida</button>
+        </div>
+      </section>
+
+      <section class="am-tarjeta am-form">
+        <h2 class="am-h2">Ingreso manual</h2>
+        <form class="am-form" [formGroup]="loginForm" (ngSubmit)="marcarAsistenciaExterno()">
+          <label class="am-campo" [class.am-campo--invalido]="loginForm.controls['correo'].touched && loginForm.controls['correo'].invalid">DNI
+            <input type="text" inputmode="numeric" formControlName="correo" autocomplete="off">
+            <span *ngIf="loginForm.controls['correo'].touched && loginForm.controls['correo'].invalid" class="am-campo__error">Ingresa un DNI válido.</span>
+          </label>
+          <label class="am-campo" [class.am-campo--invalido]="loginForm.controls['nombre'].touched && loginForm.controls['nombre'].invalid">Nombre
+            <input type="text" formControlName="nombre" autocomplete="off">
+            <span *ngIf="loginForm.controls['nombre'].touched && loginForm.controls['nombre'].invalid" class="am-campo__error">Ingresa un nombre.</span>
+          </label>
+          <button type="submit" class="am-btn am-btn--primary am-btn--bloque">Registrar</button>
+        </form>
+      </section>
+    </div>
+
+    <section class="am-tarjeta am-kiosco__escaner" aria-live="polite">
+      <span class="am-icon" aria-hidden="true">qr_code_scanner</span>
+      <h2 class="am-h2">Listo para escanear</h2>
+      <p>Escanea el código del alumno matriculado en los talleres. El resultado aparece arriba en verde (puede pasar) o en rojo (acceso restringido) y se oculta a los 3 segundos.</p>
+      <p *ngIf="!puerta || !estado">Primero elige la puerta y si es entrada o salida.</p>
+      <p *ngIf="puerta && estado" class="am-kiosco__listo">Puerta {{ puerta }} · {{ estado == 1 ? 'Entrada' : 'Salida' }}</p>
+    </section>
+  </main>
 </div>

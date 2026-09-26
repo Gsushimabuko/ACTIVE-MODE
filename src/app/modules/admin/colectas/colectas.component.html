@@ -1,25 +1,21 @@
-<div class="container">
-  <div class="header">
-    <img
-      src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"
-      alt="School Logo"
-      class="logo"
-    />
-    <h1 class="title">Sistema de Pagos Digitales</h1>
-  </div>
+<div class="am-pagina">
+  <header class="am-titulos">
+    <h1 class="am-h1">Colectas</h1>
+    <p class="am-sub">Listas de pago para cobrar una cuota a un grupo de alumnos.</p>
+  </header>
 
-  <div class="button-grid">
-    <button class="action-button" routerLink="/admin/crear-lista-pago">
-      <mat-icon>add_circle</mat-icon>
-      Crear Lista de Pago
-    </button>
-    <button class="action-button" routerLink="/admin/edit-lista-pago">
-      <mat-icon>edit</mat-icon>
-      Editar Lista de Pago
-    </button>
-    <button class="action-button" routerLink="/admin/reportería">
-      <mat-icon>bar_chart</mat-icon>
-      Reportería
-    </button>
+  <div class="am-grid-tarjetas">
+    <a class="am-acceso" routerLink="/admin/crear-lista-pago">
+      <span class="am-icon am-acceso__icono" aria-hidden="true">add_circle</span>
+      <b class="am-acceso__titulo">Crear lista de pago</b>
+      <span class="am-acceso__texto">Define la cuota, el responsable y los alumnos que la pagan.</span>
+      <span class="am-acceso__ir">Crear<span class="am-icon" aria-hidden="true">chevron_right</span></span>
+    </a>
+    <a class="am-acceso" routerLink="/admin/edit-lista-pago">
+      <span class="am-icon am-acceso__icono" aria-hidden="true">list_alt</span>
+      <b class="am-acceso__titulo">Listas de pago</b>
+      <span class="am-acceso__texto">Revisa quién pagó, corrige montos y estados, y descarga el Excel de cada lista.</span>
+      <span class="am-acceso__ir">Gestionar<span class="am-icon" aria-hidden="true">chevron_right</span></span>
+    </a>
   </div>
 </div>

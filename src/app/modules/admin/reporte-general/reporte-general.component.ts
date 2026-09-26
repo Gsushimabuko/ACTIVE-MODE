@@ -1,23 +1,25 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ZMatriculaService } from '../../../core/http/z_matricula/z-matricula.service';
-import { saveAs } from 'file-saver';
+import { AdminService } from '../../../core/http/admin/admin.service';
+
 @Component({
   selector: 'app-reporte-general',
   templateUrl: './reporte-general.component.html',
   styleUrls: ['./reporte-general.component.css']
 })
 export class ReporteGeneralComponent {
-  constructor(private http: HttpClient, private matriculaService: ZMatriculaService) {
-    this.downloadFile()
+  descargando = false;
+  error = false;
+
+  constructor(private adminService: AdminService) {
+    this.downloadFile();
   }
-  
+
   downloadFile() {
-    this.matriculaService.getGeneralMatriculaExcel().subscribe((res:any)=>{
-      let blob:any = new Blob([res], { type: 'text/json; charset=utf-8application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      saveAs(blob, 'PagosMatriculas.xlsx');
-    }),(error: any) => {
-      
-      console.log(error)}
-}
+    this.descargando = true;
+    this.error = false;
+    this.adminService.descargarReporteGeneral().subscribe({
+      next: () => this.descargando = false,
+      error: () => { this.descargando = false; this.error = true; }
+    });
+  }
 }

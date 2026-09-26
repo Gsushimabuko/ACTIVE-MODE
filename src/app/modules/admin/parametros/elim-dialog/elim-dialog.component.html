@@ -1,30 +1,17 @@
-  <!--loader-->
-<div *ngIf="loader" class="loader-spinner"
-fxLayout="column" fxLayoutAlign="center center"
->
-<mat-spinner color="primary"></mat-spinner>
+<div class="am dialogo">
+  <header class="dialogo__cabecera">
+    <h2 class="am-h2">¿Eliminar este registro?</h2>
+    <button type="button" class="am-icono-boton" mat-dialog-close aria-label="Cerrar">
+      <span class="am-icon" aria-hidden="true">close</span>
+    </button>
+  </header>
+
+  <p class="am-sub">Se eliminará de {{ nombreOrigen }}. Esta acción no se puede deshacer.</p>
+
+  <div class="dialogo__acciones">
+    <button type="button" class="am-btn am-btn--secondary dialogo__boton" (click)="enCancelar()" [disabled]="loader">Cancelar</button>
+    <button type="button" class="am-btn dialogo__boton dialogo__eliminar" (click)="enConfirmar()" [disabled]="loader">
+      {{ loader ? 'Eliminando…' : 'Eliminar' }}
+    </button>
+  </div>
 </div>
-
-    <div fxLayout="column" fxLayoutAlign="center stretch">
-        <div fxLayoutAlign="center center">
-
-            <h4> Eliminar datos</h4>
-
-            <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
-                <mat-icon>close</mat-icon>
-            </button> 
-
-        </div>
-
-            <mat-dialog-content>
-                <p> ¿Estas seguro(a) que quieres eliminar este {{origen}}?</p>
-
-            </mat-dialog-content>
-            <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
-
-                <button mat-stroked-button color="warn" (click)="enCancelar()">No</button>
-                <button mat-raised-button color="primary" (click)="enConfirmar()">Si</button>
-            
-            </mat-dialog-actions>
-
-    </div>

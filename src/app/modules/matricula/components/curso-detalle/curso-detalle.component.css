@@ -15,6 +15,21 @@
     linear-gradient(135deg, #A8461A 0%, #3A1A0B 100%);
 }
 
+/* Foto del curso desenfocada detrás del título, con velo para que el texto se lea */
+.portada__foto {
+  position: absolute;
+  inset: -24px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+}
+
+.portada__velo {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(30, 14, 6, 0.3) 0%, rgba(30, 14, 6, 0.85) 100%);
+}
+
 .portada__contenido {
   position: relative;
   gap: 12px;
@@ -89,31 +104,6 @@
   color: #3A342F;
 }
 
-.detalle__dato {
-  align-self: flex-start;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border: 1px solid var(--am-border);
-  border-radius: 12px;
-  background: var(--am-surface-alt);
-  font-size: 13px;
-  color: var(--am-text-2);
-}
-
-.detalle__dato .am-icon {
-  font-size: 24px;
-  color: var(--am-brand);
-}
-
-.detalle__dato b {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--am-text);
-}
-
 .detalle__horarios {
   display: flex;
   flex-wrap: wrap;
@@ -153,6 +143,20 @@
   border-radius: 12px;
   background: var(--am-surface);
   box-shadow: 0 4px 16px rgba(30, 27, 24, 0.04);
+}
+
+.detalle__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.detalle__pct {
+  font-size: 20px;
+}
+
+.detalle__pct--alta {
+  color: var(--am-brand-dark);
 }
 
 .detalle__precio {

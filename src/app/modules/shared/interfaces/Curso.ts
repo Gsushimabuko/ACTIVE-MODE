@@ -14,6 +14,12 @@ export interface CursoPeriodo {
     cupoMax:number
     hayTarifa:boolean
     niveles:NivelPeriodo[]
+    // Ficha del curso (z_curso). Pueden venir vacíos si el colegio no los llenó.
+    image?: string | null
+    category?: string | null
+    ages?: string | null
+    tagline?: string | null
+    plan?: { titulo: string; detalle: string }[]
 }
 
 export interface CursoParam {

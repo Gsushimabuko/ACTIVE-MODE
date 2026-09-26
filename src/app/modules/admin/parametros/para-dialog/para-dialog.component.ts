@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { ETIQUETA_CAMPO, NOMBRE_ORIGEN } from '../etiquetas';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
@@ -15,6 +16,15 @@ import { ZDiaGrupoService } from '../../../../core/http/z_dia_grupo/z-dia-grupo.
 })
 export class ParaDialogComponent {
   contenidoForm: FormGroup;
+
+  get nombreOrigen(): string {
+    return NOMBRE_ORIGEN[this.origen] ?? this.origen;
+  }
+
+  etiqueta(campo: string): string {
+    return ETIQUETA_CAMPO[campo] ?? campo;
+  }
+
   origen!:string;
   id!:number;
   campos!:any;

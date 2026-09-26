@@ -83,8 +83,9 @@ export class MatriculaExtemporaneaComponent {
   openDialogMatricula(usuario:any){
 
     var dialogRef = this.dialog.open(DialogMatriculaComponent, {
-      width: '800px',
-  
+      width: '880px',
+      maxWidth: '95vw',
+      panelClass: 'am-dialogo',
       hasBackdrop:true,
       data: {
         idUsuario: usuario.id,

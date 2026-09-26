@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
-import { Usuario } from 'src/app/interfaces/usuario';
+import { AdminService, ResumenAdmin } from 'src/app/core/http/admin/admin.service';
+import { Periodo, etiquetaPeriodo } from '../selector-periodo/selector-periodo.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -9,15 +8,40 @@ import { Usuario } from 'src/app/interfaces/usuario';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
-  usuario! : Usuario
-  constructor(private usuarioService: ZUsuarioService, private router: Router){
-    this.usuario = usuarioService.usuario
+  periodo?: Periodo;
+  resumen?: ResumenAdmin;
+  cargando = true;
+  error = false;
+  exportando = false;
+  etiqueta = etiquetaPeriodo;
+
+  constructor(private adminService: AdminService) { }
+
+  cargar(periodo: Periodo) {
+    this.periodo = periodo;
+    this.cargando = true;
+    this.error = false;
+    this.adminService.getResumen(periodo.id).subscribe({
+      next: (r) => {
+        this.resumen = r;
+        this.cargando = false;
+      },
+      error: () => {
+        this.error = true;
+        this.cargando = false;
+      },
+    });
   }
 
-  logout(){
-    
-      localStorage.clear()
-      this.router.navigateByUrl('/login')
-    
+  exportar() {
+    this.exportando = true;
+    this.adminService.descargarReporteGeneral().subscribe({
+      next: () => (this.exportando = false),
+      error: () => (this.exportando = false),
+    });
+  }
+
+  get ultimosPagos() {
+    return (this.resumen?.pagos ?? []).slice(0, 7);
   }
 }

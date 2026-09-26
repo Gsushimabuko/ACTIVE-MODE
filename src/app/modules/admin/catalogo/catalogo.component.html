@@ -1,0 +1,40 @@
+<div class="am-pagina">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Catálogo de cursos</h1>
+      <p class="am-sub">Los cursos que ofrece el colegio y la ficha que ven las familias. Para dictarlos en un mes, ábrelos en <a routerLink="/admin/creacion">Cursos por periodo</a>.</p>
+    </div>
+    <a class="am-btn am-btn--primary boton" routerLink="/admin/catalogo/nuevo">
+      <span class="am-icon" aria-hidden="true">add</span>Nuevo curso
+    </a>
+  </header>
+
+  <div *ngIf="aviso" class="am-alerta am-alerta--ok" role="status">
+    <span class="am-icon" aria-hidden="true">check_circle</span><span>{{ aviso }}</span>
+  </div>
+  <div *ngIf="errores.length" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span><span>{{ errores.join(' ') }}</span>
+  </div>
+
+  <div *ngIf="cargando" class="cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando catálogo</span>
+  </div>
+
+  <div *ngIf="!cargando" class="am-grid-tarjetas">
+    <a *ngFor="let c of cursos" class="ficha" [routerLink]="['/admin/catalogo', c.id]">
+      <span class="ficha__foto" [class.ficha__foto--vacia]="!c.imagen"
+        [style.background-image]="c.imagen ? 'url(&quot;' + c.imagen + '&quot;)' : null">
+        <span *ngIf="!c.imagen" class="am-icon" aria-hidden="true">{{ icono(c.nombre) }}</span>
+      </span>
+      <span class="ficha__cuerpo">
+        <b class="ficha__nombre">{{ c.nombre | titlecase }}</b>
+        <span class="ficha__meta">{{ c.categoria || 'Sin categoría' }}{{ c.edades ? ' · ' + c.edades : '' }}</span>
+        <span class="am-estado" [class.am-estado--ok]="c.estado === 'ACTIVO'" [class.am-estado--neutro]="c.estado !== 'ACTIVO'">
+          <span class="am-icon" aria-hidden="true">{{ c.estado === 'ACTIVO' ? 'check_circle' : 'block' }}</span>
+          {{ c.estado === 'ACTIVO' ? 'Activo' : 'Inactivo' }} · abierto en {{ c.periodos }} periodo(s)
+        </span>
+        <span *ngIf="faltantes(c).length" class="ficha__falta">Ficha incompleta: falta {{ faltantes(c).join(', ') }}</span>
+      </span>
+    </a>
+  </div>
+</div>

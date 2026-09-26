@@ -1,322 +1,160 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
-import { ZDiaService } from 'src/app/core/http/z_dia/z-dia.service';
-import { ZDiaGrupoService } from 'src/app/core/http/z_dia_grupo/z-dia-grupo.service';
-import { ZNivelService } from 'src/app/core/http/z_nivel/z-nivel.service';
-import { ZPeriodoService } from 'src/app/core/http/z_periodo/z-periodo.service';
-import { ZTipoUsuarioService } from 'src/app/core/http/z_tipoUsuario/z-tipo-usuario.service';
+import { forkJoin, of } from 'rxjs';
+import {
+  AdminService, CursoPeriodoAdmin, mensajesDeError, OpcionesCursoPeriodo, PeriodoAdmin,
+} from 'src/app/core/http/admin/admin.service';
+import { etiquetaPeriodo } from '../selector-periodo/selector-periodo.component';
+import { clasesEnElMes, DIAS_CORTOS, franja, ORDEN_SEMANA, textoDias } from '../horario';
 
+type Frecuencia = OpcionesCursoPeriodo['frecuencias'][number];
+
+// Abrir un curso del catálogo en un periodo, o editar uno ya abierto.
+// Rutas: curso-periodo/nuevo?idPeriodo=, curso-periodo/:id y la antigua creacion-form/:periodoId.
 @Component({
   selector: 'app-creacion-curso-periodo',
   templateUrl: './creacion-curso-periodo.component.html',
   styleUrls: ['./creacion-curso-periodo.component.css']
 })
 export class CreacionCursoPeriodoComponent {
-  cursos: any = [];
-  tipoUsuarios: any = [];
-  dias: any = [];
-  niveles: any = [];
-  nivelElegido: any = '';
-  diasSemana: any[] = [{
-    id: 1,
-    dia: 'Lunes',
-    day: 'Monday',
-  }, {
-    id: 2,
-    dia: 'Martes',
-    day: 'Tuesday',
-  }, {
-    id: 3,
-    dia: 'Miércoles',
-    day: 'Wednesday',
-  }, {
-    id: 4,
-    dia: 'Jueves',
-    day: 'Thrusday',
-  }, {
-    id: 5,
-    dia: 'Viernes',
-    day: 'Friday',
-  }, {
-    id: 6,
-    dia: 'Sábado',
-    day: 'Saturday',
-  }]
+  id: number | null = null;
+  opciones?: OpcionesCursoPeriodo;
+  periodos: PeriodoAdmin[] = [];
+  existente?: CursoPeriodoAdmin;
+  // Cursos ya abiertos en el periodo elegido (sin contar este): no se pueden repetir.
+  abiertos = new Set<number>();
 
-  noNivelError: boolean = false;
-  noTarifaError: boolean = false;
+  idCurso: number | null = null;
+  idPeriodo: number | null = null;
+  profesor = '';
+  cupo: number | null = null;
+  dias: number[] = [];
+  niveles: number[] = [];
+  montos: Record<string, number | null> = {};
 
-  mes: number = -1;
-  ano: number = -1;
+  cargando = true;
+  guardando = false;
+  errores: string[] = [];
 
-  
-  periodoId: number;
-  
-  loading: boolean = true;
-  
-  formCursoPeriodo: FormGroup;
-  formTarifa: FormGroup;
-  formDias: FormGroup;
-  
-  nivelesElegidos: any[] = [];
-  tarifasElegidas: any[] = [];
+  readonly semana = ORDEN_SEMANA;
+  readonly diaCorto = DIAS_CORTOS;
+  readonly franja = franja;
+  readonly etiqueta = etiquetaPeriodo;
 
-  constructor(private _periodoService: ZPeriodoService,
-    private _cursoService: ZCursoService,
-    private _tipoUsuarioService: ZTipoUsuarioService,
-    private _diaService: ZDiaService,
-    private _nivelService: ZNivelService,
-    private _fb: FormBuilder,
-    private _route: ActivatedRoute,
-    private _router: Router) {
-    this.loading = true;
+  constructor(route: ActivatedRoute, private router: Router, private admin: AdminService) {
+    const p = route.snapshot.paramMap;
+    this.id = p.get('id') ? Number(p.get('id')) : null;
+    const periodoPedido = Number(p.get('periodoId') || route.snapshot.queryParamMap.get('idPeriodo')) || null;
 
-    this.periodoId = parseInt(_route.snapshot.paramMap.get('periodoId')!!);
-
-    this.formCursoPeriodo = this._fb.group({
-      cursoId: ['', Validators.required],
-      profesor: ['', Validators.required],
-      cupo: [0, [Validators.required, Validators.min(1), Validators.max(200)]],
-    });
-
-    this.formTarifa = this._fb.group({
-      diaId: ['', Validators.required],
-      tipoUsuarioId: ['', Validators.required],
-    });
-
-    this.formDias = this._fb.group({
-      dias: [[], Validators.required]
-    });
-
-    this.getCursos();
-    this.getTipoUsuario();
-    this.getDia();
-    this.getNiveles();
-    this.getPeriodo();
-  }
-
-  getPeriodo() {
-    this._periodoService.getPeriodoParam(this.periodoId).subscribe(data => {
-      console.log(data);
-      this.mes = data.mes;
-      this.ano = data.ano;
-    });
-  }
-
-  getCursos() {
-    this._cursoService.getOnlyCursos().subscribe(data => {
-      console.log(data);
-      this.cursos = data.cursosActivos;
-
-      this.loading = false;
-    });
-  }
-
-  getDia() {
-    this._diaService.getDiasParam().subscribe(data => {
-      //console.log(data);
-      this.dias = data;
-
-      //this.generateDiaTipoUsuario();
-    });
-  }
-
-  getTipoUsuario() {
-    this._tipoUsuarioService.getTipoUsuariosParam().subscribe(data => {
-      //console.log(data);
-      this.tipoUsuarios = data;
-
-      //this.generateDiaTipoUsuario();
-    });
-  }
-
-  generateDiaTipoUsuario() {
-    if (this.dias.length <= 0) {
-      return;
-    }
-
-    if (this.tipoUsuarios.length <= 0) {
-      return;
-    }
-
-    for(let dia of this.dias) {
-      for (let tipoUsuario of this.tipoUsuarios) {
-        const tarifaData = {
-          diaId: dia.id,
-          dia: dia.dias_semana,
-          tipoUsuarioId: tipoUsuario.id,
-          tipoUsuario: tipoUsuario.nombre,
-          monto: 200,
+    forkJoin({
+      opciones: admin.opcionesCursoPeriodo(),
+      periodos: admin.periodos(),
+      existente: this.id ? admin.cursoPeriodo(this.id) : of(undefined),
+    }).subscribe({
+      next: ({ opciones, periodos, existente }) => {
+        this.opciones = opciones;
+        this.periodos = periodos;
+        if (existente) {
+          this.existente = existente;
+          this.idCurso = existente.idCurso;
+          this.idPeriodo = existente.idPeriodo;
+          this.profesor = existente.profesor;
+          this.cupo = existente.cupo;
+          this.dias = [...existente.dias];
+          this.niveles = existente.niveles.map((n) => n.id);
+          for (const t of existente.tarifas) this.montos[this.clave(t.idDia, t.idTipoUsuario)] = t.monto;
+        } else {
+          this.idPeriodo = periodoPedido ?? periodos.find((x) => x.estado === 'ACTIVO')?.id ?? periodos[0]?.id ?? null;
         }
-
-        this.tarifasElegidas.push(tarifaData);
-      }
-    }
-
-    console.log(this.tarifasElegidas)
-  }
-
-  generarTarifas() {
-    this.tarifasElegidas = [];
-
-    const dias = this.formTarifa.get('diaId')?.value;
-    const tipoUsuarios = this.formTarifa.get('tipoUsuarioId')?.value;
-
-    if (dias.length == 0) {
-      return;
-    }
-    if (tipoUsuarios.length == 0) {
-      return;
-    }
-
-    this.noTarifaError = false;
-
-    for(let dia of dias) {
-      for (let tipo of tipoUsuarios) {
-        this.tarifasElegidas.push({
-          diaId: dia.id,
-          dia: dia.nombre,
-          tipoUsuarioId: tipo.id,
-          tipoUsuario: tipo.nombre,
-          monto: 200,
-        });
-      }
-    }
-
-    //console.log(this.tarifasElegidas);
-  }
-
-  getNiveles() {
-    this._nivelService.getNivelesParam().subscribe(data => {
-      //console.log(data);
-      this.niveles = data;
+        this.cargando = false;
+        this.cargarAbiertos();
+      },
+      error: (e) => {
+        this.cargando = false;
+        this.errores = mensajesDeError(e);
+      },
     });
   }
 
-  agregarPropiedad() {
-    if (this.nivelElegido == '') {
-      return;
-    }
+  get editando() { return !!this.id; }
+  // Con alumnos inscritos no se toca lo que define sus clases: curso, periodo y días.
+  get conInscritos() { return (this.existente?.inscritos ?? 0) > 0; }
+  get periodo() { return this.periodos.find((p) => p.id === this.idPeriodo); }
+  get clasesMes() { return this.periodo ? clasesEnElMes(this.periodo.ano, this.periodo.mes, this.dias) : 0; }
+  get textoDias() { return textoDias(this.dias); }
 
-    if (this.nivelesElegidos.includes(this.nivelElegido)) {
-      return;
-    }
+  clave(idDia: number, idTipo: number) { return `${idDia}-${idTipo}`; }
 
-    this.noNivelError = false;
-    this.nivelesElegidos.push(this.nivelElegido);
+  cambiarPeriodo(id: number) {
+    this.idPeriodo = id;
+    this.cargarAbiertos();
   }
 
-  eliminarPropiedad(i: number) {
-    this.nivelesElegidos.splice(i, 1);
+  private cargarAbiertos() {
+    if (!this.idPeriodo) return;
+    this.admin.cursosDePeriodo(this.idPeriodo).subscribe({
+      next: ({ cursos }) => (this.abiertos = new Set(cursos.filter((c) => c.id !== this.id).map((c) => c.idCurso))),
+      error: () => (this.abiertos = new Set()),
+    });
   }
 
-  crearCursoPeriodo() {
-    this.loading = true;
+  alternarDia(d: number) {
+    this.dias = this.dias.includes(d) ? this.dias.filter((x) => x !== d) : [...this.dias, d];
+  }
 
-    if (!this.formCursoPeriodo.valid) {
-      this.formCursoPeriodo.markAllAsTouched();
-      return;
+  inscritosEnNivel(id: number) { return this.existente?.niveles.find((n) => n.id === id)?.inscritos ?? 0; }
+
+  alternarNivel(id: number) {
+    if (this.niveles.includes(id)) {
+      if (this.inscritosEnNivel(id)) return; // tiene alumnos: no se quita
+      this.niveles = this.niveles.filter((x) => x !== id);
+    } else {
+      this.niveles = [...this.niveles, id];
     }
+  }
 
-    if (this.tarifasElegidas.length == 0) {
-      this.noTarifaError = true;
-      return;
-    }
+  // Qué días podrá elegir la familia con esta frecuencia (misma regla que el portal).
+  gruposPara(f: Frecuencia) { return f.grupos.filter((g) => g.dias.every((d) => this.dias.includes(d))).map((g) => g.nombre); }
+  disponible(f: Frecuencia) { return f.veces <= this.dias.length && this.gruposPara(f).length > 0; }
 
-    this.noTarifaError = false;
+  matriculasDeTarifa(idDia: number, idTipo: number) {
+    return this.existente?.tarifas.find((t) => t.idDia === idDia && t.idTipoUsuario === idTipo)?.matriculas ?? 0;
+  }
 
-    if (!this.formDias.valid) {
-      this.formDias.markAllAsTouched();
-      return;
-    }
-    
-    if (this.nivelesElegidos.length == 0) {
-      this.noNivelError = true;
-      return;
-    }
-
-    this.noNivelError = false;
-
-    let diasMax = 0;
-
-    for (let dia of this.formTarifa.get('diaId')?.value) {
-      let num = parseInt(dia.nombre.replace(/^\D+/g, ''));
-
-      if (num > diasMax) {
-        diasMax = num;
-      }
-    }
-
-    if (!(this.formDias.get('dias')?.value.length == diasMax)) {
-      alert('El número de dias a la semana (' + this.formDias.get('dias')?.value.length + ') no corresponde con las tarifas seleccionadas (' + diasMax + ' días a la semana)');
-      return;
-    }
-
-    let dias = "";
-
-    for (let dia of this.formDias.get('dias')?.value) {
-      if (dias == "") {
-        dias += dia.id
-      }
-      else {
-        dias += "," + dia.id
-      }
-    }
-
-    const cursoPeriodoData = {
-      cursoId: this.formCursoPeriodo.get('cursoId')?.value,
-      profesor: this.formCursoPeriodo.get('profesor')?.value,
-      cupo: this.formCursoPeriodo.get('cupo')?.value,
-      periodoId: this.periodoId,
-      mes: this.mes,
-      ano: this.ano,
-      dias: dias
-    }
-    
-    this._cursoService.createCursoPeriodo(cursoPeriodoData, this.tarifasElegidas, this.nivelesElegidos).subscribe(data => {
-      //console.log(data);
-      this.loading = false;
-
-      this._router.navigate(['admin/creacion'], {
-        queryParams: {
-          mes: this.mes,
-          ano: this.ano
-        }
+  get tarifas() {
+    return Object.entries(this.montos)
+      .filter(([, monto]) => monto !== null && monto !== undefined && String(monto) !== '')
+      .map(([clave, monto]) => {
+        const [idDia, idTipoUsuario] = clave.split('-').map(Number);
+        return { idDia, idTipoUsuario, monto: Number(monto) };
       });
-    })
   }
 
-  getHoras(hora: string) {
-    const horas = [0, 0];
+  get desde() {
+    const montos = this.tarifas.map((t) => t.monto).filter((m) => m > 0);
+    return montos.length ? Math.min(...montos) : null;
+  }
 
-    const horaInicio = hora.substring(0, 3);
-    const horaFin = hora.substring(6);
-
-    if(horaInicio.includes('pm')) {
-      const horaNum = horaInicio.replace(/^\D+/g, '');
-
-      horas[0] += 12 + parseInt(horaNum);
-    }
-    else {
-      const horaNum = horaInicio.replace(/^\D+/g, '');
-
-      horas[0] += parseInt(horaNum);
-    }
-
-    if(horaFin.includes('pm')) {
-      const horaNum = horaFin.replace(/^\D+/g, '');
-
-      horas[1] += 12 + parseInt(horaNum);
-    }
-    else {
-      const horaNum = horaFin.replace(/^\D+/g, '');
-
-      horas[1] += parseInt(horaNum);
-    }
-
-    console.log(horas);
-    return horas;
+  guardar() {
+    this.errores = [];
+    this.guardando = true;
+    const datos = {
+      idCurso: this.idCurso, idPeriodo: this.idPeriodo, profesor: this.profesor, cupo: this.cupo,
+      dias: this.dias, niveles: this.niveles, tarifas: this.tarifas,
+    };
+    this.admin.guardarCursoPeriodo(this.id, datos).subscribe({
+      next: () => {
+        this.guardando = false;
+        const curso = this.opciones?.cursos.find((c) => c.id === this.idCurso)?.nombre ?? 'El curso';
+        this.router.navigate(['/admin/creacion'], {
+          queryParams: { idPeriodo: this.idPeriodo },
+          state: { aviso: `${curso}: ${this.editando ? 'cambios guardados' : 'abierto en el periodo'}.` },
+        });
+      },
+      error: (e) => {
+        this.guardando = false;
+        this.errores = mensajesDeError(e);
+      },
+    });
   }
 }

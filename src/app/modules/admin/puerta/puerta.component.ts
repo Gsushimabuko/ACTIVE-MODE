@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition, } from '@angular/material/snack-bar';
@@ -12,7 +12,10 @@ import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
   templateUrl: './puerta.component.html',
   styleUrls: ['./puerta.component.css']
 })
-export class PuertaComponent implements OnInit {
+export class PuertaComponent implements OnInit, OnDestroy {
+  // El lector de códigos escribe como un teclado: se escucha en toda la página y se quita al salir.
+  private lector?: (evt: KeyboardEvent) => void;
+
 
   puertas = [ "1", "2" , "3", "4", "5" ]
   puerta!: number;
@@ -31,6 +34,10 @@ export class PuertaComponent implements OnInit {
 
   ngOnInit(): void {
     this.leer()
+  }
+
+  ngOnDestroy(): void {
+    if (this.lector) document.removeEventListener("keydown", this.lector);
   }
 
   marcarAsistenciaExterno(){
@@ -73,7 +80,7 @@ export class PuertaComponent implements OnInit {
     let barcode = ""
     let interval:any
 
-    document.addEventListener("keydown", (evt) => {
+    document.addEventListener("keydown", this.lector = (evt) => {
         if(interval)
             clearInterval(interval)
         

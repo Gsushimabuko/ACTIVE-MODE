@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { NOMBRE_ORIGEN } from '../etiquetas';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +20,11 @@ export class ElimDialogComponent {
   origen!:string;
   id!:number;
   loader:boolean= false;
+
+  get nombreOrigen(): string {
+    return NOMBRE_ORIGEN[this.origen] ?? this.origen;
+  }
+
 
   idCursoPeriodo!:number
   idUsuario!:number

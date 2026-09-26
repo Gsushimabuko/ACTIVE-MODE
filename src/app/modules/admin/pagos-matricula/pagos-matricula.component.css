@@ -1,0 +1,71 @@
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.acciones__boton {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.barra__buscar {
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+}
+
+.barra__buscar input {
+  height: 40px;
+  padding-left: 44px;
+}
+
+.barra__lupa {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--am-text-3);
+  pointer-events: none;
+}
+
+.cargando {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.am-tabla {
+  min-width: 860px;
+}
+
+.celda__titular {
+  font-weight: 500;
+}
+
+.celda__concepto {
+  display: block;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.celda__fecha {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.total {
+  margin: 0;
+  font-size: 13px;
+  color: var(--am-text-2);
+}

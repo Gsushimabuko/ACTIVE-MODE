@@ -1,0 +1,52 @@
+<div class="am admin">
+  <div *ngIf="menuMovil" class="admin__fondo" (click)="menuMovil = false" aria-hidden="true"></div>
+
+  <aside class="admin__lateral" [class.admin__lateral--abierto]="menuMovil" aria-label="Menú del backoffice">
+    <div class="admin__usuario">
+      <span class="am-iniciales admin__avatar" aria-hidden="true">{{ iniciales }}</span>
+      <div class="admin__usuario-texto">
+        <b>{{ usuario.nombre }} {{ usuario.apellidop }}</b>
+        <span>{{ esPorteria ? 'Portería' : 'Administración' }}</span>
+      </div>
+      <button type="button" class="admin__cerrar" (click)="menuMovil = false" aria-label="Cerrar menú">
+        <span class="am-icon" aria-hidden="true">close</span>
+      </button>
+    </div>
+
+    <nav *ngFor="let g of grupos" class="admin__nav" [attr.aria-label]="g.titulo">
+      <span class="admin__grupo">{{ g.titulo }}</span>
+      <a *ngFor="let item of g.items" class="admin__item" [routerLink]="item.ruta"
+        routerLinkActive="admin__item--activo" [routerLinkActiveOptions]="{ exact: !!item.exacto }"
+        ariaCurrentWhenActive="page">
+        <span class="am-icon admin__item-icono" aria-hidden="true">{{ item.icono }}</span>{{ item.label }}
+      </a>
+    </nav>
+
+    <div class="admin__espacio"></div>
+
+    <a *ngIf="!esPorteria" class="admin__item" routerLink="/" target="_blank" rel="noopener">
+      <span class="am-icon admin__item-icono" aria-hidden="true">open_in_new</span>Ver portal de familias
+    </a>
+    <button type="button" class="admin__item admin__salir" (click)="cerrarSesion()">
+      <span class="am-icon admin__item-icono" aria-hidden="true">logout</span>Cerrar sesión
+    </button>
+    <div class="admin__pie">
+      <img class="admin__logo" src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png" alt="Active Mode">
+      <span>Admin</span>
+    </div>
+  </aside>
+
+  <div class="admin__cuerpo">
+    <header class="admin__barra">
+      <button type="button" class="admin__barra-boton" (click)="menuMovil = true" aria-label="Abrir menú">
+        <span class="am-icon" aria-hidden="true">menu</span>
+      </button>
+      <img class="admin__logo" src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png" alt="Active Mode">
+      <span class="am-iniciales admin__avatar" aria-hidden="true">{{ iniciales }}</span>
+    </header>
+
+    <main class="admin__main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

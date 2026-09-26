@@ -13,13 +13,16 @@
 
 <ng-container *ngIf="!cargando && curso">
   <section class="portada">
+    <div *ngIf="curso.image" class="portada__foto" [style.background-image]="'url(&quot;' + curso.image + '&quot;)'" aria-hidden="true"></div>
+    <div class="portada__velo" aria-hidden="true"></div>
     <div class="am-pagina portada__contenido">
       <a class="portada__volver" routerLink="/matricula/dashboard">
         <span class="am-icon" aria-hidden="true">arrow_back</span>Cursos
       </a>
-      <span class="am-icon portada__icono" aria-hidden="true">{{ iconoCurso(curso.name) }}</span>
+      <span *ngIf="curso.category" class="am-chip am-chip--oscuro">{{ curso.category }}{{ curso.ages ? ' · ' + curso.ages : '' }}</span>
+      <span *ngIf="!curso.category && !curso.image" class="am-icon portada__icono" aria-hidden="true">{{ iconoCurso(curso.name) }}</span>
       <h1 class="portada__titulo">{{ curso.name | titlecase }}</h1>
-      <p class="portada__sub">Prof. {{ curso.instructor | titlecase }} · Periodo {{ periodo | date: 'MMMM y' | titlecase }}</p>
+      <p class="portada__sub">{{ curso.tagline || ('Prof. ' + (curso.instructor | titlecase)) }}</p>
     </div>
   </section>
 
@@ -30,14 +33,36 @@
         <p class="detalle__texto">{{ curso.description }}</p>
       </section>
 
-      <div *ngIf="curso.cupoMax" class="detalle__dato">
-        <span class="am-icon" aria-hidden="true">groups</span>
-        <b>{{ curso.cupoMax }}</b>
-        <span>Cupos por grupo</span>
+      <section *ngIf="curso.plan?.length" class="am-seccion">
+        <h3 class="detalle__h3">Cómo se organiza</h3>
+        <ol class="am-plan">
+          <li *ngFor="let p of curso.plan; let i = index">
+            <span class="am-plan__num" aria-hidden="true">{{ i + 1 }}</span>
+            <span><b>{{ p.titulo }}</b>{{ p.detalle }}</span>
+          </li>
+        </ol>
+      </section>
+
+      <div class="am-cifras">
+        <div *ngIf="diasSemana" class="am-cifra">
+          <span class="am-icon" aria-hidden="true">event_repeat</span>
+          <b>{{ diasSemana }}</b>
+          <span>Días a la semana</span>
+        </div>
+        <div *ngIf="curso.cupoMax" class="am-cifra">
+          <span class="am-icon" aria-hidden="true">groups</span>
+          <b>{{ curso.cupoMax }}</b>
+          <span>Cupos por grupo</span>
+        </div>
+        <div *ngIf="clasesMes" class="am-cifra">
+          <span class="am-icon" aria-hidden="true">calendar_month</span>
+          <b>{{ clasesMes }}</b>
+          <span>Clases en el mes</span>
+        </div>
       </div>
 
       <section class="am-seccion">
-        <h2 class="detalle__h3">Horarios disponibles</h2>
+        <h3 class="detalle__h3">Horarios disponibles</h3>
         <p *ngIf="!curso.niveles?.length" class="detalle__texto">Este curso todavía no tiene horarios para tu tipo de usuario.</p>
         <div class="detalle__horarios">
           <div *ngFor="let n of curso.niveles" class="detalle__horario" [class.detalle__horario--cerrado]="n.state === 'CERRADO'">
@@ -49,6 +74,15 @@
     </div>
 
     <aside class="detalle__lateral">
+      <div *ngIf="ocupacion !== null" class="am-seccion">
+        <div class="detalle__fila">
+          <b class="detalle__h3">Cupos ocupados</b>
+          <b class="detalle__pct" [class.detalle__pct--alta]="ocupacion >= 80">{{ ocupacion }}%</b>
+        </div>
+        <div class="am-barra" [class.am-barra--alta]="ocupacion >= 80"><span [style.width.%]="ocupacion"></span></div>
+        <span class="detalle__meta">{{ notaOcupacion }}</span>
+      </div>
+
       <div class="detalle__precio">
         <ng-container *ngIf="desde !== null; else sinTarifa">
           <span class="detalle__meta">Desde</span>
@@ -63,8 +97,8 @@
 
       <div *ngIf="curso.state !== 'CERRADO'; else cerrado" class="am-seccion">
         <b class="detalle__h3">¿Listo para empezar?</b>
-        <span class="detalle__meta">{{ invitado ? 'Completa los datos del alumno, elige el horario' : 'Elige al familiar, el horario' }} y paga en un solo paso.</span>
-        <a class="am-btn am-btn--primary" routerLink="/matricula">
+        <span class="detalle__meta">Asegura el cupo {{ invitado ? 'del alumno' : 'de tu familiar' }}. Completamos los datos del curso por ti.</span>
+        <a class="am-btn am-btn--primary" routerLink="/matricula" [queryParams]="matricula">
           Matricularme<span class="am-icon" aria-hidden="true">arrow_forward</span>
         </a>
       </div>

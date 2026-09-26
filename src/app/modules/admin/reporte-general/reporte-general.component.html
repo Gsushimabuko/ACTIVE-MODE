@@ -1,6 +1,25 @@
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-    <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
-      <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-    </button> 
-  </div>
-<p>Reporte generado, revisa tus descargas</p>
+<div class="am-pagina am-pagina--angosta">
+  <a class="am-volver" routerLink="/admin/dashboard"><span class="am-icon" aria-hidden="true">arrow_back</span>Resumen</a>
+
+  <header class="am-titulos">
+    <h1 class="am-h1">Reporte de matrículas</h1>
+    <p class="am-sub">Excel con todas las matrículas y sus pagos.</p>
+  </header>
+
+  <section class="am-tarjeta">
+    <div *ngIf="descargando" class="am-nota" role="status">
+      <span class="am-spinner" aria-hidden="true"></span><span>Generando el reporte…</span>
+    </div>
+    <div *ngIf="!descargando && !error" class="am-alerta am-alerta--ok" role="status">
+      <span class="am-icon" aria-hidden="true">check_circle</span><span>Reporte generado. Revisa tus descargas.</span>
+    </div>
+    <div *ngIf="error" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span><span>No se pudo generar el reporte. Inténtalo de nuevo.</span>
+    </div>
+    <div class="am-acciones">
+      <button type="button" class="am-btn am-btn--secondary" (click)="downloadFile()" [disabled]="descargando">
+        <span class="am-icon" aria-hidden="true">download</span>Descargar de nuevo
+      </button>
+    </div>
+  </section>
+</div>

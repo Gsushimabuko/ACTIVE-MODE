@@ -1,67 +1,34 @@
-<div class="background">
+<app-auth-layout accionTexto="Portal de familias" accionRuta="/">
+  <div class="am-form admin-login">
+    <header class="am-titulos">
+      <h1 class="am-h1">Backoffice</h1>
+      <p class="am-sub">Ingresa con tu cuenta de administración o de portería.</p>
+    </header>
 
-    <form (ngSubmit)="login()" [formGroup]="loginForm" class="login-form">
-  <div class="container">
-    <mat-card class="card-login">
-      <!-- Logo -->
-      <div class="logo">
-        <img
-          src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"
-          alt="Admin Logo"
-        />
+    <form class="am-form" [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+      <div *ngIf="mensaje" class="am-alerta" role="alert">
+        <span class="am-icon" aria-hidden="true">error</span>
+        <span>{{ mensaje }}</span>
       </div>
 
-      <!-- Title -->
-      <h2 class="login-title">Iniciar sesión - Admin</h2>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('correo')">Correo electrónico
+        <input type="email" formControlName="correo" autocomplete="email">
+        <span *ngIf="invalido('correo')" class="am-campo__error">Ingresa un correo válido.</span>
+      </label>
 
-      <!-- Email Input -->
-      <mat-form-field class="login-input" appearance="outline">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput formControlName="correo" required />
-        <mat-error *ngIf="loginForm.controls['correo'].hasError('email')">
-          Ingrese un correo válido
-        </mat-error>
-        <mat-error *ngIf="loginForm.controls['correo'].hasError('required')">
-          Ingrese un correo
-        </mat-error>
-      </mat-form-field>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('contrasena')">Contraseña
+        <span class="am-campo__control">
+          <input [type]="hide ? 'password' : 'text'" formControlName="contrasena" autocomplete="current-password" class="am-con-boton">
+          <button type="button" class="am-campo__boton" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'">
+            <span class="am-icon" aria-hidden="true">{{ hide ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </span>
+        <span *ngIf="invalido('contrasena')" class="am-campo__error">Ingresa tu contraseña.</span>
+      </label>
 
-      <!-- Password Input -->
-      <mat-form-field class="login-input" appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input
-          type="password"
-          [type]="hide ? 'password' : 'text'"
-          matInput
-          formControlName="contrasena"
-          required
-        />
-        <mat-icon matSuffix (click)="hide = !hide">
-          {{ hide ? 'visibility_off' : 'visibility' }}
-        </mat-icon>
-        <mat-error *ngIf="loginForm.controls['contrasena'].hasError('required')">
-          Contraseña requerida
-        </mat-error>
-        <mat-error *ngIf="loginForm.controls['contrasena'].hasError('minlength')">
-          Ingrese una contraseña válida
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Error Message -->
-      <div class="error-message" *ngIf="mensaje">
-        <mat-error>{{ mensaje }}</mat-error>
-      </div>
-
-      <!-- Submit Button -->
-      <button class="boton-login" [disabled]="loginForm.invalid" type="submit" mat-button>
-        Iniciar sesión
+      <button type="submit" class="am-btn am-btn--primary am-btn--bloque" [disabled]="enviando">
+        {{ enviando ? 'Ingresando…' : 'Iniciar sesión' }}
       </button>
-
-      <!-- Back Button -->
-      <div class="extra-buttons">
-        <button mat-button class="back-button" routerLink="/">Volver</button>
-      </div>
-    </mat-card>
+    </form>
   </div>
-</form>
-</div>
+</app-auth-layout>

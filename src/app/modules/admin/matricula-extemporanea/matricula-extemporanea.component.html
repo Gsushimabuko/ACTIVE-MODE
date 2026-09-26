@@ -1,110 +1,58 @@
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-    <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
-      <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-    </button> 
-</div>
+<div class="am-pagina">
+  <header class="am-titulos">
+    <h1 class="am-h1">Matrícula extemporánea</h1>
+    <p class="am-sub">Matricula a mano a un alumno fuera de fecha o en un curso cerrado. No genera ningún cobro.</p>
+  </header>
 
-<div class="welcome-text" fxLayoutAlign="center center">
-    <h1>Lista de alumnos habilitados para matricular</h1>
-</div>
+  <form class="am-tarjeta filtros" [formGroup]="filterForm" (ngSubmit)="buscarAlumnos()">
+    <div class="filtros__campos">
+      <label class="am-campo">Nombre<input formControlName="nombre"></label>
+      <label class="am-campo">Apellido paterno<input formControlName="apellidop"></label>
+      <label class="am-campo">Apellido materno<input formControlName="apellidom"></label>
+      <label class="am-campo">DNI<input formControlName="dni" inputmode="numeric"></label>
+    </div>
+    <button type="submit" class="am-btn am-btn--primary filtros__boton">
+      <span class="am-icon" aria-hidden="true">search</span>Buscar
+    </button>
+  </form>
 
-<form  [formGroup] ="filterForm">
-<div class="container" fxLayoutGap="20" fxLayoutAlign="center start">
-    
-    <div>
-    
-        <mat-card class="filters">
-            <div  fxLayout="column" fxLayoutAlign="center center"> 
-                <h2>Filtros</h2>
+  <section class="am-tarjeta">
+    <h2 class="am-h2">Usuarios</h2>
+    <div *ngIf="!noResults" class="am-vacio">
+      <span class="am-icon" aria-hidden="true">person_search</span>
+      <span>No hay usuarios con esos datos.</span>
+    </div>
+    <div [hidden]="!noResults" class="am-tabla-contenedor">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let e"><b>{{ e.nombre }}</b></td>
+        </ng-container>
+        <ng-container matColumnDef="apellidop">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido paterno</th>
+          <td mat-cell *matCellDef="let e">{{ e.apellidop }}</td>
+        </ng-container>
+        <ng-container matColumnDef="apellidom">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido materno</th>
+          <td mat-cell *matCellDef="let e">{{ e.apellidom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dni">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+          <td mat-cell *matCellDef="let e">{{ e.dni }}</td>
+        </ng-container>
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef><span class="am-sr">Acciones</span></th>
+          <td mat-cell *matCellDef="let e">
+            <div class="am-fila-acciones">
+              <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="openDialogMatricula(e)">Gestionar matrícula</button>
             </div>
-            
-                <mat-form-field appearance="outline">
-                    <mat-label>Nombre</mat-label>
-                    <input  matInput formControlName="nombre">
-                </mat-form-field>
-          
-           
-                <mat-form-field appearance="outline">
-                    <mat-label>Apellido paterno</mat-label>
-                    <input  matInput formControlName="apellidop">
-                </mat-form-field>
-          
-                <mat-form-field appearance="outline">
-                    <mat-label>Apellido Materno</mat-label>
-                    <input  matInput formControlName="apellidom">
-                </mat-form-field>
-            
-           
-                <mat-form-field appearance="outline">
-                    <mat-label>DNI</mat-label>
-                    <input  matInput formControlName="dni">
-                </mat-form-field>
-           
-            
-                <button (click)="buscarAlumnos()" mat-button style="font-weight: bold;background-color:rgb(72, 87, 226)">Buscar</button>
-            
-            
-        </mat-card>
+          </td>
+        </ng-container>
 
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
     </div>
-
-    
-
-    <div  fxLayout="row" fxLayoutAlign="center center">
-        
-        <mat-card class="table">
-           <div *ngIf="!noResults" fxLayout="row" fxLayoutAlign="center center">
-            <h2>No hay Resultados</h2>
-           </div>
-           <div class="mat-elevation-z8">
-               <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
-                   <!-- Position Column -->
-                   <ng-container matColumnDef="nombre">
-                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-                     <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
-                   </ng-container>
-
-                   <!-- Name Column -->
-                   <ng-container matColumnDef="apellidop">
-                     <th  mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Paterno</th>
-                     <td  mat-cell *matCellDef="let element">{{element.apellidop}}</td>
-                   </ng-container>
-             
-                   <ng-container matColumnDef="apellidom">
-                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido Materno</th>
-                     <td  mat-cell *matCellDef="let element">{{element.apellidom}}</td>
-                   </ng-container>
-             
-                   <ng-container matColumnDef="dni">
-                     <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
-                     <td mat-cell *matCellDef="let element">{{element.dni}}</td>
-                   </ng-container>
-       
-                   <ng-container matColumnDef="accion">
-                    <th class="boton-tabla" mat-header-cell *matHeaderCellDef>info</th>
-                    <td class="boton-tabla" mat-cell *matCellDef="let element">
-                      <button class="boton-check" mat-mini-fab  color="primary"  (click)="openDialogMatricula(element)"  >
-                        <mat-icon>more_horiz</mat-icon>
-                      </button>
-                    </td>
-                   </ng-container>
-                 
-                   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-               </table>
-               <mat-paginator [pageSizeOptions]="[10, 20, 5]"
-                              showFirstLastButtons
-                              aria-label="Seleccionar página de alumnos">
-               </mat-paginator>
-               </div>
-        
-       </mat-card>
-    </div>
-
-        
-        
+    <mat-paginator [hidden]="!noResults" [pageSizeOptions]="[10, 20, 5]" showFirstLastButtons aria-label="Páginas de usuarios"></mat-paginator>
+  </section>
 </div>
-
-</form>
-
-

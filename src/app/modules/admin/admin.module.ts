@@ -1,3 +1,6 @@
+import { CatalogoComponent } from './catalogo/catalogo.component';
+import { CatalogoEditorComponent } from './catalogo/catalogo-editor.component';
+import { ConfirmarDialogComponent } from './confirmar-dialog/confirmar-dialog.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
@@ -37,10 +40,21 @@ import { ReporteriaComponent } from './reporteria/reporteria.component';
 import { SharedModule } from '../shared/shared.module';
 import { ProperNamePipe } from '../shared/pipes/proper-name.pipe';
 import { PuertaAltComponent } from './puerta-alt/puerta-alt.component';
+import { AdminShellComponent } from './admin-shell/admin-shell.component';
+import { SelectorPeriodoComponent } from './selector-periodo/selector-periodo.component';
+import { PagosMatriculaComponent } from './pagos-matricula/pagos-matricula.component';
+import { FechasCursoComponent } from './fechas-curso/fechas-curso.component';
 
 
 @NgModule({
   declarations: [
+    AdminShellComponent,
+    SelectorPeriodoComponent,
+    PagosMatriculaComponent,
+    FechasCursoComponent,
+    CatalogoComponent,
+    CatalogoEditorComponent,
+    ConfirmarDialogComponent,
     AdminDashboardComponent,
     CursosComponent,
     AlumnosComponent,

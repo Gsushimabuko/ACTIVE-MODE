@@ -1,0 +1,70 @@
+<div class="am-pagina am-pagina--media">
+  <a class="am-volver" routerLink="/admin/creacion" [queryParams]="mes ? { mes: mes, ano: ano } : {}">
+    <span class="am-icon" aria-hidden="true">arrow_back</span>Cursos
+  </a>
+
+  <header class="am-titulos">
+    <h1 class="am-h1">Fechas de {{ nombreCurso ? (nombreCurso | titlecase) : 'curso' }}</h1>
+    <p class="am-sub">Periodo {{ tituloPeriodo }}. Marca los días en que hay clase; cada fecha crea un horario por cada nivel del curso.</p>
+  </header>
+
+  <div *ngIf="cargando" class="cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando fechas</span>
+  </div>
+
+  <div *ngIf="!cargando && errorCarga" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span><span>{{ errorCarga }}</span>
+  </div>
+
+  <ng-container *ngIf="!cargando && !errorCarga">
+    <div *ngIf="exito" class="am-alerta am-alerta--ok" role="status">
+      <span class="am-icon" aria-hidden="true">check_circle</span><span>{{ exito }}</span>
+    </div>
+    <div *ngIf="error" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span>
+      <div>
+        <b>{{ error.mensaje }}</b>
+        <ul *ngIf="error.detalle.length" class="errores">
+          <li *ngFor="let d of error.detalle">{{ d }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="am-tarjeta">
+      <div class="leyenda" aria-hidden="true">
+        <span><i class="muestra muestra--elegida"></i>Hay clase</span>
+        <span><i class="muestra muestra--bloqueada"></i>Con alumnos (no se puede quitar)</span>
+        <span><i class="muestra muestra--no"></i>El curso no se dicta ese día</span>
+      </div>
+      <p class="am-sub dias">Se dicta los {{ nombresDiasPermitidos || '—' }}.</p>
+
+      <div class="mes" role="group" [attr.aria-label]="'Fechas de ' + tituloPeriodo">
+        <span *ngFor="let d of diasSemana" class="mes__dia" aria-hidden="true">{{ d }}</span>
+        <ng-container *ngFor="let c of celdas">
+          <span *ngIf="!c" class="mes__celda mes__celda--vacia" aria-hidden="true"></span>
+          <button *ngIf="c" type="button" class="mes__celda"
+            [class.mes__celda--elegida]="elegidas.has(c.fecha)"
+            [class.mes__celda--bloqueada]="bloqueada(c)"
+            [disabled]="!c.permitido"
+            [attr.aria-pressed]="elegidas.has(c.fecha)"
+            [attr.aria-label]="c.fecha + (elegidas.has(c.fecha) ? ', hay clase' : ', sin clase') + (bloqueada(c) ? ', con ' + c.inscritos + ' inscritos' : '')"
+            (click)="alternar(c)">
+            <span class="mes__num">{{ c.dia }}</span>
+            <span *ngIf="c.inscritos" class="mes__inscritos">{{ c.inscritos }} insc.</span>
+          </button>
+        </ng-container>
+      </div>
+
+      <div class="am-acciones pie">
+        <span class="pie__resumen">
+          {{ elegidas.size }} fechas
+          <ng-container *ngIf="hayCambios"> · {{ agregadas.length }} por agregar · {{ quitadas.length }} por quitar</ng-container>
+        </span>
+        <button type="button" class="am-btn am-btn--secondary pie__boton" (click)="descartar()" [disabled]="!hayCambios || guardando">Descartar cambios</button>
+        <button type="button" class="am-btn am-btn--primary pie__boton" (click)="guardar()" [disabled]="!hayCambios || guardando">
+          {{ guardando ? 'Guardando…' : 'Guardar fechas' }}
+        </button>
+      </div>
+    </section>
+  </ng-container>
+</div>

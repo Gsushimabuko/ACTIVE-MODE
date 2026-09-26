@@ -1,101 +1,15 @@
+<div class="am-pagina">
+  <header class="am-titulos">
+    <h1 class="am-h1">Parámetros</h1>
+    <p class="am-sub">Datos que usan los cursos de cada periodo. Los cursos en sí están en el <a routerLink="/admin/catalogo">Catálogo de cursos</a>.</p>
+  </header>
 
-<div class="container"  fxLayout="column"  fxLayoutAlign="center center" >
-    <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
-    <p class="welcome-text">Panel de parametros </p>
-    <p class="welcome-subtext">Elige una de las opciones </p> 
-
-    <div fxLayout="row warp" fxFlex="100" fxLayoutAlign="center center">
-      
-        <div routerLink= "./cursos" class="div-card" >
-                <mat-card >
-                    <div fxLayout="column" >
-                        <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                            Definir cursos
-                        </div>
-                       <div>
-                           <mat-icon>school</mat-icon>
-                       </div>
-    
-                    </div>
-                </mat-card>
-        </div>
-       
-        <div routerLink="./dia" class="div-card">
-            <mat-card >
-                <div fxLayout="column" >
-                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                        Definir días y frecuencias
-                    </div>
-                   <div>
-                    <mat-icon>date_range</mat-icon>
-                   </div>
-
-                </div>
-            </mat-card>
-        </div>
-        <div routerLink="./periodos" class="div-card">
-            <mat-card >
-                <div fxLayout="column" >
-                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                        Definir meses de matrícula
-                    </div>
-                   <div>
-                    <mat-icon>list</mat-icon>
-                   </div>
-
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="./roles" class="div-card">
-            <mat-card >
-                <div fxLayout="column" >
-                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                        Definir roles
-                    </div>
-                   <div>
-                    <mat-icon>people</mat-icon>
-                   </div>
-
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="./tipo-usuarios" class="div-card">
-            <mat-card >
-                <div fxLayout="column" >
-                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                        Definir tipos de usuarios
-                    </div>
-                   <div>
-                    <mat-icon>people_outline</mat-icon>
-                   </div>
-
-                </div>
-            </mat-card>
-        </div>
-
-        <div routerLink="./niveles" class="div-card">
-            <mat-card >
-                <div fxLayout="column" >
-                    <div style="margin: 20px 0px 30px 0px; font-weight: bold;">
-                        Definir horarios disponibles
-                    </div>
-                   <div>
-                    <mat-icon>access_time</mat-icon>
-                   </div>
-
-                </div>
-            </mat-card>
-        </div>
-
-        
-    </div>
-
-    <div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-        <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
-          <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-        </button> 
-      </div>
-
+  <div class="am-grid-tarjetas">
+    <a *ngFor="let p of parametros" class="am-acceso" [routerLink]="p.ruta">
+      <span class="am-icon am-acceso__icono" aria-hidden="true">{{ p.icono }}</span>
+      <b class="am-acceso__titulo">{{ p.titulo }}</b>
+      <span class="am-acceso__texto">{{ p.texto }}</span>
+      <span class="am-acceso__ir">Gestionar<span class="am-icon" aria-hidden="true">chevron_right</span></span>
+    </a>
+  </div>
 </div>

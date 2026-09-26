@@ -1,128 +1,137 @@
-<div class="title">
-  <h1>Editar Lista de Pago</h1>
-  <button class="volver-btn" (click)="volver()">Volver</button>
-</div>
+<div class="am-pagina">
+  <div *ngIf="isLoading" class="am-cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando</span>
+  </div>
 
+  <a class="am-volver" routerLink="/admin/colectas"><span class="am-icon" aria-hidden="true">arrow_back</span>Colectas</a>
 
-<div class="container" *ngIf="!isLoading">
-  <!-- Mensaje de error -->
-  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <header class="am-titulos">
+    <h1 class="am-h1">Listas de pago</h1>
+    <p class="am-sub">Elige una lista para ver quién pagó, corregir montos o estados y descargar su Excel.</p>
+  </header>
 
-  <!-- Tabla de listas de pago -->
-  <div class="left-section">
-    <h2>Listas de Pago</h2>
-    <table class="custom-table">
+  <div *ngIf="errorMessage" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span><span>{{ errorMessage }}</span>
+  </div>
+
+  <div class="am-tabla-contenedor">
+    <table class="am-tabla">
       <thead>
         <tr>
-          <th>Nombre</th>
-
-          <th>Fecha de creación</th>
-          <th>Acciones</th>
+          <th scope="col">Lista</th>
+          <th scope="col">Creada</th>
+          <th scope="col"><span class="am-sr">Acciones</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let lista of listasDePago">
-          <td>{{ lista.var_name }}</td>
-      
+        <tr *ngFor="let lista of listasDePago" [class.fila-elegida]="selectedLista?.PK_collection === lista.PK_collection">
+          <td><b>{{ lista.var_name }}</b></td>
           <td>{{ lista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</td>
           <td>
-            <button (click)="seleccionarLista(lista)">Seleccionar</button>
+            <div class="am-fila-acciones">
+              <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="seleccionarLista(lista)"
+                [attr.aria-pressed]="selectedLista?.PK_collection === lista.PK_collection">Ver detalle</button>
+            </div>
           </td>
+        </tr>
+        <tr *ngIf="!listasDePago.length && !isLoading">
+          <td colspan="3" class="sin-datos">Todavía no hay listas de pago.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Detalle de la lista seleccionada -->
-  <div class="right-section" *ngIf="selectedLista">
-    <h2>Detalle de lista: {{ selectedLista.var_name }}</h2>
-    <p>Descripción: {{ selectedLista.var_description }}</p>
-    <p>Estado: {{ selectedLista.var_status }}</p>
-    <p>Fecha de creación: {{ selectedLista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</p>
-    <p>Total de pagos: {{ selectedLista.num_total_count }}</p>
-    <p>Pagos realizados: {{ selectedLista.num_paid_count }}</p>
-    <p>Pagos pendientes: {{ selectedLista.num_pending_count }}</p>
-    <p>Pagos cancelados: {{ selectedLista.num_cancelled_count }}</p>
-    <p>Monto total: {{ selectedLista.num_total_amount | currency: 'PEN' }}</p>
+  <section *ngIf="selectedLista" class="am-tarjeta detalle">
+    <div class="am-encabezado">
+      <div class="am-titulos">
+        <h2 class="am-h2">{{ selectedLista.var_name }}</h2>
+        <p class="am-sub">{{ selectedLista.var_description }} · Creada el {{ selectedLista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</p>
+      </div>
+      <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="downloadReport(selectedLista.PK_collection)">
+        <span class="am-icon" aria-hidden="true">download</span>Exportar Excel
+      </button>
+    </div>
 
-    
-    <!-- Filtro por estado -->
-    <label for="filtroEstado"><strong>Filtrar por estado:</strong></label>
-    <select id="filtroEstado" [(ngModel)]="filtroEstado">
-      <option value="">Todos</option>
-      <option value="PENDING">Pendiente</option>
-      <option value="PAID">Pagado</option>
-      <option value="CANCELLED">Cancelado</option>
-    </select>
+    <div class="am-datos">
+      <div class="am-datos__item"><span class="am-datos__label">Pagos</span><span class="am-datos__valor">{{ selectedLista.num_total_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Pagados</span><span class="am-datos__valor">{{ selectedLista.num_paid_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Pendientes</span><span class="am-datos__valor">{{ selectedLista.num_pending_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Cancelados</span><span class="am-datos__valor">{{ selectedLista.num_cancelled_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Monto total</span><span class="am-datos__valor">S/ {{ selectedLista.num_total_amount | number:'1.2-2':'en-US' }}</span></div>
+    </div>
 
-    <!-- Botón para descargar el reporte de la lista seleccionada con icono de Excel -->
-      <label style="margin-left: 10px;" for="filtroEstado"><strong>Reporte Excel:</strong></label>
-    <button style="background-color: rgb(235, 235, 235);" (click)="downloadReport(selectedLista.PK_collection)">
-      <mat-icon style="vertical-align: middle; color: #217346;">description</mat-icon>
-     
-    </button>
-    
-    <!-- Tabla de pagos -->
-    <h3>Pagos</h3>
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Nombre completo</th>
-          <th>Grado</th>
-          <th>Sección</th>
-          <th>Padre</th>
-          <th>Correo Padre</th>
-          <th>Madre</th>
-          <th>Correo Madre</th>
-          <th>Monto</th>
-          <th>Pago ID Link</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pago of estudiantes"
-            [hidden]="filtroEstado && pago.var_status !== filtroEstado"
-            [ngClass]="{
-              'estado-cancelado': pago.var_status === 'CANCELLED',
-              'estado-pendiente': pago.var_status === 'PENDING',
-              'estado-pagado': pago.var_status === 'PAID'
-            }">
-          <td>{{ pago.var_name }}</td>
-          <td>{{ pago.var_grade }}</td>
-          <td>{{ pago.var_section }}</td>
-          <td>{{ pago.father?.var_name }}</td>
-          <td>{{ pago.father?.var_email }}</td>
-          <td>{{ pago.mother?.var_name }}</td>
-          <td>{{ pago.mother?.var_email }}</td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="pago.num_total"
-              [readonly]="!isEditing"
-              (blur)="formatMonto(pago)"
-            />
-          </td>
-          <td> {{link}} {{ pago.var_uuid }}</td>
-          <td class="estado">
-            <select [(ngModel)]="pago.var_status" [disabled]="!isEditing">
-              <option value="PENDING">Pendiente</option>
-              <option value="PAID">Pagado</option>
-              <option value="CANCELLED">Cancelado</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="am-filtros" role="group" aria-label="Filtrar por estado">
+      <button *ngFor="let f of filtros" type="button" class="am-filtro" [class.am-filtro--activo]="filtroEstado === f.valor"
+        [attr.aria-pressed]="filtroEstado === f.valor" (click)="filtroEstado = f.valor">{{ f.texto }}</button>
+    </div>
 
-    <!-- Botones -->
-    <button class="recordatorio-btn" (click)="enviarRecordatorioMasivo()">Enviar Recordatorio Masivo</button>
-    <button class="editar-btn" (click)="toggleEditTable()">
-      {{ isEditing ? 'Guardar' : 'Editar Tabla' }}
-    </button>
-  </div>
-</div>
+    <div class="am-tabla-contenedor">
+      <table class="am-tabla">
+        <thead>
+          <tr>
+            <th scope="col">Alumno</th>
+            <th scope="col">Padre</th>
+            <th scope="col">Madre</th>
+            <th scope="col">Link de pago</th>
+            <th scope="col">Estado</th>
+            <th scope="col" class="am-num">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pago of estudiantes" [hidden]="filtroEstado && pago.var_status !== filtroEstado">
+            <td>
+              <b>{{ pago.var_name }}</b>
+              <div class="am-tabla-meta">{{ pago.var_grade }} {{ pago.var_section }}</div>
+            </td>
+            <td>
+              {{ pago.father?.var_name }}
+              <div class="am-tabla-meta">{{ pago.father?.var_email }}</div>
+            </td>
+            <td>
+              {{ pago.mother?.var_name }}
+              <div class="am-tabla-meta">{{ pago.mother?.var_email }}</div>
+            </td>
+            <td><span class="am-ref">{{ link }}{{ pago.var_uuid }}</span></td>
+            <td>
+              <label *ngIf="isEditing; else estadoTexto" class="am-campo">
+                <span class="am-sr">Estado de {{ pago.var_name }}</span>
+                <span class="am-campo__control">
+                  <select [(ngModel)]="pago.var_status">
+                    <option value="PENDING">Pendiente</option>
+                    <option value="PAID">Pagado</option>
+                    <option value="CANCELLED">Cancelado</option>
+                  </select>
+                  <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+                </span>
+              </label>
+              <ng-template #estadoTexto>
+                <span class="am-estado" [ngClass]="estado(pago.var_status).clase">
+                  <span class="am-icon" aria-hidden="true">{{ estado(pago.var_status).icono }}</span>{{ estado(pago.var_status).texto }}
+                </span>
+              </ng-template>
+            </td>
+            <td class="am-num">
+              <label *ngIf="isEditing; else montoTexto" class="am-campo monto">
+                <span class="am-sr">Monto de {{ pago.var_name }}</span>
+                <input type="number" min="0" [(ngModel)]="pago.num_total" (blur)="formatMonto(pago)">
+              </label>
+              <ng-template #montoTexto>S/ {{ pago.num_total | number:'1.2-2':'en-US' }}</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!estudiantes.length">
+            <td colspan="6" class="sin-datos">Esta lista no tiene pagos.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-<!-- Loader -->
-<div *ngIf="isLoading" class="fullscreen-loader">
-  <div class="spinner"></div>
+    <div class="am-acciones">
+      <button type="button" class="am-btn am-btn--secondary" (click)="enviarRecordatorioMasivo()">
+        <span class="am-icon" aria-hidden="true">mail</span>Enviar recordatorio a todos
+      </button>
+      <button type="button" class="am-btn" [class.am-btn--primary]="isEditing" [class.am-btn--secondary]="!isEditing" (click)="toggleEditTable()">
+        {{ isEditing ? 'Guardar cambios' : 'Editar montos y estados' }}
+      </button>
+    </div>
+  </section>
 </div>

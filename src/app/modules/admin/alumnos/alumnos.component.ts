@@ -14,9 +14,29 @@ export class AlumnosComponent {
   mesSeleccionado!:string
   loader!:boolean
   fechaBuscada!:string
+  diaElegido = 0
+  diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+  nombresMeses = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  private espanol = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+  enEspanol(mes: string): string {
+    return this.espanol[this.nombresMeses.indexOf(mes)] ?? mes
+  }
+
+  // Las semanas del calendario en una sola lista para la grilla (0 = casilla vacía).
+  get diasDelMes(): number[] {
+    if (!this.calendarioMes) return []
+    return ['semana1', 'semana2', 'semana3', 'semana4', 'semana5', 'semana6'].flatMap((k) => this.calendarioMes[k] || [])
+  }
+
+  elegirDia(dia: number) {
+    this.diaElegido = dia
+    this.buscarResultadosDia(dia)
+  }
 
   constructor(private matriculadosService: ZMatriculaService){
     this.cargarCalendario2023();
+    this.cambiarMes({ value: this.nombresMeses[new Date().getMonth()] })
     
   }
 
@@ -91,12 +111,14 @@ export class AlumnosComponent {
     this.matriculadosService.getMatriculadosReporte(dia,codMes,this.calendario.year).subscribe((res) => {
       this.reporte = res
       this.loader = false
-      this.fechaBuscada = dia.toString()+ " " + this.mesSeleccionado + "  " + this.calendario.year
+      this.fechaBuscada = dia + " de " + this.enEspanol(this.mesSeleccionado).toLowerCase() + " de " + this.calendario.year
       })
   }
   cambiarMes(mesNombreEvt:any){
     const mes = this.calendario[mesNombreEvt.value]
     this.mesSeleccionado = mesNombreEvt.value
+    this.diaElegido = 0
+    this.reporte = undefined as any
     const s1 = mes[0]
     const s2 = mes[1]
     const s3 = mes[2]

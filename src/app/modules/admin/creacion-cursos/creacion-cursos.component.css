@@ -1,32 +1,119 @@
-.boton-check {
-    margin-right: 10px;
+.acciones__boton {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
 }
 
-.icono-delete {
-    color: blue;
+.periodo {
+  gap: 16px;
 }
 
-.boton-footer {
-    margin: 10px;
+.periodo__fila,
+.periodo__nuevo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
 }
 
-.container-cartilla {
-    margin: 10px;
+.periodo__selector {
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
 }
 
-.titulo-componente {
-    text-align: center;
-    color: white;
+.periodo__nuevo .am-campo {
+  width: 160px;
 }
 
-.input-propiedades {
-    margin-right: 10px;
+.visibilidad {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--am-surface-muted);
+  font-size: 13px;
+  color: var(--am-text-2);
 }
 
-input {
-    color: black!important;
+.visibilidad--visible {
+  background: var(--am-success-soft);
+  color: var(--am-success);
 }
 
-mat-divider {
-    margin-bottom: 15px;
+.visibilidad__texto {
+  flex: 1;
+  min-width: 220px;
+  line-height: 1.5;
+}
+
+.cargando {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.vacio__copiar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.vacio__nota {
+  max-width: 460px;
+  font-size: 12px;
+  color: var(--am-text-3);
+}
+
+.am-tabla {
+  min-width: 880px;
+}
+
+.celda__curso {
+  font-weight: 600;
+}
+
+.repetido {
+  color: var(--am-error);
+}
+
+.celda__acciones {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.accion {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.accion__eliminar {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--am-text-3);
+  cursor: pointer;
+}
+
+.accion__eliminar:hover:not(:disabled) {
+  background: var(--am-error-soft);
+  color: var(--am-error);
+}
+
+.accion__eliminar:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

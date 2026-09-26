@@ -1,125 +1,117 @@
-<div class="title">
-  <h1>Crear Lista de pago</h1>
-  <button class="volver-btn" (click)="volver()">Volver</button>
-</div>
+<div class="am-pagina">
+  <a class="am-volver" routerLink="/admin/colectas"><span class="am-icon" aria-hidden="true">arrow_back</span>Colectas</a>
 
+  <header class="am-titulos">
+    <h1 class="am-h1">Crear lista de pago</h1>
+    <p class="am-sub">La cuota más la comisión se reparte en partes iguales entre los alumnos de la lista.</p>
+  </header>
 
-<div class="container">
-  <!-- Left Section: Form -->
-  <div class="left-section">
-    <h2>Crear nueva lista</h2>
-    <form #listaPagoForm="ngForm">
-      <div class="form-group">
-        <label for="nombre">Nombre de la lista:</label>
-        <input type="text" id="nombre" name="nombre" [(ngModel)]="formData.nombre" required />
-      </div>
-      <div class="form-group">
-        <label for="detalles">Detalles:</label>
-        <textarea id="detalles" name="detalles" [(ngModel)]="formData.detalles" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="padre">Padre Responsable (apellido):</label>
-        <input
-          type="text"
-          id="padre"
-          name="padre"
-          [(ngModel)]="formData.padre"
-          (input)="handleParentSearchInput($event)"
-          placeholder="Buscar padre por apellido"
-          required
-        />
-        <!-- Resultados de búsqueda de padres -->
-        <ul *ngIf="parentSearchResults.length > 0" class="search-results">
-          <li *ngFor="let parent of parentSearchResults" (click)="selectParent(parent)">
-            {{ parent.var_name }} {{ parent.var_lastname }}
-          </li>
-        </ul>
-      </div>
-      <div class="form-group">
-        <label for="cuota">Cuota:</label>
-        <input type="number" id="cuota" name="cuota" [(ngModel)]="formData.cuota" required />
-      </div>
-      <div class="form-group">
-        <label for="comision">Comisión (%):</label>
-        <input type="number" id="comision" name="comision" [(ngModel)]="formData.comision" required />
-      </div>
-      <div class="form-group">
-        <label for="totalWithComision">Cuota + Comisión:</label>
-        <input
-          type="text"
-          id="totalWithComision"
-          [value]="calculateTotalWithComision() | currency:'PEN'"
-          readonly
-        />
-      </div>
-      <button type="button" class="btn btn-blue" (click)="calculateCuotas()">Calcular Cuota</button>
-    </form>
-  </div>
+  <div class="am-param">
+    <section class="am-tarjeta am-param-alta">
+      <h2 class="am-h2">Datos de la lista</h2>
+      <form #listaPagoForm="ngForm" class="am-form">
+        <label class="am-campo">Nombre de la lista
+          <input type="text" name="nombre" [(ngModel)]="formData.nombre" required>
+        </label>
+        <label class="am-campo">Detalles
+          <textarea name="detalles" rows="3" [(ngModel)]="formData.detalles" required></textarea>
+        </label>
+        <div class="buscador">
+          <label class="am-campo">Padre responsable
+            <input type="text" name="padre" [(ngModel)]="formData.padre" (input)="handleParentSearchInput($event)"
+              placeholder="Buscar por apellido" autocomplete="off" required>
+          </label>
+          <ul *ngIf="parentSearchResults.length > 0" class="buscador__resultados">
+            <li *ngFor="let parent of parentSearchResults">
+              <button type="button" (click)="selectParent(parent)">{{ parent.var_name }} {{ parent.var_lastname }}</button>
+            </li>
+          </ul>
+        </div>
+        <div class="am-form-grid">
+          <label class="am-campo">Cuota (S/)
+            <input type="number" name="cuota" min="0" [(ngModel)]="formData.cuota" required>
+          </label>
+          <label class="am-campo">Comisión (%)
+            <input type="number" name="comision" min="0" [(ngModel)]="formData.comision" required>
+          </label>
+        </div>
+        <div class="total">
+          <span>Cuota + comisión</span>
+          <b>S/ {{ calculateTotalWithComision() | number:'1.2-2':'en-US' }}</b>
+        </div>
+        <button type="button" class="am-btn am-btn--secondary am-btn--chico recalcular" (click)="calculateCuotas()">Recalcular cuota por alumno</button>
+      </form>
+    </section>
 
-  <!-- Right Section: Table -->
-  <div class="right-section">
-    <h2>Estudiantes ({{ filteredStudents.length }})</h2>
-    <!-- Input de búsqueda -->
-    <div class="form-group">
-      <label for="search">Buscar por apellido:</label>
-      <input
-        type="text"
-        id="search"
-        (input)="handleSearchInput($event)"
-        placeholder="Ingrese apellido"
-      />
-    </div>
+    <section class="am-tarjeta am-param-alta">
+      <h2 class="am-h2">Alumnos ({{ filteredStudents.length }})</h2>
 
-    <!-- Resultados de búsqueda -->
-    <ul>
-      <li *ngFor="let student of searchResults">
-        {{ student.var_name }} {{ student.var_lastname }}
-        <button class="btn btn-blue" (click)="addStudentFromSearch(student)">Agregar</button>
-      </li>
-    </ul>
-    <!-- Dropdowns para grado y sección -->
-    <div class="form-group dropdown-container">
-      <div>
-        <label for="grade">Grado:</label>
-        <select id="grade" [(ngModel)]="selectedGrade" (change)="onGradeChange()" name="grade">
-          <option *ngFor="let grade of grades" [value]="grade.PK_grade">{{ grade.var_name }}</option>
-        </select>
-      </div>
-      <div>
-        <label for="section">Sección:</label>
-        <select id="section" [(ngModel)]="selectedSection" name="section">
-          <option *ngFor="let section of sections" [value]="section.PK_section">{{ section.var_name }}</option>
-        </select>
-      </div>
-      <button type="button" class="btn btn-blue" (click)="loadStudentsByClassroom()">Cargar Alumnos</button>
-    </div>
+      <label class="am-campo">Buscar alumno por apellido
+        <input type="search" (input)="handleSearchInput($event)" placeholder="Apellido" autocomplete="off">
+      </label>
+      <ul *ngIf="searchResults.length" class="lista-simple">
+        <li *ngFor="let student of searchResults">
+          <span>{{ student.var_name }} {{ student.var_lastname }}</span>
+          <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="addStudentFromSearch(student)">Agregar</button>
+        </li>
+      </ul>
 
-    <!-- Tabla de estudiantes -->
-    <table class="custom-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Grado</th>
-          <th>Sección</th>
-          <th>Cuota</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let student of filteredStudents">
-          <td>{{ student.nombre }}</td>
-          <td>{{ student.apellido }}</td>
-          <td>{{ student.grado }}</td>
-          <td>{{ student.seccion }}</td>
-          <td>{{ student.cuota | currency:'PEN' }}</td>
-          <td>
-            <button class="btn btn-red" (click)="removeStudent(student.id)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="btn btn-red" (click)="clearTable()">Limpiar Lista</button>
-    <button class="btn btn-green" (click)="onSubmit()">Crear Lista</button>
+      <div class="aula">
+        <label class="am-campo">Grado
+          <span class="am-campo__control">
+            <select name="grade" [(ngModel)]="selectedGrade" (change)="onGradeChange()">
+              <option [ngValue]="null" disabled>Selecciona</option>
+              <option *ngFor="let grade of grades" [value]="grade.PK_grade">{{ grade.var_name }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <label class="am-campo">Sección
+          <span class="am-campo__control">
+            <select name="section" [(ngModel)]="selectedSection">
+              <option [ngValue]="null" disabled>Selecciona</option>
+              <option *ngFor="let section of sections" [value]="section.PK_section">{{ section.var_name }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <button type="button" class="am-btn am-btn--secondary aula__boton" (click)="loadStudentsByClassroom()">Cargar salón</button>
+      </div>
+
+      <div *ngIf="filteredStudents.length; else sinAlumnos" class="am-tabla-contenedor">
+        <table class="am-tabla">
+          <thead>
+            <tr>
+              <th scope="col">Alumno</th>
+              <th scope="col">Grado y sección</th>
+              <th scope="col" class="am-num">Cuota</th>
+              <th scope="col"><span class="am-sr">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let student of filteredStudents">
+              <td>{{ student.nombre }} {{ student.apellido }}</td>
+              <td>{{ student.grado }} {{ student.seccion }}</td>
+              <td class="am-num">S/ {{ student.cuota | number:'1.2-2':'en-US' }}</td>
+              <td>
+                <div class="am-fila-acciones">
+                  <button type="button" class="am-icono-boton am-icono-boton--peligro" (click)="removeStudent(student.id)" [attr.aria-label]="'Quitar a ' + student.nombre">
+                    <span class="am-icon" aria-hidden="true">close</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #sinAlumnos>
+        <p class="am-vacio">Busca alumnos por apellido o carga un salón completo.</p>
+      </ng-template>
+
+      <div class="am-acciones">
+        <button type="button" class="am-btn am-btn--secondary" (click)="clearTable()" [disabled]="!filteredStudents.length">Vaciar lista</button>
+        <button type="button" class="am-btn am-btn--primary" (click)="onSubmit()">Crear lista</button>
+      </div>
+    </section>
   </div>
 </div>

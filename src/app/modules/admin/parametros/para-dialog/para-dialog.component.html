@@ -1,36 +1,19 @@
-  
-    <div fxLayout="column" fxLayoutAlign="center stretch">
-        <div fxLayoutAlign="center center">
+<div class="am dialogo">
+  <header class="dialogo__cabecera">
+    <h2 class="am-h2">Editar {{ nombreOrigen }}</h2>
+    <button type="button" class="am-icono-boton" mat-dialog-close aria-label="Cerrar">
+      <span class="am-icon" aria-hidden="true">close</span>
+    </button>
+  </header>
 
-            <h4> Editar datos </h4>
+  <form class="am-form" [formGroup]="contenidoForm" (ngSubmit)="enConfirmar()">
+    <label *ngFor="let campo of campos" class="am-campo">{{ etiqueta(campo) }}
+      <input [formControlName]="campo">
+    </label>
 
-            <button class="boton-cerrar" mat-icon-button aria-label="close dialog" mat-dialog-close>
-                <mat-icon>close</mat-icon>
-            </button> 
-
-        </div>
-
-            <mat-dialog-content>
-                <form [formGroup]="contenidoForm" fxLayout="column" fxLayoutAlign="space-around stretch"  fxLayoutGap="3px">
-
-
-                    <mat-form-field class="input-propiedades"  appearance="outline" *ngFor="let campo of campos">
-                        <mat-label>{{origen}} {{campo}}</mat-label>
-                        <input matInput placeholder="Ingrese {{campo}}" formControlName="{{campo}}">
-                    </mat-form-field>
-
-                </form>
-
-            </mat-dialog-content>
-            <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
-
-                <button mat-stroked-button color="warn" (click)="enCancelar()">Cancelar</button>
-                <button mat-raised-button color="primary" [disabled]="!contenidoForm.valid" type="submit" (click)="enConfirmar()">Confirmar</button>
-            
-            </mat-dialog-actions>
-
+    <div class="dialogo__acciones">
+      <button type="button" class="am-btn am-btn--secondary dialogo__boton" (click)="enCancelar()">Cancelar</button>
+      <button type="submit" class="am-btn am-btn--primary dialogo__boton" [disabled]="!contenidoForm.valid">Guardar cambios</button>
     </div>
-
-
-
-
+  </form>
+</div>

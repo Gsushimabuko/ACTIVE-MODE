@@ -38,8 +38,10 @@
     <div *ngIf="cursos.length" class="am-grid-tarjetas">
       <a *ngFor="let curso of cursos" class="curso" [routerLink]="['/matricula/curso', curso.idCursoPeriodo]"
         [queryParams]="consulta(curso)">
-        <div class="curso__visual" aria-hidden="true">
-          <span class="am-icon curso__visual-icono">{{ iconoCurso(curso.name) }}</span>
+        <div class="curso__visual" [class.curso__visual--foto]="curso.image"
+          [style.background-image]="curso.image ? 'url(&quot;' + curso.image + '&quot;)' : null">
+          <span *ngIf="curso.category" class="am-chip am-chip--foto curso__categoria">{{ curso.category }}</span>
+          <span *ngIf="!curso.image" class="am-icon curso__visual-icono" aria-hidden="true">{{ iconoCurso(curso.name) }}</span>
         </div>
         <div class="curso__cuerpo">
           <span class="curso__profe">
@@ -47,7 +49,8 @@
             Prof. {{ curso.instructor | titlecase }}
           </span>
           <b class="curso__nombre">{{ curso.name | titlecase }}</b>
-          <span *ngIf="curso.description" class="curso__descripcion">{{ curso.description }}</span>
+          <span *ngIf="curso.tagline || curso.description" class="curso__descripcion">{{ curso.tagline || curso.description }}</span>
+          <span *ngIf="curso.ages" class="curso__descripcion">{{ curso.ages }}</span>
           <span class="curso__estado" [class.curso__estado--cerrado]="curso.state === 'CERRADO'">
             <span class="am-icon" aria-hidden="true">{{ curso.state === 'CERRADO' ? 'lock' : 'check_circle' }}</span>
             {{ curso.state === 'CERRADO' ? 'Matrícula cerrada' : 'Matrícula abierta' }}

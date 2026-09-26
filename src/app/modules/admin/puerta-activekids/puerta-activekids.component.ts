@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
@@ -9,7 +9,10 @@ import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
   templateUrl: './puerta-activekids.component.html',
   styleUrls: ['./puerta-activekids.component.css']
 })
-export class PuertaActivekidsComponent implements OnInit {
+export class PuertaActivekidsComponent implements OnInit, OnDestroy {
+  // El lector de códigos escribe como un teclado: se escucha en toda la página y se quita al salir.
+  private lector?: (evt: KeyboardEvent) => void;
+
   puertas = [ "1", "2" , "3", "4", "5" ];
   puerta!: number;
   estado!: number;
@@ -27,6 +30,10 @@ export class PuertaActivekidsComponent implements OnInit {
 
   ngOnInit(): void {
     this.leer();
+  }
+
+  ngOnDestroy(): void {
+    if (this.lector) document.removeEventListener("keydown", this.lector);
   }
 
   marcarAsistenciaExterno(){
@@ -58,7 +65,7 @@ export class PuertaActivekidsComponent implements OnInit {
   leer = () => {
     let barcode = "";
     let interval:any;
-    document.addEventListener("keydown", (evt) => {
+    document.addEventListener("keydown", this.lector = (evt) => {
         if(interval)
             clearInterval(interval);
         if(evt.code == "Enter" || evt.key == 'Alt'){

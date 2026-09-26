@@ -1,144 +1,84 @@
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-  <button routerLink="../" mat-button style="transform:scale(2);"> 
-    <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-  </button> 
-</div>
-<h2 class="titulo-componente">Gestión del parametro Nivel</h2>
+<div class="am-pagina">
+  <a class="am-volver" routerLink="/admin/parametros"><span class="am-icon" aria-hidden="true">arrow_back</span>Parámetros</a>
 
-<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" >
+  <header class="am-titulos">
+    <h1 class="am-h1">Horarios</h1>
+    <p class="am-sub">Las franjas en que se dictan los cursos y para quién son (edad o nivel). Al abrir un curso en un periodo eliges cuáles usa.</p>
+  </header>
 
-  <div class="container-cartilla">
-    <mat-card class="card-nuevo" >
-      <mat-card-content>
-        
-        <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
-            <!-- Position Column -->
-            <ng-container matColumnDef="nivel">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nivel</th>
-              <td mat-cell *matCellDef="let element">{{element.nivel}}</td>
-            </ng-container>
+  <div class="am-param">
+    <section class="am-tarjeta">
+      <h2 class="am-h2">Registrados</h2>
+      <div class="am-tabla-contenedor">
+        <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="nivel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nivel</th>
+          <td mat-cell *matCellDef="let e"><b>{{ e.nivel }}</b></td>
+        </ng-container>
+        <ng-container matColumnDef="hora">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Horario</th>
+          <td mat-cell *matCellDef="let e">{{ e.hora }}</td>
+        </ng-container>
+        <ng-container matColumnDef="hora_inicio">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Inicio</th>
+          <td mat-cell *matCellDef="let e">{{ e.hora_inicio }}</td>
+        </ng-container>
+        <ng-container matColumnDef="hora_fin">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Fin</th>
+          <td mat-cell *matCellDef="let e">{{ e.hora_fin }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+          <td mat-cell *matCellDef="let e">
+            <span class="am-estado" [class.am-estado--ok]="e.estado === 'ACTIVO'" [class.am-estado--neutro]="e.estado !== 'ACTIVO'">
+              <span class="am-icon" aria-hidden="true">{{ e.estado === 'ACTIVO' ? 'visibility' : 'visibility_off' }}</span>{{ e.estado === 'ACTIVO' ? 'Visible' : 'Oculto' }}
+            </span></td>
+        </ng-container>
+        <ng-container matColumnDef="info">
+          <th mat-header-cell *matHeaderCellDef><span class="am-sr">Acciones</span></th>
+          <td mat-cell *matCellDef="let e">
+            <div class="am-fila-acciones">
+              <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="openDialog(e)">Editar</button>
+              <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="cambiarEstado(e.id)">{{ e.estado === 'ACTIVO' ? 'Ocultar' : 'Mostrar' }}</button>
+              <button type="button" class="am-icono-boton am-icono-boton--peligro" (click)="eliminarRegistro(e.id)" aria-label="Eliminar">
+                <span class="am-icon" aria-hidden="true">delete</span>
+              </button>
+            </div></td>
+        </ng-container>
 
-            <ng-container matColumnDef="hora">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Horario</th>
-                <td  mat-cell *matCellDef="let element">{{element.hora}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="hora_inicio">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Inicio</th>
-                <td  mat-cell *matCellDef="let element">{{element.hora_inicio}}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="hora_fin">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Termino</th>
-                <td  mat-cell *matCellDef="let element">{{element.hora_fin}}</td>
-              </ng-container>
-
-
-            <ng-container matColumnDef="estado">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-              <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
-            </ng-container>
-      
-            <!-- Weight Column -->
-            <ng-container matColumnDef="info">
-              <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Editar</th>
-              <td class="boton-tabla" mat-cell *matCellDef="let element">
-                <div *ngIf="element.estado == 'ACTIVO'; else otro">
-                    <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
-                      <mat-icon>editar</mat-icon>
-                    </button>
-                    <button class="boton-check" mat-mini-fab color="accent" (click)="cambiarEstado(element.id)">
-                      <mat-icon>visibility_off</mat-icon>
-                      </button>
-                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-    
-                </div>
-                <ng-template #otro>
-                  <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
-                    <mat-icon>editar</mat-icon>
-                  </button>
-                    <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
-                      <mat-icon>visibility</mat-icon>
-                      </button>
-                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-    
-                </ng-template>
-
-              </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-        <mat-paginator [pageSizeOptions]="[10, 20, 5]"
-                      showFirstLastButtons
-                      aria-label="Seleccionar página de alumnos">
-        </mat-paginator>   
-                              
-      </mat-card-content>
-  </mat-card>
+      </div>
+      <mat-paginator [pageSizeOptions]="[10, 20, 5]" showFirstLastButtons aria-label="Páginas de niveles"></mat-paginator>
+    </section>
 
-  </div>
-
-  <div class="container-cartilla">
-
-    <mat-card class="card-nuevo" >
-      <mat-card-content>
-        <form [formGroup]="formObjetos">
-
-          <div formArrayName="propiedades">
-              <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let propiedad of propiedades.controls; let i= index">
-                  <div [formGroupName]="i">
-                    <button class="boton-check" mat-mini-fab color="warn" disabled>
-                      {{i+1}}
-                      </button>
-
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Nivel Muestra</mat-label>
-                          <input matInput placeholder="" formControlName="nivel">
-                      </mat-form-field>
-
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Horario Muestra</mat-label>
-                          <input matInput placeholder="" formControlName="hora">
-                      </mat-form-field>
-
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Hora inicio en horas</mat-label>
-                          <input matInput type="time" placeholder="" formControlName="hora_inicio">
-                      </mat-form-field>
-
-                      <mat-form-field class="input-propiedades" appearance="outline">
-                        <mat-label>Hora fin en horas</mat-label>
-                          <input matInput type="time" placeholder="" formControlName="hora_fin">
-                      </mat-form-field>
-
-                      <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
-
-                      <mat-divider></mat-divider>
-                  </div>
-                  
-              </div>
+    <section class="am-tarjeta">
+      <div class="am-seccion">
+        <h2 class="am-h2">Agregar niveles</h2>
+        <p class="am-sub">Puedes agregar varios a la vez.</p>
+      </div>
+      <form [formGroup]="formObjetos" class="am-param-alta">
+        <div formArrayName="propiedades" class="am-param-alta">
+          <div *ngFor="let propiedad of propiedades.controls; let i = index" [formGroupName]="i" class="am-param-fila">
+            <span class="am-param-num" aria-hidden="true">{{ i + 1 }}</span>
+            <label class="am-campo">Nivel<input formControlName="nivel" placeholder="Principiantes"></label>
+            <label class="am-campo">Horario (como se muestra)<input formControlName="hora" placeholder="5pm a 6pm"></label>
+            <label class="am-campo">Inicio<input formControlName="hora_inicio" type="time"></label>
+            <label class="am-campo">Fin<input formControlName="hora_fin" type="time"></label>
+            <button type="button" class="am-icono-boton am-icono-boton--peligro" (click)="eliminarPropiedad(i)" [attr.aria-label]="'Quitar fila ' + (i + 1)">
+              <span class="am-icon" aria-hidden="true">close</span>
+            </button>
           </div>
-              
-        </form>                
-      </mat-card-content>
-
-      <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
-
-        <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Añadir nuevo</button>
-        <button class="boton-footer" mat-raised-button color="primary" [disabled]="!formObjetos.valid || formObjetos.value.propiedades.length == 0" (click)="save()">Guardar</button>
-      </mat-card-footer>
-  </mat-card>
-
-    
-
-
+        </div>
+        <p *ngIf="!propiedades.length" class="am-sub">Pulsa “Añadir fila” para empezar.</p>
+      </form>
+      <div class="am-acciones">
+        <button type="button" class="am-btn am-btn--secondary" (click)="agregarPropiedad()">
+          <span class="am-icon" aria-hidden="true">add</span>Añadir fila
+        </button>
+        <button type="button" class="am-btn am-btn--primary" [disabled]="!formObjetos.valid || formObjetos.value.propiedades.length == 0" (click)="save()">Guardar</button>
+      </div>
+    </section>
   </div>
-    
-        
 </div>

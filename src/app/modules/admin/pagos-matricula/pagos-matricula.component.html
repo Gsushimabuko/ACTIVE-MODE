@@ -1,0 +1,87 @@
+<div class="am-pagina">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Pagos de matrícula</h1>
+      <p class="am-sub">Cobros de matrícula generados en Cobrana (Niubiz). Un pago queda "Pagado" cuando Cobrana lo confirma.</p>
+    </div>
+    <div class="acciones">
+      <app-selector-periodo (cambio)="cargar($event)"></app-selector-periodo>
+      <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="exportar()" [disabled]="exportando">
+        <span class="am-icon" aria-hidden="true">download</span>{{ exportando ? 'Exportando…' : 'Exportar Excel' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="barra">
+    <div class="am-filtros" role="group" aria-label="Estado del pago">
+      <button type="button" *ngFor="let f of filtros" class="am-filtro" [class.am-filtro--activo]="filtro === f.valor"
+        [attr.aria-pressed]="filtro === f.valor" (click)="filtro = f.valor">{{ f.label }}</button>
+    </div>
+    <label class="am-campo barra__buscar">
+      <span class="am-sr">Buscar pago</span>
+      <span class="am-campo__control">
+        <span class="am-icon barra__lupa" aria-hidden="true">search</span>
+        <input type="search" [value]="busqueda" (input)="busqueda = $any($event.target).value" placeholder="Titular, alumno, curso o referencia">
+      </span>
+    </label>
+  </div>
+
+  <div *ngIf="cargando" class="cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando pagos</span>
+  </div>
+
+  <div *ngIf="!cargando && error" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span>
+    <span>No pudimos cargar los pagos. Si tu sesión venció, vuelve a iniciar sesión.</span>
+  </div>
+
+  <ng-container *ngIf="!cargando && !error">
+    <div *ngIf="!visibles.length" class="am-vacio">
+      <span class="am-icon" aria-hidden="true">receipt_long</span>
+      <span>{{ pagos.length ? 'Ningún pago coincide con el filtro.' : 'Todavía no hay pagos en este periodo.' }}</span>
+    </div>
+
+    <div *ngIf="visibles.length" class="am-tabla-contenedor">
+      <table class="am-tabla">
+        <thead>
+          <tr>
+            <th scope="col">Ref. Cobrana</th>
+            <th scope="col">Titular</th>
+            <th scope="col">Concepto</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col" class="am-num">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of visibles">
+            <td>
+              <span *ngIf="p.ref" class="am-ref">{{ p.ref }}</span>
+              <span *ngIf="!p.ref" class="am-tabla-meta">Openpay (anterior a Cobrana)</span>
+            </td>
+            <td>
+              <b class="celda__titular">{{ p.titular || 'Sin titular' }}</b>
+              <span class="am-tabla-meta">{{ p.invitado ? 'Invitado · ' : '' }}{{ p.correo }}</span>
+            </td>
+            <td>
+              <span *ngFor="let d of p.detalle" class="celda__concepto">{{ d.curso | titlecase }} · {{ d.alumno }}</span>
+            </td>
+            <td class="celda__fecha">{{ p.fecha | date: 'd MMM y' }}</td>
+            <td>
+              <span class="am-estado" [class.am-estado--ok]="p.estado === 'pagado'" [class.am-estado--pendiente]="p.estado === 'pendiente'">
+                <span class="am-icon" aria-hidden="true">{{ p.estado === 'pagado' ? 'check_circle' : 'hourglass_top' }}</span>
+                {{ p.estado === 'pagado' ? 'Pagado' : 'Pendiente' }}
+              </span>
+              <span *ngIf="p.pagadoAt" class="am-tabla-meta">{{ p.pagadoAt | date: 'd MMM, HH:mm' }}</span>
+            </td>
+            <td class="am-num"><b>S/ {{ p.monto | number: '1.2-2' : 'en-US' }}</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p *ngIf="visibles.length" class="total">
+      {{ visibles.length }} de {{ pagos.length }} pagos · S/ {{ totalVisible | number: '1.2-2' : 'en-US' }}
+    </p>
+  </ng-container>
+</div>

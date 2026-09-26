@@ -1,173 +1,147 @@
-<!--loader-->
-<div *ngIf="loading" class="loader-spinner" fxLayout="column" fxLayoutAlign="center center">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
+<div class="am-pagina am-pagina--angosta">
+  <div *ngIf="cargando || guardando" class="am-cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">{{ guardando ? 'Guardando' : 'Cargando' }}</span>
+  </div>
 
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-  <button routerLink="../../creacion" mat-button style="transform:scale(2);"> 
-    <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-  </button> 
-</div>
+  <a class="am-volver" routerLink="/admin/creacion" [queryParams]="{ idPeriodo: idPeriodo }">
+    <span class="am-icon" aria-hidden="true">arrow_back</span>Cursos por periodo
+  </a>
 
-<h2 class="titulo-componente">Gestión de Cursos por Periodo</h2>
+  <header class="am-titulos">
+    <h1 class="am-h1">{{ editando ? 'Editar curso del periodo' : 'Abrir un curso en un periodo' }}</h1>
+    <p class="am-sub">Elige un curso del catálogo y el mes, y define profesor, cupo, días, horarios y tarifas.</p>
+  </header>
 
-<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" fxLayoutGap="20">
-  <div class="container-cartilla">
-    <mat-card class="card-nuevo">
-        <mat-card-content>
-            <form [formGroup]="formCursoPeriodo">
-              <h3>Datos del curso en el periodo</h3>
+  <div *ngIf="conInscritos" class="am-nota" role="note">
+    <span class="am-icon" aria-hidden="true">info</span>
+    <span><b>Tiene {{ existente?.inscritos }} alumno(s) inscrito(s).</b> Puedes cambiar profesor, cupo, montos y agregar horarios o tarifas.
+      Para no afectar sus matrículas no se puede cambiar el curso, el periodo ni los días; para fechas puntuales usa "Fechas".</span>
+  </div>
 
-              <mat-form-field class="input-propiedades" appearance="outline">
-                <mat-label>Curso</mat-label>
-                <mat-select formControlName="cursoId">
-                  <mat-option *ngFor="let curso of cursos" [value]="curso.id">
-                    {{curso.nombre}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+  <form *ngIf="opciones" class="am-tarjeta" (ngSubmit)="guardar()" novalidate>
+    <!-- 1 -->
+    <section class="am-seccion">
+      <h2 class="am-h2">1. Curso y periodo</h2>
+      <div class="am-form-grid">
+        <label class="am-campo">Curso del catálogo
+          <span class="am-campo__control">
+            <select name="curso" [(ngModel)]="idCurso" [disabled]="conInscritos">
+              <option [ngValue]="null" disabled>Selecciona</option>
+              <option *ngFor="let c of opciones.cursos" [ngValue]="c.id" [disabled]="abiertos.has(c.id) || !c.activo">
+                {{ c.nombre | titlecase }}{{ abiertos.has(c.id) ? ' · ya abierto en este periodo' : !c.activo ? ' · inactivo en el catálogo' : '' }}
+              </option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <label class="am-campo">Periodo (mes)
+          <span class="am-campo__control">
+            <select name="periodo" [ngModel]="idPeriodo" (ngModelChange)="cambiarPeriodo($event)" [disabled]="conInscritos">
+              <option *ngFor="let p of periodos" [ngValue]="p.id">{{ etiqueta(p) }} · {{ p.estado === 'ACTIVO' ? 'visible' : 'oculto' }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+      </div>
+      <p class="ayuda">¿El curso no está? Créalo primero en el <a routerLink="/admin/catalogo/nuevo">Catálogo de cursos</a>.
+        <ng-container *ngIf="periodo && periodo.estado !== 'ACTIVO'"> Este periodo está oculto: las familias no lo verán hasta que lo abras en "Cursos por periodo".</ng-container></p>
+    </section>
 
-              <mat-form-field class="input-propiedades" appearance="outline">
-                  <mat-label>Cupo máximo</mat-label>
-                  <input matInput formControlName="cupo" [OnlyNumber]="true">
-              </mat-form-field>
-              
-              <mat-form-field class="input-propiedades" appearance="outline">
-                  <mat-label>Nombre del profesor</mat-label>
-                  <input matInput formControlName="profesor">
-              </mat-form-field>
+    <!-- 2 -->
+    <section class="am-seccion separada">
+      <h2 class="am-h2">2. Profesor y cupo</h2>
+      <div class="am-form-grid">
+        <label class="am-campo">Profesor
+          <input name="profesor" [(ngModel)]="profesor" autocomplete="off">
+        </label>
+        <label class="am-campo">Cupo por grupo
+          <input name="cupo" type="number" min="1" max="200" [(ngModel)]="cupo" inputmode="numeric">
+          <span *ngIf="existente?.maxPorClase" class="ayuda">Mínimo {{ existente?.maxPorClase }}: ya hay clases con esos inscritos.</span>
+        </label>
+      </div>
+    </section>
 
-            </form>
+    <!-- 3 -->
+    <section class="am-seccion separada">
+      <h2 class="am-h2">3. Días de clase</h2>
+      <p class="am-sub">Los días de la semana en que se dicta. Se crean las clases de todo el mes.</p>
+      <div class="dias" role="group" aria-label="Días de clase">
+        <button *ngFor="let d of semana" type="button" class="am-opcion" [class.am-opcion--activa]="dias.includes(d)"
+          [attr.aria-pressed]="dias.includes(d)" [disabled]="conInscritos" (click)="alternarDia(d)">{{ diaCorto[d] }}</button>
+      </div>
+      <p class="ayuda" *ngIf="dias.length">{{ textoDias }}: {{ clasesMes }} clases en {{ periodo ? etiqueta(periodo) : 'el mes' }} por cada horario.</p>
+    </section>
 
-            <mat-divider></mat-divider>
-            
-            <div>
-              <h3>Datos de la tarifa del curso</h3>
-  
-              <div style="margin-bottom: 10px;">
-                Defina las tarifas del curso para cada uno de los tipos de usuario según los días a la semana.
-              </div>
-  
-              <div>
-                <form [formGroup]="formTarifa">
-                  <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Días a la semana</mat-label>
-                      <mat-select formControlName="diaId" multiple (selectionChange)="generarTarifas()">
-                        <mat-option *ngFor="let dia of dias" [value]="{id: dia.id, nombre: dia.dias_semana}">
-                          {{dia.dias_semana}}
-                        </mat-option>
-                      </mat-select>
-                  </mat-form-field>
-    
-                  <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Tipo de usuario</mat-label>
-                      <mat-select formControlName="tipoUsuarioId" multiple (selectionChange)="generarTarifas()">
-                        <mat-option *ngFor="let tipo of tipoUsuarios" [value]="{id: tipo.id, nombre: tipo.nombre}">
-                          {{tipo.nombre}}
-                        </mat-option>
-                      </mat-select>
-                  </mat-form-field>
-                </form>
-  
-                <!-- <button class="boton-footer" mat-raised-button color="primary" (click)="generarTarifas()">Generar tarifas</button> -->
-              </div>
+    <!-- 4 -->
+    <section class="am-seccion separada">
+      <h2 class="am-h2">4. Horarios</h2>
+      <p class="am-sub">Cada horario es un grupo con su propio cupo. Elige uno o más.</p>
+      <div class="horarios" role="group" aria-label="Horarios">
+        <button *ngFor="let n of opciones.niveles" type="button" class="am-opcion am-opcion--doble"
+          [class.am-opcion--activa]="niveles.includes(n.id)" [attr.aria-pressed]="niveles.includes(n.id)" (click)="alternarNivel(n.id)"
+          [title]="inscritosEnNivel(n.id) ? 'Tiene alumnos inscritos: no se puede quitar' : ''">
+          <b>{{ franja(n.inicio, n.fin) }}</b>
+          <span>{{ n.nombre }}{{ inscritosEnNivel(n.id) ? ' · ' + inscritosEnNivel(n.id) + ' inscritos' : '' }}</span>
+        </button>
+      </div>
+      <p class="ayuda">¿Falta un horario? Agrégalo en <a routerLink="/admin/parametros/niveles">Parámetros → Horarios</a>.</p>
+    </section>
 
-              <mat-error *ngIf="noTarifaError" style="margin-bottom: 10px;">
-                <small>Defina las tarifas para el curso</small>
-              </mat-error>
-            </div>
+    <!-- 5 -->
+    <section class="am-seccion separada">
+      <h2 class="am-h2">5. Tarifas mensuales</h2>
+      <p class="am-sub">Precio por mes según cuántas veces por semana viene el alumno y su tipo de usuario. Deja vacío lo que no quieras ofrecer.</p>
+      <div class="am-tabla-contenedor">
+        <table class="am-tabla tarifas">
+          <thead>
+            <tr>
+              <th scope="col">Frecuencia</th>
+              <th scope="col" *ngFor="let t of opciones.tipos">{{ t.nombre | titlecase }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let f of opciones.frecuencias" [class.no-disponible]="!disponible(f)">
+              <th scope="row">
+                <b>{{ f.nombre }} por semana</b>
+                <div class="am-tabla-meta" *ngIf="disponible(f)">{{ f.clasesMes }} clases al mes · la familia elige: {{ gruposPara(f).join(' o ') }}</div>
+                <div class="am-tabla-meta" *ngIf="!disponible(f)">No disponible con los días elegidos</div>
+              </th>
+              <td *ngFor="let t of opciones.tipos">
+                <label class="am-campo monto">
+                  <span class="am-sr">{{ f.nombre }}, {{ t.nombre }}</span>
+                  <span class="monto__control">
+                    <span class="monto__moneda" aria-hidden="true">S/</span>
+                    <input type="number" min="0" step="0.01" inputmode="decimal" [name]="'m' + clave(f.id, t.id)"
+                      [(ngModel)]="montos[clave(f.id, t.id)]" [disabled]="!disponible(f) && !montos[clave(f.id, t.id)]">
+                  </span>
+                  <span *ngIf="matriculasDeTarifa(f.id, t.id)" class="ayuda">{{ matriculasDeTarifa(f.id, t.id) }} matrícula(s)</span>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="ayuda">Las frecuencias y sus combinaciones de días se configuran en <a routerLink="/admin/parametros/dia">Parámetros → Días y frecuencias</a>.
+        Cambiar un monto no cambia lo que ya se pagó.</p>
+    </section>
 
-            <div *ngFor="let tarifa of tarifasElegidas; let i = index">
-              <button class="boton-check" mat-mini-fab color="warn" disabled>
-                {{i+1}}
-              </button>
+    <div class="resumen" *ngIf="idCurso && dias.length && niveles.length">
+      <span class="am-icon" aria-hidden="true">visibility</span>
+      <span>Las familias verán <b>{{ niveles.length }} horario(s)</b> los <b>{{ textoDias }}</b>{{ desde !== null ? ', desde S/ ' + (desde | number: '1.2-2' : 'en-US') + ' al mes' : '' }}.</span>
+    </div>
 
-              <mat-form-field class="input-propiedades" appearance="outline">
-                <mat-label>Costo mensual base</mat-label>
-                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.monto">
-              </mat-form-field>
+    <div *ngIf="errores.length" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span>
+      <ul class="errores"><li *ngFor="let e of errores">{{ e }}</li></ul>
+    </div>
 
-              <mat-form-field class="input-propiedades" appearance="outline">
-                <mat-label>Días a la semana</mat-label>
-                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.dia" [readonly]="true">
-              </mat-form-field>
-                
-              <mat-form-field class="input-propiedades" appearance="outline">
-                <mat-label>Tipo de usuario</mat-label>
-                <input matInput [OnlyNumber]="true" [(ngModel)]="tarifa.tipoUsuario" [readonly]="true">
-              </mat-form-field>
-            </div>
+    <div class="am-acciones">
+      <a class="am-btn am-btn--secondary" routerLink="/admin/creacion" [queryParams]="{ idPeriodo: idPeriodo }">Cancelar</a>
+      <button type="submit" class="am-btn am-btn--primary" [disabled]="guardando">{{ editando ? 'Guardar cambios' : 'Abrir curso' }}</button>
+    </div>
+  </form>
 
-
-            <mat-divider></mat-divider>
-
-            <div>
-              <h3>Días disponibles</h3>
-
-              <div style="margin-bottom: 10px;">
-                Defina los días en el que se realizará el curso.
-              </div>
-
-              <form [formGroup]="formDias">
-                <mat-form-field class="input-propiedades" appearance="outline">
-                  <mat-label>Días</mat-label>
-                  <mat-select formControlName="dias" multiple>
-                    <mat-option *ngFor="let dia of diasSemana" [value]="dia">
-                      {{dia.dia}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </form>
-            </div>
-
-            <mat-divider></mat-divider>
-
-            <div>
-              <h3>Horarios</h3>
-              
-              <div>
-                  <mat-form-field class="input-propiedades" appearance="outline">
-                      <mat-label>Elegir nivel</mat-label>
-                      <mat-select [(value)]="nivelElegido">
-                        <mat-option *ngFor="let nivel of niveles" [value]="nivel">
-                          {{nivel.nivel}} - {{nivel.hora}}
-                        </mat-option>
-                      </mat-select>
-                  </mat-form-field>
-
-                  <button class="boton-footer" mat-raised-button color="primary" (click)="agregarPropiedad()">Agregar nuevo horario</button>
-              </div>
-
-              <mat-error *ngIf="noNivelError" style="margin-bottom: 10px;">
-                <small>Elija al menos un nivel para el horario</small>
-              </mat-error>
-              
-              <mat-card class="card-nuevo">
-                <mat-card-content>
-                  <div>
-                    <div fxLayout="row" fxLayoutAlign="none center" *ngFor="let nivel of nivelesElegidos; let i= index">
-                      <div fxLayout="row" fxLayoutAlign="center center">
-                          <button class="boton-check" mat-mini-fab color="warn" disabled>
-                              {{i+1}}
-                          </button>
-  
-                          <div>{{nivel.nivel}} - {{nivel.hora}}</div>
-  
-                          <mat-icon class="icono-delete" (click)="eliminarPropiedad(i)">delete</mat-icon>
-                          
-                          <mat-divider></mat-divider>
-                      </div>
-                    </div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </div>
-
-            <mat-card-footer fxLayout="row" fxLayoutAlign="center center">
-                <button class="boton-footer" mat-raised-button color="primary" (click)="crearCursoPeriodo()">Guardar</button>
-            </mat-card-footer>
-
-        </mat-card-content> 
-    </mat-card>
+  <div *ngIf="!opciones && !cargando && errores.length" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span><span>{{ errores[0] }}</span>
   </div>
 </div>

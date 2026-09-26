@@ -13,7 +13,6 @@ import { XPuertaService } from 'src/app/core/http/x_puerta/x-puerta.service';
   styleUrls: ['./entradas.component.css']
 })
 export class EntradasComponent {
-  listaFechasAno! : string[]
   displayedColumns: string[] = ['fecha', 'puerta', 'tipoRegistro', 'codigoLeido','nombrePersona', 'tipoPersona', 'nombreHijo'];
   dataSource:any = new MatTableDataSource<any>();
   loader = false
@@ -32,18 +31,6 @@ export class EntradasComponent {
   private xPuertaService: XPuertaService,
   private fb: FormBuilder){
  }
-
-  ngOnInit(): void {    
-    const startDate = new Date('2024-01-01');
-    const endDate = new Date('2024-04-01');
-    const dateArray = [];
-
-    for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
-      const formattedDate = currentDate.toISOString().slice(0, 10);
-      dateArray.push(formattedDate);
-    }
-    this.listaFechasAno = dateArray
-  }
 
   downloadFile(){
 
@@ -89,16 +76,16 @@ export class EntradasComponent {
       this.dataSource.paginator = this.paginator
       this.dataSource.sort = this.sort  
         if(this.dataSource.data[0] == undefined){
-          this.message= "NO HAY RESULTADOS"
+          this.message= "No hay registros en esas fechas."
          
         }},
       (err: HttpErrorResponse) =>{
         this.loader = false
         if(err.status == 403){
-          this.message= "ENVÍO INCOMPLETO"
+          this.message= "Faltan datos para la búsqueda."
         }
         if(err.status == 500){
-          this.message= "ERROR DE SERVIDOR"
+          this.message= "Error del servidor. Inténtalo de nuevo."
         }
       })
 

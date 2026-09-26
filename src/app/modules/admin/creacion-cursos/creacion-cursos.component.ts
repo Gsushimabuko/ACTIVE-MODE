@@ -1,183 +1,166 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
-import { ZPeriodoService } from 'src/app/core/http/z_periodo/z-periodo.service';
-import { EditarCursoPeriodoComponent } from '../editar-curso-periodo/editar-curso-periodo.component';
-import { ElimDialogComponent } from '../parametros/elim-dialog/elim-dialog.component';
-import { ParaDialogComponent } from '../parametros/para-dialog/para-dialog.component';
+import { AdminService, CursoDePeriodo, mensajesDeError, PeriodoAdmin } from 'src/app/core/http/admin/admin.service';
+import { ConfirmarDialogComponent } from '../confirmar-dialog/confirmar-dialog.component';
+import { etiquetaPeriodo, MESES } from '../selector-periodo/selector-periodo.component';
+import { textoDias } from '../horario';
 
+// Cursos por periodo: qué cursos del catálogo están abiertos en cada mes y si el mes lo ven las familias.
 @Component({
   selector: 'app-creacion-cursos',
   templateUrl: './creacion-cursos.component.html',
   styleUrls: ['./creacion-cursos.component.css']
 })
 export class CreacionCursosComponent {
-  displayedColumns: string[] = ['curso', 'estado', 'profesor', 'cupos', 'info'];
-  dataSource: any = new MatTableDataSource<any>();
+  periodos: PeriodoAdmin[] = [];
+  periodo?: PeriodoAdmin;
+  cursos: CursoDePeriodo[] = [];
+  cargando = true;
+  ocupado = false;
+  aviso = '';
+  errores: string[] = [];
 
-  anos: any[] = [];
-  meses: any[] = [];
+  // Nuevo periodo
+  creandoPeriodo = false;
+  nuevoMes = 1;
+  nuevoAno = new Date().getFullYear();
+  // Copiar cursos
+  idOrigen: number | null = null;
 
-  periodoId: number = 1;
+  readonly meses = MESES;
+  readonly etiqueta = etiquetaPeriodo;
+  readonly textoDias = textoDias;
 
-  anoElegido: number = 2023;
-  mesElegido: number = 1;
-
-  loading: boolean = true;
-
-  constructor(private _periodoService: ZPeriodoService,
-    private _cursoService: ZCursoService,
-    private _route: ActivatedRoute,
-    private _router: Router,
-    public dialog: MatDialog,) {
-    this.loading = true;
-
-    this._route.queryParams.subscribe(params => {
-      if (params['ano'] && params['mes']) {
-        this.anoElegido = parseInt(params['ano']);
-        this.mesElegido = parseInt(params['mes']);
-      }
-    });
-
-    this.getTiempos();
-    this.getCursosPeriodos();
+  constructor(private admin: AdminService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog) {
+    this.aviso = history.state?.aviso ?? '';
+    const q = route.snapshot.queryParamMap;
+    const pedido = Number(q.get('idPeriodo')) || null;
+    // Enlaces antiguos: ?mes=&ano=
+    const mes = Number(q.get('mes')), ano = Number(q.get('ano'));
+    this.cargarPeriodos((ps) => pedido ?? ps.find((p) => p.mes === mes && p.ano === ano)?.id ?? this.periodoPorDefecto(ps));
   }
 
-  getTiempos() {
-    this._periodoService.getPeriodoTiempos().subscribe(data => {
-      console.log(data);
-      
-      this.anos = data.anos;
-      this.meses = data.meses;
-
-      this.loading = false;
-    });
+  // El mes actual si existe; si no, el siguiente que exista; si no, el más reciente.
+  private periodoPorDefecto(ps: PeriodoAdmin[]) {
+    const hoy = new Date();
+    const actual = hoy.getFullYear() * 12 + hoy.getMonth() + 1;
+    const futuros = ps.filter((p) => p.ano * 12 + p.mes >= actual).sort((a, b) => a.ano * 12 + a.mes - (b.ano * 12 + b.mes));
+    return futuros[0]?.id ?? ps[0]?.id;
   }
 
-  getCursosPeriodos() {
-    if (this.anoElegido == 0) return;
-    if (this.mesElegido == 0) return;
-
-    this.loading = true;
-    
-    //Get cursosperiodos
-    this._cursoService.getCursoPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
-      console.log(data);
-      this.dataSource = data.cursosPeriodos;
-
-      this.loading = false;
-    }, error => {
-      console.log(error);
-      this.loading = false;
+  private cargarPeriodos(elegir: (ps: PeriodoAdmin[]) => number | undefined) {
+    this.cargando = true;
+    this.admin.periodos().subscribe({
+      next: (ps) => {
+        this.periodos = ps;
+        const id = elegir(ps);
+        if (id) this.elegirPeriodo(id); else this.cargando = false;
+      },
+      error: (e) => { this.cargando = false; this.errores = mensajesDeError(e); },
     });
   }
 
-  getPeriodo() {
-    this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
-      console.log(data);
-      this.periodoId = data.id;
+  elegirPeriodo(id: number) {
+    this.periodo = this.periodos.find((p) => p.id === id);
+    this.router.navigate([], { queryParams: { idPeriodo: id }, replaceUrl: true });
+    this.cargarCursos();
+  }
+
+  cargarCursos() {
+    if (!this.periodo) return;
+    this.cargando = true;
+    this.admin.cursosDePeriodo(this.periodo.id).subscribe({
+      next: ({ periodo, cursos }) => {
+        Object.assign(this.periodo!, periodo);
+        this.cursos = cursos;
+        this.idOrigen = this.periodos.find((p) => p.id !== periodo.id && (p.cursos ?? 0) > 0)?.id ?? null;
+        this.cargando = false;
+      },
+      error: (e) => { this.cargando = false; this.errores = mensajesDeError(e); },
     });
   }
 
-  redirectToCursoNuevo() {
-    this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(data => {
-      //console.log(data);
-      this.periodoId = data.id;
-      this._router.navigate(['admin/creacion-form/' + this.periodoId]);
+  get pasado() {
+    if (!this.periodo) return false;
+    const hoy = new Date();
+    return this.periodo.ano * 12 + this.periodo.mes < hoy.getFullYear() * 12 + hoy.getMonth() + 1;
+  }
+
+  get origenes() { return this.periodos.filter((p) => p.id !== this.periodo?.id && (p.cursos ?? 0) > 0); }
+  get hayRepetidos() { return this.cursos.some((c) => c.repetido); }
+
+  // Ejecuta una acción que cambia datos y recarga, mostrando el resultado arriba.
+  private hacer(obs: any, aviso: string, recargarPeriodos = false) {
+    this.ocupado = true;
+    this.errores = [];
+    this.aviso = '';
+    obs.subscribe({
+      next: () => {
+        this.ocupado = false;
+        this.aviso = aviso;
+        if (recargarPeriodos) this.cargarPeriodos(() => this.periodo?.id); else this.cargarCursos();
+      },
+      error: (e: any) => { this.ocupado = false; this.errores = mensajesDeError(e); },
     });
   }
 
-  duplicarPeriodoAnterior() {
-    this.loading = true;
-
-    let mesAnt = -1;
-    let anoAnt = -1;
-
-    if (this.mesElegido == 1) {
-      mesAnt = 12;
-      anoAnt = this.anoElegido - 1;
-    }
-    else {
-      mesAnt = this.mesElegido - 1;
-      anoAnt = this.anoElegido;
-    }
-
-    this._periodoService.getPeriodo(mesAnt, anoAnt).subscribe(periodoAnt => {
-      if (!periodoAnt) return;
-      
-      this._periodoService.getPeriodo(this.mesElegido, this.anoElegido).subscribe(periodo => {
-        this._cursoService.duplicateCursoPeriodo(periodo, periodoAnt).subscribe(data => {
-          console.log(data);
-          this.loading = false;
-          this.getCursosPeriodos();
-        }, error => {
-          this.loading = false;
-        });
-
-      }, error => {
-        this.loading = false;
-      });
-    }, error => {
-      console.log(error);
-      this.loading = false;
-    })
+  cambiarVisibilidadPeriodo() {
+    const p = this.periodo!;
+    const abrir = p.estado !== 'ACTIVO';
+    this.hacer(this.admin.estadoPeriodo(p.id, abrir ? 'ACTIVO' : 'INACTIVO'),
+      abrir ? `${this.etiqueta(p)} ya es visible para las familias.` : `${this.etiqueta(p)} quedó oculto para las familias.`, true);
   }
 
-  openDialog(curso: any): void {
+  abrirNuevoPeriodo() {
+    // Propone el mes siguiente al más reciente.
+    const ultimo = this.periodos[0];
+    const base = ultimo ? new Date(ultimo.ano, ultimo.mes, 1) : new Date();
+    this.nuevoMes = base.getMonth() + 1;
+    this.nuevoAno = base.getFullYear();
+    this.creandoPeriodo = true;
+  }
 
-    let dialogRef = this.dialog.open(ParaDialogComponent, {
-      width: '400px',
-  
-      hasBackdrop: true,
+  crearPeriodo() {
+    this.ocupado = true;
+    this.errores = [];
+    this.admin.crearPeriodo(this.nuevoMes, this.nuevoAno).subscribe({
+      next: (p) => {
+        this.ocupado = false;
+        this.creandoPeriodo = false;
+        this.aviso = `${this.etiqueta(p)} creado. Está oculto: agrega o copia cursos y luego ábrelo a las familias.`;
+        this.cargarPeriodos(() => p.id);
+      },
+      error: (e) => { this.ocupado = false; this.errores = mensajesDeError(e); },
+    });
+  }
+
+  copiar() {
+    if (!this.idOrigen || !this.periodo) return;
+    const origen = this.periodos.find((p) => p.id === this.idOrigen)!;
+    this.hacer(this.admin.copiarCursos(this.periodo.id, this.idOrigen), `Se copiaron los cursos de ${this.etiqueta(origen)}.`, true);
+  }
+
+  cambiarVisibilidadCurso(c: CursoDePeriodo) {
+    const mostrar = c.estado === 'INACTIVO';
+    this.hacer(this.admin.estadoCursoPeriodo(c.id, mostrar ? 'ACTIVO' : 'INACTIVO'),
+      `${this.nombre(c)} ${mostrar ? 'vuelve a mostrarse' : 'quedó oculto'} en este periodo.`);
+  }
+
+  eliminar(c: CursoDePeriodo) {
+    this.dialog.open(ConfirmarDialogComponent, {
+      width: '440px', panelClass: 'am-dialogo',
       data: {
-        objeto: curso,
-        origen: "curso-periodo",
-        listaCampos: ['profesor', 'cupo_max']
-      }
-
+        titulo: `¿Eliminar ${this.nombre(c)} de ${this.etiqueta(this.periodo)}?`,
+        mensaje: 'Se borran sus clases y tarifas de este mes. El curso sigue en el catálogo.',
+        confirmar: 'Eliminar', peligro: true,
+      },
+    }).afterClosed().subscribe((ok) => {
+      if (ok) this.hacer(this.admin.eliminarCursoPeriodo(c.id), `${this.nombre(c)} se eliminó de este periodo.`, true);
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loading = true;
-      console.log('The dialog was closed');
-      this.getCursosPeriodos();
-    });
-
   }
 
-  cambiarEstado(id: number) {
-    this.loading = true;
-
-    this._cursoService.changeStateCursoPeriodo(id).subscribe(data => {
-      this.getCursosPeriodos();
-    });
-
-  }
-
-  eliminarRegistro(id: number){
-    
-    let objeto = {
-      id: id
-    }
-
-    var dialogRef = this.dialog.open(ElimDialogComponent, {
-      width: '400px',
-  
-      hasBackdrop: true,
-      data: {
-        objeto: objeto,
-        origen: "curso-periodo",
-      }
-      
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.loading = true;
-      console.log('The dialog was closed');
-      this.getCursosPeriodos();
-    });
-
+  nombre(c: CursoDePeriodo) {
+    return c.nombre.charAt(0) + c.nombre.slice(1).toLowerCase();
   }
 }

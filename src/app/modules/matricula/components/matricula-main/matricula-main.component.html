@@ -39,10 +39,9 @@
                   <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
                 </span>
               </label>
+              <app-datos-invitado *ngIf="invitado" parte="relacion" [form]="invitadoForm" (relacionCambio)="cambioRelacion()"></app-datos-invitado>
             </form>
-            <div *ngIf="invitado" class="am-form-grid">
-              <app-datos-invitado [form]="invitadoForm" (relacionCambio)="cambioRelacion()"></app-datos-invitado>
-            </div>
+            <app-datos-invitado *ngIf="invitado" parte="datos" [form]="invitadoForm"></app-datos-invitado>
           </div>
 
           <div *ngIf="invitado && mesForm.controls['mes'].value != '' && !invitadoForm.value.relacion" class="am-nota">
@@ -55,7 +54,7 @@
               <h2 class="am-seccion__titulo">2. Curso</h2>
               <label class="am-campo">Curso
                 <span class="am-campo__control">
-                  <select formControlName="curso" (change)="cambioCurso()">
+                  <select formControlName="curso" (change)="cursoPreseleccionado = null; cambioCurso()">
                     <option value="" disabled>Selecciona un curso</option>
                     <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">
                       {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}

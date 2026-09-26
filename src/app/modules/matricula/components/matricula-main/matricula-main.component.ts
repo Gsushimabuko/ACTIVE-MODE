@@ -14,7 +14,7 @@ import { CursoComponent } from '../curso/curso.component';
 import { Usuario } from '../../../../interfaces/usuario';
 import { MatDialog } from '@angular/material/dialog';
 import { TycDialogComponent } from '../tyc-dialog/tyc-dialog.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModoAccesoService } from '../../../../core/acceso/modo-acceso.service';
 import { crearFormInvitado, tipoUsuarioPorRelacion } from '../datos-invitado/datos-invitado.component';
@@ -68,6 +68,8 @@ export class MatriculaMainComponent {
   faltanDatosInvitado = false
   idPadre: number;
   idTipoPadre: number;
+  // Curso elegido en su ficha ("Matricularme"): se selecciona solo cuando cargan los cursos del periodo.
+  cursoPreseleccionado: number | null = null
 
 
   constructor(private formBuilder: FormBuilder,
@@ -75,6 +77,7 @@ export class MatriculaMainComponent {
     private cursoService:ZCursoService,
     public dialog: MatDialog,
     public router: Router,
+    private route: ActivatedRoute,
     public snackbar: MatSnackBar,
     private modo: ModoAccesoService
     ) {
@@ -97,6 +100,7 @@ export class MatriculaMainComponent {
 
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
+      this.preseleccionarPeriodo()
 
       if (this.invitado) {
         this.loader = false
@@ -155,6 +159,7 @@ export class MatriculaMainComponent {
         this.listaCursos = res
         this.actualizarCursosCalendario()
         this.loader=false
+        this.aplicarCursoPreseleccionado()
       })
 
     })
@@ -190,12 +195,14 @@ export class MatriculaMainComponent {
       if (this.invitado) {
         this.actualizarCursosCalendario()
         this.loader=false
+        this.aplicarCursoPreseleccionado()
         return
       }
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
         this.listaCursos = res
         this.actualizarCursosCalendario()
         this.loader=false
+        this.aplicarCursoPreseleccionado()
       })
 
     })
@@ -212,6 +219,33 @@ export class MatriculaMainComponent {
     this.cursoForm.reset({ curso: '', nivel: '', ratio: '', dia: '' })
     for (const c of ['nivel', 'ratio', 'dia']) this.cursoForm.controls[c].disable()
     this.actualizarCursosCalendario()
+    this.aplicarCursoPreseleccionado()
+  }
+
+  // Viene de la ficha del curso con ?periodo=<fecha>&idCurso=<id>: elige ese periodo si tiene matrícula abierta.
+  private preseleccionarPeriodo() {
+    const q = this.route.snapshot.queryParamMap
+    const idCurso = Number(q.get('idCurso'))
+    const pedido = new Date(q.get('periodo') ?? '')
+    if (!idCurso || isNaN(pedido.getTime())) return
+    const mes = (this.meses ?? []).find((m: any) => {
+      const f = new Date(m.periodo_fecha)
+      return f.getFullYear() === pedido.getFullYear() && f.getMonth() === pedido.getMonth()
+    })
+    if (!mes) return
+    this.cursoPreseleccionado = idCurso
+    this.mesForm.controls['mes'].setValue(mes.periodo_fecha)
+    this.seleccionMes()
+  }
+
+  // Elige el curso de la ficha si está en el periodo y abierto. El invitado antes elige su relación, que define la tarifa.
+  private aplicarCursoPreseleccionado() {
+    if (!this.cursoPreseleccionado || !this.cursos) return
+    if (this.invitado && !this.invitadoForm.value.relacion) return
+    const curso = this.cursos.find((c) => c.idCurso === this.cursoPreseleccionado && c.state !== 'CERRADO')
+    if (!curso) return
+    this.cursoForm.controls['curso'].setValue(curso.idCurso)
+    this.cambioCurso()
   }
 
   agregar() {

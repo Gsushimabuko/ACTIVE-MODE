@@ -18,6 +18,18 @@ export class EditListaPagoComponent implements OnInit {
   isEditing: boolean = false; // Estado de edición de la tabla
   filtroEstado: string = '';
   link: string = environment.API_URL_FRONT + "/pagos/";
+  filtros = [
+    { valor: '', texto: 'Todos' },
+    { valor: 'PENDING', texto: 'Pendientes' },
+    { valor: 'PAID', texto: 'Pagados' },
+    { valor: 'CANCELLED', texto: 'Cancelados' },
+  ];
+  private estados: Record<string, { texto: string; icono: string; clase: string }> = {
+    PENDING: { texto: 'Pendiente', icono: 'schedule', clase: 'am-estado--pendiente' },
+    PAID: { texto: 'Pagado', icono: 'check_circle', clase: 'am-estado--ok' },
+    CANCELLED: { texto: 'Cancelado', icono: 'cancel', clase: 'am-estado--error' },
+    ACTIVE: { texto: 'Activo', icono: 'link', clase: 'am-estado--neutro' },
+  };
   constructor(private uListasService: UListasService, private location: Location) {}
 
   ngOnInit() {
@@ -127,6 +139,10 @@ export class EditListaPagoComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  estado(status: string) {
+    return this.estados[status] || { texto: status, icono: 'help', clase: 'am-estado--neutro' };
   }
 
   // Volver a la página anterior

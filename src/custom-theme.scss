@@ -1,35 +1,87 @@
-
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
+// Tema de Angular Material con la marca de docs/DESIGN.md (naranja #C4531C, Poppins).
+// Así los componentes de Material que siguen en uso (tablas, selects, diálogos,
+// paginadores) toman el diseño nuevo sin reescribirlos uno por uno.
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$active-mode-front-primary: mat.define-palette(mat.$indigo-palette);
-$active-mode-front-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$am-naranja: (
+  50: #FBEEE6,
+  100: #F6D5C2,
+  200: #EDB595,
+  300: #E39468,
+  400: #D8733F,
+  500: #C4531C,
+  600: #B84C19,
+  700: #A8461A,
+  800: #933D16,
+  900: #6E2C0F,
+  A100: #FFD2BC,
+  A200: #FFAE87,
+  A400: #F27E45,
+  A700: #C4531C,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
 
-// The warn palette is optional (defaults to red).
-$active-mode-front-warn: mat.define-palette(mat.$red-palette);
+$am-gris: (
+  50: #FAF8F6,
+  100: #F6F3F0,
+  200: #EFEAE5,
+  300: #E9E4DF,
+  400: #D9D2CB,
+  500: #8A817A,
+  600: #5E5650,
+  700: #3A342F,
+  800: #2A2622,
+  900: #1E1B18,
+  A100: #F6F3F0,
+  A200: #D9D2CB,
+  A400: #5E5650,
+  A700: #1E1B18,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
+$active-mode-front-primary: mat.define-palette($am-naranja, 500, 50, 700);
+$active-mode-front-accent: mat.define-palette($am-gris, 900, 300, 700);
+$active-mode-front-warn: mat.define-palette(mat.$red-palette, 800);
+
 $active-mode-front-theme: mat.define-light-theme((
   color: (
     primary: $active-mode-front-primary,
     accent: $active-mode-front-accent,
     warn: $active-mode-front-warn,
-  )
+  ),
+  typography: mat.define-typography-config($font-family: 'Poppins, sans-serif'),
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
 @include mat.all-component-themes($active-mode-front-theme);
-

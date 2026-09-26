@@ -1,0 +1,66 @@
+.boton {
+  height: 40px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+.cargando {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.ficha {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+  color: var(--am-text);
+}
+
+.ficha:hover {
+  border-color: var(--am-brand);
+  color: var(--am-text);
+}
+
+.ficha__foto {
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.ficha__foto--vacia {
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+}
+
+.ficha__foto .am-icon {
+  font-size: 40px;
+}
+
+.ficha__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+}
+
+.ficha__nombre {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ficha__meta,
+.ficha__falta {
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.ficha__falta {
+  color: var(--am-warning);
+}

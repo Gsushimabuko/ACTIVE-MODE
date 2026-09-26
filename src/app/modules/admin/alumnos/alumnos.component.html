@@ -1,146 +1,67 @@
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-    <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
-      <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-    </button> 
+<div class="am-pagina">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Alumnos</h1>
+      <p class="am-sub">Quién tiene clase cada día: elige el mes y el día.</p>
+    </div>
+    <label *ngIf="calendario" class="am-campo mes-selector">
+      <span class="am-sr">Mes</span>
+      <span class="am-campo__control">
+        <select (change)="cambiarMes({ value: $any($event.target).value })">
+          <option value="" disabled [selected]="!mesSeleccionado">Selecciona el mes</option>
+          <option *ngFor="let m of nombresMeses" [value]="m" [selected]="m === mesSeleccionado">{{ enEspanol(m) }} {{ calendario.year }}</option>
+        </select>
+        <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+      </span>
+    </label>
+  </header>
+
+  <div class="contenido">
+    <section *ngIf="calendarioMes" class="am-tarjeta mes">
+      <h2 class="am-h2">{{ enEspanol(mesSeleccionado) }} {{ calendario.year }}</h2>
+      <div class="mes__grilla" role="group" [attr.aria-label]="'Días de ' + enEspanol(mesSeleccionado)">
+        <span *ngFor="let d of diasSemana" class="mes__dia" aria-hidden="true">{{ d }}</span>
+        <ng-container *ngFor="let dia of diasDelMes">
+          <span *ngIf="!dia" class="mes__vacio" aria-hidden="true"></span>
+          <button *ngIf="dia" type="button" class="mes__celda" [class.mes__celda--activa]="dia === diaElegido"
+            [attr.aria-pressed]="dia === diaElegido" (click)="elegirDia(dia)">{{ dia }}</button>
+        </ng-container>
+      </div>
+    </section>
+
+    <section class="resultados">
+      <div *ngIf="loader" class="cargando" role="status">
+        <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Buscando alumnos</span>
+      </div>
+
+      <div *ngIf="!loader && !reporte" class="am-vacio">
+        <span class="am-icon" aria-hidden="true">event</span>
+        <span>{{ calendarioMes ? 'Elige un día para ver los alumnos.' : 'Elige un mes para empezar.' }}</span>
+      </div>
+
+      <ng-container *ngIf="!loader && reporte">
+        <h2 class="am-h2">{{ fechaBuscada }}</h2>
+        <div *ngIf="!reporte.length" class="am-vacio">
+          <span class="am-icon" aria-hidden="true">event_busy</span>
+          <span>No hay clases este día.</span>
+        </div>
+
+        <article *ngFor="let deporte of reporte" class="am-tarjeta curso">
+          <h3 class="curso__nombre">{{ deporte.nombre | titlecase }}</h3>
+          <div class="curso__horarios">
+            <div *ngFor="let h of deporte.horarios" class="horario">
+              <div class="horario__cabecera">
+                <b>{{ h.nivel }}</b>
+                <span>{{ h.cantidad }} {{ h.cantidad === 1 ? 'alumno' : 'alumnos' }}</span>
+              </div>
+              <ul *ngIf="h.usuarios?.length" class="horario__lista">
+                <li *ngFor="let persona of h.usuarios">{{ persona | titlecase }}</li>
+              </ul>
+              <span *ngIf="!h.usuarios?.length" class="horario__vacio">Sin alumnos</span>
+            </div>
+          </div>
+        </article>
+      </ng-container>
+    </section>
   </div>
-<div *ngIf="loader" class="loader-spinner"
-fxLayout="column" fxLayoutAlign="center center"
->
-<mat-spinner color="primary"></mat-spinner>
 </div>
-<div  fxLayout="column">
-    <div fxLayout="row" fxLayoutAlign="center start">
-        <mat-card fxLayout="column"  fxLayoutAlign="center center" style=" width: 700px; height: 550px; margin:40px; padding:20px">
-            <div style="text-align:center;">
-                <h2>Seleccionar mes</h2>
-            </div>
-            <div fxLayout="row"  fxLayoutAlign="center start">
-                
-                <mat-form-field  *ngIf="calendario" appearance="outline">
-                    <mat-label>Selecciona el mes</mat-label>
-                    <mat-select (selectionChange)="cambiarMes($event)">
-                        <div *ngFor="let key of Object.keys(calendario) ; let i = index">
-                            <mat-option *ngIf="key != 'year'" [value]="key" >
-                                {{key}}
-                            </mat-option>
-                        </div>
-                    </mat-select>
-                </mat-form-field>
-      
-            </div>
-            <div style="text-align:center;">
-                <h2>Día seleccionado:</h2>
-                <div *ngIf="fechaBuscada">
-                    {{fechaBuscada}}
-                </div>
-            </div>
-        
-    
-            <div>
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>Domingo</th>
-                            <th>Lunes</th>
-                            <th>Martes</th>
-                            <th>Miércoles</th>
-                            <th>Jueves</th>
-                            <th>Viernes</th>
-                            <th>Sábado</th>
-                           
-                        </tr>
-                    </thead>
-                    <tbody *ngIf="calendarioMes">
-                        <tr class="trTable">
-                            <td *ngFor="let dia of calendarioMes.semana1" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                        <tr  class="trTable" >
-                            <td *ngFor="let dia of calendarioMes.semana2" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                        <tr class="trTable" >
-                            <td *ngFor="let dia of calendarioMes.semana3" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                        <tr  class="trTable" >
-                            <td *ngFor="let dia of calendarioMes.semana4" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                        <tr  class="trTable" >
-                            <td *ngFor="let dia of calendarioMes.semana5" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                        <tr *ngIf="calendarioMes.semana6" class="trTable" >
-                            <td *ngFor="let dia of calendarioMes.semana6" (click)="buscarResultadosDia(dia)" >{{dia}}</td>    
-                        </tr>
-                       
-                    </tbody>
-                </table>
-            </div>
-            
-        </mat-card>
-        
-    
-    </div>
-    <div  fxLayout="column"  fxLayoutAlign="center center" *ngIf="reporte">
-    
-            <div  *ngFor="let deporte of reporte">
-                <div>
-                    <mat-card style=" width: 1000px; margin:10px; padding:10px;">
-                       <h3 style="text-align: center; "> {{deporte.nombre}} </h3>
-                       <table>
-                            <thead>
-                                <th *ngIf="deporte.horarios[0]">
-                                    {{deporte.horarios[0].nivel}}
-                                    <ul>
-                                        <li>N. alumnos: {{deporte.horarios[0].cantidad}} </li>
-                                        <li *ngFor="let persona of deporte.horarios[0].usuarios">
-                                            {{persona | json}}
-                                        </li>
-    
-                                    </ul>
-                                    
-                                </th>
-                                <th *ngIf="deporte.horarios[1]">
-                                    {{deporte.horarios[1].nivel}}
-                                    <ul>
-                                        <li>N. alumnos: {{deporte.horarios[1].cantidad}} </li>
-                                        <li *ngFor="let persona of deporte.horarios[1].usuarios">
-                                            {{persona | json}}
-                                        </li>
-                                    </ul>
-                                </th>
-                                <th *ngIf="deporte.horarios[2]">
-                                    {{deporte.horarios[2].nivel}}
-                                    <ul>
-                                        <li>N. alumnos: {{deporte.horarios[2].cantidad}} </li>
-                                        <li *ngFor="let persona of deporte.horarios[2].usuarios">
-                                            {{persona | json}}
-                                        </li>
-                                    </ul>
-                                </th>
-                                <th *ngIf="deporte.horarios[3]">
-                                    {{deporte.horarios[3].nivel }}
-                                    <ul>
-                                        <li>N. alumnos: {{deporte.horarios[3].cantidad}} </li>
-                                        <li *ngFor="let persona of deporte.horarios[3].usuarios">
-                                            {{persona | json}}
-                                        </li>
-                                    </ul>
-                                </th>
-                            </thead> 
-                            <tbody>
-                               
-                            </tbody>
-                        
-    
-                            
-                       </table>
-    
-                    </mat-card>
-                    
-                   
-                </div>
-                
-            </div>
-                
-    </div>
-
-</div>
-

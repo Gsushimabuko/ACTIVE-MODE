@@ -1,64 +1,36 @@
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-    <button routerLink="../dashboard" mat-button style="transform:scale(2);">
-        <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-    </button>
-</div>
+<div class="am-pagina am-pagina--angosta">
+  <header class="am-titulos">
+    <h1 class="am-h1">Generación de pagos</h1>
+    <p class="am-sub">Crea un pago suelto; la persona recibe el link por correo.</p>
+  </header>
 
-<div class="welcome-text" fxLayoutAlign="center center">
-    <h1>Generación de pago</h1>
-</div>
-
-<form [formGroup]="pagoForm">
-    <div class="container" fxLayoutGap="20" fxLayoutAlign="center start">
-
-        <div>
-
-            <mat-card class="filters">
-                <div fxLayout="column" fxLayoutAlign="center center">
-                    <h2>Detalles del pago</h2>
-                </div>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="var_email">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Descripción del pago</mat-label>
-                    <input matInput formControlName="var_description">
-                </mat-form-field>
-
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Monto</mat-label>
-                    <input #amount matInput formControlName="num_amount" (click)="amount.select()" (input)="calculateAmounts()">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Comisión (%)</mat-label>
-                    <input matInput formControlName="num_commission_percentage" (input)="calculateAmounts()">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Comisión</mat-label>
-                    <input matInput readonly [value]="commission | number: '1.2-2':'en-US'">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>Total</mat-label>
-                    <input matInput readonly [value]="total | number: '1.2-2':'en-US'">
-                </mat-form-field>
-
-                <mat-error *ngIf="error" style="margin-bottom: 15px;">
-                    <span>{{ error }}</span>
-                </mat-error>
-
-                <button (click)="generarPago()" mat-button style="font-weight: bold;background-color:rgb(72, 87, 226)">
-                    Generar pago
-                </button>
-            </mat-card>
-        </div>
-
+  <form [formGroup]="pagoForm" class="am-tarjeta am-form" (ngSubmit)="generarPago()">
+    <label class="am-campo">Correo de quien paga
+      <input type="email" formControlName="var_email" autocomplete="off">
+    </label>
+    <label class="am-campo">Descripción del pago
+      <input type="text" formControlName="var_description">
+    </label>
+    <div class="am-form-grid">
+      <label class="am-campo">Monto (S/)
+        <input #amount type="text" inputmode="decimal" formControlName="num_amount" (click)="amount.select()" (input)="calculateAmounts()">
+      </label>
+      <label class="am-campo">Comisión (0.1 = 10 %)
+        <input type="text" inputmode="decimal" formControlName="num_commission_percentage" (input)="calculateAmounts()">
+      </label>
     </div>
 
-</form>
+    <div class="resumen">
+      <div><span>Comisión</span><b>S/ {{ commission | number: '1.2-2':'en-US' }}</b></div>
+      <div class="resumen__total"><span>Total a cobrar</span><b>S/ {{ total | number: '1.2-2':'en-US' }}</b></div>
+    </div>
+
+    <div *ngIf="error" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span><span>{{ error }}</span>
+    </div>
+
+    <div class="am-acciones">
+      <button type="submit" class="am-btn am-btn--primary">Generar pago</button>
+    </div>
+  </form>
+</div>

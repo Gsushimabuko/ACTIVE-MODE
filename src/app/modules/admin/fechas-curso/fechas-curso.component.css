@@ -1,0 +1,148 @@
+.cargando {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.errores {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.leyenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.muestra {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid var(--am-border-strong);
+}
+
+.muestra--elegida {
+  border-color: var(--am-brand);
+  background: var(--am-brand);
+}
+
+.muestra--bloqueada {
+  border-color: var(--am-brand-dark);
+  background: var(--am-brand-dark);
+}
+
+.muestra--no {
+  background: var(--am-surface-muted);
+}
+
+.dias {
+  margin-top: -12px;
+  font-size: 13px;
+}
+
+.mes {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.mes__dia {
+  padding: 4px 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--am-text-2);
+}
+
+.mes__celda {
+  min-height: 64px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: 1.5px solid var(--am-border);
+  border-radius: 8px;
+  background: var(--am-surface);
+  color: var(--am-text);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.mes__celda--vacia {
+  border: none;
+  background: transparent;
+  cursor: default;
+}
+
+.mes__celda:hover:not(:disabled) {
+  border-color: var(--am-brand);
+}
+
+.mes__celda:disabled {
+  background: var(--am-surface-muted);
+  color: var(--am-text-3);
+  cursor: not-allowed;
+}
+
+.mes__celda--elegida {
+  border-color: var(--am-brand);
+  background: var(--am-brand);
+  color: #FFFFFF;
+}
+
+.mes__celda--bloqueada {
+  border-color: var(--am-brand-dark);
+  background: var(--am-brand-dark);
+  cursor: not-allowed;
+}
+
+.mes__celda:focus-visible {
+  outline: 2px solid var(--am-text);
+  outline-offset: 2px;
+}
+
+.mes__num {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mes__inscritos {
+  font-size: 11px;
+}
+
+.pie {
+  align-items: center;
+}
+
+.pie__resumen {
+  margin-right: auto;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.pie__boton {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .mes__celda {
+    min-height: 48px;
+  }
+
+  .mes__inscritos {
+    display: none;
+  }
+}

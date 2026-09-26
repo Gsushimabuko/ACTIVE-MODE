@@ -1,129 +1,114 @@
-<!--loader-->
-<div *ngIf="loader" class="loader-spinner"
-fxLayout="column" fxLayoutAlign="center center"
->
-<mat-spinner color="primary"></mat-spinner>
-</div>
-
-<mat-dialog-content>
-    <div  fxLayout="column" fxLayoutAlign="space-evenly">
-          
-        <div class="" fxLayout="row warp" fxLayoutAlign="space-evenly">
-          
-
-    <div class="form" fxFlexLayoutAlign.lt-md="center center" >
-
-        <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutAlign="space-evenly center">
-
-          <form [formGroup]="mesForm">
-            <mat-form-field class="input-propiedades" appearance="outline">
-              <mat-label>Mes</mat-label>
-              <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
-                  <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
-                      {{mes.mes}} - {{mes.ano}}
-                  </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-          </form>
-
-        </div>
-
-        <div *ngIf="listaCursos.length!=0">
-
-            <b>Cursos matriculados</b>
-            <div *ngFor="let curso of listaCursos">
-                <mat-card class="card-nuevo" >
-                    <mat-card-header>
-                        <mat-card-title-group fxLayout.lt-md="column">
-                            <p>{{curso.nombre | titlecase}}</p> 
-                            <p>{{curso.horarioDias}} - {{curso.horarioHoras}}</p>
-                            <div class="borrar" (click)="eliminarCursoMatriculado(curso.idCursoPeriodo)">
-                                <mat-icon  class="icono-eliminado" fontIcon="delete_outline"></mat-icon>
-                            </div>
-                        </mat-card-title-group>
-                    </mat-card-header>
-                </mat-card>
-            </div>
-
-        </div>
-
-        <mat-card *ngIf=" mesForm.controls['mes'].value != '' " class="card" fxFlexLayoutAlign.lt-md="center center" >
-         
-        <form [formGroup]="cursoForm" fxLayout="column" fxLayoutAlign.lt-md="center center" fxLayoutAlign="start">
-          <b style="margin: 15px ;font-size:18px">Elige la fecha y hora</b>
-          <mat-form-field class="input-propiedades" appearance="outline" >
-            <mat-label>Curso</mat-label>
-            <mat-select formControlName="curso" (selectionChange)="cambioCurso()" >
-                <mat-option *ngFor="let curso of cursos" [value]="curso.idCurso"  [disabled]="curso.state=='CERRADO'">
-                    {{curso.name | titlecase}} - {{curso.month}} {{(curso.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="input-propiedades" appearance="outline">
-            <mat-label>Horario</mat-label>
-            <mat-select formControlName="nivel" (selectionChange)="cambioNivel()">
-                <mat-option *ngFor="let nivel of niveles" [value]="nivel.idNivel" [disabled]="nivel.state=='CERRADO'">
-                    {{nivel.time}} ({{nivel.name}}) {{(nivel.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="input-propiedades" appearance="outline">
-            <mat-label>Veces por semana</mat-label>
-            <mat-select formControlName="ratio" (selectionChange)="cambioRatio()">
-                <mat-option *ngFor="let ratio of ratios" [value]="ratio.idRatio" [disabled]="ratio.state=='CERRADO'">
-                    {{ratio.ratio}} {{(ratio.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="input-propiedades" appearance="outline">
-            <mat-label>Dias</mat-label>
-            <mat-select formControlName="dia" (selectionChange)="eleccionDia()">
-                <mat-option *ngFor="let dia of dias" [value]="dia.idDias" [disabled]="dia.state=='CERRADO'">
-                    {{dia.name}} {{(dia.state == 'CERRADO' ? '(CERRADO)' : '')}}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </form>
-
-      </mat-card>
-
-        <div class="info">
-          <mat-card class="card" *ngIf=" mesForm.controls['mes'].value != '' ">
-
-          <!-- lista de cursos inscritos -->
-          <app-curso-lista [listaCursos]="listaCursos" [listaCursosNuevos]="listaCursosNuevos" (eliminar)="eliminar($event)"></app-curso-lista>
-          <!-- info del curso actual -->
-          
-          <app-curso  *ngIf="this.cursoForm.controls['curso'].value !='' && curso!=undefined" [curso]="curso" [tarifa]="tarifa" [dias]="cantDias" ></app-curso>
-          
-          </mat-card>
-        </div>
-        
-        <div class="botones" *ngIf=" mesForm.controls['mes'].value != '' " fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center">
-          <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="this.cursoForm.controls['dia'].value ==''" mat-button (click)="agregarCurso()">Agregar un curso</button>
-          <button class="boton-semifinal" mat-raised-button color="primary" [disabled]="listaCursosNuevos[0] == undefined" mat-button (click)="matricularCursos()">Guardar Cambios</button>
-        </div>
-
-      </div>
-  
-
-
-
-
-      <!-- calendario -->
-    <div class="calendario" *ngIf=" mesForm.controls['mes'].value != '' " >
-
-        <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
-        </div>
-    </div>             
-
-  <!-- botones -->
-
+<div class="am dialogo">
+  <div *ngIf="loader" class="dialogo__cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando</span>
   </div>
 
+  <header class="dialogo__cabecera">
+    <div class="am-titulos">
+      <h2 class="am-h2">Matrícula extemporánea</h2>
+      <p class="am-sub">Agrega o quita cursos del alumno. No genera ningún cobro.</p>
+    </div>
+    <button type="button" class="am-icono-boton" mat-dialog-close aria-label="Cerrar">
+      <span class="am-icon" aria-hidden="true">close</span>
+    </button>
+  </header>
 
+  <div class="dialogo__cuerpo">
+    <div class="dialogo__form">
+      <form [formGroup]="mesForm">
+        <label class="am-campo">Periodo
+          <span class="am-campo__control">
+            <select formControlName="mes" (change)="seleccionMes()">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let mes of meses" [value]="mes.periodo_fecha">{{ mes.mes }} {{ mes.ano }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+      </form>
 
+      <section *ngIf="listaCursos.length" class="am-seccion">
+        <h3 class="am-seccion__titulo">Ya matriculado</h3>
+        <div *ngFor="let c of listaCursos" class="fila">
+          <div class="fila__texto">
+            <b>{{ c.nombre | titlecase }}</b>
+            <span>{{ c.horarioDias }} · {{ c.horarioHoras }}</span>
+          </div>
+          <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="eliminarCursoMatriculado(c.idCursoPeriodo)">Quitar</button>
+        </div>
+      </section>
 
+      <form *ngIf="mesForm.controls['mes'].value != ''" [formGroup]="cursoForm" class="am-seccion">
+        <h3 class="am-seccion__titulo">Agregar un curso</h3>
+        <label class="am-campo">Curso
+          <span class="am-campo__control">
+            <select formControlName="curso" (change)="cambioCurso()">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">{{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <label class="am-campo">Horario
+          <span class="am-campo__control">
+            <select formControlName="nivel" (change)="cambioNivel()">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let n of niveles" [ngValue]="n.idNivel" [disabled]="n.state == 'CERRADO'">{{ n.time }} ({{ n.name }}){{ n.state == 'CERRADO' ? ' · cerrado' : '' }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <div class="am-form-grid">
+          <label class="am-campo">Veces por semana
+            <span class="am-campo__control">
+              <select formControlName="ratio" (change)="cambioRatio()">
+                <option value="" disabled>Selecciona</option>
+                <option *ngFor="let r of ratios" [ngValue]="r.idRatio" [disabled]="r.state == 'CERRADO'">{{ r.ratio }}{{ r.state == 'CERRADO' ? ' · cerrado' : '' }}</option>
+              </select>
+              <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+            </span>
+          </label>
+          <label class="am-campo">Días
+            <span class="am-campo__control">
+              <select formControlName="dia" (change)="eleccionDia()">
+                <option value="" disabled>Selecciona</option>
+                <option *ngFor="let d of dias" [ngValue]="d.idDias" [disabled]="d.state == 'CERRADO'">{{ d.name }}{{ d.state == 'CERRADO' ? ' · cerrado' : '' }}</option>
+              </select>
+              <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+            </span>
+          </label>
+        </div>
 
-</mat-dialog-content>
+        <div *ngIf="cursoForm.controls['curso'].value != '' && curso" class="curso-elegido">
+          <b>{{ curso.name | titlecase }}</b>
+          <span>Prof. {{ curso.instructor | titlecase }}</span>
+          <span *ngIf="tarifa != 0">Monto por mes: <b>S/ {{ tarifa | number: '1.2-2' : 'en-US' }}</b> por {{ cantDias }} clases</span>
+        </div>
+
+        <button type="button" class="am-btn am-btn--secondary dialogo__agregar" [disabled]="cursoForm.controls['dia'].value == ''" (click)="agregarCurso()">
+          <span class="am-icon" aria-hidden="true">add</span>Agregar a la lista
+        </button>
+      </form>
+
+      <section *ngIf="listaCursosNuevos.length" class="am-seccion">
+        <h3 class="am-seccion__titulo">Por agregar</h3>
+        <div *ngFor="let c of listaCursosNuevos" class="fila">
+          <div class="fila__texto">
+            <b>{{ c.nombre | titlecase }}</b>
+            <span>{{ c.horarioDias }} · {{ c.horarioHoras }}</span>
+          </div>
+          <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="eliminar(c.idCursoPeriodo)">Quitar</button>
+        </div>
+      </section>
+
+      <div *ngIf="mesForm.controls['mes'].value != ''" class="am-acciones">
+        <button type="button" class="am-btn am-btn--secondary" mat-dialog-close>Cerrar</button>
+        <button type="button" class="am-btn am-btn--primary" [disabled]="listaCursosNuevos[0] == undefined" (click)="matricularCursos()">Guardar cambios</button>
+      </div>
+    </div>
+
+    <div *ngIf="mesForm.controls['mes'].value != ''" class="dialogo__calendario">
+      <app-calendar-main #calendario [listaCursosTotales]="listaCursosTotales" [mesCalendario]="mesCalendario"></app-calendar-main>
+    </div>
+  </div>
+</div>

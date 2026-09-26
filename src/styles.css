@@ -18,40 +18,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color:rgba(248, 183, 18, 0.668);
     
 }
+/* Avisos de las pantallas de la puerta: grandes y con color de estado, para leerse a distancia */
+.snackbar-success .mdc-snackbar__surface,
+.snackbar-fail .mdc-snackbar__surface,
+.snackbar-error .mdc-snackbar__surface {
+    min-width: min(560px, 92vw) !important;
+    border-radius: 12px !important;
+}
+.snackbar-success .mdc-snackbar__surface { background: #2F7A4B !important; }
+.snackbar-fail .mdc-snackbar__surface { background: #B3261E !important; }
+.snackbar-error .mdc-snackbar__surface { background: #5E5650 !important; }
+.snackbar-success .mdc-snackbar__label,
+.snackbar-fail .mdc-snackbar__label,
+.snackbar-error .mdc-snackbar__label {
+    color: #FFFFFF !important;
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.snackbar-success button,
+.snackbar-fail button,
 .snackbar-error button {
-    background: #9d9d9d !important ;
-    color: rgb(0, 0, 0) !important;
-    border: none;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold; 
-}
-.snackbar-fail button {
-    background-color: #F44336;
-    color: rgb(0, 0, 0) !important;
-    border: none;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold; 
-}
-.snackbar-success button {
-    background-color: #36f44f;
-    color: rgb(0, 0, 0) !important;
-    border: none;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold;
-}
-.snackbar-error div{
-    background: #9d9d9d !important ;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold;
-}
-.snackbar-fail div{
-    background: #F44336 !important ;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold;
-}
-
-.snackbar-success div{
-    background:  #36f44f !important ;
-    color: rgb(0, 0, 0) !important ;
-    font-weight: bold;
+    color: #FFFFFF !important;
+    font-weight: 600;
 }

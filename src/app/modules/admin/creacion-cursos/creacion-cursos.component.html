@@ -1,112 +1,155 @@
-<!--loader-->
-<div *ngIf="loading" class="loader-spinner" fxLayout="column" fxLayoutAlign="center center">
-  <mat-spinner color="primary"></mat-spinner>
-</div>
-
-<div style="margin:20px; width: 15px;" fxLayout="row" fxLayoutAlign="center center">
-  <button routerLink="../dashboard" mat-button style="transform:scale(2);"> 
-    <mat-icon style="margin-left:20px; color: rgb(0, 0, 0)">keyboard_arrow_left</mat-icon>
-  </button> 
-</div>
-
-<h2 class="titulo-componente">Gestión de Cursos por Periodo</h2>
-
-<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start" fxLayoutGap="20">
-  <div class="container-cartilla">
-    <mat-card class="card-nuevo">
-        <mat-card-content>
-            <mat-form-field appearance="fill">
-                <mat-label>Año</mat-label>
-                <mat-select [(value)]="anoElegido" (valueChange)="getCursosPeriodos()">
-                  <mat-option *ngFor="let ano of anos" [value]="ano.value">
-                    {{ano.value}}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field>
-        
-            <mat-form-field appearance="fill">
-                <mat-label>Mes</mat-label>
-                <mat-select [(value)]="mesElegido" (valueChange)="getCursosPeriodos()">
-                <mat-option *ngFor="let mes of meses" [value]="mes.value">
-                    {{mes.mes}}
-                </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </mat-card-content> 
-    </mat-card>
-  </div>
-</div>
-
-<div class="container" fxLayout="row warp" fxLayoutAlign="space-evenly start">
-  <div class="container-cartilla">
-    <mat-card class="card-nuevo">
-      <mat-card-header fxLayout="row" fxLayoutAlign="center center">
-        <button class="boton-footer" mat-raised-button color="primary" (click)="redirectToCursoNuevo()">Crear nuevo curso</button>
-        <button class="boton-footer" mat-raised-button color="primary" (click)="duplicarPeriodoAnterior()">Duplicar mes anterior</button>
-      </mat-card-header>
-    </mat-card>
+<div class="am-pagina">
+  <div *ngIf="ocupado" class="am-cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Guardando</span>
   </div>
 
-  <div class="container-cartilla">
-    <mat-card class="card-nuevo">
-      <mat-card-content>
-        <table mat-table [dataSource]="dataSource"  class="demo-table" matSort>
-            <!-- Position Column -->
-            <ng-container matColumnDef="curso">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header>Curso</th>
-              <td mat-cell *matCellDef="let element">{{element.z_curso.nombre}}</td>
-            </ng-container>
-  
-            <ng-container matColumnDef="estado">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-              <td  mat-cell *matCellDef="let element">{{element.estado}}</td>
-            </ng-container>
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Cursos por periodo</h1>
+      <p class="am-sub">Qué cursos del catálogo se dictan cada mes, con su profesor, horarios y tarifas.</p>
+    </div>
+    <a *ngIf="periodo" class="am-btn am-btn--primary acciones__boton" routerLink="/admin/curso-periodo/nuevo" [queryParams]="{ idPeriodo: periodo.id }">
+      <span class="am-icon" aria-hidden="true">add</span>Abrir curso en {{ etiqueta(periodo) }}
+    </a>
+  </header>
 
-            <ng-container matColumnDef="profesor">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Profesor</th>
-              <td  mat-cell *matCellDef="let element">{{element.profesor}}</td>
-            </ng-container>
-  
-            <ng-container matColumnDef="cupos">
-              <th  mat-header-cell *matHeaderCellDef mat-sort-header>Cupos</th>
-              <td  mat-cell *matCellDef="let element">{{element.cupo_max}}</td>
-            </ng-container>
+  <!-- Periodo -->
+  <section class="am-tarjeta periodo">
+    <div class="periodo__fila">
+      <label class="am-campo periodo__selector">Periodo
+        <span class="am-campo__control">
+          <select [ngModel]="periodo?.id" (ngModelChange)="elegirPeriodo($event)" [disabled]="!periodos.length">
+            <option *ngFor="let p of periodos" [ngValue]="p.id">{{ etiqueta(p) }} · {{ p.estado === 'ACTIVO' ? 'visible' : 'oculto' }} · {{ p.cursos }} curso(s)</option>
+          </select>
+          <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+        </span>
+      </label>
+      <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="abrirNuevoPeriodo()" [disabled]="creandoPeriodo">
+        <span class="am-icon" aria-hidden="true">calendar_add_on</span>Nuevo periodo
+      </button>
+    </div>
 
-            <!-- Weight Column -->
-            <ng-container matColumnDef="info">
-              <th class="boton-tabla" mat-header-cell *matHeaderCellDef>Editar</th>
-              <td class="boton-tabla" mat-cell *matCellDef="let element">
-                <div *ngIf="element.estado == 'ACTIVO'; else otro">
-                    <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
-                      <mat-icon>editar</mat-icon>
-                    </button>
-                    <button class="boton-check" mat-mini-fab color="accent" (click)="cambiarEstado(element.id)">
-                      <mat-icon>visibility_off</mat-icon>
-                      </button>
-                      <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
-                        <mat-icon>delete</mat-icon>
-                      </button>
-                </div>
-                <ng-template #otro>
-                  <button class="boton-check" mat-mini-fab  color="primary" (click)="openDialog(element)">
-                    <mat-icon>editar</mat-icon>
-                  </button>
-                    <button class="boton-check" mat-mini-fab color="primary" (click)="cambiarEstado(element.id)">
-                      <mat-icon>visibility</mat-icon>
-                    </button>
-                    <button class="boton-check" mat-mini-fab color="warn" (click)="eliminarRegistro(element.id)">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                </ng-template>
-  
-              </td>
-            </ng-container>
-    
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        
-      </mat-card-content>
-    </mat-card>  
-  </div> 
+    <form *ngIf="creandoPeriodo" class="periodo__nuevo" (ngSubmit)="crearPeriodo()">
+      <label class="am-campo">Mes
+        <span class="am-campo__control">
+          <select name="mes" [(ngModel)]="nuevoMes">
+            <option *ngFor="let m of meses; let i = index" [ngValue]="i + 1">{{ m }}</option>
+          </select>
+          <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+        </span>
+      </label>
+      <label class="am-campo">Año
+        <input name="ano" type="number" min="2020" max="2100" [(ngModel)]="nuevoAno">
+      </label>
+      <button type="submit" class="am-btn am-btn--primary acciones__boton">Crear periodo</button>
+      <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="creandoPeriodo = false">Cancelar</button>
+    </form>
+
+    <div *ngIf="periodo" class="visibilidad" [class.visibilidad--visible]="periodo.estado === 'ACTIVO'">
+      <span class="am-icon" aria-hidden="true">{{ periodo.estado === 'ACTIVO' ? 'visibility' : 'visibility_off' }}</span>
+      <span class="visibilidad__texto">
+        <ng-container *ngIf="periodo.estado === 'ACTIVO'"><b>Visible para las familias.</b> Pueden matricularse en los cursos abiertos de {{ etiqueta(periodo) }}.</ng-container>
+        <ng-container *ngIf="periodo.estado !== 'ACTIVO'"><b>Oculto para las familias.</b> Ábrelo cuando sus cursos estén listos.</ng-container>
+        <ng-container *ngIf="pasado"> Este mes ya pasó: sus clases ya no se pueden matricular.</ng-container>
+      </span>
+      <button type="button" class="am-btn acciones__boton" [class.am-btn--primary]="periodo.estado !== 'ACTIVO'"
+        [class.am-btn--secondary]="periodo.estado === 'ACTIVO'" (click)="cambiarVisibilidadPeriodo()">
+        {{ periodo.estado === 'ACTIVO' ? 'Ocultar periodo' : 'Abrir a las familias' }}
+      </button>
+    </div>
+  </section>
+
+  <div *ngIf="aviso" class="am-alerta am-alerta--ok" role="status">
+    <span class="am-icon" aria-hidden="true">check_circle</span><span>{{ aviso }}</span>
+  </div>
+  <div *ngIf="errores.length" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">error</span><span>{{ errores.join(' ') }}</span>
+  </div>
+  <div *ngIf="hayRepetidos" class="am-alerta" role="alert">
+    <span class="am-icon" aria-hidden="true">warning</span>
+    <span>Hay un curso abierto dos veces en este mes y las familias solo ven uno. Elimina uno o muévelo a otro periodo con "Editar".</span>
+  </div>
+
+  <div *ngIf="cargando" class="cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando cursos</span>
+  </div>
+
+  <ng-container *ngIf="!cargando && periodo">
+    <div *ngIf="!cursos.length" class="am-vacio vacio">
+      <span class="am-icon" aria-hidden="true">school</span>
+      <span>{{ etiqueta(periodo) }} no tiene cursos todavía.</span>
+      <div *ngIf="origenes.length" class="vacio__copiar">
+        <label class="am-campo">Copiar los cursos de
+          <span class="am-campo__control">
+            <select [(ngModel)]="idOrigen">
+              <option *ngFor="let p of origenes" [ngValue]="p.id">{{ etiqueta(p) }} ({{ p.cursos }} cursos)</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="copiar()">
+          <span class="am-icon" aria-hidden="true">content_copy</span>Copiar
+        </button>
+      </div>
+      <span class="vacio__nota">Se copian los cursos visibles con su profesor, cupo, horarios y tarifas, y se crean las clases de este mes.</span>
+    </div>
+
+    <div *ngIf="cursos.length" class="am-tabla-contenedor">
+      <table class="am-tabla">
+        <thead>
+          <tr>
+            <th scope="col">Curso</th>
+            <th scope="col">Días y horarios</th>
+            <th scope="col" class="am-num">Cupo</th>
+            <th scope="col" class="am-num">Desde</th>
+            <th scope="col" class="am-num">Inscritos</th>
+            <th scope="col">Estado</th>
+            <th scope="col"><span class="am-sr">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of cursos">
+            <td>
+              <b class="celda__curso">{{ c.nombre | titlecase }}</b>
+              <div class="am-tabla-meta">Prof. {{ c.profesor | titlecase }}</div>
+              <div *ngIf="c.repetido" class="am-tabla-meta repetido">Abierto dos veces en este mes</div>
+            </td>
+            <td>
+              {{ textoDias(c.dias) || '—' }}
+              <div class="am-tabla-meta">{{ c.horarios }} horario(s) · {{ c.clases }} clases</div>
+            </td>
+            <td class="am-num">{{ c.cupo }}</td>
+            <td class="am-num">{{ c.desde !== null ? 'S/ ' + (c.desde | number: '1.2-2' : 'en-US') : '—' }}</td>
+            <td class="am-num">{{ c.inscritos }}</td>
+            <td>
+              <span class="am-estado" [class.am-estado--ok]="c.estado !== 'INACTIVO' && c.clasesPendientes"
+                [class.am-estado--neutro]="c.estado === 'INACTIVO' || !c.clasesPendientes">
+                <span class="am-icon" aria-hidden="true">{{ c.estado === 'INACTIVO' ? 'visibility_off' : c.clasesPendientes ? 'check_circle' : 'event_busy' }}</span>
+                {{ c.estado === 'INACTIVO' ? 'Oculto' : c.clasesPendientes ? 'Abierto' : 'Clases pasadas' }}
+              </span>
+            </td>
+            <td>
+              <div class="celda__acciones">
+                <a class="am-btn am-btn--secondary accion" [routerLink]="['/admin/curso-periodo', c.id]">Editar</a>
+                <a class="am-btn am-btn--secondary accion" [routerLink]="['/admin/curso-fechas', c.id]" [queryParams]="{ curso: c.nombre }">Fechas</a>
+                <button type="button" class="am-btn am-btn--secondary accion" (click)="cambiarVisibilidadCurso(c)">
+                  {{ c.estado === 'INACTIVO' ? 'Mostrar' : 'Ocultar' }}
+                </button>
+                <button type="button" class="accion__eliminar" (click)="eliminar(c)" [disabled]="c.inscritos > 0"
+                  [title]="c.inscritos ? 'Tiene alumnos inscritos: ocúltalo en vez de eliminarlo' : 'Eliminar de este periodo'"
+                  [attr.aria-label]="'Eliminar ' + c.nombre + ' de este periodo'">
+                  <span class="am-icon" aria-hidden="true">delete</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <div *ngIf="!cargando && !periodos.length" class="am-vacio">
+    <span class="am-icon" aria-hidden="true">calendar_month</span>
+    <span>Todavía no hay periodos. Crea el primero con "Nuevo periodo".</span>
+  </div>
 </div>

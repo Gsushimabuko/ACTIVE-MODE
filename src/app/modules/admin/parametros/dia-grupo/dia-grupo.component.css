@@ -1,41 +1,28 @@
-.boton-check{
-    margin-right: 10px;
+.generador {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.icono-delete{
-    color: blue;
+.generador__dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.boton-footer{
-    margin: 10px;
+.boton-dia {
+  box-shadow: none;
 }
 
-.container-cartilla{
-    margin: 10px;
+.inhabilitado {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.titulo-componente{
-    text-align: center;
-    color: white;
-}
-
-.input-propiedades{
-    margin-right: 10px;
-}
-
-input{
-    color: black!important;
-  }
-
-  mat-divider{
-    margin-bottom: 15px;
-}
-
-.cabecera-dias{
-    margin-bottom: 20px;
-}
-
-.inhabilitado{
-    cursor: not-allowed;
-    pointer-events:none;
+.grupo-fila {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

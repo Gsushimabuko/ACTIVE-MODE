@@ -45,7 +45,7 @@ export class TipoUsuariosComponent {
         hasBackdrop:true,
         data: {
           objeto: objeto,
-          origen: "rol",
+          origen: "tipoUsuario",
           listaCampos: ["nombre"]
         }
         

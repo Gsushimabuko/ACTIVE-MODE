@@ -108,7 +108,7 @@
 
 .am .am-btn:focus-visible,
 .am a:focus-visible,
-.am input:focus-visible {
+.am input:not(.mat-mdc-input-element):focus-visible {
   outline: 2px solid var(--am-brand);
   outline-offset: 2px;
 }
@@ -247,6 +247,12 @@
 
 .am .am-pie-form a {
   font-weight: 600;
+}
+
+.am .am-acciones .am-btn {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 14px;
 }
 
 /* Campos de formulario */
@@ -501,6 +507,558 @@
   .am .am-form-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* Tablas */
+.am .am-tabla-contenedor {
+  /* relative: que los textos .am-sr de la tabla no estiren la página en móvil */
+  position: relative;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  overflow-x: auto;
+  background: var(--am-surface);
+}
+
+.am .am-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.am .am-tabla th {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--am-border);
+  background: var(--am-surface-alt);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--am-text-2);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.am .am-tabla td {
+  padding: 12px 20px;
+  border-top: 1px solid var(--am-divider);
+  vertical-align: middle;
+}
+
+.am .am-tabla tbody tr:first-child td {
+  border-top: none;
+}
+
+.am .am-tabla .am-num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.am .am-tabla-meta {
+  display: block;
+  font-size: 12px;
+  color: var(--am-text-2);
+}
+
+.am .am-ref {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  color: var(--am-text-label);
+  word-break: break-all;
+}
+
+/* Estado en texto + ícono (sin badges) */
+.am .am-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.am .am-estado .am-icon {
+  font-size: 18px;
+}
+
+.am .am-estado--ok { color: var(--am-success); }
+.am .am-estado--pendiente { color: var(--am-warning); }
+.am .am-estado--error { color: var(--am-error); }
+.am .am-estado--neutro { color: var(--am-text-2); }
+
+/* Filtros tipo pastilla (son botones, no etiquetas) */
+.am .am-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.am .am-filtro {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--am-border-strong);
+  border-radius: 999px;
+  background: var(--am-surface);
+  color: #3A342F;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.am .am-filtro--activo {
+  border-color: var(--am-text);
+  background: var(--am-text);
+  color: #FFFFFF;
+}
+
+.am .am-filtro:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+/* Tarjetas de indicadores */
+.am .am-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.am .am-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+}
+
+.am .am-kpi__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.am .am-kpi__cabecera .am-icon {
+  font-size: 22px;
+  color: var(--am-brand);
+}
+
+.am .am-kpi__valor {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.am .am-kpi__nota {
+  font-size: 12px;
+  color: var(--am-text-2);
+}
+
+/* Barra de ocupación */
+.am .am-barra {
+  height: 6px;
+  border-radius: 999px;
+  background: #F1ECE7;
+  overflow: hidden;
+}
+
+.am .am-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #D98A5F;
+}
+
+.am .am-barra--alta span {
+  background: var(--am-brand);
+}
+
+/* Componentes de Material dentro de pantallas con el diseño nuevo */
+.am .mat-mdc-table,
+.am .mat-mdc-paginator {
+  background: transparent;
+  font-family: inherit;
+}
+
+.am .mat-mdc-header-row {
+  background: var(--am-surface-alt);
+}
+
+.am .mat-mdc-header-cell {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--am-text-2);
+}
+
+.am .mat-mdc-cell {
+  font-size: 14px;
+  color: var(--am-text);
+  border-bottom-color: var(--am-divider);
+}
+
+.am .mat-mdc-form-field .mdc-notched-outline__leading {
+  border-radius: 8px 0 0 8px;
+  width: 12px;
+}
+
+.am .mat-mdc-form-field .mdc-notched-outline__trailing {
+  border-radius: 0 8px 8px 0;
+}
+
+.am .mat-mdc-table {
+  width: 100%;
+}
+
+/* Botones chicos y de solo ícono (acciones en filas de tabla) */
+.am .am-btn--chico {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+}
+
+.am .am-icono-boton {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--am-text-3);
+  cursor: pointer;
+}
+
+.am .am-icono-boton:hover {
+  background: var(--am-surface-muted);
+  color: var(--am-text);
+}
+
+.am .am-icono-boton--peligro:hover {
+  background: var(--am-error-soft);
+  color: var(--am-error);
+}
+
+.am .am-icono-boton:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+.am .am-fila-acciones {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Parámetros: tabla de registros + formulario para agregar */
+.am .am-param {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.am .am-param-alta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.am .am-param-fila {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--am-divider);
+}
+
+.am .am-param-fila .am-campo {
+  flex: 1;
+  min-width: 0;
+}
+
+.am .am-param-num {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 8px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--am-brand-soft);
+  color: var(--am-brand-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.am .am-param-fila .am-icono-boton {
+  margin-bottom: 4px;
+}
+
+@media (max-width: 1099px) {
+  .am .am-param {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .am .am-param-fila {
+    flex-wrap: wrap;
+  }
+}
+
+/* Tarjeta de acceso a una sección (Parámetros, Colectas, Puerta) */
+.am .am-acceso {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+  color: var(--am-text);
+}
+
+.am .am-acceso:hover {
+  border-color: var(--am-brand);
+  color: var(--am-text);
+}
+
+.am .am-acceso:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+.am .am-acceso__icono {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+}
+
+.am .am-acceso__titulo {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.am .am-acceso__texto {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--am-text-2);
+}
+
+.am .am-acceso__ir {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--am-brand);
+}
+
+/* Ficha del curso: etiquetas, plan numerado y cifras */
+.am .am-chip {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.am .am-chip--foto {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--am-text);
+}
+
+.am .am-chip--oscuro {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.am .am-plan {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+}
+
+.am .am-plan li {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--am-text-2);
+}
+
+.am .am-plan li + li {
+  border-top: 1px solid var(--am-divider);
+}
+
+.am .am-plan b {
+  display: block;
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+.am .am-plan__num {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--am-brand-soft);
+  color: var(--am-brand-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.am .am-cifras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.am .am-cifra {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface-alt);
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.am .am-cifra .am-icon {
+  font-size: 24px;
+  color: var(--am-brand);
+}
+
+.am .am-cifra b {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--am-text);
+}
+
+/* Pantallas de escaneo de la puerta (pantalla completa, fuera del menú) */
+.am.am-kiosco {
+  min-height: 100vh;
+  background: var(--am-surface-alt);
+}
+
+.am .am-kiosco__barra {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--am-border);
+  background: var(--am-surface);
+}
+
+.am .am-kiosco__barra .am-volver {
+  align-self: center;
+  margin: 0;
+}
+
+.am .am-kiosco__titulo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.am .am-kiosco__cuerpo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.am .am-kiosco__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.am .am-kiosco__opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.am .am-kiosco__escaner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 320px;
+  text-align: center;
+}
+
+.am .am-kiosco__escaner > .am-icon {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+  font-size: 56px;
+}
+
+.am .am-kiosco__escaner p {
+  max-width: 420px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--am-text-2);
+}
+
+.am .am-kiosco__listo {
+  font-weight: 600;
+  color: var(--am-success);
+}
+
+@media (max-width: 800px) {
+  .am .am-kiosco__cuerpo {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 24px 16px;
+  }
+
+  .am .am-kiosco__barra {
+    padding: 0 16px;
+  }
+
+  .am .am-kiosco__escaner {
+    min-height: 0;
+  }
+}
+
+/* Diálogos de Material: abrirlos con panelClass 'am-dialogo' */
+.am-dialogo .mdc-dialog__surface {
+  border-radius: 12px;
 }
 
 /* Botones seleccionables (tipo radio) */
