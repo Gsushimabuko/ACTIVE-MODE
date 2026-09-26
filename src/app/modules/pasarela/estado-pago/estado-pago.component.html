@@ -21,6 +21,18 @@
     <a *ngIf="correoInvitado" class="estado__secundario" routerLink="/matricula/dashboard">Ver más cursos</a>
   </ng-container>
 
+  <ng-container *ngSwitchCase="'exitoso'">
+    <span class="am-icon estado__icono estado__icono--exitoso estado__icono--anim" aria-hidden="true">check_circle</span>
+    <h2 class="estado__titulo">¡Pago confirmado!</h2>
+    <p class="estado__texto">
+      Tu comprobante ya fue enviado por correo y tus cursos quedaron matriculados.
+    </p>
+    <div class="estado__acciones">
+      <a class="am-btn am-btn--primary" routerLink="/matricula/calendario">Ver resumen de matrícula</a>
+      <a class="am-btn am-btn--secondary" routerLink="/matricula/dashboard">Volver a cursos</a>
+    </div>
+  </ng-container>
+
   <ng-container *ngSwitchCase="'fallido'">
     <span class="am-icon estado__icono estado__icono--fallido" aria-hidden="true">close</span>
     <h2 class="estado__titulo">No pudimos iniciar el pago</h2>

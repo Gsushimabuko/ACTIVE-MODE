@@ -33,6 +33,26 @@
   color: var(--am-error);
 }
 
+.estado__icono--exitoso {
+  background: var(--am-success-soft);
+  color: var(--am-success);
+}
+
+.estado__icono--anim {
+  animation: estado-icono-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes estado-icono-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estado__icono--anim {
+    animation: none;
+  }
+}
+
 .estado__titulo {
   margin: 0;
   font-size: 22px;

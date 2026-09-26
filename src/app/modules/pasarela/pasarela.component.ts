@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DatosInvitado, PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
 
 export type ResultadoPago =
-  | { estado: 'pendiente'; paymentUrl: string }
+  | { estado: 'pendiente'; paymentUrl: string; chargeId: string }
+  | { estado: 'exitoso' }
   | { estado: 'fallido'; mensaje: string; status: number };
 
 @Component({
@@ -45,7 +46,7 @@ export class PasarelaComponent {
         }
         pestana.location.href = cargo.paymentUrl;
         this.procesando = false;
-        this.resultado.emit({ estado: 'pendiente', paymentUrl: cargo.paymentUrl });
+        this.resultado.emit({ estado: 'pendiente', paymentUrl: cargo.paymentUrl, chargeId: cargo.chargeId });
       },
       error: (error: any) => {
         pestana?.close();

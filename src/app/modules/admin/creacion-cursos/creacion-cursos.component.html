@@ -41,6 +41,10 @@
       <label class="am-campo">Año
         <input name="ano" type="number" min="2020" max="2100" [(ngModel)]="nuevoAno">
       </label>
+      <label class="am-campo">
+        <input name="visible" type="checkbox" [(ngModel)]="nuevoVisible">
+        Visible para las familias desde ya
+      </label>
       <button type="submit" class="am-btn am-btn--primary acciones__boton">Crear periodo</button>
       <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="creandoPeriodo = false">Cancelar</button>
     </form>

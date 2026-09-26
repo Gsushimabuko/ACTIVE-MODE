@@ -32,4 +32,8 @@ export class PasarelaService {
     const alumno = invitado ? { invitado } : { idUsuario };
     return this._http.post<CargoCreado>(this.API_URL, { payment, cursos, ...alumno, ano, mes });
   }
+
+  estadoPago(chargeId: string) {
+    return this._http.get<{ pagado: boolean }>(`${this.API_URL}/${chargeId}/estado`);
+  }
 }

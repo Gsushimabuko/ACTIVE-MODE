@@ -18,6 +18,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModoAccesoService } from '../../../../core/acceso/modo-acceso.service';
 import { crearFormInvitado, tipoUsuarioPorRelacion } from '../datos-invitado/datos-invitado.component';
+import { PasarelaService } from '../../../../core/http/pasarela/pasarela.service';
+import { Subscription, interval, of } from 'rxjs';
+import { switchMap, take, catchError } from 'rxjs/operators';
 
 
 
@@ -59,6 +62,7 @@ export class MatriculaMainComponent {
   cantDiasTemporal!: number;
   listaDeCursosPrecios:any = []
   resultado?: ResultadoPago
+  private pollingPagoSub?: Subscription
 
 
   loader:boolean= true
@@ -79,7 +83,8 @@ export class MatriculaMainComponent {
     public router: Router,
     private route: ActivatedRoute,
     public snackbar: MatSnackBar,
-    private modo: ModoAccesoService
+    private modo: ModoAccesoService,
+    private pasarelaService: PasarelaService
     ) {
 
     this.invitado = !this.usuarioService.usuario.id
@@ -582,6 +587,26 @@ export class MatriculaMainComponent {
     this.resultado = resultado
     if (this.invitado && resultado.estado === 'pendiente') this.modo.guardarDatosParaRegistro(this.invitadoForm.getRawValue())
     this.paso = 3
+    if (resultado.estado === 'pendiente') this.consultarConfirmacionPago(resultado.chargeId)
+  }
+
+  // Cobrana confirma el pago de forma asíncrona (webhook); mientras el usuario ve "pendiente",
+  // consultamos cada 4s si ya llegó esa confirmación, hasta 3 minutos.
+  private consultarConfirmacionPago(chargeId: string) {
+    this.pollingPagoSub?.unsubscribe()
+    this.pollingPagoSub = interval(4000).pipe(
+      switchMap(() => this.pasarelaService.estadoPago(chargeId).pipe(catchError(() => of({ pagado: false })))),
+      take(45),
+    ).subscribe(({ pagado }) => {
+      if (pagado) {
+        this.resultado = { estado: 'exitoso' }
+        this.pollingPagoSub?.unsubscribe()
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.pollingPagoSub?.unsubscribe()
   }
 
   verTerminos() {

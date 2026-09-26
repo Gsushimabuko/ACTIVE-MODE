@@ -126,8 +126,8 @@ export class AdminService {
     return this.http.get<{ periodos: PeriodoAdmin[] }>(this.api + '/admin/periodos', this.sesion).pipe(map((r) => r.periodos));
   }
 
-  crearPeriodo(mes: number, ano: number) {
-    return this.http.post<{ periodo: PeriodoAdmin }>(this.api + '/admin/periodos', { mes, ano }, this.sesion).pipe(map((r) => r.periodo));
+  crearPeriodo(mes: number, ano: number, estado: 'ACTIVO' | 'INACTIVO') {
+    return this.http.post<{ periodo: PeriodoAdmin }>(this.api + '/admin/periodos', { mes, ano, estado }, this.sesion).pipe(map((r) => r.periodo));
   }
 
   estadoPeriodo(id: number, estado: 'ACTIVO' | 'INACTIVO') {

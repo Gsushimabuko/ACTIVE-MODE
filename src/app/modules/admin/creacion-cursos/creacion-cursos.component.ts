@@ -25,6 +25,7 @@ export class CreacionCursosComponent {
   creandoPeriodo = false;
   nuevoMes = 1;
   nuevoAno = new Date().getFullYear();
+  nuevoVisible = false;
   // Copiar cursos
   idOrigen: number | null = null;
 
@@ -118,17 +119,21 @@ export class CreacionCursosComponent {
     const base = ultimo ? new Date(ultimo.ano, ultimo.mes, 1) : new Date();
     this.nuevoMes = base.getMonth() + 1;
     this.nuevoAno = base.getFullYear();
+    this.nuevoVisible = false;
     this.creandoPeriodo = true;
   }
 
   crearPeriodo() {
     this.ocupado = true;
     this.errores = [];
-    this.admin.crearPeriodo(this.nuevoMes, this.nuevoAno).subscribe({
+    const estado = this.nuevoVisible ? 'ACTIVO' : 'INACTIVO';
+    this.admin.crearPeriodo(this.nuevoMes, this.nuevoAno, estado).subscribe({
       next: (p) => {
         this.ocupado = false;
         this.creandoPeriodo = false;
-        this.aviso = `${this.etiqueta(p)} creado. Está oculto: agrega o copia cursos y luego ábrelo a las familias.`;
+        this.aviso = this.nuevoVisible
+          ? `${this.etiqueta(p)} creado y visible para las familias.`
+          : `${this.etiqueta(p)} creado. Está oculto: agrega o copia cursos y luego ábrelo a las familias.`;
         this.cargarPeriodos(() => p.id);
       },
       error: (e) => { this.ocupado = false; this.errores = mensajesDeError(e); },
