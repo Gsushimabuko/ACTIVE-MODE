@@ -1,0 +1,277 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  background: var(--am-surface);
+}
+
+.shell__lateral {
+  position: sticky;
+  top: 0;
+  width: 256px;
+  height: 100vh;
+  flex: none;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-right: 1px solid var(--am-divider);
+  background: var(--am-surface-alt);
+  transition: width 0.2s ease, transform 0.25s ease;
+}
+
+.shell--colapsado .shell__lateral {
+  width: 72px;
+}
+
+.shell--colapsado .shell__etiqueta {
+  display: none;
+}
+
+.shell--colapsado .shell__item,
+.shell--colapsado .shell__usuario-boton,
+.shell--colapsado .shell__pie {
+  justify-content: center;
+}
+
+.shell__usuario {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shell__usuario-boton {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--am-text);
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.shell__usuario-boton:hover,
+.shell__item:hover,
+.shell__colapsar:hover {
+  background: #F1ECE7;
+  color: var(--am-text);
+}
+
+.shell__avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
+.shell__usuario-nombre {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shell__cerrar,
+.shell__colapsar,
+.shell__barra-boton {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--am-text-2);
+  cursor: pointer;
+}
+
+.shell__cerrar {
+  display: none;
+}
+
+.shell__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.shell__item {
+  height: 44px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3A342F;
+}
+
+.shell__item-icono {
+  font-size: 22px;
+}
+
+.shell__item--activo,
+.shell__item--activo:hover {
+  background: var(--am-brand-soft);
+  color: var(--am-brand-dark);
+  font-weight: 600;
+}
+
+.shell__item--activo .shell__item-icono {
+  font-variation-settings: 'FILL' 1;
+}
+
+.shell__item--bloqueado {
+  color: var(--am-text-3);
+}
+
+.shell__candado {
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.shell__avatar--invitado {
+  background: #F1ECE7;
+  color: var(--am-text-2);
+}
+
+.shell__invitado {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface);
+  font-size: 12px;
+  color: var(--am-text-2);
+}
+
+.shell__invitado b {
+  font-size: 14px;
+  color: var(--am-text);
+}
+
+.shell__invitado a {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.shell__espacio {
+  flex: 1;
+}
+
+.shell__pie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  margin-top: 4px;
+  border-top: 1px solid var(--am-divider);
+}
+
+.shell__logo {
+  height: 32px;
+  width: auto;
+  display: block;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--am-brand);
+}
+
+.shell__colapsar {
+  margin-left: auto;
+}
+
+.shell--colapsado .shell__colapsar {
+  margin-left: 0;
+}
+
+.shell__cuerpo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell__barra {
+  display: none;
+}
+
+.shell__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.shell__fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  background: rgba(30, 27, 24, 0.4);
+}
+
+@media (max-width: 1023px) {
+  .shell__lateral,
+  .shell--colapsado .shell__lateral {
+    position: fixed;
+    left: 0;
+    width: 280px;
+    transform: translateX(-100%);
+  }
+
+  .shell__lateral--abierto {
+    transform: none;
+  }
+
+  .shell--colapsado .shell__etiqueta {
+    display: revert;
+  }
+
+  .shell__cerrar {
+    display: flex;
+  }
+
+  .shell__colapsar {
+    display: none;
+  }
+
+  .shell__barra {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    height: 56px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--am-divider);
+    background: var(--am-surface);
+  }
+
+  .shell__barra-boton {
+    margin-left: -8px;
+    color: var(--am-text);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell__lateral {
+    transition: none;
+  }
+}

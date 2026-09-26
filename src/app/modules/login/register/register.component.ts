@@ -4,6 +4,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ZCodigoService } from 'src/app/core/http/z_codigo/z-codigo.service';
+import { ModoAccesoService } from 'src/app/core/acceso/modo-acceso.service';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 
 @Component({
@@ -49,7 +50,13 @@ export class RegisterComponent {
   codigoPermitido = false
   
   constructor(
-    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private codigoService:ZCodigoService, private snackbar:MatSnackBar) {
+    private router: Router ,private fb: FormBuilder,  private usuarioService: ZUsuarioService, private codigoService:ZCodigoService, private snackbar:MatSnackBar, modo: ModoAccesoService) {
+      // Viene de "Crear mi cuenta" tras pagar como invitado: se reusan sus datos (el backend vincula por correo).
+      const invitado = modo.tomarDatosParaRegistro()
+      if (invitado) {
+        const { nombre, apellidop, apellidom, dni, correo, telefono, relacion } = invitado
+        this.registerForm.patchValue({ nombre, apellidop, apellidom, dni, correo, telefono, relacion })
+      }
       
      }
 /*
@@ -105,8 +112,17 @@ checkTipoUsuario(){
 
 }
   
+  fechaMax = new Date().toISOString().slice(0, 10)
+  enviando = false
+
+  invalido(campo: string): boolean {
+    const c = this.registerForm.get(campo)!
+    return c.invalid && c.touched
+  }
+
   checkForm()  {
-   
+    this.mensajeError = ""
+
     /*
     
     if(this.codigoPermitido == false){
@@ -124,8 +140,8 @@ checkTipoUsuario(){
     console.log("Si todo esta bien deberia ser false: ", this.registerForm.invalid )
 */
     if (this.registerForm.invalid == true){
-        this.mensajeError = "Rellena todos los campos"
-        console.log("invalid form")
+        this.registerForm.markAllAsTouched()
+        this.mensajeError = "Revisa los campos marcados."
         return
     }
     
@@ -161,17 +177,21 @@ checkTipoUsuario(){
       id_tipo_usuario: this.id_tipo_usuario
     }
 
+    this.enviando = true
     this.usuarioService.createUsuario(usuario).subscribe((res: any)=>{
+      this.enviando = false
       if (res.ok == true){
-        this.openSnackBar("¡Registro Exitoso!", 5)
+        this.openSnackBar("Cuenta creada. Ya puedes iniciar sesión.", 5)
         this.router.navigate(["/login"])
-      } 
-    }, (err:HttpErrorResponse) => {
-      if(err.status == 403){
-        this.mensajeError = "DNI o correo ya registrados"
       }
-      if(err.status == 500){
-        this.mensajeError = "Error en el servidor, intente más tarde"
+    }, (err:HttpErrorResponse) => {
+      this.enviando = false
+      if(err.status == 409){
+        this.mensajeError = err.error?.message
+      } else if(err.status == 403){
+        this.mensajeError = "Ese DNI o correo ya están registrados."
+      } else {
+        this.mensajeError = "Error en el servidor, intenta más tarde."
       }
     })
     

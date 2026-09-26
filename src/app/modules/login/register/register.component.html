@@ -1,149 +1,93 @@
-<div class="container">
-  <mat-card class="card-login">
-    <!-- Logo -->
-    <div class="logo">
-      <img
-        src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"
-        alt="Logo"
-      />
-    </div>
+<app-auth-layout accionTexto="Iniciar sesión" accionRuta="/login">
+  <div class="am-form registro">
+    <header class="am-titulos">
+      <h1 class="am-h1">Crea tu cuenta</h1>
+      <p class="am-sub">Inscribe a tu familia en los talleres del colegio en minutos.</p>
+    </header>
 
-    <!-- Title -->
-    <h2 class="login-title">Registro</h2>
+    <form class="am-form" [formGroup]="registerForm" (ngSubmit)="checkForm()" novalidate>
+      <div *ngIf="mensajeError" class="am-alerta" role="alert">
+        <span class="am-icon" aria-hidden="true">error</span>
+        <span>{{ mensajeError }}</span>
+      </div>
 
-    
-    <form [formGroup]="registerForm">
-        <!-- Email Input -->
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Correo electrónico</mat-label>
-            <input matInput formControlName="correo" required />
-            <mat-error *ngIf="registerForm.controls['correo'].hasError('email')">
-                Ingrese un correo válido
-            </mat-error>
-            <mat-error *ngIf="registerForm.controls['correo'].hasError('required')">
-                Ingrese un correo
-            </mat-error>
-        </mat-form-field>
-        
-        <!-- Password Input -->
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Contraseña</mat-label>
-            <input
-            type="password"
-            [type]="hide ? 'password' : 'text'"
-            matInput
-            formControlName="contrasena"
-            required
-            />
-            <mat-icon matSuffix (click)="hide = !hide">
-                {{ hide ? 'visibility_off' : 'visibility' }}
-            </mat-icon>
-            <mat-error *ngIf="registerForm.controls['contrasena'].hasError('required')">
-                Contraseña requerida
-            </mat-error>
-            <mat-error *ngIf="registerForm.controls['contrasena'].hasError('minlength')">
-                Ingrese una contraseña válida
-            </mat-error>
-        </mat-form-field>
-        
-        <!-- DNI Input -->
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>DNI / CE</mat-label>
-            <input matInput formControlName="dni" required />
-            <mat-error *ngIf="registerForm.controls['dni'].hasError('minlength')">
-                Ingrese un documento válido
-            </mat-error>
-            <mat-error *ngIf="registerForm.controls['dni'].hasError('required')">
-                Ingrese un documento
-            </mat-error>
-        </mat-form-field>
-        
-        <!-- Additional Inputs -->
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Nombres</mat-label>
-            <input matInput formControlName="nombre" required />
-            <mat-error *ngIf="registerForm.controls['nombre'].hasError('required')">
-                Ingrese un nombre
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Apellido paterno</mat-label>
-            <input matInput formControlName="apellidop" required />
-            <mat-error *ngIf="registerForm.controls['apellidop'].hasError('required')">
-                Ingrese un apellido paterno
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Apellido materno</mat-label>
-            <input matInput formControlName="apellidom" required />
-            <mat-error *ngIf="registerForm.controls['apellidom'].hasError('required')">
-                Ingrese un apellido materno
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Teléfono</mat-label>
-            <input matInput formControlName="telefono" required />
-            <mat-error *ngIf="registerForm.controls['telefono'].hasError('required')">
-                Ingrese un teléfono
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Fecha de nacimiento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="dob" required />
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="registerForm.controls['dob'].hasError('required')">
-                Ingrese una fecha de nacimiento
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Sexo</mat-label>
-            <mat-select formControlName="sexo" required>
-                <mat-option *ngFor="let sexo of listaSexos" [value]="sexo">{{ sexo }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="registerForm.controls['sexo'].hasError('required')">
-                Seleccione un sexo
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Dirección</mat-label>
-            <input matInput formControlName="direccion" required />
-            <mat-error *ngIf="registerForm.controls['direccion'].hasError('required')">
-                Ingrese una dirección
-            </mat-error>
-        </mat-form-field>
-        
-        <mat-form-field class="login-input" appearance="outline">
-            <mat-label>Relación con el colegio</mat-label>
-            <mat-select formControlName="relacion" required>
-                <mat-option *ngFor="let relacion of listaRelaciones" [value]="relacion">
-                    {{ relacion }}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="registerForm.controls['relacion'].hasError('required')">
-                Seleccione una relación
-            </mat-error>
-        </mat-form-field>
-        
-        <!-- Mensaje de error -->
-        <div *ngIf="mensajeError" class="error-message">
-          {{ mensajeError }}
-        </div>
-        <!-- Submit Button -->
-        <button class="boton-login" [disabled]="registerForm.invalid" (click)="checkForm()" mat-button>
-            Registrar
-        </button>
-        
-        <!-- Back Button -->
-        <div class="extra-buttons">
-            <button mat-button class="back-button" routerLink="/">Volver</button>
-        </div>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('nombre')">Nombres
+        <input formControlName="nombre" autocomplete="given-name">
+        <span *ngIf="invalido('nombre')" class="am-campo__error">Ingresa tus nombres.</span>
+      </label>
+
+      <div class="am-form-grid registro__par">
+        <label class="am-campo" [class.am-campo--invalido]="invalido('apellidop')">Apellido paterno
+          <input formControlName="apellidop" autocomplete="family-name">
+          <span *ngIf="invalido('apellidop')" class="am-campo__error">Ingresa tu apellido paterno.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('apellidom')">Apellido materno
+          <input formControlName="apellidom">
+          <span *ngIf="invalido('apellidom')" class="am-campo__error">Ingresa tu apellido materno.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI / CE
+          <input formControlName="dni" inputmode="numeric" maxlength="12">
+          <span *ngIf="invalido('dni')" class="am-campo__error">Al menos 8 caracteres.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('dob')">Fecha de nacimiento
+          <input type="date" formControlName="dob" [max]="fechaMax" autocomplete="bday">
+          <span *ngIf="invalido('dob')" class="am-campo__error">Ingresa tu fecha de nacimiento.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('sexo')">Sexo
+          <span class="am-campo__control">
+            <select formControlName="sexo">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let sexo of listaSexos" [value]="sexo">{{ sexo }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+          <span *ngIf="invalido('sexo')" class="am-campo__error">Selecciona una opción.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Teléfono
+          <input formControlName="telefono" inputmode="tel" autocomplete="tel">
+          <span *ngIf="invalido('telefono')" class="am-campo__error">Al menos 8 dígitos.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('direccion')">Dirección
+          <input formControlName="direccion" autocomplete="street-address">
+          <span *ngIf="invalido('direccion')" class="am-campo__error">Ingresa tu dirección.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('relacion')">Relación con el colegio
+          <span class="am-campo__control">
+            <select formControlName="relacion">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let relacion of listaRelaciones" [value]="relacion">{{ relacion }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+          <span *ngIf="invalido('relacion')" class="am-campo__error">Selecciona una opción.</span>
+        </label>
+      </div>
+
+      <label class="am-campo" [class.am-campo--invalido]="invalido('correo')">Correo electrónico
+        <input type="email" formControlName="correo" autocomplete="email">
+        <span *ngIf="invalido('correo')" class="am-campo__error">Ingresa un correo válido.</span>
+      </label>
+
+      <label class="am-campo" [class.am-campo--invalido]="invalido('contrasena')">Contraseña
+        <span class="am-campo__control">
+          <input [type]="hide ? 'password' : 'text'" formControlName="contrasena" autocomplete="new-password" class="am-con-boton">
+          <button type="button" class="am-campo__boton" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostrar contraseña' : 'Ocultar contraseña'">
+            <span class="am-icon" aria-hidden="true">{{ hide ? 'visibility_off' : 'visibility' }}</span>
+          </button>
+        </span>
+        <span *ngIf="invalido('contrasena')" class="am-campo__error">Crea una contraseña.</span>
+      </label>
+
+      <button type="submit" class="am-btn am-btn--primary am-btn--bloque" [disabled]="enviando">
+        {{ enviando ? 'Creando cuenta…' : 'Crear cuenta' }}
+      </button>
     </form>
-</mat-card>
-</div>
+
+    <app-boton-invitado></app-boton-invitado>
+
+    <p class="am-pie-form">
+      <span>¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></span>
+      <a class="registro__olvide" routerLink="/login/recuperar">¿Olvidaste tu contraseña?</a>
+    </p>
+  </div>
+</app-auth-layout>

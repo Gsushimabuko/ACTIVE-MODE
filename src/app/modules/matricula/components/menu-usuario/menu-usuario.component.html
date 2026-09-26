@@ -1,0 +1,20 @@
+<div class="shell__menu" role="menu">
+  <div class="shell__menu-cabecera">
+    <b>{{ invitado ? 'Invitado' : nombre }}</b>
+    <span>{{ invitado ? 'Sin cuenta' : correo }}</span>
+  </div>
+  <a *ngIf="!invitado" role="menuitem" class="shell__menu-item" routerLink="/matricula/configuracion">
+    <span class="am-icon" aria-hidden="true">person</span>Mi perfil
+  </a>
+  <ng-container *ngIf="invitado">
+    <a role="menuitem" class="shell__menu-item" routerLink="/login/registro">
+      <span class="am-icon" aria-hidden="true">person_add</span>Crear cuenta
+    </a>
+    <a role="menuitem" class="shell__menu-item" routerLink="/login">
+      <span class="am-icon" aria-hidden="true">login</span>Iniciar sesión
+    </a>
+  </ng-container>
+  <button type="button" role="menuitem" class="shell__menu-item shell__menu-item--salir" (click)="salir.emit()">
+    <span class="am-icon" aria-hidden="true">logout</span>{{ invitado ? 'Salir del modo invitado' : 'Cerrar sesión' }}
+  </button>
+</div>

@@ -71,3 +71,9 @@
     flex: 1 1 100%;
   }
 }
+
+.estado__secundario {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--am-text-2);
+}

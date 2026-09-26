@@ -1,0 +1,79 @@
+<div *ngIf="cargando" class="detalle__cargando" role="status">
+  <span class="am-spinner" aria-hidden="true"></span>
+  <span class="am-sr">Cargando curso</span>
+</div>
+
+<div *ngIf="!cargando && (error || !curso)" class="am-pagina">
+  <a class="am-volver" routerLink="/matricula/dashboard"><span class="am-icon" aria-hidden="true">arrow_back</span>Cursos</a>
+  <div class="am-vacio">
+    <span class="am-icon" aria-hidden="true">error</span>
+    <span>No pudimos cargar este curso. Vuelve a la lista e inténtalo de nuevo.</span>
+  </div>
+</div>
+
+<ng-container *ngIf="!cargando && curso">
+  <section class="portada">
+    <div class="am-pagina portada__contenido">
+      <a class="portada__volver" routerLink="/matricula/dashboard">
+        <span class="am-icon" aria-hidden="true">arrow_back</span>Cursos
+      </a>
+      <span class="am-icon portada__icono" aria-hidden="true">{{ iconoCurso(curso.name) }}</span>
+      <h1 class="portada__titulo">{{ curso.name | titlecase }}</h1>
+      <p class="portada__sub">Prof. {{ curso.instructor | titlecase }} · Periodo {{ periodo | date: 'MMMM y' | titlecase }}</p>
+    </div>
+  </section>
+
+  <div class="am-pagina detalle">
+    <div class="detalle__principal">
+      <section *ngIf="curso.description" class="am-seccion">
+        <h2 class="detalle__h2">Descripción del curso</h2>
+        <p class="detalle__texto">{{ curso.description }}</p>
+      </section>
+
+      <div *ngIf="curso.cupoMax" class="detalle__dato">
+        <span class="am-icon" aria-hidden="true">groups</span>
+        <b>{{ curso.cupoMax }}</b>
+        <span>Cupos por grupo</span>
+      </div>
+
+      <section class="am-seccion">
+        <h2 class="detalle__h3">Horarios disponibles</h2>
+        <p *ngIf="!curso.niveles?.length" class="detalle__texto">Este curso todavía no tiene horarios para tu tipo de usuario.</p>
+        <div class="detalle__horarios">
+          <div *ngFor="let n of curso.niveles" class="detalle__horario" [class.detalle__horario--cerrado]="n.state === 'CERRADO'">
+            <b>{{ n.name }}</b>
+            <span>{{ n.time }}{{ n.state === 'CERRADO' ? ' · Cerrado' : '' }}</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="detalle__lateral">
+      <div class="detalle__precio">
+        <ng-container *ngIf="desde !== null; else sinTarifa">
+          <span class="detalle__meta">Desde</span>
+          <b class="detalle__monto">S/ {{ desde | number: '1.2-2' : 'en-US' }}<span> / mes</span></b>
+          <span *ngIf="invitado" class="detalle__meta">El monto final depende de tu relación con el colegio.</span>
+        </ng-container>
+        <ng-template #sinTarifa>
+          <span class="detalle__meta">Este curso todavía no tiene tarifa{{ invitado ? '' : ' para tu tipo de usuario' }}.</span>
+        </ng-template>
+        <span class="detalle__meta">Prof. {{ curso.instructor | titlecase }} · Periodo {{ periodo | date: 'MMMM y' | titlecase }}</span>
+      </div>
+
+      <div *ngIf="curso.state !== 'CERRADO'; else cerrado" class="am-seccion">
+        <b class="detalle__h3">¿Listo para empezar?</b>
+        <span class="detalle__meta">{{ invitado ? 'Completa los datos del alumno, elige el horario' : 'Elige al familiar, el horario' }} y paga en un solo paso.</span>
+        <a class="am-btn am-btn--primary" routerLink="/matricula">
+          Matricularme<span class="am-icon" aria-hidden="true">arrow_forward</span>
+        </a>
+      </div>
+      <ng-template #cerrado>
+        <div class="am-nota detalle__cerrado">
+          <span class="am-icon" aria-hidden="true">lock</span>
+          <span><b>Matrícula cerrada este periodo.</b> Escríbenos al <b>960 192 400</b> para entrar a la lista de espera.</span>
+        </div>
+      </ng-template>
+    </aside>
+  </div>
+</ng-container>

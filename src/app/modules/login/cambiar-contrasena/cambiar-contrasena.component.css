@@ -1,72 +1,27 @@
-mat-icon {
-  cursor: pointer;
+.cambiar {
+  gap: 24px;
 }
 
-.logo img {
-  width: 20vw;
-}
-
-hr {
-  border: none;
-  height: 1px;
-  color: rgb(249, 249, 249);
-  background-color: rgb(255, 255, 255);
-  width: 50%;
-}
-
-.login-card {
-  height: 90%;
-  margin: 50px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.853);
-}
-
-h2 {
-  font-size: 30px;
-}
-
-mat-card {
-  border-radius: 30px;
-  padding: 50px;
-}
-
-.boton-login {
-  width: 150px;
-  height: 40px;
+.cambiar__nuevo {
   font-size: 14px;
-  font-weight: bold;
-  background-color: rgb(126, 108, 228);
+  font-weight: 600;
 }
 
-.texto-sugerencia {
-  font-size: 12px;
+.cambiar__listo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
-input {
-  height: 20px;
-  color: white !important;
-}
-
-.login-input {
-  width: 300px;
-  height: 20px;
-  font-size: medium;
-}
-
-mat-label {
-  color: white;
-}
-
-.mat-form-field-outline {
-  border-color: rgba(255, 255, 255, 0.804) !important;
-  color: white;
-}
-
-.mat-form-field-outline-start,
-.mat-form-field-outline-end {
-  border-color: rgba(255, 255, 255, 0.804) !important;
-}
-
-.mat-mdc-select-value-text {
-  color: white !important;
+.cambiar__icono {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--am-success-soft);
+  color: var(--am-success);
+  font-size: 32px;
 }

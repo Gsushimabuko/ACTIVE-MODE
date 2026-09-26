@@ -18,9 +18,25 @@ import { FamiliaComponent } from './components/familia/familia.component';
 import { TycDialogComponent } from './components/tyc-dialog/tyc-dialog.component';
 import { PasosMatriculaComponent } from './components/pasos-matricula/pasos-matricula.component';
 import { CarritoMatriculaComponent } from './components/carrito-matricula/carrito-matricula.component';
+import { ShellComponent } from './components/shell/shell.component';
+import { CursoDetalleComponent } from './components/curso-detalle/curso-detalle.component';
+import { FamiliarNuevoComponent } from './components/familiar-nuevo/familiar-nuevo.component';
+import { FamiliarDetalleComponent } from './components/familiar-detalle/familiar-detalle.component';
+import { ConfiguracionComponent } from './components/configuracion/configuracion.component';
+import { RequiereCuentaComponent } from './components/requiere-cuenta/requiere-cuenta.component';
+import { DatosInvitadoComponent } from './components/datos-invitado/datos-invitado.component';
+import { MenuUsuarioComponent } from './components/menu-usuario/menu-usuario.component';
 
 @NgModule({
   declarations: [
+    MenuUsuarioComponent,
+    DatosInvitadoComponent,
+    RequiereCuentaComponent,
+    ShellComponent,
+    CursoDetalleComponent,
+    FamiliarNuevoComponent,
+    FamiliarDetalleComponent,
+    ConfiguracionComponent,
     PasosMatriculaComponent,
     CarritoMatriculaComponent,
     MatriculaMainComponent,

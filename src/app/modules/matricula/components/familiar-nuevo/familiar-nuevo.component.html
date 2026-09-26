@@ -1,0 +1,73 @@
+<div class="am-pagina am-pagina--angosta">
+  <a class="am-volver" routerLink="/matricula/familia"><span class="am-icon" aria-hidden="true">arrow_back</span>Mi familia</a>
+
+  <header class="am-titulos">
+    <h1 class="am-h1">Nuevo familiar</h1>
+    <p class="am-sub">Completa sus datos tal como figuran en su documento de identidad.</p>
+  </header>
+
+  <form class="am-tarjeta" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+    <div *ngIf="mensajeError" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span>
+      <span>{{ mensajeError }}</span>
+    </div>
+
+    <div class="am-form-grid">
+      <label class="am-campo" [class.am-campo--invalido]="invalido('nombre')">Nombres
+        <input formControlName="nombre" autocomplete="given-name">
+        <span *ngIf="invalido('nombre')" class="am-campo__error">Ingresa sus nombres.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('apellidop')">Apellido paterno
+        <input formControlName="apellidop">
+        <span *ngIf="invalido('apellidop')" class="am-campo__error">Ingresa su apellido paterno.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('apellidom')">Apellido materno
+        <input formControlName="apellidom">
+        <span *ngIf="invalido('apellidom')" class="am-campo__error">Ingresa su apellido materno.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI / CE
+        <input formControlName="dni" inputmode="numeric" maxlength="12">
+        <span *ngIf="invalido('dni')" class="am-campo__error">Ingresa un documento de al menos 8 caracteres.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('dob')">Fecha de nacimiento
+        <input type="date" formControlName="dob" [max]="hoy">
+        <span *ngIf="invalido('dob')" class="am-campo__error">Ingresa su fecha de nacimiento.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('sexo')">Sexo
+        <span class="am-campo__control">
+          <select formControlName="sexo">
+            <option value="" disabled>Selecciona</option>
+            <option *ngFor="let s of listaSexos" [value]="s">{{ s }}</option>
+          </select>
+          <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+        </span>
+        <span *ngIf="invalido('sexo')" class="am-campo__error">Selecciona una opción.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Teléfono
+        <input formControlName="telefono" inputmode="tel" autocomplete="tel">
+        <span *ngIf="invalido('telefono')" class="am-campo__error">Ingresa un teléfono de al menos 8 dígitos.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('direccion')">Dirección
+        <input formControlName="direccion" autocomplete="street-address">
+        <span *ngIf="invalido('direccion')" class="am-campo__error">Ingresa su dirección.</span>
+      </label>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('relacion')">Relación con el colegio
+        <span class="am-campo__control">
+          <select formControlName="relacion">
+            <option value="" disabled>Selecciona</option>
+            <option *ngFor="let r of listaRelaciones" [value]="r">{{ r }}</option>
+          </select>
+          <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+        </span>
+        <span *ngIf="invalido('relacion')" class="am-campo__error">Selecciona una opción. Define la tarifa.</span>
+      </label>
+    </div>
+
+    <div class="am-acciones">
+      <a class="am-btn am-btn--secondary nuevo__boton" routerLink="/matricula/familia">Cancelar</a>
+      <button type="submit" class="am-btn am-btn--primary nuevo__boton" [disabled]="guardando">
+        {{ guardando ? 'Guardando…' : 'Guardar familiar' }}
+      </button>
+    </div>
+  </form>
+</div>

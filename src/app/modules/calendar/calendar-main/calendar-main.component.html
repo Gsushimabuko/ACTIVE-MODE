@@ -1,184 +1,29 @@
+<section class="cal" [attr.aria-label]="'Calendario de ' + (mesCalendario | date: 'MMMM y')">
+  <h2 class="cal__titulo">{{ mesCalendario | date: 'MMMM y' | titlecase }}</h2>
 
-<mat-card>
-
-    <div  fxLayoutAlign="center center" fxLayout="column" fxLayoutAlign=" stretch">
-    
-        
-        <div fxLayout="column" fxLayoutAlign="center center">
-            <h3>Calendario del mes de {{mesCalendario | date: 'MMMM' : 'es-PE'}}</h3>
-        </div>
-        
-        <div  style="text-align: center;" *ngIf="innerWidth >700; else celular">
-            <table mat-table [dataSource]="HORARIO_DATA"  class="mat-elevation-z8 demo-table">
-                <ng-container matColumnDef="lunes">
-                    <th mat-header-cell *matHeaderCellDef> Lunes </th>
-                    <td mat-cell *matCellDef="let element"> {{(element.lunes == undefined ? ' '  : element.lunes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.lunes != undefined && element.lunes.cursos != undefined">
-                            <div  *ngFor="let evento of element.lunes.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="martes">
-                    <th mat-header-cell *matHeaderCellDef> Martes </th>
-                    <td mat-cell *matCellDef="let element"> {{(element.martes == undefined ? ' '  : element.martes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.martes != undefined && element.martes.cursos != undefined">
-                            <div  *ngFor="let evento of element.martes.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="miercoles">
-                    <th mat-header-cell *matHeaderCellDef> Miércoles </th>
-                    <td mat-cell *matCellDef="let element"> {{(element.miercoles == undefined ? ' '  : element.miercoles.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.miercoles != undefined && element.miercoles.cursos != undefined">
-                            <div   *ngFor="let evento of element.miercoles.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div>
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-              
-                  <ng-container matColumnDef="jueves">
-                      <th mat-header-cell *matHeaderCellDef> Jueves </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.jueves == undefined ? ' '  : element.jueves.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.jueves != undefined && element.jueves.cursos != undefined">
-                            <div  *ngFor="let evento of element.jueves.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-              
-                  <ng-container matColumnDef="viernes">
-                      <th mat-header-cell *matHeaderCellDef> Viernes </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.viernes == undefined ? ' '  : element.viernes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.viernes != undefined && element.viernes.cursos != undefined">
-                            <div  *ngFor="let evento of element.viernes.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-                  <ng-container matColumnDef="sabado">
-                      <th mat-header-cell *matHeaderCellDef> Sábado</th>
-                      <td mat-cell *matCellDef="let element"> {{(element.sabado == undefined ? ' '  : element.sabado .dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.sabado  != undefined && element.sabado.cursos != undefined">
-                            <div  *ngFor="let evento of element.sabado.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-                  <ng-container matColumnDef="domingo">
-                      <th mat-header-cell *matHeaderCellDef> Domingo </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.domingo == undefined ? ' '  : element.domingo.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.domingo != undefined && element.domingo.cursos != undefined">
-                            <div  *ngFor="let evento of element.domingo.cursos">
-                                <div class="circle" [ngStyle]="{'background-color': evento.color , 'border': 'solid 2px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-              
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            
-            </table>
-        </div>
-    
-        <ng-template #celular>
-            <table mat-table [dataSource]="HORARIO_DATA"   class="mat-elevation-z8 demo-table">
-                <ng-container matColumnDef="lunes">
-                    <th mat-header-cell *matHeaderCellDef> Lu </th>
-                    <td mat-cell *matCellDef="let element" > {{(element.lunes == undefined ? ' '  : element.lunes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.lunes != undefined && element.lunes.cursos != undefined">
-                            <div  *ngFor="let evento of element.lunes.cursos">
-                                <div class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}"></div>
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-                  <ng-container matColumnDef="martes">
-                    <th mat-header-cell *matHeaderCellDef> Ma </th>
-                    <td mat-cell *matCellDef="let element"> {{(element.martes == undefined ? ' '  : element.martes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.martes != undefined && element.martes.cursos != undefined">
-                            <div  *ngFor="let evento of element.martes.cursos">
-                                <div class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}"></div>
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-                
-                  <ng-container matColumnDef="miercoles">
-                    <th mat-header-cell *matHeaderCellDef> Mi </th>
-                    <td mat-cell *matCellDef="let element"> {{(element.miercoles == undefined ? ' '  : element.miercoles.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center  center" *ngIf="element.miercoles != undefined && element.miercoles.cursos != undefined">
-                            <div   *ngFor="let evento of element.miercoles.cursos" class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}">
-                            </div>
-                        </div>  
-                    </td>
-                  </ng-container>
-              
-                  <ng-container matColumnDef="jueves">
-                      <th mat-header-cell *matHeaderCellDef> Ju </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.jueves == undefined ? ' '  : element.jueves.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center center" *ngIf="element.jueves != undefined && element.jueves.cursos != undefined">
-                            <div  *ngFor="let evento of element.jueves.cursos" class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}">
-                            
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-              
-                  <ng-container matColumnDef="viernes">
-                      <th mat-header-cell *matHeaderCellDef> Vi </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.viernes == undefined ? ' '  : element.viernes.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center center" *ngIf="element.viernes != undefined && element.viernes.cursos != undefined">
-                            <div  *ngFor="let evento of element.viernes.cursos">
-                                <div class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-                  <ng-container matColumnDef="sabado">
-                      <th mat-header-cell *matHeaderCellDef> Sa </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.sabado == undefined ? ' '  : element.sabado.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center center" *ngIf="element.sabado != undefined && element.sabado.cursos != undefined">
-                            <div  *ngFor="let evento of element.sabado.cursos">
-                                <div class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-                  <ng-container matColumnDef="domingo">
-                      <th mat-header-cell *matHeaderCellDef> Do </th>
-                      <td mat-cell *matCellDef="let element"> {{(element.domingo == undefined ? ' '  : element.domingo.dia)}}
-                        <div fxLayout="row warp" fxLayoutAlign="center center" *ngIf="element.domingo != undefined && element.domingo.cursos != undefined">
-                            <div  *ngFor="let evento of element.domingo.cursos">
-                                <div class="circle-small" [ngStyle]="{'background-color': evento.color , 'border': 'solid 1px' + ' white'}"></div> 
-                            </div>
-                        </div>  
-                      </td>
-                  </ng-container>
-              
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            
-            </table>
-        </ng-template>
-    
-        <div fxLayout="column" fxLayoutAlign="center center"class="leyenda" >
-    
-            <h4 style="font-size:18px">Cursos calendario</h4>
-            <div *ngFor="let curso of listaCursosModificados" fxLayout="row" fxLayoutAlign="start center">
-                <div class="circle" [ngStyle]="{'background-color': curso.color , 'border': 'solid 2px' + ' white'}"></div> {{curso.nombre}} - {{curso.horario}}
-            </div>
-        
-        </div>
-    
+  <div class="cal__mes" aria-hidden="true">
+    <span *ngFor="let d of diasSemana" class="cal__dia-semana">{{ d }}</span>
+    <div *ngFor="let c of celdas" class="cal__celda" [class.cal__celda--vacia]="!c">
+      <ng-container *ngIf="c">
+        <span class="cal__num" [class.cal__num--hoy]="c.hoy">{{ c.dia }}</span>
+        <span *ngFor="let ev of c.cursos" class="cal__evento" [style.border-left-color]="ev.color">
+          <span class="cal__punto" [style.background]="ev.color"></span>
+          <span class="cal__evento-nombre">{{ ev.nombre | titlecase }}</span>
+        </span>
+      </ng-container>
     </div>
-</mat-card>
+  </div>
+
+  <div *ngIf="listaCursosModificados.length; else sinClases" class="cal__leyenda">
+    <h3 class="cal__leyenda-titulo">Cursos del mes</h3>
+    <ul>
+      <li *ngFor="let curso of listaCursosModificados">
+        <span class="cal__punto" [style.background]="curso.color" aria-hidden="true"></span>
+        <span><b>{{ curso.nombre | titlecase }}</b> · {{ curso.horario }} · {{ curso.eventos.length }} clases</span>
+      </li>
+    </ul>
+  </div>
+  <ng-template #sinClases>
+    <p class="cal__vacio">Aún no hay clases en este mes.</p>
+  </ng-template>
+</section>

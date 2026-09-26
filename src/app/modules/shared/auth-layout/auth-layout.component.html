@@ -1,0 +1,23 @@
+<div class="am acceso">
+  <header class="acceso__barra">
+    <a routerLink="/" aria-label="Active Mode, ir al inicio">
+      <img class="acceso__logo" src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png" alt="Active Mode">
+    </a>
+    <a *ngIf="accionTexto" class="am-btn acceso__accion" [routerLink]="accionRuta">{{ accionTexto }}</a>
+  </header>
+
+  <main class="acceso__main" [class.acceso__main--con-imagen]="conImagen">
+    <section class="acceso__contenido">
+      <div class="acceso__caja">
+        <ng-content></ng-content>
+      </div>
+    </section>
+
+    <aside *ngIf="conImagen" class="acceso__imagen" aria-hidden="true">
+      <div class="acceso__imagen-texto">
+        <p class="acceso__frase">Cada talento merece un espacio para crecer.</p>
+        <p class="acceso__detalle">Talleres deportivos y recreativos para alumnos, exalumnos y toda la familia.</p>
+      </div>
+    </aside>
+  </main>
+</div>

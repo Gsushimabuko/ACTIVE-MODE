@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ZCursoService } from 'src/app/core/http/z_curso/z-curso.service';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
 import { Usuario } from 'src/app/interfaces/usuario';
-import { CalendarMainComponent } from 'src/app/modules/calendar/calendar-main/calendar-main.component';
 
 @Component({
   selector: 'app-mis-cursos',
@@ -95,7 +94,6 @@ export class MisCursosComponent {
 
   }
   
-  @ViewChild('calendario') calendario!: CalendarMainComponent;
 
   seleccionUsuario(){
     this.loader=true
@@ -108,6 +106,14 @@ export class MisCursosComponent {
       this.loader=false
     })
 
+  }
+
+  indiceMes = 1
+
+  irMes(delta: number) {
+    this.indiceMes += delta
+    this.mesForm.controls['mes'].setValue(this.meses[this.indiceMes].periodo_fecha)
+    this.seleccionMes()
   }
 
   seleccionMes(){

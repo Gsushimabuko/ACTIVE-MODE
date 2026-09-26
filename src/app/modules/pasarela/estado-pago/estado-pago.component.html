@@ -2,16 +2,23 @@
   <ng-container *ngSwitchCase="'pendiente'">
     <span class="am-icon estado__icono estado__icono--pendiente" aria-hidden="true">hourglass_top</span>
     <h2 class="estado__titulo">Pago en verificación</h2>
-    <p class="estado__texto">
+    <p *ngIf="!correoInvitado" class="estado__texto">
       Completa el pago en la pestaña de Niubiz. Cuando Cobrana lo confirme te enviaremos el comprobante
       por correo y las clases quedarán en tu perfil.
+    </p>
+    <p *ngIf="correoInvitado" class="estado__texto">
+      Completa el pago en la pestaña de Niubiz. Cuando Cobrana lo confirme te enviaremos el comprobante
+      a <b>{{ correoInvitado }}</b>. Crea una cuenta con ese mismo correo para ver sus clases en el calendario
+      y matricular a más familiares.
     </p>
     <div class="estado__acciones">
       <a *ngIf="resultado.estado === 'pendiente'" class="am-btn am-btn--secondary" [href]="resultado.paymentUrl" target="_blank" rel="noopener noreferrer">
         Abrir la pasarela otra vez
       </a>
-      <a class="am-btn am-btn--primary" routerLink="/matricula/dashboard">Volver al inicio</a>
+      <a *ngIf="!correoInvitado" class="am-btn am-btn--primary" routerLink="/matricula/dashboard">Volver al inicio</a>
+      <a *ngIf="correoInvitado" class="am-btn am-btn--primary" routerLink="/login/registro">Crear mi cuenta</a>
     </div>
+    <a *ngIf="correoInvitado" class="estado__secundario" routerLink="/matricula/dashboard">Ver más cursos</a>
   </ng-container>
 
   <ng-container *ngSwitchCase="'fallido'">
@@ -23,7 +30,8 @@
     </p>
     <div class="estado__acciones">
       <button type="button" class="am-btn am-btn--secondary" (click)="editar.emit()">Editar matrícula</button>
-      <button type="button" class="am-btn am-btn--primary" (click)="reintentar.emit()">Reintentar pago</button>
+      <a *ngIf="dniConCuenta" class="am-btn am-btn--primary" routerLink="/login">Iniciar sesión</a>
+      <button *ngIf="!dniConCuenta" type="button" class="am-btn am-btn--primary" (click)="reintentar.emit()">Reintentar pago</button>
     </div>
   </ng-container>
 </section>

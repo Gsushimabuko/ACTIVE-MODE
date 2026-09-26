@@ -1,67 +1,59 @@
-
-<div  fxLayout="column"  fxLayoutAlign="center center" class="container animate__animated animate__fadeIn animate__fast" >
-    <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
-    <p class="welcome-text">¡Bienvenido <span> {{usuario.nombre}}</span>!</p>
-    <p class="welcome-subtext">Elige una de las opciones </p> 
-    
-  
-    
-    <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap="50" fxLayoutAlign="center center">
-        
-        
-        <div>
-            <button [routerLink] = "['/matricula/familia']" class="button-82-pushable" role="button">
-                <span class="button-82-shadow"></span>
-                <span class="button-82-edge"></span>
-                <span class="button-82-front text">
-                    <a [routerLink] = "['/matricula/familia']" style="padding:10px">
-                        <div style="margin-bottom:20px">Familia </div> 
-                        <div style="height: 25px"> </div>
-                        <div > <mat-icon>person_add</mat-icon>  </div>
-                    </a>
-                </span>
-            </button>
-        </div>
-        <div>
-            <button [routerLink] = "['/matricula']" class="button-82-pushable" role="button">
-                <span class="button-82-shadow"></span>
-                <span class="button-82-edge"></span>
-                <span class="button-82-front text">
-                    <a [routerLink] = "['/matricula']" style="padding:10px">
-                        <div style="margin-bottom:20px"> Matricula </div> 
-                        <div style="height: 25px"> </div>
-                        <div > <mat-icon >assignment_ind</mat-icon>  </div>
-                    </a>
-                </span>
-            </button>
-        </div>
-        <div>
-            <button [routerLink] = "['/matricula/cursos']" class="button-82-pushable" role="button">
-                <span class="button-82-shadow"></span>
-                <span class="button-82-edge"></span>
-                <span class="button-82-front text">
-                    <a [routerLink] = "['/matricula/cursos']" style="padding:10px">
-                        <div style="margin-bottom:20px"> Mis cursos</div> 
-                        <div style="height: 25px"> </div>
-                        <div > 	<mat-icon >assignment</mat-icon>  </div>
-                    </a>
-                </span>
-            </button>
-        </div>
-        
-        
-        
-    </div>
-    <div style="margin: 40px;">
-        <button (click)="logout()" routerLink="login" class="button-83-pushable" role="button">
-            <span class="button-83-shadow"></span>
-            <span class="button-83-edge"></span>
-            <span class="button-83-front text">
-            
-                    <div>Cerrar sesión</div> 
-                
-            </span>
-        </button>
+<div class="am-pagina cursos">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">{{ usuario.id ? '¡Hola, ' + usuario.nombre + '!' : '¡Bienvenido!' }}</h1>
+      <p class="am-sub">Estos son los cursos que tenemos disponibles.</p>
     </div>
 
+    <div *ngIf="periodos.length > 1" class="periodos" role="group" aria-label="Periodo">
+      <button type="button" *ngFor="let p of periodos" class="periodos__boton"
+        [class.periodos__boton--activo]="p === periodo" [attr.aria-pressed]="p === periodo"
+        (click)="elegirPeriodo(p)">
+        {{ p | date: 'MMMM y' | titlecase }}
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="!usuario.id" class="rapida">
+    <span class="am-icon rapida__icono" aria-hidden="true">bolt</span>
+    <div class="rapida__texto">
+      <b>Matrícula rápida, sin registro</b>
+      <span>Elige un curso, completa los datos del alumno y paga.</span>
+    </div>
+    <a class="am-btn am-btn--secondary rapida__boton" routerLink="/login/registro">Prefiero crear una cuenta</a>
+  </div>
+
+  <div *ngIf="cargando" class="cursos__cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span>
+    <span class="am-sr">Cargando cursos</span>
+  </div>
+
+  <ng-container *ngIf="!cargando">
+    <div *ngIf="!cursos.length" class="am-vacio">
+      <span class="am-icon" aria-hidden="true">event_busy</span>
+      <span *ngIf="periodos.length">No hay cursos con matrícula en este periodo.</span>
+      <span *ngIf="!periodos.length">Todavía no hay un periodo con matrícula abierta. Escríbenos al <b>960 192 400</b>.</span>
+    </div>
+
+    <div *ngIf="cursos.length" class="am-grid-tarjetas">
+      <a *ngFor="let curso of cursos" class="curso" [routerLink]="['/matricula/curso', curso.idCursoPeriodo]"
+        [queryParams]="consulta(curso)">
+        <div class="curso__visual" aria-hidden="true">
+          <span class="am-icon curso__visual-icono">{{ iconoCurso(curso.name) }}</span>
+        </div>
+        <div class="curso__cuerpo">
+          <span class="curso__profe">
+            <span class="am-icon curso__profe-icono" aria-hidden="true">{{ iconoCurso(curso.name) }}</span>
+            Prof. {{ curso.instructor | titlecase }}
+          </span>
+          <b class="curso__nombre">{{ curso.name | titlecase }}</b>
+          <span *ngIf="curso.description" class="curso__descripcion">{{ curso.description }}</span>
+          <span class="curso__estado" [class.curso__estado--cerrado]="curso.state === 'CERRADO'">
+            <span class="am-icon" aria-hidden="true">{{ curso.state === 'CERRADO' ? 'lock' : 'check_circle' }}</span>
+            {{ curso.state === 'CERRADO' ? 'Matrícula cerrada' : 'Matrícula abierta' }}
+          </span>
+        </div>
+      </a>
+    </div>
+  </ng-container>
 </div>

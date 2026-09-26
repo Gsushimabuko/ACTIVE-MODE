@@ -1,0 +1,50 @@
+<div class="am-pagina ficha">
+  <a class="am-volver" routerLink="/matricula/familia"><span class="am-icon" aria-hidden="true">arrow_back</span>Mi familia</a>
+
+  <div *ngIf="cargando" class="ficha__cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span>
+    <span class="am-sr">Cargando familiar</span>
+  </div>
+
+  <div *ngIf="!cargando && !miembro" class="am-vacio">
+    <span class="am-icon" aria-hidden="true">person_off</span>
+    <span>No encontramos a este familiar en tu cuenta.</span>
+  </div>
+
+  <ng-container *ngIf="!cargando && miembro">
+    <header class="ficha__cabecera">
+      <span class="ficha__avatar" aria-hidden="true">{{ iniciales }}</span>
+      <div class="ficha__titulos">
+        <h1 class="am-h1">{{ miembro.nombre }} {{ miembro.apellidop }} {{ miembro.apellidom }}</h1>
+        <span class="ficha__rol">
+          <span class="am-icon" aria-hidden="true">{{ esTitular ? 'verified_user' : 'person' }}</span>
+          {{ esTitular ? 'Titular de la cuenta' : 'Familiar' }}
+        </span>
+      </div>
+      <a class="am-btn am-btn--primary ficha__boton" routerLink="/matricula">
+        <span class="am-icon" aria-hidden="true">how_to_reg</span>Matricular en un curso
+      </a>
+    </header>
+
+    <section class="am-seccion ficha__seccion">
+      <h2 class="am-h2">Cursos de {{ mes | date: 'MMMM' }}</h2>
+
+      <div *ngIf="cursos.length; else sinCursos" class="ficha__cursos">
+        <div *ngFor="let c of cursos" class="ficha__curso">
+          <span class="am-icon ficha__curso-icono" aria-hidden="true">{{ iconoCurso(c.nombre) }}</span>
+          <div class="ficha__curso-texto">
+            <b>{{ c.nombre | titlecase }}</b>
+            <span>{{ c.horarioDias }} · {{ c.horarioHoras }}</span>
+            <span>{{ c.diasEvento.length }} clases este mes</span>
+          </div>
+        </div>
+      </div>
+      <ng-template #sinCursos>
+        <div class="ficha__vacio">
+          <span>Aún no está inscrito en ningún curso este mes.</span>
+          <a class="am-btn am-btn--secondary ficha__explorar" routerLink="/matricula/dashboard">Explorar cursos</a>
+        </div>
+      </ng-template>
+    </section>
+  </ng-container>
+</div>

@@ -1,265 +1,190 @@
-
-.container{
-    text-align: center;
-    width: 100%;
-    color: rgb(255, 255, 255);
-  
-    
+.cursos {
+  gap: 32px;
 }
 
-.welcome-text{
-    font-weight: 500;
-    font-size: 3vw;
-}
-.welcome-subtext{
-    font-weight: 300;
-    font-size: 2vw;
-    margin-bottom: 50px;
+.periodos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.welcome-subtext2{
-    font-weight: 300;
-    font-size: 1.5vw;
-    margin-top: 75px;
-    margin-bottom: 75px;
-}
-.logo{
-    margin:75px;
-}
-.logo img{
-    width: 20vw;
-}
-
-a:link { text-decoration: none; }
-
-
-a:visited { text-decoration: none; }
-
-a {color: white; transition: 0.25s;}
-.login-animation:hover { color: rgb(0, 84, 240);}
-
-
-a:active { text-decoration: none; }
-
-
-/* CSS */
-.button-82-pushable {
-  position: relative;
-  border: none;
-  background: transparent;
-  padding: 0;
+.periodos__boton {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--am-border-strong);
+  border-radius: 999px;
+  background: var(--am-surface);
+  color: #3A342F;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  outline-offset: 4px;
-  transition: filter 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
 }
 
-.button-82-shadow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.periodos__boton--activo {
+  border-color: var(--am-text);
+  background: var(--am-text);
+  color: #FFFFFF;
+}
+
+.periodos__boton:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+.rapida {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--am-border);
   border-radius: 12px;
-  background: hsl(0deg 0% 0% / 0.25);
-  will-change: transform;
-  transform: translateY(2px);
-  transition:
-    transform
-    600ms
-    cubic-bezier(.3, .7, .4, 1);
+  background: var(--am-surface-alt);
 }
 
-.button-82-edge {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.rapida__icono {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+}
+
+.rapida__texto {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.rapida__texto b {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+.rapida__boton {
+  height: 40px;
+  padding: 0 16px;
+  border-color: var(--am-text);
+  font-size: 13px;
+}
+
+.cursos__cargando {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.curso {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--am-border);
   border-radius: 12px;
-  background: linear-gradient(
-    to left,
-    rgb(0, 5, 82) 0%,
-    rgb(0, 19, 163) 8%,
-    rgb(0, 41, 163) 92%,
-    rgb(6, 8, 143) 100%
-  );
+  background: var(--am-surface);
+  color: var(--am-text);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.button-82-front {
-  display: block;
-  position: relative;
-  padding: 12px 27px;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  color: white;
-  background: rgb(0, 84, 240);
-  will-change: transform;
-  transform: translateY(-4px);
-  transition:
-    transform
-    600ms
-    cubic-bezier(.3, .7, .4, 1);
-}
-mat-icon{
-    transform: scale(3);
-}
-
-@media (max-width: 950px) {
-
-  .button-82-front {
-    font-size: 1.25rem;
-    padding: 12px 42px;
-  }
-  .logo img{
-    width: 250px;
-}
-
-.welcome-text{
-    font-weight: 500;
-    font-size: 25px;
-}
-.welcome-subtext{
-    font-weight: 300;
-    font-size: 25px;
-    margin-bottom: 50px;
-}
-  
-
-}
-
-
-
-
-.button-82-pushable:hover {
-  filter: brightness(110%);
-  -webkit-filter: brightness(110%);
-}
-
-.button-82-pushable:hover .button-82-front {
-  transform: translateY(-6px);
-  transition:
-    transform
-    250ms
-    cubic-bezier(.3, .7, .4, 1.5);
-}
-
-.button-82-pushable:active .button-82-front {
+.curso:hover {
+  color: var(--am-text);
+  box-shadow: 0 12px 28px rgba(30, 27, 24, 0.08);
   transform: translateY(-2px);
-  transition: transform 34ms;
 }
 
-.button-82-pushable:hover .button-82-shadow {
-  transform: translateY(4px);
-  transition:
-    transform
-    250ms
-    cubic-bezier(.3, .7, .4, 1.5);
+.curso__visual {
+  aspect-ratio: 16 / 10;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F3E3D8 0%, var(--am-brand-soft) 100%);
 }
 
-.button-82-pushable:active .button-82-shadow {
-  transform: translateY(1px);
-  transition: transform 34ms;
+.curso__visual-icono {
+  font-size: 56px;
+  color: var(--am-brand);
 }
 
-.button-82-pushable:focus:not(:focus-visible) {
-  outline: none;
+.curso__cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 4px 4px;
 }
 
-.button-83-pushable {
-    position: relative;
-    border: none;
-    background: transparent;
-    padding: 0;
-    cursor: pointer;
-    outline-offset: 4px;
-    transition: filter 250ms;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  .button-83-shadow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    background: hsl(0deg 0% 0% / 0.25);
-    will-change: transform;
-    transform: translateY(2px);
-    transition:
-      transform
-      600ms
-      cubic-bezier(.3, .7, .4, 1);
-  }
-  
-  .button-83-edge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(
-      to left,
-      rgb(178, 4, 4) 0%,
-      rgb(213, 51, 43) 8%,
-      rgb(218, 29, 29) 92%,
-      rgb(227, 54, 54) 100%
-    );
-  }
-  
-  .button-83-front {
-    display: block;
-    position: relative;
-    padding: 12px 27px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    color: white;
-    background: rgb(218, 60, 60);
-    will-change: transform;
-    transform: translateY(-4px);
-    transition:
-      transform
-      600ms
-      cubic-bezier(.3, .7, .4, 1);
-  }
+.curso__profe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--am-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .button-83-pushable:hover {
-    filter: brightness(110%);
-    -webkit-filter: brightness(110%);
+.curso__profe-icono {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--am-border);
+  border-radius: 6px;
+  font-size: 18px;
+  color: var(--am-brand);
+}
+
+.curso__nombre {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.curso__descripcion {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--am-text-2);
+}
+
+.curso__estado {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--am-success);
+}
+
+.curso__estado .am-icon {
+  font-size: 18px;
+}
+
+.curso__estado--cerrado {
+  color: var(--am-text-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curso,
+  .curso:hover {
+    transition: none;
+    transform: none;
   }
-  
-  .button-83-pushable:hover .button-83-front {
-    transform: translateY(-6px);
-    transition:
-      transform
-      250ms
-      cubic-bezier(.3, .7, .4, 1.5);
-  }
-  
-  .button-83-pushable:active .button-83-front {
-    transform: translateY(-2px);
-    transition: transform 34ms;
-  }
-  
-  .button-83-pushable:hover .button-83-shadow {
-    transform: translateY(4px);
-    transition:
-      transform
-      250ms
-      cubic-bezier(.3, .7, .4, 1.5);
-  }
-  
-  .button-83-pushable:active .button-83-shadow {
-    transform: translateY(1px);
-    transition: transform 34ms;
-  }
-  
-  .button-83-pushable:focus:not(:focus-visible) {
-    outline: none;
-  }
+}

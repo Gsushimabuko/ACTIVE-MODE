@@ -1,19 +1,64 @@
-.calendario{
-    margin: 20px;
-    height: 80%;
-    width: 75%;
-    padding: 50px;
-    margin-top:10px;
-    background-color:rgb(255, 255, 255);
-    border-radius: 4px;
-  }
+.calendario__controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
 
-  .input-propiedades{
-    margin-top: 30px;
-    margin-left: 20px;
-  }
-  @media (min-width: 768px) {
-    .calendario{
-      width: 800px
-    }
-  }
+.calendario__nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendario__hoy {
+  height: 40px;
+  padding: 0 16px;
+}
+
+.calendario__flecha {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #3A342F;
+  cursor: pointer;
+}
+
+.calendario__flecha:hover:not(:disabled) {
+  background: #F1ECE7;
+}
+
+.calendario__flecha:disabled {
+  color: var(--am-border-strong);
+  cursor: not-allowed;
+}
+
+.calendario__flecha:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+.calendario__familiar {
+  width: 280px;
+  max-width: 100%;
+}
+
+.calendario__cuerpo {
+  position: relative;
+}
+
+.calendario__cargando {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.7);
+}

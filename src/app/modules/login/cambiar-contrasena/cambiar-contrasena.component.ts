@@ -35,6 +35,11 @@ export class CambiarContrasenaComponent {
   token: string = '';
   cambio: boolean = false;
 
+  invalido(campo: 'contrasena' | 'contrasena2'): boolean {
+    const c = this.contrasenaForm.controls[campo];
+    return c.invalid && c.touched;
+  }
+
   crearValidadorComparador(control1: AbstractControl, control2: AbstractControl) {
     return () => {
       if (control1.value !== control2.value) {

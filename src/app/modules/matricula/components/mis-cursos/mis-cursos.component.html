@@ -1,60 +1,35 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center" >
+<div class="am-pagina">
+  <header class="am-titulos">
+    <h1 class="am-h1">Calendario</h1>
+    <p class="am-sub">Las clases aparecen aquí cuando se confirma el pago de la matrícula.</p>
+  </header>
 
-  <div style="margin:20px;" fxLayout="column" fxLayoutAlign="start">
-      <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
-        <mat-icon style="margin-left: 10px; color: rgb(232, 230, 242)">home</mat-icon>
-      </button> 
+  <form [formGroup]="mesForm" class="calendario__controles">
+    <div class="calendario__nav">
+      <button type="button" class="am-btn am-btn--secondary calendario__hoy" (click)="irMes(1 - indiceMes)" [disabled]="indiceMes === 1">Hoy</button>
+      <button type="button" class="calendario__flecha" (click)="irMes(-1)" [disabled]="indiceMes === 0" aria-label="Mes anterior">
+        <span class="am-icon" aria-hidden="true">chevron_left</span>
+      </button>
+      <button type="button" class="calendario__flecha" (click)="irMes(1)" [disabled]="indiceMes === meses.length - 1" aria-label="Mes siguiente">
+        <span class="am-icon" aria-hidden="true">chevron_right</span>
+      </button>
+    </div>
+
+    <label class="am-campo calendario__familiar">Mostrar clases de
+      <span class="am-campo__control">
+        <select formControlName="usuario" (change)="seleccionUsuario()">
+          <option *ngFor="let usuario of usuarios" [ngValue]="usuario.id">{{ usuario.nombre }} {{ usuario.apellidop }}</option>
+        </select>
+        <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+      </span>
+    </label>
+  </form>
+
+  <div class="calendario__cuerpo">
+    <div *ngIf="loader" class="calendario__cargando" role="status">
+      <span class="am-spinner" aria-hidden="true"></span>
+      <span class="am-sr">Cargando clases</span>
+    </div>
+    <app-calendar-main *ngIf="listaCursos" [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario"></app-calendar-main>
   </div>
-  
-    <div *ngIf="loader" class="loader-spinner"
-    fxLayout="column" fxLayoutAlign="center center"
-    >
-      <mat-spinner color="primary"></mat-spinner>
-    </div>
-  
-  
-            
-    
-    <div class="calendario" fxLayout="column" fxLayoutAlign="space-evenly center" >
-    
-    <div fxLayout="row" fxLayoutGap="50" fxLayoutAlign="start center" >
-      
-         <div>
-           <form [formGroup]="mesForm">
-             <mat-form-field class="input-propiedades" appearance="outline">
-               <mat-label>Elige mes</mat-label>
-               <mat-select formControlName="mes" (selectionChange)="seleccionMes()">
-                   <mat-option *ngFor="let mes of meses" [value]="mes.periodo_fecha" >
-                       {{mes.periodo_fecha | date: 'MMMM - y'}}
-                   </mat-option>
-               </mat-select>
-             </mat-form-field>
-
-             <mat-form-field class="input-propiedades" appearance="outline">
-              <mat-label>Familiar</mat-label>
-              <mat-select formControlName="usuario" (selectionChange)="seleccionUsuario()">
-                  <mat-option *ngFor="let usuario of usuarios" [value]="usuario.id" >
-                      {{usuario.nombre}}  {{usuario.apellidop}}
-                  </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-
-           </form>
-         </div>
-     
-    </div>
-  
-    <div fxLayout="column" fxLayoutAlign="space-evenly center">
-      <app-calendar-main *ngIf="listaCursos" #calendario [listaCursosTotales]="listaCursos" [mesCalendario]="mesCalendario" ></app-calendar-main>
-    </div>
-        
-      
-    </div>        
-  
-  
-    
-  
-  
-
-</div>  
+</div>

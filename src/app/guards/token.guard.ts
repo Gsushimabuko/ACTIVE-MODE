@@ -1,35 +1,30 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { CanActivate, CanLoad, Router, UrlTree } from '@angular/router';
+import { Observable, map } from 'rxjs';
+import { ModoAccesoService } from '../core/acceso/modo-acceso.service';
 import { ZUsuarioService } from '../core/http/z_usuario/z-usuario.service';
 
+// Entrada a /matricula: con sesión válida, o en modo invitado (las pantallas de
+// cuenta tienen además su propio guard, CuentaGuard).
 @Injectable({
   providedIn: 'root'
 })
 export class ValidarTokenGuard implements CanActivate, CanLoad {
-  constructor(private usuarioService: ZUsuarioService , 
-    private router: Router ){}
-  canActivate(): Observable<boolean> | boolean  {
-    return this.usuarioService.validarToken()
-    .pipe(
-      tap( valid => {
-        console.log("VALID", valid)
-        if(!valid){
-          this.router.navigateByUrl('/login')
-        }
-      })
+  constructor(private usuarioService: ZUsuarioService,
+    private modo: ModoAccesoService,
+    private router: Router) { }
+
+  private permitir(): Observable<boolean | UrlTree> {
+    return this.usuarioService.validarToken().pipe(
+      map((valido) => valido || this.modo.esInvitado || this.router.parseUrl('/login'))
     );
   }
-  canLoad(): Observable<boolean>  | boolean  {
-    return this.usuarioService.validarToken()
-    .pipe(
-      
-      tap( valid => 
-        {    console.log("VALID", valid)
-        if(!valid){
-          this.router.navigateByUrl('/login')
-        }
-      })
-    );
+
+  canActivate() {
+    return this.permitir();
+  }
+
+  canLoad() {
+    return this.permitir();
   }
 }

@@ -8,6 +8,13 @@ import { ResultadoPago } from '../pasarela.component';
 })
 export class EstadoPagoComponent {
   @Input() resultado!: ResultadoPago;
+  // Solo en modo invitado: a dónde llega el comprobante.
+  @Input() correoInvitado: string | null = null;
   @Output() reintentar = new EventEmitter<void>();
   @Output() editar = new EventEmitter<void>();
+
+  // 409 = el DNI del invitado ya tiene cuenta: tiene que iniciar sesión, reintentar no sirve.
+  get dniConCuenta(): boolean {
+    return this.resultado.estado === 'fallido' && this.resultado.status === 409;
+  }
 }

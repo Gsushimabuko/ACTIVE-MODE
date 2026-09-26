@@ -1,0 +1,72 @@
+<div class="am shell" [class.shell--colapsado]="colapsado">
+  <div *ngIf="menuMovil" class="shell__fondo" (click)="menuMovil = false" aria-hidden="true"></div>
+
+  <aside class="shell__lateral" [class.shell__lateral--abierto]="menuMovil" aria-label="Menú principal">
+    <div class="shell__usuario">
+      <button type="button" class="shell__usuario-boton" (click)="menuUsuario = !menuUsuario"
+        [attr.aria-expanded]="menuUsuario" aria-haspopup="menu" [attr.title]="nombreCompleto">
+        <ng-container *ngTemplateOutlet="avatar"></ng-container>
+        <span class="shell__etiqueta shell__usuario-nombre">{{ invitado ? 'Invitado' : usuario.nombre }}</span>
+        <span class="am-icon shell__etiqueta" aria-hidden="true">expand_more</span>
+      </button>
+      <button type="button" class="shell__cerrar" (click)="menuMovil = false" aria-label="Cerrar menú">
+        <span class="am-icon" aria-hidden="true">close</span>
+      </button>
+
+      <app-menu-usuario *ngIf="menuUsuario" [invitado]="invitado" [nombre]="nombreCompleto" [correo]="usuario.correo" (salir)="cerrarSesion()"></app-menu-usuario>
+    </div>
+
+    <nav class="shell__nav">
+      <a *ngFor="let item of navegacion" class="shell__item" [class.shell__item--bloqueado]="invitado && item.soloCuenta" [routerLink]="item.ruta"
+        routerLinkActive="shell__item--activo" [routerLinkActiveOptions]="{ exact: item.exacto }"
+        ariaCurrentWhenActive="page" [attr.title]="item.label">
+        <span class="am-icon shell__item-icono" aria-hidden="true">{{ item.icono }}</span>
+        <span class="shell__etiqueta">{{ item.label }}</span>
+        <ng-container *ngIf="invitado && item.soloCuenta"><span class="am-icon shell__etiqueta shell__candado" aria-hidden="true">lock</span><span class="am-sr">, requiere cuenta</span></ng-container>
+      </a>
+    </nav>
+
+    <div class="shell__espacio"></div>
+
+    <div *ngIf="invitado" class="shell__invitado shell__etiqueta">
+      <b>Estás como invitado</b>
+      <span>Crea una cuenta para gestionar a tu familia y ver sus clases en el calendario.</span>
+      <a routerLink="/login/registro">Crear cuenta</a>
+    </div>
+
+    <a *ngIf="!invitado" class="shell__item" routerLink="/matricula/configuracion" routerLinkActive="shell__item--activo"
+      ariaCurrentWhenActive="page" title="Configuración">
+      <span class="am-icon shell__item-icono" aria-hidden="true">settings</span>
+      <span class="shell__etiqueta">Configuración</span>
+    </a>
+
+    <div class="shell__pie">
+      <img class="shell__logo shell__etiqueta" src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png" alt="Active Mode">
+      <button type="button" class="shell__colapsar" (click)="colapsado = !colapsado"
+        [attr.aria-label]="colapsado ? 'Expandir menú' : 'Contraer menú'" [attr.aria-pressed]="colapsado">
+        <span class="am-icon" aria-hidden="true">{{ colapsado ? 'left_panel_open' : 'left_panel_close' }}</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="shell__cuerpo">
+    <header class="shell__barra">
+      <button type="button" class="shell__barra-boton" (click)="menuMovil = true" aria-label="Abrir menú">
+        <span class="am-icon" aria-hidden="true">menu</span>
+      </button>
+      <img class="shell__logo" src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png" alt="Active Mode">
+      <ng-container *ngTemplateOutlet="avatar"></ng-container>
+    </header>
+
+    <main class="shell__main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<ng-template #avatar>
+  <span class="am-iniciales shell__avatar" [class.shell__avatar--invitado]="invitado" aria-hidden="true">
+    <span *ngIf="invitado; else letras" class="am-icon">person</span>
+    <ng-template #letras>{{ iniciales }}</ng-template>
+  </span>
+</ng-template>

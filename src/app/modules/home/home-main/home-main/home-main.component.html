@@ -1,28 +1,23 @@
+<app-auth-layout accionTexto="Iniciar sesión" accionRuta="/login">
+  <div class="am-form inicio">
+    <header class="am-titulos">
+      <h1 class="am-h1">Talleres Active Mode</h1>
+      <p class="am-sub">Talleres deportivos y artísticos del colegio San José de Monterrico, para alumnos, exalumnos y toda la familia.</p>
+    </header>
 
-<div class="container animate__animated animate__fadeIn animate__fast">
-    <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
-    <p class="welcome-text animate__fadeIn">¡Bienvenido!</p>
-    <p class="welcome-subtext">Si es tu primera vez aquí, entonces </p> 
-
-
-    <button [routerLink]="['/login/registro']" class="button-82-pushable" role="button">
-        <span class="button-82-shadow"></span>
-        <span class="button-82-edge"></span>
-        <span class="button-82-front text">
-            
-                Registrate  
-          
-        </span>
-    </button>
-
-   
-
-    <p class="welcome-subtext2">Si ya te has registrado, por favor <span><a [routerLink] = "['/login']" class="login-animation"  >inicia sesión</a></span></p> 
-    
-
-    <div class="contacto"><span>Contacto: (511) 960 192 400   <a href="https://api.whatsapp.com/send?phone=960192400"> (WhatsApp) </a><br>
-         Correo: activemode@sjm.edu.pe </span> <br>
-        <span><a [routerLink] = "['/terminos']" class="login-animation"  >Términos, condiciones y políticas de privacidad</a></span>
+    <div class="inicio__acciones">
+      <a class="am-btn am-btn--primary am-btn--bloque" routerLink="/login/registro">Crear cuenta</a>
+      <a class="am-btn am-btn--secondary am-btn--bloque" routerLink="/login">Ya tengo cuenta, iniciar sesión</a>
     </div>
-   
-</div>
+
+    <app-boton-invitado></app-boton-invitado>
+
+    <section class="inicio__contacto" aria-labelledby="titulo-contacto">
+      <h2 id="titulo-contacto" class="inicio__contacto-titulo">¿Tienes dudas?</h2>
+      <span><span class="am-icon" aria-hidden="true">call</span>(511) 960 192 400 · <a href="https://api.whatsapp.com/send?phone=960192400" target="_blank" rel="noopener noreferrer">WhatsApp</a></span>
+      <span><span class="am-icon" aria-hidden="true">mail</span><a href="mailto:activemode@sjm.edu.pe">activemode@sjm.edu.pe</a></span>
+    </section>
+
+    <a class="inicio__terminos" routerLink="/terminos">Términos, condiciones y políticas de privacidad</a>
+  </div>
+</app-auth-layout>

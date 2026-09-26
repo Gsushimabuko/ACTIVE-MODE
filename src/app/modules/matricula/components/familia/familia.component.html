@@ -1,226 +1,47 @@
-<div *ngIf="loader" class="loader-spinner"
-fxLayout="column" fxLayoutAlign="center center"
->
-<mat-spinner color="primary"></mat-spinner>
-</div>
-<div style="margin:20px;" fxLayout="row" fxLayoutAlign="start"  >
-    <button routerLink="/matricula/dashboard" mat-button style="transform:scale(2);"> 
-      <mat-icon >home</mat-icon>
-    </button> 
-</div>
-
-<div class="container" fxLayout="column" fxLayoutAlign="center center">
-    <div>
-        <div  class="container-fam" fxLayout="column" fxLayoutAlign="center center">
-            <p class="texto-familia"> 
-                Mi familia
-            </p>
-            
-            <div fxLayout="row" fxLayout.lt-md="column">
-                <div  class="card2"  *ngFor="let miembro of familia">
-                    <div fxLayout="column" fxLayoutAlign="center center" >
-                        <p style="color:white"> {{miembro.nombre}}</p>
-                        <mat-icon style="scale:transform(2)">accessibility</mat-icon>
-
-                    </div>
-                </div>
-            </div>
-         
-        </div>
+<div class="am-pagina familia">
+  <header class="am-encabezado">
+    <div class="am-titulos">
+      <h1 class="am-h1">Mi familia</h1>
+      <p class="am-sub">Añade a tus familiares y allegados para matricularlos. Los talleres están abiertos a alumnos y externos.</p>
     </div>
-    
-     <form  [formGroup] ="registerForm">
-    <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100"  class="container animate__animated animate__fadeIn animate__fast">
-        
-       
-        <mat-card class="card">
-            <div fxLayout="column" fxFlex="100">
-                <div fxLayout="column" fxLayoutAlign="center center">
-                    <div fxLayout="column" fxLayoutAlign="center center" >
-                        <p class="welcome-text"> 
-                            Agregar familiar
-                        </p>
-                    </div>
-                </div>
-                
-                <div>
-                    <hr>
-                </div>
-                
-               
-                
-                <div class="row-section" fxLayout="column" fxLayoutGap="40" fxLayoutGap.lt-md="0" fxLayoutAlign="center center" fxFlex="100" >
-                       
-                            
-                        <!-- FILA 2 -->
-                        <div fxLayout="row" fxLayout.lt-md="column"> 
-    
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >Nombres
-                                    </mat-label>
-                                    <input  matInput formControlName="nombre" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['nombre'].hasError('minlength')">
-                                        Ingrese un nombre válido
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['nombre'].hasError('required')">
-                                        Ingrese un nombre
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-    
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >Apellido pat.
-                                    </mat-label>
-                                    <input  matInput formControlName="apellidop" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['apellidop'].hasError('minlength')">
-                                        Ingrese un apellido válido
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['apellidop'].hasError('required')">
-                                        Ingrese un apellido
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >Apellido mat.
-                                    </mat-label>
-                                    <input  matInput formControlName="apellidom" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['apellidom'].hasError('minlength')">
-                                        Ingrese un apellido válido
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['apellidom'].hasError('required')">
-                                        Ingrese un apellido
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                        </div>
-    
-                        <!-- FILA 3 -->
-                        <div fxLayout="row"  fxLayout.lt-md="column"> 
-    
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >Teléfono
-                                    </mat-label>
-                                    <input  matInput formControlName="telefono" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['telefono'].hasError('minlength')">
-                                        Ingrese un telefono válido
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['telefono'].hasError('required')">
-                                        Ingrese un telefono
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-    
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label>F.de.Nacimiento</mat-label>
-                                    <input formControlName="dob" matInput  [matDatepicker]="picker" [min]="fechaMinima" [max]="fechaMaxima">
-                                    <mat-hint>MM/DD/YYYY</mat-hint>
-                                    <mat-datepicker-toggle style="color:white !important" matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                
-                                    <mat-error
-                                      *ngIf="
-                                        registerForm.controls['dob'].hasError('required')
-                                      "
-                                    >
-                                    Ingrese fecha de nacimiento
-                                    </mat-error>
-                                  </mat-form-field>
-                                  
-                            </div>
-    
-                            <div>
-                                <mat-form-field appearance="outline">
-                                    <mat-label >Sexo</mat-label>
-                                    <mat-select   formControlName="sexo" name="sexo">
-                                        <mat-option class="test" style="color: red"*ngFor="let sexo of listaSexos" [value]="sexo">
-                                            {{sexo}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="registerForm.controls['sexo'].hasError('required')">
-                                        Seleccione un sexo
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            
-                        </div>
-    
-                        <!-- FILA 4-->
-    
-                        <div fxLayout="row"  fxLayout.lt-md="column"> 
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >DNI / CE
-                                    </mat-label>
-                                    <input  matInput formControlName="dni" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['dni'].hasError('minlength')">
-                                        Ingrese un documento válido
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['dni'].hasError('required')">
-                                        Ingrese un documento
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div>
-                                <mat-form-field  appearance="outline">
-                                    <mat-label >Dirección
-                                    </mat-label>
-                                    <input  matInput formControlName="direccion" required>
-                                    
-                                    <mat-error *ngIf="registerForm.controls['direccion'].hasError('minlength')">
-                                        Ingrese una dirección válida
-                                    </mat-error>
-                                    <mat-error *ngIf="registerForm.controls['direccion'].hasError('required')">
-                                        Ingrese una dirección
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-    
-                            <div>
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Relación con el colegio</mat-label>
-                                    <mat-select formControlName="relacion" name="relacion">
-                                        <mat-option *ngFor="let relacion of listaRelaciones" [value]="relacion">
-                                            {{relacion}}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error *ngIf="registerForm.controls['relacion'].hasError('required')">
-                                       Seleccione un tipo
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                           
-    
-                        </div>
-                        <div *ngIf="mensajeError">
-                            <mat-error> {{mensajeError}}</mat-error>
-                        </div>
-    
-                        <div fxLayout="row"  fxFlex="20">
-                            <div>
-                                <button (click)="checkForm()"  class="boton-registro"  mat-button >
-                                 Agregar Familiar
-                                </button>
-                              </div>
-                        </div>
-    
-                    </div>
-               
-                </div>
-            </mat-card>
-            
-       
-    </div>
-    </form>
+    <a class="am-btn am-btn--primary familia__boton" routerLink="/matricula/familia/nuevo">
+      <span class="am-icon" aria-hidden="true">person_add</span>Añadir familiar
+    </a>
+  </header>
 
+  <label class="am-campo familia__buscar">
+    <span class="am-sr">Buscar familiar</span>
+    <span class="am-campo__control">
+      <span class="am-icon familia__lupa" aria-hidden="true">search</span>
+      <input type="search" [value]="busqueda" (input)="busqueda = $any($event.target).value" placeholder="Buscar por nombre">
+    </span>
+  </label>
+
+  <div *ngIf="cargando" class="familia__cargando" role="status">
+    <span class="am-spinner" aria-hidden="true"></span>
+    <span class="am-sr">Cargando familia</span>
+  </div>
+
+  <div *ngIf="!cargando" class="am-grid-tarjetas">
+    <a *ngFor="let m of filtrados" class="miembro" [routerLink]="['/matricula/familia', m.id]">
+      <div class="miembro__visual">
+        <span class="miembro__iniciales" aria-hidden="true">{{ iniciales(m) }}</span>
+      </div>
+      <div class="miembro__cuerpo">
+        <b class="miembro__nombre">{{ m.nombre }} {{ m.apellidop }} {{ m.apellidom }}</b>
+        <span class="miembro__rol">
+          <span class="am-icon" aria-hidden="true">{{ m.id === idTitular ? 'verified_user' : 'person' }}</span>
+          {{ m.id === idTitular ? 'Titular de la cuenta' : 'Familiar' }}
+        </span>
+      </div>
+    </a>
+
+    <a *ngIf="!busqueda" class="miembro miembro--nuevo" routerLink="/matricula/familia/nuevo">
+      <span class="miembro__mas" aria-hidden="true"><span class="am-icon">add</span></span>
+      <b>Añadir familiar</b>
+      <span>Hijos, pareja o allegados externos al colegio</span>
+    </a>
+  </div>
+
+  <p *ngIf="!cargando && busqueda && !filtrados.length" class="am-sub">No encontramos familiares para “{{ busqueda }}”.</p>
 </div>

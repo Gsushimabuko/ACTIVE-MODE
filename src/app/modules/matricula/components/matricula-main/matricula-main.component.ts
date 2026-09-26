@@ -16,6 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { TycDialogComponent } from '../tyc-dialog/tyc-dialog.component';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModoAccesoService } from '../../../../core/acceso/modo-acceso.service';
+import { crearFormInvitado, tipoUsuarioPorRelacion } from '../datos-invitado/datos-invitado.component';
 
 
 
@@ -60,6 +62,10 @@ export class MatriculaMainComponent {
 
 
   loader:boolean= true
+  // Sin sesión solo se llega aquí en modo invitado (ValidarTokenGuard).
+  invitado: boolean
+  invitadoForm: FormGroup
+  faltanDatosInvitado = false
   idPadre: number;
   idTipoPadre: number;
 
@@ -69,8 +75,12 @@ export class MatriculaMainComponent {
     private cursoService:ZCursoService,
     public dialog: MatDialog,
     public router: Router,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    private modo: ModoAccesoService
     ) {
+
+    this.invitado = !this.usuarioService.usuario.id
+    this.invitadoForm = crearFormInvitado(this.formBuilder)
 
     this.idPadre = this.usuarioService.usuario.id
     
@@ -88,6 +98,10 @@ export class MatriculaMainComponent {
     this.cursoService.getMatriculaActiva().subscribe(res=>{
       this.meses=res
 
+      if (this.invitado) {
+        this.loader = false
+        return
+      }
       this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
         this.usuarios = res
         this.loader = false
@@ -172,6 +186,12 @@ export class MatriculaMainComponent {
     this.cursoService.getCursos(this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
       this.cursos = res
 
+      // El invitado no tiene matrículas previas que mostrar en el calendario.
+      if (this.invitado) {
+        this.actualizarCursosCalendario()
+        this.loader=false
+        return
+      }
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
         this.listaCursos = res
         this.actualizarCursosCalendario()
@@ -180,6 +200,28 @@ export class MatriculaMainComponent {
 
     })
 
+  }
+
+  // Invitado: la relación con el colegio define la tarifa, así que lo elegido con otra relación deja de valer.
+  cambioRelacion() {
+    this.idTipoUsuario = tipoUsuarioPorRelacion(this.invitadoForm.value.relacion)
+    this.listaCursosNuevos = []
+    this.cursoPendiente = {}
+    this.flagDia = false
+    this.tarifa = 0
+    this.cursoForm.reset({ curso: '', nivel: '', ratio: '', dia: '' })
+    for (const c of ['nivel', 'ratio', 'dia']) this.cursoForm.controls[c].disable()
+    this.actualizarCursosCalendario()
+  }
+
+  agregar() {
+    if (this.invitado && this.invitadoForm.invalid) {
+      this.invitadoForm.markAllAsTouched()
+      this.faltanDatosInvitado = true
+      return
+    }
+    this.faltanDatosInvitado = false
+    this.agregarCurso()
   }
 
   ngOnInit(): void {
@@ -496,6 +538,7 @@ export class MatriculaMainComponent {
   }
 
   get nombreAlumno(): string {
+    if (this.invitado) return `${this.invitadoForm.value.nombre} ${this.invitadoForm.value.apellidop}`.trim()
     const alumno = this.mesForm?.controls['usuario'].value
     return alumno && typeof alumno === 'object' ? `${alumno.nombre} ${alumno.apellidop}` : ''
   }
@@ -503,6 +546,7 @@ export class MatriculaMainComponent {
   // La pantalla "pendiente" no ofrece volver atrás: otro "Pagar" crearía un segundo cargo.
   mostrarResultado(resultado: ResultadoPago) {
     this.resultado = resultado
+    if (this.invitado && resultado.estado === 'pendiente') this.modo.guardarDatosParaRegistro(this.invitadoForm.getRawValue())
     this.paso = 3
   }
 

@@ -73,9 +73,26 @@ export class CalendarMainComponent {
       }
 
       this.listaCursosModificados= cursosEvento
-      
+
     }else{
       this.listaCursosModificados =[]
+    }
+    this.armarCeldas()
+  }
+
+  // Grilla de mes que empieza en lunes: null = casilla vacía antes del día 1 o después del último.
+  celdas: ({ dia: number, cursos: { nombre: string, color: string }[], hoy: boolean } | null)[] = []
+  diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
+
+  armarCeldas() {
+    const hoy = new Date()
+    const esMesActual = !!this.mesCalendario && hoy.getMonth() === this.mesCalendario.getMonth() && hoy.getFullYear() === this.mesCalendario.getFullYear()
+    this.celdas = []
+    for (const semana of this.HORARIO_DATA) {
+      for (const clave of this.dias) {
+        const d = semana[clave]
+        this.celdas.push(d ? { dia: d.dia, cursos: d.cursos, hoy: esMesActual && d.dia === hoy.getDate() } : null)
+      }
     }
   }
 

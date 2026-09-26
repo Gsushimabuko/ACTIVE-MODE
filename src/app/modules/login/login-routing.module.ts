@@ -5,10 +5,12 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminComponent } from './admin/admin.component';
 import { CambiarContrasenaComponent } from './cambiar-contrasena/cambiar-contrasena.component';
+import { RecuperarComponent } from './recuperar/recuperar.component';
 
 const routes: Routes = [
 
   { path: 'registro', component: RegisterComponent },
+  { path: 'recuperar', component: RecuperarComponent },
   { path: '', component: LoginComponent },
   { path: 'admin', component: AdminComponent},
   { path: 'cambiar-contrasena', component: CambiarContrasenaComponent}

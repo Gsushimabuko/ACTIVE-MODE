@@ -1,0 +1,36 @@
+.config__persona {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.config__avatar {
+  width: 64px;
+  height: 64px;
+  font-size: 22px;
+}
+
+.config__persona-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.config__persona-texto b {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+.config__acciones {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.config__boton {
+  height: 44px;
+  padding: 0 24px;
+  font-size: 14px;
+}

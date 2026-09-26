@@ -1,129 +1,163 @@
-table {
-    font-family: arial, sans-serif;
-    width: 100%;
-    position: relative;
+.cal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #1E1B18;
 }
 
-.schedule-container {
-    width: 100%;
-    overflow: scroll;
-}
-  
-.mat-column-lunes {
-    border-right: 1px dashed rgba(113, 113, 113, 0.277);
-    text-align: center;
-    max-width: 110px;
-    width: 110px;
+.cal__titulo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.mat-column-martes {
-    border-right: 1px dashed rgba(113, 113, 113, 0.277);
-    text-align: center;
-    max-width: 110px;
-    width: 110px;
-}
-  
-.mat-column-miercoles {
-    border-right: 1px dashed rgba(113, 113, 113, 0.277);
-    text-align: center;
-    max-width: 110px;
-    width: 110px;
+.cal__mes {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border: 1px solid #E9E4DF;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #FFFFFF;
 }
 
-.mat-column-jueves {
-    border-right: 1px dashed rgba(113, 113, 113, 0.277);
-    text-align: center;
-    max-width: 110px;
-    width: 110px;
+.cal__dia-semana {
+  padding: 12px 0;
+  border-bottom: 1px solid #E9E4DF;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #5E5650;
 }
 
-.mat-column-viernes {
-    border-right: 1px dashed rgba(113, 113, 113, 0.277);
-    text-align: center;
-    max-width: 110px;
-    width: 110px;
-
-}   
-
-.mdc-data-table__table{
-    min-width:90%;
+.cal__celda {
+  min-height: 96px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-right: 1px solid #EFEAE5;
+  border-bottom: 1px solid #EFEAE5;
+  min-width: 0;
 }
 
-.mat-mdc-cell{
-padding: 5px;
+.cal__celda:nth-child(7n + 7) {
+  border-right: none;
 }
 
-.leyenda{
-    margin-top: 20px;
-    margin-bottom: 20px;
+.cal__celda--vacia {
+  background: #FAF8F6;
 }
 
-.time {
-    background-color: rgb(223, 86, 86);
-    min-height: 45px;
-    color: white;
-    white-space: normal;
-    overflow-wrap: break-word;
-    line-height: 18px;
+.cal__num {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.schedule-time {
-    padding-bottom: 25px;
+.cal__num--hoy {
+  background: #C4531C;
+  color: #FFFFFF;
 }
 
-.circle {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
+.cal__evento {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-left: 3px solid;
+  border-radius: 4px;
+  background: #F6F3F0;
+  font-size: 11px;
+  font-weight: 500;
 }
 
-.circle-small{
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
+.cal__evento .cal__punto {
+  display: none;
 }
 
-@media (max-width: 700px) {
+.cal__evento-nombre {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    .mat-column-lunes {
-        border-right: 1px dashed rgba(113, 113, 113, 0.277);
-        text-align: center;
-        max-width: 120px;
-        width: 120px;
-    }
-    
-    .mat-column-martes {
-        border-right: 1px dashed rgba(113, 113, 113, 0.277);
-        text-align: center;
-        max-width: 120px;
-        width: 120px;
-    }
-      
-    .mat-column-miercoles {
-        border-right: 1px dashed rgba(113, 113, 113, 0.277);
-        text-align: center;
-        max-width: 120px;
-        width: 120px;
-    }
-    
-    .mat-column-jueves {
-        border-right: 1px dashed rgba(113, 113, 113, 0.277);
-        text-align: center;
-        max-width: 120px;
-        width: 120px;
-    }
-    
-    .mat-column-viernes {
-        border-right: 1px dashed rgba(113, 113, 113, 0.277);
-        text-align: center;
-        max-width: 120px;
-        width: 120px;
-    
-    }  
+.cal__punto {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+}
 
-    .circle-small{
-        border-radius: 50%;
-        width: 10px;
-        height: 10px;
-    }
+.cal__leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal__leyenda-titulo {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cal__leyenda ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cal__leyenda li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #5E5650;
+}
+
+.cal__leyenda b {
+  font-weight: 600;
+  color: #1E1B18;
+}
+
+.cal__vacio {
+  margin: 0;
+  font-size: 14px;
+  color: #5E5650;
+}
+
+@media (max-width: 640px) {
+  .cal__celda {
+    min-height: 56px;
+    padding: 4px 2px;
+  }
+
+  .cal__evento {
+    width: auto;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  .cal__evento .cal__punto {
+    display: block;
+    width: 8px;
+    height: 8px;
+  }
+
+  .cal__evento-nombre {
+    display: none;
+  }
 }

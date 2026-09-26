@@ -1,17 +1,8 @@
-<div style="margin:20px"  class="animate__animated animate__fadeIn animate__fast">
-
-    <div style="margin:20px;" fxLayout="column" fxLayoutAlign="start">
-        <button routerLink="/" mat-button style="transform:scale(2);"> 
-          <mat-icon >home</mat-icon>
-        </button> 
-    </div>
-    <p class="welcome-text">
-        ACTIVE MODE TÉRMINOS Y CONDICIONES 
-    </p>
-    <br>
-    <div>
-        <b class="mini-title">Acuerdo</b><br>
-        <p>
+<app-auth-layout accionTexto="Iniciar sesión" accionRuta="/login" [conImagen]="false">
+  <article class="tyc">
+    <a class="am-volver" routerLink="/"><span class="am-icon" aria-hidden="true">arrow_back</span>Inicio</a>
+    <h1 class="am-h1">Términos, condiciones y políticas de privacidad</h1>
+        <b class="tyc__seccion">Acuerdo</b><p>
             1.	SERVICIOS EDCUCATIVOS SAN JOSÉ DE MONTERRICO S.A. con RUC 20196818236 ubicado en Jr. Tomasal N°355 – Santiago de Surco, representada por la Sra. Eliana Yamashiro Nakamura identificada con DNI N°08, promueve los talleres deportivos y artísticos ACTIVE MODE. 
         </p>
     
@@ -72,14 +63,8 @@
         <p>
             Nos reservamos el derecho de modificar, adicionar y/o complementar estas normas. Todas estas modificaciones adicionales y demás entrarán en vigor inmediatamente, salvo disposición expresa en contrario. La desobediencia o violación de las disposiciones de estos Términos y Condiciones podrá dar lugar a la suspensión temporal o expulsión definitiva de los usuarios infractores, con la correspondiente cancelación de los derechos del afiliado, así como también en los casos en que su comportamiento sea considerado molesto, perturbador, inmoral o fraudulento.
         </p>
-        <b class="mini-title">Libro de reclamaciones</b><br>
-        <a href="https://www.sjm.edu.pe/appdoc/formulario.php">Click aquí</a>
-        <br> 
-        <br> 
-        <b class="mini-title">Política de cookies</b><br>
-        El sistema web no está recogiendo cookies del usuario para su funcionamiento
-        <br>
-       
+        <b class="tyc__seccion">Libro de reclamaciones</b><a href="https://www.sjm.edu.pe/appdoc/formulario.php">Click aquí</a>
+        <b class="tyc__seccion">Política de cookies</b>El sistema web no está recogiendo cookies del usuario para su funcionamiento
         <p>
             <b >
                 Sobre la Obtención y Tratamiento de Datos Personales
@@ -116,8 +101,5 @@
         <p>
             SERVICIOS EDCUCATIVOS SAN JOSÉ DE MONTERRICO garantiza la atención de los derechos protegidos, los cuales pueden ser ejercidos en cualquier momento. El usuario podrá ejercer sus derechos de información, acceso, rectificación, cancelación y oposición, contactándose con por correo a activemode@sjm.edu.pe.
         </p>
-
-    </div>
-
-</div>
-
+  </article>
+</app-auth-layout>

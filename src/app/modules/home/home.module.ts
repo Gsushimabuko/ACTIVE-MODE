@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppComponent } from 'src/app/app.component';
+import { AuthLayoutModule } from '../shared/auth-layout/auth-layout.module';
 
 
 
@@ -27,7 +27,8 @@ import { AppComponent } from 'src/app/app.component';
     HttpClientModule,
     MaterialModule,
     FlexLayoutModule,
-   MatIconModule
+    MatIconModule,
+    AuthLayoutModule
     
   ]
 })

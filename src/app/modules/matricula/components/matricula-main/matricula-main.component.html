@@ -1,18 +1,14 @@
-<div class="am matricula">
-  <div *ngIf="loader" class="matricula__cargando" role="status" aria-live="polite">
+<div class="matricula">
+  <div *ngIf="loader" class="am-cargando" role="status" aria-live="polite">
     <span class="am-spinner" aria-hidden="true"></span>
     <span class="am-sr">Cargando</span>
   </div>
 
-  <div class="matricula__contenido">
-    <a class="matricula__inicio" routerLink="/matricula/dashboard">
-      <span class="am-icon" aria-hidden="true">arrow_back</span>Inicio
-    </a>
-
-    <header class="matricula__header">
-      <div class="matricula__titulos">
-        <h1 class="matricula__titulo">Matrícula</h1>
-        <p class="matricula__subtitulo">Elige el periodo, el familiar y los cursos. Pagas todo en un solo paso.</p>
+  <div class="am-pagina">
+    <header class="am-encabezado">
+      <div class="am-titulos">
+        <h1 class="am-h1">Matrícula</h1>
+        <p class="am-sub">{{ invitado ? 'Sin registro: solo los datos del alumno, el curso y el pago.' : 'Elige el periodo, el familiar y los cursos. Pagas todo en un solo paso.' }}</p>
       </div>
 
       <app-pasos-matricula [paso]="paso"></app-pasos-matricula>
@@ -21,43 +17,51 @@
     <!-- Paso 1: cursos -->
     <div *ngIf="paso === 1" class="paso1">
       <div class="paso1__principal">
-        <section class="tarjeta">
-          <div class="seccion">
-            <h2 class="seccion__titulo">1. Alumno</h2>
-            <form [formGroup]="mesForm" class="seccion__grid">
-              <label class="campo">Periodo
-                <span class="campo__control">
+        <section class="am-tarjeta">
+          <div class="am-seccion">
+            <h2 class="am-seccion__titulo">1. Alumno</h2>
+            <form [formGroup]="mesForm" class="am-form-grid">
+              <label class="am-campo">Periodo
+                <span class="am-campo__control">
                   <select formControlName="mes" (change)="seleccionMes()">
                     <option value="" disabled>Selecciona</option>
                     <option *ngFor="let mes of meses" [value]="mes.periodo_fecha">{{ mes.mes }} {{ mes.ano }}</option>
                   </select>
-                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                  <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
                 </span>
               </label>
-              <label class="campo">Familiar a matricular
-                <span class="campo__control">
+              <label *ngIf="!invitado" class="am-campo">Familiar a matricular
+                <span class="am-campo__control">
                   <select formControlName="usuario" (change)="seleccionUsuario()">
                     <option [ngValue]="idPadre" disabled>Selecciona</option>
                     <option *ngFor="let usuario of usuarios" [ngValue]="usuario">{{ usuario.nombre }} {{ usuario.apellidop }}</option>
                   </select>
-                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                  <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
                 </span>
               </label>
             </form>
+            <div *ngIf="invitado" class="am-form-grid">
+              <app-datos-invitado [form]="invitadoForm" (relacionCambio)="cambioRelacion()"></app-datos-invitado>
+            </div>
           </div>
 
-          <form *ngIf="mesForm.controls['mes'].value != ''" [formGroup]="cursoForm" class="paso1__curso">
-            <div class="seccion">
-              <h2 class="seccion__titulo">2. Curso</h2>
-              <label class="campo">Curso
-                <span class="campo__control">
+          <div *ngIf="invitado && mesForm.controls['mes'].value != '' && !invitadoForm.value.relacion" class="am-nota">
+            <span class="am-icon" aria-hidden="true">info</span>
+            <span>Elige la relación del alumno con el colegio para ver los cursos: de ella depende la tarifa.</span>
+          </div>
+
+          <form *ngIf="mesForm.controls['mes'].value != '' && (!invitado || invitadoForm.value.relacion)" [formGroup]="cursoForm" class="paso1__curso">
+            <div class="am-seccion">
+              <h2 class="am-seccion__titulo">2. Curso</h2>
+              <label class="am-campo">Curso
+                <span class="am-campo__control">
                   <select formControlName="curso" (change)="cambioCurso()">
                     <option value="" disabled>Selecciona un curso</option>
                     <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">
                       {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}
                     </option>
                   </select>
-                  <span class="am-icon campo__flecha" aria-hidden="true">expand_more</span>
+                  <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
                 </span>
               </label>
 
@@ -70,8 +74,8 @@
               </div>
             </div>
 
-            <div *ngIf="cursoForm.controls['curso'].value != '' && niveles?.length" class="seccion">
-              <h2 class="seccion__titulo">3. Horario</h2>
+            <div *ngIf="cursoForm.controls['curso'].value != '' && niveles?.length" class="am-seccion">
+              <h2 class="am-seccion__titulo">3. Horario</h2>
 
               <div class="opciones" role="group" aria-labelledby="lbl-nivel">
                 <span id="lbl-nivel" class="opciones__label">Nivel y hora</span>
@@ -112,14 +116,15 @@
 
               <div *ngIf="cursoForm.controls['dia'].value != '' && tarifa != 0" class="monto">
                 <span>Monto por mes: <b>S/ {{ tarifa | number: '1.2-2' : 'en-US' }}</b> por {{ cantDias }} clases</span>
-                <button type="button" class="am-btn am-btn--primary monto__boton" (click)="agregarCurso()">
+                <button type="button" class="am-btn am-btn--primary monto__boton" (click)="agregar()">
                   <span class="am-icon" aria-hidden="true">add</span>Agregar a mi matrícula
                 </button>
               </div>
+              <span *ngIf="faltanDatosInvitado" class="paso1__falta" role="alert">Completa los datos del alumno en el paso 1 para agregar el curso.</span>
             </div>
           </form>
 
-          <div class="nota">
+          <div class="am-nota">
             <span class="am-icon" aria-hidden="true">info</span>
             <span>Si el curso que buscas aparece cerrado, escríbenos al <b>960 192 400</b>.</span>
           </div>
@@ -146,6 +151,7 @@
       [alumno]="nombreAlumno"
       [monto]="totalPagar"
       [idUsuario]="idUsuario"
+      [invitado]="invitado ? invitadoForm.getRawValue() : null"
       [fechaCalendario]="mesCalendario"
       (volver)="paso = 1"
       (verTerminos)="verTerminos()"
@@ -155,6 +161,7 @@
     <!-- Paso 3: confirmación -->
     <app-estado-pago *ngIf="paso === 3 && resultado"
       [resultado]="resultado"
+      [correoInvitado]="invitado ? invitadoForm.value.correo : null"
       (reintentar)="paso = 2"
       (editar)="paso = 1">
     </app-estado-pago>

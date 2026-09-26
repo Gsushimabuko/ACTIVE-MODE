@@ -1,0 +1,35 @@
+<app-auth-layout accionTexto="Crear cuenta" accionRuta="/login/registro">
+  <div class="am-form recuperar">
+    <a class="am-volver" routerLink="/login"><span class="am-icon" aria-hidden="true">arrow_back</span>Volver a iniciar sesión</a>
+
+    <header class="am-titulos">
+      <h1 class="am-h1">Recupera tu contraseña</h1>
+      <p class="am-sub">Te enviaremos un enlace para crear una nueva contraseña.</p>
+    </header>
+
+    <form *ngIf="estado !== 'enviado'; else enviado" class="am-form" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+      <div *ngIf="error" class="am-alerta" role="alert">
+        <span class="am-icon" aria-hidden="true">error</span>
+        <span>No pudimos enviar el correo. Inténtalo de nuevo en unos minutos.</span>
+      </div>
+      <label class="am-campo" [class.am-campo--invalido]="invalido">Correo electrónico
+        <input type="email" formControlName="correo" autocomplete="email">
+        <span *ngIf="invalido" class="am-campo__error">Ingresa un correo válido.</span>
+      </label>
+      <button type="submit" class="am-btn am-btn--primary am-btn--bloque" [disabled]="estado === 'enviando'">
+        {{ estado === 'enviando' ? 'Enviando…' : 'Enviar enlace' }}
+      </button>
+    </form>
+
+    <ng-template #enviado>
+      <div class="recuperar__enviado" role="status">
+        <span class="am-icon recuperar__icono" aria-hidden="true">mark_email_read</span>
+        <div class="recuperar__texto">
+          <b>Revisa tu bandeja de entrada</b>
+          <span>Si el correo está registrado, recibirás el enlace en unos minutos. Revisa también la carpeta de spam.</span>
+          <button type="button" class="recuperar__reenviar" (click)="estado = 'form'">Reenviar correo</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</app-auth-layout>

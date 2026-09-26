@@ -9,9 +9,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AdminComponent } from './admin/admin.component';
 import { CambiarContrasenaComponent } from './cambiar-contrasena/cambiar-contrasena.component';
-import { CorreoContrasenaComponent } from './correo-contrasena/correo-contrasena.component';
-
-
+import { RecuperarComponent } from './recuperar/recuperar.component';
+import { AuthLayoutModule } from '../shared/auth-layout/auth-layout.module';
 
 @NgModule({
   declarations: [
@@ -19,16 +18,16 @@ import { CorreoContrasenaComponent } from './correo-contrasena/correo-contrasena
     RegisterComponent,
     AdminComponent,
     CambiarContrasenaComponent,
-    CorreoContrasenaComponent
+    RecuperarComponent,
   ],
   imports: [
     CommonModule,
     MaterialModule,
     LoginRouterModule,
     RouterModule,
-    MaterialModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthLayoutModule,
   ]
 })
 export class LoginModule { }

@@ -1,0 +1,35 @@
+<ng-container [formGroup]="form">
+  <label class="am-campo" [class.am-campo--invalido]="invalido('nombre')">Nombres del alumno
+    <input formControlName="nombre" autocomplete="given-name">
+    <span *ngIf="invalido('nombre')" class="am-campo__error">Ingresa sus nombres.</span>
+  </label>
+  <label class="am-campo" [class.am-campo--invalido]="invalido('apellidop')">Apellido paterno
+    <input formControlName="apellidop" autocomplete="family-name">
+    <span *ngIf="invalido('apellidop')" class="am-campo__error">Ingresa su apellido paterno.</span>
+  </label>
+  <label class="am-campo">Apellido materno <span class="am-campo__opcional">(opcional)</span>
+    <input formControlName="apellidom">
+  </label>
+  <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI / CE del alumno
+    <input formControlName="dni" inputmode="numeric" maxlength="12">
+    <span *ngIf="invalido('dni')" class="am-campo__error">De 8 a 12 caracteres, solo letras y números.</span>
+  </label>
+  <label class="am-campo" [class.am-campo--invalido]="invalido('correo')">Correo para el comprobante
+    <input type="email" formControlName="correo" autocomplete="email">
+    <span *ngIf="invalido('correo')" class="am-campo__error">Ingresa un correo válido.</span>
+  </label>
+  <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Teléfono de contacto <span class="am-campo__opcional">(opcional)</span>
+    <input formControlName="telefono" inputmode="tel" autocomplete="tel">
+    <span *ngIf="invalido('telefono')" class="am-campo__error">Solo números, de 7 a 15 dígitos.</span>
+  </label>
+  <label class="am-campo" [class.am-campo--invalido]="invalido('relacion')">Relación con el colegio
+    <span class="am-campo__control">
+      <select formControlName="relacion" (change)="relacionCambio.emit(form.value.relacion)">
+        <option value="" disabled>Define la tarifa</option>
+        <option *ngFor="let r of relaciones" [value]="r">{{ r }}</option>
+      </select>
+      <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+    </span>
+    <span *ngIf="invalido('relacion')" class="am-campo__error">Selecciona una opción.</span>
+  </label>
+</ng-container>

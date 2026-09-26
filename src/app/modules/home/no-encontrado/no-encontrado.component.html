@@ -1,21 +1,8 @@
-<div  class="container animate__animated animate__fadeIn animate__fast">
-    <div class="logo"><img src="https://static.wixstatic.com/media/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png/v1/fill/w_352,h_226,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/97d28e_339b04fc9273415095136139cc3ab7ad~mv2.png"></div>
-    <p class="welcome-text">¡Error!</p>
-    <p class="welcome-subtext">Página no encontrada </p> 
-
-
-    <button routerLink="login" class="button-82-pushable" role="button">
-        <span class="button-82-shadow"></span>
-        <span class="button-82-edge"></span>
-        <span class="button-82-front text">
-            <a href="/" >
-               Volver a inicio
-            </a>
-        </span>
-    </button>
-
-
-
-
-   
-</div>
+<app-auth-layout [conImagen]="false">
+  <div class="no-encontrado">
+    <span class="am-icon no-encontrado__icono" aria-hidden="true">explore_off</span>
+    <h1 class="am-h1">No encontramos esta página</h1>
+    <p class="am-sub">Puede que el enlace esté mal escrito o que la página ya no exista.</p>
+    <a class="am-btn am-btn--primary" routerLink="/">Volver al inicio</a>
+  </div>
+</app-auth-layout>

@@ -1,0 +1,53 @@
+.recuperar {
+  gap: 24px;
+}
+
+.recuperar__enviado {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-surface-alt);
+}
+
+.recuperar__icono {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+  font-size: 22px;
+}
+
+.recuperar__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--am-text-2);
+}
+
+.recuperar__texto b {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--am-text);
+}
+
+.recuperar__reenviar {
+  align-self: flex-start;
+  min-height: 32px;
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--am-brand);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

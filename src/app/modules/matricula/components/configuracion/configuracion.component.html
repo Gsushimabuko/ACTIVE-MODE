@@ -1,0 +1,55 @@
+<div class="am-pagina am-pagina--media">
+  <header class="am-titulos">
+    <h1 class="am-h1">Configuración</h1>
+    <p class="am-sub">Tu cuenta y tu contraseña.</p>
+  </header>
+
+  <div class="am-tabs" role="tablist" aria-label="Secciones de configuración">
+    <button type="button" role="tab" id="tab-perfil" class="am-tab" [class.am-tab--activa]="pestana === 'perfil'"
+      [attr.aria-selected]="pestana === 'perfil'" aria-controls="panel-perfil" (click)="pestana = 'perfil'">Perfil</button>
+    <button type="button" role="tab" id="tab-seguridad" class="am-tab" [class.am-tab--activa]="pestana === 'seguridad'"
+      [attr.aria-selected]="pestana === 'seguridad'" aria-controls="panel-seguridad" (click)="pestana = 'seguridad'">Seguridad</button>
+  </div>
+
+  <section *ngIf="pestana === 'perfil'" id="panel-perfil" role="tabpanel" aria-labelledby="tab-perfil" class="am-tarjeta">
+    <div class="config__persona">
+      <span class="am-iniciales config__avatar" aria-hidden="true">{{ iniciales }}</span>
+      <div class="config__persona-texto">
+        <b>{{ usuario.nombre }} {{ usuario.apellidop }} {{ usuario.apellidom }}</b>
+        <span>Titular de la cuenta</span>
+      </div>
+    </div>
+    <div class="am-datos">
+      <div *ngFor="let d of datos" class="am-datos__item">
+        <span class="am-datos__label">{{ d.label }}</span>
+        <b class="am-datos__valor">{{ d.valor || '—' }}</b>
+      </div>
+    </div>
+    <div class="am-nota">
+      <span class="am-icon" aria-hidden="true">info</span>
+      <span>Para corregir tus datos escríbenos a <b>activemode@sjm.edu.pe</b> o al <b>960 192 400</b>.</span>
+    </div>
+  </section>
+
+  <section *ngIf="pestana === 'seguridad'" id="panel-seguridad" role="tabpanel" aria-labelledby="tab-seguridad" class="am-tarjeta">
+    <div class="am-seccion">
+      <h2 class="am-h2">Cambiar contraseña</h2>
+      <p class="am-sub">Te enviaremos un enlace a <b>{{ usuario.correo }}</b> para crear una nueva contraseña.</p>
+    </div>
+
+    <div *ngIf="envio === 'enviado'" class="am-alerta am-alerta--ok" role="status">
+      <span class="am-icon" aria-hidden="true">mark_email_read</span>
+      <span>Listo. Revisa tu bandeja de entrada y la carpeta de spam.</span>
+    </div>
+    <div *ngIf="envio === 'error'" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span>
+      <span>No pudimos enviar el correo. Inténtalo de nuevo en unos minutos.</span>
+    </div>
+
+    <div class="config__acciones">
+      <button type="button" class="am-btn am-btn--primary config__boton" [disabled]="envio === 'enviando'" (click)="enviarEnlace()">
+        {{ envio === 'enviando' ? 'Enviando…' : envio === 'enviado' ? 'Reenviar enlace' : 'Enviar enlace' }}
+      </button>
+    </div>
+  </section>
+</div>

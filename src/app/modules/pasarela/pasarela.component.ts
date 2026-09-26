@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
+import { DatosInvitado, PasarelaService } from 'src/app/core/http/pasarela/pasarela.service';
 
 export type ResultadoPago =
   | { estado: 'pendiente'; paymentUrl: string }
-  | { estado: 'fallido'; mensaje: string };
+  | { estado: 'fallido'; mensaje: string; status: number };
 
 @Component({
   selector: 'app-pasarela',
@@ -14,6 +14,7 @@ export class PasarelaComponent {
   @Input() cursos: any[] = [];
   @Input() alumno: string = '';
   @Input() idUsuario!: number;
+  @Input() invitado: DatosInvitado | null = null;
   @Input() monto!: number;
   @Input() fechaCalendario!: Date;
   @Output() volver = new EventEmitter<void>();
@@ -36,7 +37,7 @@ export class PasarelaComponent {
     const ano = this.fechaCalendario.getFullYear();
     const mes = this.fechaCalendario.getMonth();
 
-    this.pasarelaService.createPayment(this.monto, this.cursos, this.idUsuario, ano, mes).subscribe({
+    this.pasarelaService.createPayment(this.monto, this.cursos, this.idUsuario, ano, mes, this.invitado).subscribe({
       next: (cargo) => {
         if (!pestana) {
           window.location.href = cargo.paymentUrl;
@@ -52,6 +53,7 @@ export class PasarelaComponent {
         this.resultado.emit({
           estado: 'fallido',
           mensaje: error.error?.mensaje || 'No pudimos conectar con la pasarela.',
+          status: error.status,
         });
       }
     });
