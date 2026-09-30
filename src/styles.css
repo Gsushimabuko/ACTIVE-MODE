@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
-html, body { height: 100%; overflow:auto; background-image: linear-gradient(0deg, #FFB322 19.53125%, #EE7F12 100%);
+html, body { height: 100%; overflow:auto; background: #FFFFFF;
 font-family: 'Roboto', sans-serif;
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -15,7 +15,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     bottom:0px;
     left:0px;
     align-items: center;
-    background-color:rgba(248, 183, 18, 0.668);
+    background-color:#FFFFFF;
     
 }
 /* Avisos de las pantallas de la puerta: grandes y con color de estado, para leerse a distancia */
