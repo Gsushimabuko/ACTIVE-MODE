@@ -27,6 +27,13 @@
   font-size: 40px;
   font-weight: 700;
   color: var(--am-brand);
+  overflow: hidden;
+}
+
+.ficha__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .ficha__titulos {
@@ -55,6 +62,111 @@
   height: 44px;
   padding: 0 20px;
   font-size: 14px;
+}
+
+.ficha__acciones-cabecera,
+.ficha__foto-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.ficha__eliminar {
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--am-error);
+  border-radius: 8px;
+  background: var(--am-surface);
+  color: var(--am-error);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ficha__eliminar:hover:not(:disabled) {
+  background: var(--am-error-soft);
+}
+
+.ficha__edicion {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.ficha__edicion-cabecera .am-h2,
+.ficha__edicion-cabecera .am-sub {
+  margin: 0;
+}
+
+.ficha__edicion-cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ficha__foto {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--am-divider);
+}
+
+.ficha__foto-vista {
+  width: 96px;
+  height: 96px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--am-border);
+  border-radius: 12px;
+  background: var(--am-brand-soft);
+  color: var(--am-brand);
+}
+
+.ficha__foto-vista img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ficha__foto-vista .am-icon {
+  font-size: 36px;
+}
+
+.ficha__foto-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--am-text-2);
+}
+
+.ficha__foto-contenido b {
+  font-size: 15px;
+  color: var(--am-text);
+}
+
+.ficha__foto-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.ficha__quitar {
+  border: 0;
+  background: transparent;
+  color: var(--am-brand);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .ficha__seccion {
@@ -119,5 +231,18 @@
     width: 88px;
     height: 88px;
     font-size: 32px;
+  }
+
+  .ficha__acciones-cabecera,
+  .ficha__acciones-cabecera .am-btn {
+    width: 100%;
+  }
+
+  .ficha__foto {
+    align-items: flex-start;
+  }
+
+  .ficha__edicion {
+    padding: 16px;
   }
 }

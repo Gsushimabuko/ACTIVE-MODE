@@ -10,6 +10,11 @@
   padding: 64px 0;
 }
 
+.catalogo__filtros {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .ficha {
   display: flex;
   flex-direction: column;
@@ -23,6 +28,15 @@
 .ficha:hover {
   border-color: var(--am-brand);
   color: var(--am-text);
+}
+
+.ficha--archivada {
+  border-style: dashed;
+  opacity: 0.82;
+}
+
+.ficha--archivada .ficha__foto {
+  filter: grayscale(0.75);
 }
 
 .ficha__foto {
@@ -63,4 +77,70 @@
 
 .ficha__falta {
   color: var(--am-warning);
+}
+
+.paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.paginacion__boton {
+  min-width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--am-border-strong);
+  border-radius: 8px;
+  background: var(--am-surface);
+  color: var(--am-text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.paginacion__boton:hover:not(:disabled) {
+  border-color: var(--am-brand);
+  color: var(--am-brand-dark);
+}
+
+.paginacion__boton:focus-visible {
+  outline: 2px solid var(--am-brand);
+  outline-offset: 2px;
+}
+
+.paginacion__boton--actual {
+  border-color: var(--am-brand);
+  background: var(--am-brand);
+  color: #fff;
+  font-weight: 600;
+}
+
+.paginacion__boton--texto {
+  gap: 4px;
+  padding: 0 12px;
+}
+
+.paginacion__boton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+  .paginacion__boton--texto span:not(.am-icon) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .paginacion__boton--texto {
+    min-width: 44px;
+    padding: 0;
+  }
 }

@@ -43,7 +43,7 @@
     <div class="estado__acciones">
       <button type="button" class="am-btn am-btn--secondary" (click)="editar.emit()">Editar matrícula</button>
       <a *ngIf="dniConCuenta" class="am-btn am-btn--primary" routerLink="/login">Iniciar sesión</a>
-      <button *ngIf="!dniConCuenta" type="button" class="am-btn am-btn--primary" (click)="reintentar.emit()">Reintentar pago</button>
+      <button *ngIf="permiteReintentar" type="button" class="am-btn am-btn--primary" (click)="reintentar.emit()">Reintentar pago</button>
     </div>
   </ng-container>
 </section>

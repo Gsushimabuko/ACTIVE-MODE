@@ -104,6 +104,12 @@ export class AdminService {
     return this.http.get<ResumenAdmin & { ok: boolean }>(this.api + '/admin/resumen', { headers, params: { idPeriodo } });
   }
 
+  reconciliarPagos(idPeriodo: number) {
+    return this.http.post<{ ok: boolean; revisados: number; actualizados: number; errores: number }>(
+      this.api + '/admin/pagos/reconciliar', { idPeriodo }, this.sesion
+    );
+  }
+
   getFechasCurso(idCursoPeriodo: number) {
     return this.http.get<any>(this.api + '/curso-periodo/fechas', { params: { idCursoPeriodo } });
   }
@@ -173,6 +179,11 @@ export class AdminService {
       ? this.http.put<{ curso: FichaCurso }>(`${this.api}/admin/cursos/${id}`, datos, this.sesion)
       : this.http.post<{ curso: FichaCurso }>(this.api + '/admin/cursos', datos, this.sesion)
     ).pipe(map((r) => r.curso));
+  }
+
+  archivarCurso(id: number, archivar: boolean) {
+    return this.http.put<{ curso: FichaCurso }>(`${this.api}/admin/cursos/${id}/archivo`, { archivar }, this.sesion)
+      .pipe(map((r) => r.curso));
   }
 
   // El Excel de matrículas y pagos que ya generaba "Reporte general".

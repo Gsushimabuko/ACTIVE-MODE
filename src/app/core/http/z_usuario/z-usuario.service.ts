@@ -19,11 +19,14 @@ export class ZUsuarioService {
   }
 
   getUsuariosFiltros(nombre:string,apellidop:string,apellidom:string,dni:string){
-    return this.http.get<Usuario[]>(this.API_URL + '/filtros',{params:{nombre:nombre,apellidop:apellidop,apellidom:apellidom,dni:dni}})
+    return this.http.get<Usuario[]>(this.API_URL + '/filtros',{params:{nombre:nombre,apellidop:apellidop,apellidom:apellidom,dni:dni}, headers: this.authHeaders()})
   }
 
   getRelatives(idUsuario: number): Observable<Usuario[]>  {
-    return this.http.get<Usuario[]>(this.API_URL + '/familiares',{params:{idUsuario:idUsuario}})
+    return this.http.get<Usuario[]>(this.API_URL + '/familiares', {
+      params: { idUsuario },
+      headers: this.authHeaders(),
+    })
   }
 
 
@@ -31,7 +34,19 @@ export class ZUsuarioService {
     return this.http.post<any>(this.API_URL + '/registro', persona)
   }
   createRelativo(persona: any): Observable<any>  {
-    return this.http.post<any>(this.API_URL + '/relativo', persona)
+    return this.http.post<any>(this.API_URL + '/relativo', persona, { headers: this.authHeaders() })
+  }
+
+  updateRelativo(id: number, persona: any): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}/familiares/${id}`, persona, { headers: this.authHeaders() })
+  }
+
+  deleteRelativo(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_URL}/familiares/${id}`, { headers: this.authHeaders() })
+  }
+
+  private authHeaders(): HttpHeaders {
+    return new HttpHeaders().set('jwt', localStorage.getItem('jwt') || '')
   }
 
   login(usuario: any) {

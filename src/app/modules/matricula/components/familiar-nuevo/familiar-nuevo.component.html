@@ -12,6 +12,27 @@
       <span>{{ mensajeError }}</span>
     </div>
 
+    <section class="foto-familiar" aria-labelledby="foto-familiar-titulo">
+      <span class="foto-familiar__vista" [class.foto-familiar__vista--vacia]="!fotoVista">
+        <img *ngIf="fotoVista" [src]="fotoVista" alt="Vista previa de la foto del familiar">
+        <span *ngIf="!fotoVista" class="am-icon" aria-hidden="true">person</span>
+      </span>
+      <div class="foto-familiar__contenido">
+        <h2 id="foto-familiar-titulo" class="foto-familiar__titulo">Foto del familiar <span class="am-campo__opcional">(opcional)</span></h2>
+        <p id="foto-familiar-ayuda" class="foto-familiar__ayuda">Elige una foto JPG, PNG o WebP de hasta 5 MB.</p>
+        <div class="foto-familiar__acciones">
+          <input #fotoInput id="foto-familiar" class="foto-familiar__input" type="file"
+            accept="image/jpeg,image/png,image/webp" aria-describedby="foto-familiar-ayuda foto-familiar-error"
+            (change)="seleccionarFoto($event)">
+          <label for="foto-familiar" class="am-btn am-btn--secondary foto-familiar__boton">
+            <span class="am-icon" aria-hidden="true">upload</span>{{ fotoArchivo ? 'Cambiar foto' : 'Elegir foto' }}
+          </label>
+          <button *ngIf="fotoArchivo" type="button" class="foto-familiar__quitar" (click)="quitarFoto(fotoInput)">Quitar</button>
+        </div>
+        <span *ngIf="mensajeFoto" id="foto-familiar-error" class="am-campo__error" role="alert">{{ mensajeFoto }}</span>
+      </div>
+    </section>
+
     <div class="am-form-grid">
       <label class="am-campo" [class.am-campo--invalido]="invalido('nombre')">Nombres
         <input formControlName="nombre" autocomplete="given-name">

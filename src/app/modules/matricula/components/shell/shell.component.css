@@ -5,10 +5,13 @@
 }
 
 .shell__lateral {
-  position: sticky;
+  position: fixed;
   top: 0;
+  bottom: 0;
+  left: 0;
   width: 256px;
   height: 100vh;
+  height: 100dvh;
   flex: none;
   z-index: 40;
   display: flex;
@@ -203,7 +206,11 @@
 }
 
 .shell__cuerpo {
-  flex: 1;
+  width: calc(100% - 256px);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-left: 256px;
+  flex: none;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -218,6 +225,11 @@
   min-width: 0;
 }
 
+.shell--colapsado .shell__cuerpo {
+  width: calc(100% - 72px);
+  margin-left: 72px;
+}
+
 .shell__fondo {
   position: fixed;
   inset: 0;
@@ -226,10 +238,14 @@
 }
 
 @media (max-width: 1023px) {
+  .shell__cuerpo,
+  .shell--colapsado .shell__cuerpo {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .shell__lateral,
   .shell--colapsado .shell__lateral {
-    position: fixed;
-    left: 0;
     width: 280px;
     transform: translateX(-100%);
   }

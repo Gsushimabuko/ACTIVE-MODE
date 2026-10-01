@@ -1,0 +1,29 @@
+.dialogo { display: flex; flex-direction: column; gap: 16px; padding: 24px; max-height: calc(92vh - 48px); overflow: auto; }
+.dialogo__cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.dialogo__cabecera-acciones { display: flex; align-items: center; gap: 8px; flex: none; }
+.dialogo__cerrar { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: var(--am-text-2); cursor: pointer; }
+.dialogo__cerrar:hover { background: var(--am-surface-muted); }
+.dialogo__cerrar:focus-visible { outline: 2px solid var(--am-brand); outline-offset: 2px; }
+.dialogo__cargando { display: flex; align-items: center; justify-content: center; padding: 96px 0; }
+.am-datos { grid-template-columns: repeat(5, minmax(120px, 1fr)); }
+.detalle__tabla-scroll { min-height: 180px; max-height: 360px; overflow: auto; }
+.detalle__tabla-scroll table { min-width: 920px; }
+.detalle__tabla-scroll thead { position: sticky; top: 0; z-index: 1; }
+.detalle__tabla-scroll:focus-visible { outline: 2px solid var(--am-brand); outline-offset: 2px; }
+.am-campo { min-width: 132px; }
+.monto input { text-align: right; }
+.sin-datos { text-align: center; color: var(--am-text-2); }
+.dialogo__acciones { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.paginacion { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.paginacion__boton { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--am-border-strong); border-radius: 8px; background: var(--am-surface); color: var(--am-text); font: inherit; cursor: pointer; }
+.paginacion__boton--actual { border-color: var(--am-brand); background: var(--am-brand); color: #fff; font-weight: 600; }
+.paginacion__boton:disabled { opacity: 0.4; cursor: not-allowed; }
+.paginacion__boton:focus-visible { outline: 2px solid var(--am-brand); outline-offset: 2px; }
+
+@media (max-width: 720px) {
+  .dialogo { padding: 16px; }
+  .dialogo__cabecera { flex-direction: column; }
+  .dialogo__cabecera-acciones { width: 100%; justify-content: space-between; }
+  .am-datos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dialogo__acciones .am-btn { width: 100%; }
+}

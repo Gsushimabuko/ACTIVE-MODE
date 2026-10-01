@@ -25,7 +25,8 @@
   <div *ngIf="!cargando" class="am-grid-tarjetas">
     <a *ngFor="let m of filtrados" class="miembro" [routerLink]="['/matricula/familia', m.id]">
       <div class="miembro__visual">
-        <span class="miembro__iniciales" aria-hidden="true">{{ iniciales(m) }}</span>
+        <img *ngIf="m.foto; else inicialesMiembro" class="miembro__foto" [src]="m.foto" [alt]="'Foto de ' + m.nombre" loading="lazy" decoding="async">
+        <ng-template #inicialesMiembro><span class="miembro__iniciales" aria-hidden="true">{{ iniciales(m) }}</span></ng-template>
       </div>
       <div class="miembro__cuerpo">
         <b class="miembro__nombre">{{ m.nombre }} {{ m.apellidop }} {{ m.apellidom }}</b>

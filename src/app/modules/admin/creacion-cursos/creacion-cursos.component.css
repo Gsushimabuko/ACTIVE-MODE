@@ -26,6 +26,48 @@
   width: 160px;
 }
 
+.periodo__visible {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid var(--am-border-strong);
+  border-radius: 8px;
+  background: var(--am-surface);
+  cursor: pointer;
+}
+
+.periodo__visible input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 0;
+  accent-color: var(--am-brand);
+}
+
+.periodo__visible > .am-icon {
+  font-size: 20px;
+  color: var(--am-brand);
+}
+
+.periodo__visible-texto {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.periodo__visible-texto b {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.periodo__visible-texto small {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--am-text-3);
+}
+
 .visibilidad {
   display: flex;
   flex-wrap: wrap;

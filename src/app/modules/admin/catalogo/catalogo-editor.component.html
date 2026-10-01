@@ -10,6 +10,12 @@
     <p class="am-sub">Estos datos arman la ficha del curso en el portal de familias. Profesor, horarios y precios van en cada periodo.</p>
   </header>
 
+  <div *ngIf="archivado" class="am-alerta archivo-aviso" role="status">
+    <span class="am-icon" aria-hidden="true">archive</span>
+    <span><b>Curso archivado.</b> Se conserva su historial y no aparece en el portal de familias.</span>
+    <button type="button" class="am-btn am-btn--secondary" (click)="cambiarArchivo(false)">Restaurar curso</button>
+  </div>
+
   <form class="am-tarjeta" (ngSubmit)="guardar()" novalidate>
     <section class="am-seccion">
       <h2 class="am-h2">Datos del curso</h2>
@@ -20,8 +26,8 @@
         <div class="am-campo">
           <span>Estado</span>
           <div class="estado" role="group" aria-label="Estado del curso">
-            <button type="button" class="am-opcion" [class.am-opcion--activa]="activo" [attr.aria-pressed]="activo" (click)="activo = true">Activo</button>
-            <button type="button" class="am-opcion" [class.am-opcion--activa]="!activo" [attr.aria-pressed]="!activo" (click)="activo = false">Inactivo</button>
+            <button type="button" class="am-opcion" [class.am-opcion--activa]="activo && !archivado" [attr.aria-pressed]="activo && !archivado" [disabled]="archivado" (click)="activo = true">Activo</button>
+            <button type="button" class="am-opcion" [class.am-opcion--activa]="!activo && !archivado" [attr.aria-pressed]="!activo && !archivado" [disabled]="archivado" (click)="activo = false">Inactivo</button>
           </div>
           <span class="ayuda">Inactivo: no aparece en el portal ni se puede abrir en nuevos periodos.</span>
         </div>
@@ -46,14 +52,29 @@
         <textarea name="descripcion" rows="5" [(ngModel)]="descripcion"></textarea>
       </label>
       <div class="foto">
-        <label class="am-campo foto__campo">
-          <span>Foto <span class="am-campo__opcional">(enlace https:// a la imagen)</span></span>
-          <input name="imagen" type="url" [(ngModel)]="imagen" (ngModelChange)="fotoRota = false" placeholder="https://">
+        <div class="foto__campo">
+          <span class="foto__etiqueta">Foto del curso <span class="am-campo__opcional">(opcional)</span></span>
+          <div class="foto__subida">
+            <input #fotoCurso id="foto-curso" class="foto__input" type="file" accept="image/jpeg,image/png,image/webp"
+              aria-describedby="foto-curso-ayuda foto-curso-error" (change)="seleccionarFoto($event)">
+            <label for="foto-curso" class="am-btn am-btn--secondary foto__boton">
+              <span class="am-icon" aria-hidden="true">upload</span>{{ fotoArchivo ? 'Cambiar archivo' : 'Subir desde mi equipo' }}
+            </label>
+            <button *ngIf="fotoArchivo" type="button" class="foto__quitar" (click)="quitarArchivo(fotoCurso)">Quitar selección</button>
+          </div>
+          <span id="foto-curso-ayuda" class="ayuda">JPG, PNG o WebP · máximo 5 MB.</span>
+          <span *ngIf="errorFoto" id="foto-curso-error" class="am-campo__error" role="alert">{{ errorFoto }}</span>
+          <span class="foto__o" aria-hidden="true">o usa un enlace web</span>
+          <label class="am-campo">
+            <span class="am-sr">Enlace web de la foto</span>
+            <input name="imagen" type="url" [(ngModel)]="imagen" (ngModelChange)="fotoRota = false" placeholder="https://"
+              [disabled]="!!fotoArchivo">
+          </label>
           <span class="ayuda">Si no hay foto, la ficha muestra un ícono del curso.</span>
-        </label>
-        <span class="foto__vista" [class.foto__vista--vacia]="!imagen || fotoRota">
-          <img *ngIf="imagen && !fotoRota" [src]="imagen" alt="Vista previa de la foto" (error)="fotoRota = true">
-          <span *ngIf="!imagen || fotoRota">{{ fotoRota ? 'No se pudo cargar' : 'Sin foto' }}</span>
+        </div>
+        <span class="foto__vista" [class.foto__vista--vacia]="(!fotoLocal && !imagen) || fotoRota">
+          <img *ngIf="(fotoLocal || imagen) && !fotoRota" [src]="fotoLocal || imagen" alt="Vista previa de la foto" (error)="fotoRota = true">
+          <span *ngIf="(!fotoLocal && !imagen) || fotoRota">{{ fotoRota ? 'No se pudo cargar' : 'Sin foto' }}</span>
         </span>
       </div>
     </section>
@@ -88,6 +109,9 @@
     </div>
 
     <div class="am-acciones">
+      <button *ngIf="id && !archivado" type="button" class="am-btn am-btn--secondary archivo-boton" (click)="cambiarArchivo(true)">
+        <span class="am-icon" aria-hidden="true">archive</span>Archivar curso
+      </button>
       <a class="am-btn am-btn--secondary" routerLink="/admin/catalogo">Cancelar</a>
       <button type="submit" class="am-btn am-btn--primary" [disabled]="guardando">{{ id ? 'Guardar cambios' : 'Agregar al catálogo' }}</button>
     </div>

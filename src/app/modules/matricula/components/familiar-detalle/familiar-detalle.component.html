@@ -13,7 +13,10 @@
 
   <ng-container *ngIf="!cargando && miembro">
     <header class="ficha__cabecera">
-      <span class="ficha__avatar" aria-hidden="true">{{ iniciales }}</span>
+      <span class="ficha__avatar">
+        <img *ngIf="miembro.foto; else inicialesFamiliar" [src]="miembro.foto" [alt]="'Foto de ' + miembro.nombre">
+        <ng-template #inicialesFamiliar><span aria-hidden="true">{{ iniciales }}</span></ng-template>
+      </span>
       <div class="ficha__titulos">
         <h1 class="am-h1">{{ miembro.nombre }} {{ miembro.apellidop }} {{ miembro.apellidom }}</h1>
         <span class="ficha__rol">
@@ -21,12 +24,112 @@
           {{ esTitular ? 'Titular de la cuenta' : 'Familiar' }}
         </span>
       </div>
-      <a class="am-btn am-btn--primary ficha__boton" routerLink="/matricula">
-        <span class="am-icon" aria-hidden="true">how_to_reg</span>Matricular en un curso
-      </a>
+      <div class="ficha__acciones-cabecera">
+        <button *ngIf="!esTitular && !editando" type="button" class="am-btn am-btn--secondary ficha__boton" (click)="iniciarEdicion()">
+          <span class="am-icon" aria-hidden="true">edit</span>Editar datos
+        </button>
+        <button *ngIf="!esTitular && !editando" type="button" class="am-btn ficha__eliminar" [disabled]="eliminando" (click)="confirmarEliminacion()">
+          <span class="am-icon" aria-hidden="true">delete</span>Eliminar
+        </button>
+        <a *ngIf="!editando" class="am-btn am-btn--primary ficha__boton" routerLink="/matricula">
+          <span class="am-icon" aria-hidden="true">how_to_reg</span>Matricular en un curso
+        </a>
+      </div>
     </header>
 
-    <section class="am-seccion ficha__seccion">
+    <div *ngIf="mensajeError && !editando" class="am-alerta" role="alert">
+      <span class="am-icon" aria-hidden="true">error</span><span>{{ mensajeError }}</span>
+    </div>
+
+    <form *ngIf="editando" class="am-tarjeta ficha__edicion" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+      <div *ngIf="mensajeError" class="am-alerta" role="alert">
+        <span class="am-icon" aria-hidden="true">error</span><span>{{ mensajeError }}</span>
+      </div>
+
+      <div class="ficha__edicion-cabecera">
+        <div>
+          <h2 class="am-h2">Editar familiar</h2>
+          <p class="am-sub">Actualiza sus datos personales o cambia su fotografía.</p>
+        </div>
+      </div>
+
+      <section class="ficha__foto">
+        <span class="ficha__foto-vista" [class.ficha__foto-vista--vacia]="!fotoVista">
+          <img *ngIf="fotoVista" [src]="fotoVista" alt="Vista previa de la foto del familiar">
+          <span *ngIf="!fotoVista" class="am-icon" aria-hidden="true">person</span>
+        </span>
+        <div class="ficha__foto-contenido">
+          <b>Foto del familiar <span class="am-campo__opcional">(opcional)</span></b>
+          <span>JPG, PNG o WebP de hasta 5 MB.</span>
+          <div class="ficha__foto-acciones">
+            <input #fotoInput id="editar-foto-familiar" class="ficha__foto-input" type="file"
+              accept="image/jpeg,image/png,image/webp" (change)="seleccionarFoto($event)">
+            <label for="editar-foto-familiar" class="am-btn am-btn--secondary ficha__boton">
+              <span class="am-icon" aria-hidden="true">upload</span>{{ fotoVista ? 'Cambiar foto' : 'Elegir foto' }}
+            </label>
+            <button *ngIf="fotoVista" type="button" class="ficha__quitar" (click)="quitarFoto(fotoInput)">Quitar</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="am-form-grid">
+        <label class="am-campo" [class.am-campo--invalido]="invalido('nombre')">Nombres
+          <input formControlName="nombre" autocomplete="given-name">
+          <span *ngIf="invalido('nombre')" class="am-campo__error">Ingresa sus nombres.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('apellidop')">Apellido paterno
+          <input formControlName="apellidop">
+          <span *ngIf="invalido('apellidop')" class="am-campo__error">Ingresa el apellido paterno.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('apellidom')">Apellido materno
+          <input formControlName="apellidom">
+          <span *ngIf="invalido('apellidom')" class="am-campo__error">Ingresa el apellido materno.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI / CE
+          <input formControlName="dni" maxlength="12">
+          <span *ngIf="invalido('dni')" class="am-campo__error">Ingresa un documento válido.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('dob')">Fecha de nacimiento
+          <input type="date" formControlName="dob" [max]="hoy">
+          <span *ngIf="invalido('dob')" class="am-campo__error">Ingresa la fecha de nacimiento.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('sexo')">Sexo
+          <span class="am-campo__control">
+            <select formControlName="sexo">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let s of listaSexos" [value]="s">{{ s }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Teléfono
+          <input formControlName="telefono" inputmode="tel" autocomplete="tel">
+          <span *ngIf="invalido('telefono')" class="am-campo__error">Ingresa un teléfono válido.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('direccion')">Dirección
+          <input formControlName="direccion" autocomplete="street-address">
+          <span *ngIf="invalido('direccion')" class="am-campo__error">Ingresa la dirección.</span>
+        </label>
+        <label class="am-campo" [class.am-campo--invalido]="invalido('relacion')">Relación con el colegio
+          <span class="am-campo__control">
+            <select formControlName="relacion">
+              <option value="" disabled>Selecciona</option>
+              <option *ngFor="let r of listaRelaciones" [value]="r">{{ r }}</option>
+            </select>
+            <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="am-acciones">
+        <button type="button" class="am-btn am-btn--secondary ficha__boton" (click)="cancelarEdicion(fotoInput)">Cancelar</button>
+        <button type="submit" class="am-btn am-btn--primary ficha__boton" [disabled]="guardando">
+          {{ guardando ? 'Guardando…' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </form>
+
+    <section *ngIf="!editando" class="am-seccion ficha__seccion">
       <h2 class="am-h2">Cursos de {{ mes | date: 'MMMM' }}</h2>
 
       <div *ngIf="cursos.length; else sinCursos" class="ficha__cursos">

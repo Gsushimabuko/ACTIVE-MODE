@@ -4,7 +4,7 @@ import { DatosInvitado, PasarelaService } from 'src/app/core/http/pasarela/pasar
 export type ResultadoPago =
   | { estado: 'pendiente'; paymentUrl: string; chargeId: string }
   | { estado: 'exitoso' }
-  | { estado: 'fallido'; mensaje: string; status: number };
+  | { estado: 'fallido'; mensaje: string; status: number; codigo?: string };
 
 @Component({
   selector: 'app-pasarela',
@@ -41,7 +41,11 @@ export class PasarelaComponent {
     this.pasarelaService.createPayment(this.monto, this.cursos, this.idUsuario, ano, mes, this.invitado).subscribe({
       next: (cargo) => {
         if (!pestana) {
-          window.location.href = cargo.paymentUrl;
+          // Guarda primero el estado pendiente en el padre. Si el navegador
+          // bloqueó el popup y debemos usar esta pestaña, "Atrás" podrá
+          // reconstruir íntegramente la matrícula desde sessionStorage.
+          this.resultado.emit({ estado: 'pendiente', paymentUrl: cargo.paymentUrl, chargeId: cargo.chargeId });
+          setTimeout(() => window.location.assign(cargo.paymentUrl), 50);
           return;
         }
         pestana.location.href = cargo.paymentUrl;
@@ -55,6 +59,7 @@ export class PasarelaComponent {
           estado: 'fallido',
           mensaje: error.error?.mensaje || 'No pudimos conectar con la pasarela.',
           status: error.status,
+          codigo: error.error?.codigo,
         });
       }
     });
