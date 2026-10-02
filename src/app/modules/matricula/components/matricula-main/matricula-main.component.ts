@@ -19,8 +19,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModoAccesoService } from '../../../../core/acceso/modo-acceso.service';
 import { crearFormInvitado, tipoUsuarioPorRelacion } from '../datos-invitado/datos-invitado.component';
 import { PasarelaService } from '../../../../core/http/pasarela/pasarela.service';
-import { Subscription, interval, of } from 'rxjs';
-import { switchMap, take, catchError } from 'rxjs/operators';
+import { Subscription, interval, of, race, timer } from 'rxjs';
+import { switchMap, take, catchError, filter } from 'rxjs/operators';
 
 interface BorradorMatricula {
   version: 1
@@ -105,7 +105,7 @@ export class MatriculaMainComponent implements OnDestroy {
     ) {
 
     this.invitado = !this.usuarioService.usuario.id
-    this.invitadoForm = crearFormInvitado(this.formBuilder)
+    this.invitadoForm = crearFormInvitado(this.formBuilder, (dni) => this.pasarelaService.verificarDniInvitado(dni))
 
     this.idPadre = this.usuarioService.usuario.id
     
@@ -426,22 +426,48 @@ export class MatriculaMainComponent implements OnDestroy {
   }
 
   agregar() {
-    if (this.invitado && this.invitadoForm.invalid) {
-      this.invitadoForm.markAllAsTouched()
-      this.faltanDatosInvitado = true
-      return
-    }
-    this.faltanDatosInvitado = false
-    this.agregarCurso()
+    this.conDatosInvitadoListos(() => this.agregarCurso())
   }
 
   continuarAlPago() {
-    if (this.invitado && this.invitadoForm.invalid) {
-      this.invitadoForm.markAllAsTouched()
-      this.faltanDatosInvitado = true
-      return
+    this.conDatosInvitadoListos(() => this.irAPago())
+  }
+
+  // Si la verificación del DNI sigue en curso, espera su resultado (máx. 8 s;
+  // si no llega, sigue y el backend valida al cobrar).
+  private conDatosInvitadoListos(accion: () => void) {
+    if (!this.invitado) return accion()
+    const evaluar = () => {
+      if (this.invitadoForm.invalid) {
+        this.invitadoForm.markAllAsTouched()
+        this.faltanDatosInvitado = true
+        return
+      }
+      this.faltanDatosInvitado = false
+      accion()
     }
-    this.irAPago()
+    if (!this.invitadoForm.pending) return evaluar()
+    race(this.invitadoForm.statusChanges.pipe(filter(s => s !== 'PENDING')), timer(8000)).pipe(take(1)).subscribe(() => evaluar())
+  }
+
+  get dniInvitadoConCuenta(): boolean {
+    return this.invitado && !!this.invitadoForm.get('dni')?.errors?.['dniConCuenta']
+  }
+
+  // Tras iniciar sesión desde el aviso de DNI, vuelve a la matrícula con el
+  // periodo y el curso que ya había elegido (los horarios se vuelven a elegir:
+  // la tarifa puede cambiar con la cuenta).
+  get volverTrasLogin(): string {
+    const periodo = this.mesForm?.controls['mes']?.value
+    const idCurso = this.cursoForm?.controls['curso']?.value
+    const curso = (this.cursos ?? []).find(c => c.idCurso == idCurso)
+    const queryParams: any = {}
+    if (periodo && idCurso) {
+      queryParams.periodo = periodo
+      queryParams.idCurso = idCurso
+      if (curso?.idCursoPeriodo) queryParams.idCursoPeriodo = curso.idCursoPeriodo
+    }
+    return this.router.serializeUrl(this.router.createUrlTree(['/matricula'], { queryParams }))
   }
 
   ngOnInit(): void {

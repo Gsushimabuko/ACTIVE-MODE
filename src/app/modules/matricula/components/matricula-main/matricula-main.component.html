@@ -45,7 +45,7 @@
               </label>
               <app-datos-invitado *ngIf="invitado" parte="relacion" [form]="invitadoForm" (relacionCambio)="cambioRelacion()"></app-datos-invitado>
             </form>
-            <app-datos-invitado *ngIf="invitado" parte="datos" [form]="invitadoForm"></app-datos-invitado>
+            <app-datos-invitado *ngIf="invitado" parte="datos" [form]="invitadoForm" [volverTrasLogin]="volverTrasLogin"></app-datos-invitado>
           </div>
 
           <div *ngIf="invitado && mesForm.controls['mes'].value != '' && !invitadoForm.value.relacion" class="am-nota">
@@ -123,7 +123,7 @@
                   <span class="am-icon" aria-hidden="true">add</span>Agregar a mi matrícula
                 </button>
               </div>
-              <span *ngIf="faltanDatosInvitado" class="paso1__falta" role="alert">Completa los datos del alumno en el paso 1 para agregar el curso.</span>
+              <span *ngIf="faltanDatosInvitado" class="paso1__falta" role="alert">{{ dniInvitadoConCuenta ? 'Este DNI ya tiene una cuenta: inicia sesión para matricularlo.' : 'Completa los datos del alumno en el paso 1 para agregar el curso.' }}</span>
             </div>
           </form>
 
