@@ -81,6 +81,7 @@ export class MatriculaMainComponent implements OnDestroy {
 
 
   loader:boolean= true
+  errorCarga = false
   // Sin sesión solo se llega aquí en modo invitado (ValidarTokenGuard).
   invitado: boolean
   invitadoForm: FormGroup
@@ -138,19 +139,34 @@ export class MatriculaMainComponent implements OnDestroy {
       if (this.borradorListo) this.aplicarPasoSolicitado()
     }))
 
-    this.cursoService.getMatriculaActiva().subscribe(res=>{
-      this.meses=res
+    this.cargarDatos()
 
-      if (this.invitado) {
-        this.inicializarFormulario()
-        return
-      }
-      this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
-        this.usuarios = res
-        this.inicializarFormulario()
-      })
+  }
+
+  cargarDatos() {
+    this.errorCarga = false
+    this.loader = true
+    const fallo = () => {
+      this.loader = false
+      this.errorCarga = true
+    }
+    this.cursoService.getMatriculaActiva().subscribe({
+      next: res => {
+        this.meses = res
+        if (this.invitado) {
+          this.inicializarFormulario()
+          return
+        }
+        this.usuarioService.getRelatives(this.idPadre).subscribe({
+          next: usuarios => {
+            this.usuarios = usuarios
+            this.inicializarFormulario()
+          },
+          error: fallo,
+        })
+      },
+      error: fallo,
     })
-
   }
 
   private get borradorKey(): string {

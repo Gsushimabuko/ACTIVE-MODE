@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap, map, catchError, of } from 'rxjs';
+import { Observable, tap, map, catchError, of, throwError } from 'rxjs';
 import { environment } from 'src/app/environments/environment';
 import { Usuario } from 'src/app/interfaces/usuario';
 
@@ -76,7 +76,7 @@ export class ZUsuarioService {
         
       }),//Tap hace que se ejecute esa acción primero
       map(resp => resp.ok),//map transforma la respuesta solo a ok
-      catchError( err => {return of(false)})//si hay un errpr devuelve false
+      catchError(err => err.status === 403 || err.status === 404 ? of(false) : throwError(() => err))
     )
   }
 
@@ -142,7 +142,7 @@ export class ZUsuarioService {
   
       }),//Tap hace que se ejecute esa acción primero
       map(resp => resp.ok),//map transforma la respuesta solo a ok
-      catchError( err => {return of(false)})//si hay un errpr devuelve false
+      catchError(err => err.status === 403 || err.status === 404 ? of(false) : throwError(() => err))
     )
   }
 

@@ -5,6 +5,10 @@
   </div>
 
   <div class="am-pagina">
+    <div *ngIf="errorCarga" class="am-alerta" role="alert">
+      No pudimos cargar la matrícula. Comprueba que el servidor esté activo.
+      <button type="button" class="am-btn am-btn--secondary" (click)="cargarDatos()">Reintentar</button>
+    </div>
     <header class="am-encabezado">
       <div class="am-titulos">
         <h1 class="am-h1">Matrícula</h1>

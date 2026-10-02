@@ -11,14 +11,57 @@
   color: var(--am-text-3);
 }
 
-.dias {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+.calendario {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  max-width: 700px;
+  margin: 16px 0 12px;
 }
 
-.dias .am-opcion {
-  min-width: 64px;
+.calendario__titulo {
+  margin: 16px 0 0;
+  font-weight: 600;
+}
+
+.calendario__titulo span {
+  color: var(--am-text-2);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.calendario__semana {
+  text-align: center;
+  color: var(--am-text-2);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.calendario__dia {
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px solid var(--am-border);
+  border-radius: 8px;
+  background: var(--am-surface);
+  color: var(--am-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.calendario__dia:hover { border-color: var(--am-brand); }
+.calendario__dia:focus-visible { outline: 2px solid var(--am-brand); outline-offset: 2px; }
+.calendario__dia--elegido { background: var(--am-brand); border-color: var(--am-brand); color: #fff; }
+.calendario__dia--ocupado { background: var(--am-brand-dark); border-color: var(--am-brand-dark); }
+.calendario__dia small { font-size: 10px; }
+
+@media (max-width: 640px) {
+  .calendario { gap: 3px; }
+  .calendario__dia { min-height: 44px; }
+  .calendario__dia small { display: none; }
 }
 
 .horarios {

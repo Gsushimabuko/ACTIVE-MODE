@@ -143,7 +143,7 @@ export class CreacionCursosComponent {
   copiar() {
     if (!this.idOrigen || !this.periodo) return;
     const origen = this.periodos.find((p) => p.id === this.idOrigen)!;
-    this.hacer(this.admin.copiarCursos(this.periodo.id, this.idOrigen), `Se copiaron los cursos de ${this.etiqueta(origen)}.`, true);
+    this.hacer(this.admin.copiarCursos(this.periodo.id, this.idOrigen), `Se copiaron los cursos de ${this.etiqueta(origen)}. Revisa las fechas antes de mostrarlos.`, true);
   }
 
   cambiarVisibilidadCurso(c: CursoDePeriodo) {

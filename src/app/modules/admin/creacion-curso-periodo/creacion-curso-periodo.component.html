@@ -9,13 +9,13 @@
 
   <header class="am-titulos">
     <h1 class="am-h1">{{ editando ? 'Editar curso del periodo' : 'Abrir un curso en un periodo' }}</h1>
-    <p class="am-sub">Elige un curso del catálogo y el mes, y define profesor, cupo, días, horarios y tarifas.</p>
+    <p class="am-sub">Elige un curso y un mes; define profesor, cupo, fechas exactas, horarios y tarifas.</p>
   </header>
 
   <div *ngIf="conInscritos" class="am-nota" role="note">
     <span class="am-icon" aria-hidden="true">info</span>
-    <span><b>Tiene {{ existente?.inscritos }} alumno(s) inscrito(s).</b> Puedes cambiar profesor, cupo, montos y agregar horarios o tarifas.
-      Para no afectar sus matrículas no se puede cambiar el curso, el periodo ni los días; para fechas puntuales usa "Fechas".</span>
+    <span><b>Tiene {{ existente?.inscritos }} alumno(s) inscrito(s).</b> Puedes cambiar profesor, cupo, tarifas y fechas sin matrículas.
+      Las fechas con alumnos inscritos no se pueden quitar, y el curso y periodo quedan fijos.</span>
   </div>
 
   <form *ngIf="opciones" class="am-tarjeta" (ngSubmit)="guardar()" novalidate>
@@ -64,12 +64,22 @@
     <!-- 3 -->
     <section class="am-seccion separada">
       <h2 class="am-h2">3. Días de clase</h2>
-      <p class="am-sub">Los días de la semana en que se dicta. Se crean las clases de todo el mes.</p>
-      <div class="dias" role="group" aria-label="Días de clase">
-        <button *ngFor="let d of semana" type="button" class="am-opcion" [class.am-opcion--activa]="dias.includes(d)"
-          [attr.aria-pressed]="dias.includes(d)" [disabled]="conInscritos" (click)="alternarDia(d)">{{ diaCorto[d] }}</button>
+      <p class="am-sub">Marca cada fecha en la que sí habrá clase. Deja sin marcar feriados y eventos de la institución.</p>
+      <p class="calendario__titulo" *ngIf="periodo">{{ etiqueta(periodo) }} <span>· {{ fechas.size }} fechas marcadas</span></p>
+      <div *ngIf="periodo" class="calendario" role="group" [attr.aria-label]="'Días de clase de ' + etiqueta(periodo)">
+        <span *ngFor="let dia of diasSemana" class="calendario__semana" aria-hidden="true">{{ dia }}</span>
+        <ng-container *ngFor="let c of celdas">
+          <span *ngIf="!c" class="calendario__vacio" aria-hidden="true"></span>
+          <button *ngIf="c" type="button" class="calendario__dia" [class.calendario__dia--elegido]="fechas.has(c.fecha)"
+            [class.calendario__dia--ocupado]="c.inscritos && fechas.has(c.fecha)"
+            [attr.aria-pressed]="fechas.has(c.fecha)"
+            [attr.aria-label]="c.fecha + (fechas.has(c.fecha) ? ', con clase' : ', sin clase') + (c.inscritos ? ', ' + c.inscritos + ' inscritos' : '')"
+            (click)="alternarFecha(c)">
+            <b>{{ c.numero }}</b><small *ngIf="c.inscritos">{{ c.inscritos }} insc.</small>
+          </button>
+        </ng-container>
       </div>
-      <p class="ayuda" *ngIf="dias.length">{{ textoDias }}: {{ clasesMes }} clases en {{ periodo ? etiqueta(periodo) : 'el mes' }} por cada horario.</p>
+      <p class="ayuda" *ngIf="periodo">Cada fecha crea una clase por horario. Las fechas con alumnos inscritos permanecen protegidas. Cada día elegido necesita una combinación con tarifa para que las familias puedan matricularse.</p>
     </section>
 
     <!-- 4 -->
@@ -103,7 +113,7 @@
             <tr *ngFor="let f of opciones.frecuencias" [class.no-disponible]="!disponible(f)">
               <th scope="row">
                 <b>{{ f.nombre }} por semana</b>
-                <div class="am-tabla-meta" *ngIf="disponible(f)">{{ f.clasesMes }} clases al mes · la familia elige: {{ gruposPara(f).join(' o ') }}</div>
+                <div class="am-tabla-meta" *ngIf="disponible(f)">Base tarifaria: {{ f.clasesMes }} clases. La familia elige: {{ gruposPara(f).join(' o ') }}. Se cobra según las clases programadas.</div>
                 <div class="am-tabla-meta" *ngIf="!disponible(f)">No disponible con los días elegidos</div>
               </th>
               <td *ngFor="let t of opciones.tipos">
@@ -125,9 +135,9 @@
         Cambiar un monto no cambia lo que ya se pagó.</p>
     </section>
 
-    <div class="resumen" *ngIf="idCurso && dias.length && niveles.length">
+    <div class="resumen" *ngIf="idCurso && fechas.size && niveles.length">
       <span class="am-icon" aria-hidden="true">visibility</span>
-      <span>Las familias verán <b>{{ niveles.length }} horario(s)</b> los <b>{{ textoDias }}</b>{{ desde !== null ? ', desde S/ ' + (desde | number: '1.2-2' : 'en-US') + ' al mes' : '' }}.</span>
+      <span>Las familias verán <b>{{ fechas.size }} fecha(s)</b> por cada uno de los <b>{{ niveles.length }} horario(s)</b>{{ desde !== null ? ', con tarifa base desde S/ ' + (desde | number: '1.2-2' : 'en-US') : '' }}.</span>
     </div>
 
     <div *ngIf="errores.length" class="am-alerta" role="alert">

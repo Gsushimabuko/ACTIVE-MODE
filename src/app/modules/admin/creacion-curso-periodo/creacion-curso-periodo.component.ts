@@ -5,9 +5,11 @@ import {
   AdminService, CursoPeriodoAdmin, mensajesDeError, OpcionesCursoPeriodo, PeriodoAdmin,
 } from 'src/app/core/http/admin/admin.service';
 import { etiquetaPeriodo } from '../selector-periodo/selector-periodo.component';
-import { clasesEnElMes, DIAS_CORTOS, franja, ORDEN_SEMANA, textoDias } from '../horario';
+import { franja, textoDias } from '../horario';
 
 type Frecuencia = OpcionesCursoPeriodo['frecuencias'][number];
+interface DiaMes { fecha: string; numero: number; inscritos: number }
+const dos = (n: number) => String(n).padStart(2, '0');
 
 // Abrir un curso del catálogo en un periodo, o editar uno ya abierto.
 // Rutas: curso-periodo/nuevo?idPeriodo=, curso-periodo/:id y la antigua creacion-form/:periodoId.
@@ -28,7 +30,9 @@ export class CreacionCursoPeriodoComponent {
   idPeriodo: number | null = null;
   profesor = '';
   cupo: number | null = null;
-  dias: number[] = [];
+  fechas = new Set<string>();
+  celdas: (DiaMes | null)[] = [];
+  readonly diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   niveles: number[] = [];
   montos: Record<string, number | null> = {};
 
@@ -36,8 +40,6 @@ export class CreacionCursoPeriodoComponent {
   guardando = false;
   errores: string[] = [];
 
-  readonly semana = ORDEN_SEMANA;
-  readonly diaCorto = DIAS_CORTOS;
   readonly franja = franja;
   readonly etiqueta = etiquetaPeriodo;
 
@@ -60,12 +62,13 @@ export class CreacionCursoPeriodoComponent {
           this.idPeriodo = existente.idPeriodo;
           this.profesor = existente.profesor;
           this.cupo = existente.cupo;
-          this.dias = [...existente.dias];
+          this.fechas = new Set(existente.fechas);
           this.niveles = existente.niveles.map((n) => n.id);
           for (const t of existente.tarifas) this.montos[this.clave(t.idDia, t.idTipoUsuario)] = t.monto;
         } else {
           this.idPeriodo = periodoPedido ?? periodos.find((x) => x.estado === 'ACTIVO')?.id ?? periodos[0]?.id ?? null;
         }
+        this.armarMes();
         this.cargando = false;
         this.cargarAbiertos();
       },
@@ -77,17 +80,43 @@ export class CreacionCursoPeriodoComponent {
   }
 
   get editando() { return !!this.id; }
-  // Con alumnos inscritos no se toca lo que define sus clases: curso, periodo y días.
+  // Con alumnos inscritos no se cambia el curso o periodo; sus fechas quedan protegidas.
   get conInscritos() { return (this.existente?.inscritos ?? 0) > 0; }
   get periodo() { return this.periodos.find((p) => p.id === this.idPeriodo); }
-  get clasesMes() { return this.periodo ? clasesEnElMes(this.periodo.ano, this.periodo.mes, this.dias) : 0; }
+  get dias() { return [...new Set([...this.fechas].map((f) => {
+    const [ano, mes, dia] = f.split('-').map(Number);
+    return new Date(ano, mes - 1, dia).getDay();
+  }))]; }
   get textoDias() { return textoDias(this.dias); }
 
   clave(idDia: number, idTipo: number) { return `${idDia}-${idTipo}`; }
 
   cambiarPeriodo(id: number) {
     this.idPeriodo = id;
+    this.fechas = new Set();
+    this.armarMes();
     this.cargarAbiertos();
+  }
+
+  private armarMes() {
+    const p = this.periodo;
+    if (!p) { this.celdas = []; return; }
+    const primero = (new Date(p.ano, p.mes - 1, 1).getDay() + 6) % 7;
+    const celdas: (DiaMes | null)[] = Array(primero).fill(null);
+    for (let dia = 1; dia <= new Date(p.ano, p.mes, 0).getDate(); dia++) {
+      const fecha = `${p.ano}-${dos(p.mes)}-${dos(dia)}`;
+      celdas.push({ fecha, numero: dia, inscritos: this.existente?.inscritosPorFecha?.[fecha] ?? 0 });
+    }
+    while (celdas.length % 7) celdas.push(null);
+    this.celdas = celdas;
+  }
+
+  alternarFecha(c: DiaMes) {
+    if (c.inscritos && this.fechas.has(c.fecha)) return;
+    const fechas = new Set(this.fechas);
+    if (fechas.has(c.fecha)) fechas.delete(c.fecha);
+    else fechas.add(c.fecha);
+    this.fechas = fechas;
   }
 
   private cargarAbiertos() {
@@ -96,10 +125,6 @@ export class CreacionCursoPeriodoComponent {
       next: ({ cursos }) => (this.abiertos = new Set(cursos.filter((c) => c.id !== this.id).map((c) => c.idCurso))),
       error: () => (this.abiertos = new Set()),
     });
-  }
-
-  alternarDia(d: number) {
-    this.dias = this.dias.includes(d) ? this.dias.filter((x) => x !== d) : [...this.dias, d];
   }
 
   inscritosEnNivel(id: number) { return this.existente?.niveles.find((n) => n.id === id)?.inscritos ?? 0; }
@@ -140,7 +165,7 @@ export class CreacionCursoPeriodoComponent {
     this.guardando = true;
     const datos = {
       idCurso: this.idCurso, idPeriodo: this.idPeriodo, profesor: this.profesor, cupo: this.cupo,
-      dias: this.dias, niveles: this.niveles, tarifas: this.tarifas,
+      fechas: [...this.fechas].sort(), niveles: this.niveles, tarifas: this.tarifas,
     };
     this.admin.guardarCursoPeriodo(this.id, datos).subscribe({
       next: () => {

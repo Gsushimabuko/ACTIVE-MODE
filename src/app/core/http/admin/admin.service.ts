@@ -61,11 +61,12 @@ export interface TarifaForm { idDia: number; idTipoUsuario: number; monto: numbe
 
 export interface CursoPeriodoForm {
   idCurso: number | null; idPeriodo: number | null; profesor: string; cupo: number | null;
-  dias: number[]; niveles: number[]; tarifas: TarifaForm[];
+  fechas: string[]; niveles: number[]; tarifas: TarifaForm[];
 }
 
 export interface CursoPeriodoAdmin {
   id: number; idCurso: number; idPeriodo: number; profesor: string; cupo: number; estado: string; dias: number[];
+  fechas: string[]; inscritosPorFecha: Record<string, number>;
   niveles: { id: number; inscritos: number }[];
   tarifas: { id: number; idDia: number; idTipoUsuario: number; monto: number; matriculas: number }[];
   inscritos: number; maxPorClase: number;
@@ -111,11 +112,11 @@ export class AdminService {
   }
 
   getFechasCurso(idCursoPeriodo: number) {
-    return this.http.get<any>(this.api + '/curso-periodo/fechas', { params: { idCursoPeriodo } });
+    return this.http.get<any>(this.api + '/curso-periodo/fechas', { ...this.sesion, params: { idCursoPeriodo } });
   }
 
   setFechasCurso(idCursoPeriodo: number, fechas: string[]) {
-    return this.http.put<any>(this.api + '/curso-periodo/fechas', { idCursoPeriodo, fechas });
+    return this.http.put<any>(this.api + '/curso-periodo/fechas', { idCursoPeriodo, fechas }, this.sesion);
   }
 
   // --- Catálogo, periodos y cursos por periodo (rutas /admin/*: exigen sesión de administrador) ---
