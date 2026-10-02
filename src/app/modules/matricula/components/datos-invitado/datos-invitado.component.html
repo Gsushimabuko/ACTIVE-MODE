@@ -28,10 +28,18 @@
           <span>Apellido materno <span class="am-campo__opcional">(opcional)</span></span>
           <input formControlName="apellidom">
         </label>
-        <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI
+        <label class="am-campo" [class.am-campo--invalido]="invalido('dni') || dniConCuenta">DNI
           <input formControlName="dni" inputmode="numeric" maxlength="8">
-          <span *ngIf="invalido('dni')" class="am-campo__error">Ingresa 8 dígitos numéricos.</span>
+          <span *ngIf="verificandoDni" class="ayuda" aria-live="polite">Verificando DNI…</span>
+          <span *ngIf="invalido('dni') && !dniConCuenta" class="am-campo__error">Ingresa 8 dígitos numéricos.</span>
         </label>
+      </div>
+      <div *ngIf="dniConCuenta" class="am-alerta aviso-dni" role="alert">
+        <span class="am-icon" aria-hidden="true">person</span>
+        <div class="aviso-dni__texto">
+          <span>{{ dniConCuenta.mensaje || 'Este DNI ya tiene una cuenta registrada. Inicia sesión para matricularlo.' }}</span>
+          <a class="am-btn am-btn--primary aviso-dni__boton" routerLink="/login" [queryParams]="{ volver: volverTrasLogin }">Iniciar sesión</a>
+        </div>
       </div>
     </div>
 
