@@ -33,13 +33,17 @@ export class CursoDetalleComponent {
   error = false;
   invitado: boolean;
   iconoCurso = iconoCurso;
+  private idCurso: number;
+  private idCursoPeriodo: number;
 
   constructor(route: ActivatedRoute, usuarioService: ZUsuarioService, cursoService: ZCursoService) {
     const idCursoPeriodo = Number(route.snapshot.paramMap.get('idCursoPeriodo'));
+    this.idCursoPeriodo = idCursoPeriodo;
     const q = route.snapshot.queryParamMap;
     const mes = Number(q.get('mes'));
     const ano = Number(q.get('ano'));
     const idCurso = Number(q.get('idCurso'));
+    this.idCurso = idCurso;
     this.periodo = new Date(ano, mes, 1);
 
     // El invitado todavía no dijo su relación con el colegio: se muestra la tarifa más baja de todas.
@@ -88,6 +92,6 @@ export class CursoDetalleComponent {
 
   // Lleva a Matrícula con este periodo y este curso ya elegidos.
   get matricula() {
-    return { idCurso: this.curso?.idCurso, periodo: this.periodo?.toISOString() };
+    return { idCurso: this.idCurso, idCursoPeriodo: this.idCursoPeriodo, mes: this.periodo?.getMonth(), ano: this.periodo?.getFullYear() };
   }
 }

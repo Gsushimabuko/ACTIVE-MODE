@@ -9,9 +9,9 @@ export function crearFormInvitado(fb: FormBuilder): FormGroup {
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     apellidop: ['', [Validators.required, Validators.minLength(2)]],
     apellidom: [''],
-    dni: ['', [Validators.required, Validators.pattern(/^[0-9A-Za-z]{8,12}$/)]],
+    dni: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
     correo: ['', [Validators.required, Validators.email]],
-    telefono: ['', [Validators.pattern(/^[0-9 +]{7,15}$/)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
     relacion: ['', [Validators.required]],
   });
 }

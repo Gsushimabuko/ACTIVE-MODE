@@ -21,10 +21,10 @@ export class FamiliarNuevoComponent {
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     apellidop: ['', [Validators.required, Validators.minLength(2)]],
     apellidom: ['', [Validators.required, Validators.minLength(2)]],
-    dni: ['', [Validators.required, Validators.minLength(8)]],
+    dni: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
     dob: ['', [Validators.required]],
     sexo: ['', [Validators.required]],
-    telefono: ['', [Validators.required, Validators.minLength(8)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
     direccion: ['', [Validators.required]],
     relacion: ['', [Validators.required]],
   });

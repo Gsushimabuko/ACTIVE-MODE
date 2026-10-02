@@ -54,7 +54,7 @@
               <h2 class="am-seccion__titulo">2. Curso</h2>
               <label class="am-campo">Curso
                 <span class="am-campo__control">
-                  <select formControlName="curso" (change)="cursoPreseleccionado = null; cambioCurso()">
+                  <select formControlName="curso" (change)="cursoPreseleccionado = null; cursoPeriodoPreseleccionado = null; cambioCurso()">
                     <option value="" disabled>Selecciona un curso</option>
                     <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">
                       {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}
@@ -140,7 +140,7 @@
         [periodo]="mesForm.controls['mes'].value != '' ? mesCalendario : null"
         [total]="totalPagar"
         (quitar)="eliminar($event)"
-        (continuar)="paso = 2">
+        (continuar)="continuarAlPago()">
       </app-carrito-matricula>
     </div>
 

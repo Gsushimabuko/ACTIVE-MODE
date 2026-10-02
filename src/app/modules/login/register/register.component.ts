@@ -21,13 +21,13 @@ export class RegisterComponent {
 
     correo: ['', [Validators.required, Validators.email]],
     contrasena: ['', [Validators.required] ],
-    dni: ['', [Validators.required, Validators.minLength(8)]],
+    dni: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
 
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     apellidop: ['', [Validators.required, Validators.minLength(2)]],
     apellidom:['', [Validators.required, Validators.minLength(2)]],
 
-    telefono: ['', [Validators.required, Validators.minLength(8)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{9}$/)]],
     dob:['', [Validators.required]],
     sexo: ['', [Validators.required]],
 

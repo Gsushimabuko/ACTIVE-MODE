@@ -74,6 +74,7 @@ export class MatriculaMainComponent {
   idTipoPadre: number;
   // Curso elegido en su ficha ("Matricularme"): se selecciona solo cuando cargan los cursos del periodo.
   cursoPreseleccionado: number | null = null
+  cursoPeriodoPreseleccionado: number | null = null
 
 
   constructor(private formBuilder: FormBuilder,
@@ -231,7 +232,12 @@ export class MatriculaMainComponent {
   private preseleccionarPeriodo() {
     const q = this.route.snapshot.queryParamMap
     const idCurso = Number(q.get('idCurso'))
-    const pedido = new Date(q.get('periodo') ?? '')
+    const idCursoPeriodo = Number(q.get('idCursoPeriodo'))
+    const mesPedido = Number(q.get('mes'))
+    const anoPedido = Number(q.get('ano'))
+    const pedido = q.has('mes') && q.has('ano')
+      ? new Date(anoPedido, mesPedido, 1)
+      : new Date(q.get('periodo') ?? '')
     if (!idCurso || isNaN(pedido.getTime())) return
     const mes = (this.meses ?? []).find((m: any) => {
       const f = new Date(m.periodo_fecha)
@@ -239,6 +245,7 @@ export class MatriculaMainComponent {
     })
     if (!mes) return
     this.cursoPreseleccionado = idCurso
+    this.cursoPeriodoPreseleccionado = idCursoPeriodo || null
     this.mesForm.controls['mes'].setValue(mes.periodo_fecha)
     this.seleccionMes()
   }
@@ -247,7 +254,9 @@ export class MatriculaMainComponent {
   private aplicarCursoPreseleccionado() {
     if (!this.cursoPreseleccionado || !this.cursos) return
     if (this.invitado && !this.invitadoForm.value.relacion) return
-    const curso = this.cursos.find((c) => c.idCurso === this.cursoPreseleccionado && c.state !== 'CERRADO')
+    const curso = this.cursos.find((c) => Number(c.idCurso) === this.cursoPreseleccionado
+      && (!this.cursoPeriodoPreseleccionado || Number(c.idCursoPeriodo) === this.cursoPeriodoPreseleccionado)
+      && c.state !== 'CERRADO')
     if (!curso) return
     this.cursoForm.controls['curso'].setValue(curso.idCurso)
     this.cambioCurso()
@@ -261,6 +270,15 @@ export class MatriculaMainComponent {
     }
     this.faltanDatosInvitado = false
     this.agregarCurso()
+  }
+
+  continuarAlPago() {
+    if (this.invitado && this.invitadoForm.invalid) {
+      this.invitadoForm.markAllAsTouched()
+      this.faltanDatosInvitado = true
+      return
+    }
+    if (this.listaCursosNuevos.length) this.paso = 2
   }
 
   ngOnInit(): void {

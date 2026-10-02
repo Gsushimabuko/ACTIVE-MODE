@@ -25,9 +25,9 @@
         <input formControlName="apellidom">
         <span *ngIf="invalido('apellidom')" class="am-campo__error">Ingresa su apellido materno.</span>
       </label>
-      <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI / CE
-        <input formControlName="dni" inputmode="numeric" maxlength="12">
-        <span *ngIf="invalido('dni')" class="am-campo__error">Ingresa un documento de al menos 8 caracteres.</span>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('dni')">DNI
+        <input formControlName="dni" inputmode="numeric" maxlength="8">
+        <span *ngIf="invalido('dni')" class="am-campo__error">Ingresa 8 dígitos numéricos.</span>
       </label>
       <label class="am-campo" [class.am-campo--invalido]="invalido('dob')">Fecha de nacimiento
         <input type="date" formControlName="dob" [max]="hoy">
@@ -43,9 +43,9 @@
         </span>
         <span *ngIf="invalido('sexo')" class="am-campo__error">Selecciona una opción.</span>
       </label>
-      <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Teléfono
-        <input formControlName="telefono" inputmode="tel" autocomplete="tel">
-        <span *ngIf="invalido('telefono')" class="am-campo__error">Ingresa un teléfono de al menos 8 dígitos.</span>
+      <label class="am-campo" [class.am-campo--invalido]="invalido('telefono')">Celular
+        <input formControlName="telefono" inputmode="numeric" maxlength="9" autocomplete="tel">
+        <span *ngIf="invalido('telefono')" class="am-campo__error">Ingresa 9 dígitos numéricos.</span>
       </label>
       <label class="am-campo" [class.am-campo--invalido]="invalido('direccion')">Dirección
         <input formControlName="direccion" autocomplete="street-address">
