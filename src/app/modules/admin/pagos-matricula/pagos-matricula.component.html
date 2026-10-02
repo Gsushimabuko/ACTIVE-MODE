@@ -6,6 +6,9 @@
     </div>
     <div class="acciones">
       <app-selector-periodo (cambio)="cargar($event)"></app-selector-periodo>
+      <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="actualizar()" [disabled]="sincronizando">
+        <span class="am-icon" aria-hidden="true">sync</span>{{ sincronizando ? 'Actualizando…' : 'Actualizar estados' }}
+      </button>
       <button type="button" class="am-btn am-btn--secondary acciones__boton" (click)="exportar()" [disabled]="exportando">
         <span class="am-icon" aria-hidden="true">download</span>{{ exportando ? 'Exportando…' : 'Exportar Excel' }}
       </button>

@@ -26,10 +26,12 @@ import { ConfiguracionComponent } from './components/configuracion/configuracion
 import { RequiereCuentaComponent } from './components/requiere-cuenta/requiere-cuenta.component';
 import { DatosInvitadoComponent } from './components/datos-invitado/datos-invitado.component';
 import { MenuUsuarioComponent } from './components/menu-usuario/menu-usuario.component';
+import { FamiliarEliminarDialogComponent } from './components/familiar-eliminar-dialog/familiar-eliminar-dialog.component';
 
 @NgModule({
   declarations: [
     MenuUsuarioComponent,
+    FamiliarEliminarDialogComponent,
     DatosInvitadoComponent,
     RequiereCuentaComponent,
     ShellComponent,

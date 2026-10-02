@@ -14,12 +14,44 @@ export class CatalogoComponent {
   errores: string[] = [];
   aviso: string = history.state?.aviso ?? '';
   readonly icono = iconoCurso;
+  readonly porPagina = 12;
+  pagina = 1;
+  mostrarArchivados = false;
 
   constructor(admin: AdminService) {
     admin.catalogo().subscribe({
       next: (c) => { this.cursos = c; this.cargando = false; },
       error: (e) => { this.errores = mensajesDeError(e); this.cargando = false; },
     });
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.cursosFiltrados.length / this.porPagina);
+  }
+
+  get archivados(): number { return this.cursos.filter((c) => c.estado === 'ARCHIVADO').length; }
+
+  get cursosFiltrados(): FichaCurso[] {
+    return this.cursos.filter((c) => this.mostrarArchivados ? c.estado === 'ARCHIVADO' : c.estado !== 'ARCHIVADO');
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  get cursosPagina(): FichaCurso[] {
+    const inicio = (this.pagina - 1) * this.porPagina;
+    return this.cursosFiltrados.slice(inicio, inicio + this.porPagina);
+  }
+
+  alternarArchivados() {
+    this.mostrarArchivados = !this.mostrarArchivados;
+    this.pagina = 1;
+  }
+
+  irAPagina(pagina: number) {
+    if (pagina < 1 || pagina > this.totalPaginas || pagina === this.pagina) return;
+    this.pagina = pagina;
   }
 
   // Lo que le falta a la ficha para verse completa en el portal.

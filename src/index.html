@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <title>Active Mode</title>
@@ -12,6 +12,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block" rel="stylesheet">
 
+  <!-- Se pinta antes de descargar Angular y sus estilos para evitar el flash vacío. -->
+  <style>
+    html, body {
+      min-height: 100%;
+      margin: 0;
+      background: #fff;
+    }
+
+    .bootstrap-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .bootstrap-loader__mark {
+      position: relative;
+      display: flex;
+      width: 96px;
+      height: 96px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #c4531c;
+      box-shadow: 0 12px 30px rgba(30, 27, 24, 0.12);
+    }
+
+    .bootstrap-loader__mark::after {
+      position: absolute;
+      inset: -8px;
+      border: 3px solid #f7dfd2;
+      border-top-color: #c4531c;
+      border-radius: 50%;
+      content: '';
+      animation: active-mode-spin 850ms linear infinite;
+    }
+
+    .bootstrap-loader__logo {
+      display: block;
+      width: 72px;
+      height: auto;
+    }
+
+    @keyframes active-mode-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bootstrap-loader__mark::after { animation-duration: 1800ms; }
+    }
+  </style>
+
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -20,7 +75,13 @@
 </head>
 <body class="mat-typography">
   
-  <app-root></app-root>
+  <app-root>
+    <div class="bootstrap-loader" role="status" aria-live="polite" aria-label="Cargando Active Mode">
+      <div class="bootstrap-loader__mark" aria-hidden="true">
+        <img class="bootstrap-loader__logo" src="assets/images/active-mode-logo.png" alt="">
+      </div>
+    </div>
+  </app-root>
   
 </body>
 </html>

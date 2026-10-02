@@ -22,8 +22,25 @@ export class DasboardComponent {
     this.usuario = usuarioService.usuario;
     this.cursoService.getMatriculaActiva().subscribe({
       next: (meses: any[]) => {
-        this.periodos = meses.map((m) => new Date(m.periodo_fecha));
-        if (this.periodos.length) this.elegirPeriodo(this.periodos[0]);
+        const hoy = new Date();
+        const inicioMesActual = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        // El catálogo público no debe abrir un período vencido aunque siga
+        // activo en la configuración del BackOffice.
+        this.periodos = meses
+          // periodo_fecha llega como ISO UTC. Reconstruirlo en hora local evita
+          // que en Perú el primer día de mes se interprete como el mes previo.
+          .map((m) => {
+            const fecha = new Date(m.periodo_fecha);
+            return new Date(fecha.getUTCFullYear(), fecha.getUTCMonth(), 1);
+          })
+          .filter((periodo) => new Date(periodo.getFullYear(), periodo.getMonth(), 1) >= inicioMesActual)
+          .sort((a, b) => a.getTime() - b.getTime());
+
+        const periodoActual = this.periodos.find((periodo) =>
+          periodo.getFullYear() === hoy.getFullYear() && periodo.getMonth() === hoy.getMonth()
+        );
+        if (periodoActual) this.elegirPeriodo(periodoActual);
+        else if (this.periodos.length) this.elegirPeriodo(this.periodos[0]);
         else this.cargando = false;
       },
       error: () => (this.cargando = false),

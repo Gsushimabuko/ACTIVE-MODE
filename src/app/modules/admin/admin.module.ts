@@ -35,6 +35,7 @@ import { PagosComponent } from './pagos/pagos.component';
 import { ColectasComponent } from './colectas/colectas.component';
 import { CrearListaPagoComponent } from './crear-lista-pago/crear-lista-pago.component';
 import { EditListaPagoComponent } from './edit-lista-pago/edit-lista-pago.component';
+import { EditListaPagoDialogComponent } from './edit-lista-pago/edit-lista-pago-dialog.component';
 import { ReporteriaComponent } from './reporteria/reporteria.component';
 
 import { SharedModule } from '../shared/shared.module';
@@ -73,6 +74,7 @@ import { FechasCursoComponent } from './fechas-curso/fechas-curso.component';
     ColectasComponent,
     CrearListaPagoComponent,
     EditListaPagoComponent,
+    EditListaPagoDialogComponent,
     ReporteriaComponent,
     ProperNamePipe,
     PuertaAltComponent,

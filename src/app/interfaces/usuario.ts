@@ -11,5 +11,7 @@ export interface Usuario {
     direccion: string,
     estado: string,
     id_rol: number,
-    id_tipo_usuario: number
+    id_tipo_usuario: number,
+    foto?: string | null,
+    relacion?: string
 }

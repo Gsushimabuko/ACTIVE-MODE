@@ -13,8 +13,13 @@ export class EstadoPagoComponent {
   @Output() reintentar = new EventEmitter<void>();
   @Output() editar = new EventEmitter<void>();
 
-  // 409 = el DNI del invitado ya tiene cuenta: tiene que iniciar sesión, reintentar no sirve.
+  // El código distingue este 409 de otros conflictos, como una matrícula duplicada.
   get dniConCuenta(): boolean {
-    return this.resultado.estado === 'fallido' && this.resultado.status === 409;
+    return this.resultado.estado === 'fallido' && this.resultado.codigo === 'dni_con_cuenta';
+  }
+
+  get permiteReintentar(): boolean {
+    return this.resultado.estado === 'fallido'
+      && !['dni_con_cuenta', 'matricula_duplicada'].includes(this.resultado.codigo || '');
   }
 }

@@ -1,0 +1,73 @@
+<div class="dialogo">
+  <header class="dialogo__cabecera">
+    <div class="am-titulos">
+      <h2 class="am-h2">{{ selectedLista.var_name }}</h2>
+      <p class="am-sub">{{ selectedLista.var_description || 'Detalle de la lista' }}<span *ngIf="selectedLista.tsp_fec_creacion"> · Creada el {{ selectedLista.tsp_fec_creacion | date: 'dd/MM/yyyy' }}</span></p>
+    </div>
+    <div class="dialogo__cabecera-acciones">
+      <button type="button" class="am-btn am-btn--secondary am-btn--chico" (click)="downloadReport()" [disabled]="isLoading">
+        <span class="am-icon" aria-hidden="true">download</span>Exportar Excel
+      </button>
+      <button type="button" class="dialogo__cerrar" (click)="dialogRef.close()" aria-label="Cerrar detalle">
+        <span class="am-icon" aria-hidden="true">close</span>
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="isLoading" class="dialogo__cargando" role="status"><span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando detalle</span></div>
+  <div *ngIf="errorMessage" class="am-alerta" role="alert"><span class="am-icon" aria-hidden="true">error</span><span>{{ errorMessage }}</span></div>
+  <div *ngIf="aviso" class="am-alerta am-alerta--ok" role="status"><span class="am-icon" aria-hidden="true">check_circle</span><span>{{ aviso }}</span></div>
+
+  <ng-container *ngIf="!isLoading && selectedLista.num_total_count !== undefined">
+    <div class="am-datos">
+      <div class="am-datos__item"><span class="am-datos__label">Pagos</span><span class="am-datos__valor">{{ selectedLista.num_total_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Pagados</span><span class="am-datos__valor">{{ selectedLista.num_paid_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Pendientes</span><span class="am-datos__valor">{{ selectedLista.num_pending_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Cancelados</span><span class="am-datos__valor">{{ selectedLista.num_cancelled_count }}</span></div>
+      <div class="am-datos__item"><span class="am-datos__label">Monto total</span><span class="am-datos__valor">S/ {{ selectedLista.num_total_amount | number:'1.2-2':'en-US' }}</span></div>
+    </div>
+
+    <div class="am-filtros" role="group" aria-label="Filtrar pagos por estado">
+      <button *ngFor="let f of filtros" type="button" class="am-filtro" [class.am-filtro--activo]="filtroEstado === f.valor"
+        [attr.aria-pressed]="filtroEstado === f.valor" (click)="cambiarFiltro(f.valor)">{{ f.texto }}</button>
+    </div>
+
+    <div class="detalle__tabla-scroll am-tabla-contenedor" tabindex="0" aria-label="Pagos de la lista">
+      <table class="am-tabla">
+        <thead><tr><th scope="col">Alumno</th><th scope="col">Padre</th><th scope="col">Madre</th><th scope="col">Link de pago</th><th scope="col">Estado</th><th scope="col" class="am-num">Monto</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let pago of pagosPagina">
+            <td><b>{{ pago.var_name }}</b><div class="am-tabla-meta">{{ pago.var_grade }} {{ pago.var_section }}</div></td>
+            <td>{{ pago.father?.var_name }}<div class="am-tabla-meta contacto">{{ pago.father?.var_email }}</div></td>
+            <td>{{ pago.mother?.var_name }}<div class="am-tabla-meta contacto">{{ pago.mother?.var_email }}</div></td>
+            <td><span class="am-ref">{{ link }}{{ pago.var_uuid }}</span></td>
+            <td>
+              <label *ngIf="isEditing; else estadoTexto" class="am-campo"><span class="am-sr">Estado de {{ pago.var_name }}</span><span class="am-campo__control">
+                <select [(ngModel)]="pago.var_status"><option value="PENDING">Pendiente</option><option value="PAID">Pagado</option><option value="CANCELLED">Cancelado</option></select>
+                <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span></span>
+              </label>
+              <ng-template #estadoTexto><span class="am-estado" [ngClass]="estado(pago.var_status).clase"><span class="am-icon" aria-hidden="true">{{ estado(pago.var_status).icono }}</span>{{ estado(pago.var_status).texto }}</span></ng-template>
+            </td>
+            <td class="am-num">
+              <label *ngIf="isEditing; else montoTexto" class="am-campo monto"><span class="am-sr">Monto de {{ pago.var_name }}</span><input type="number" min="0" [(ngModel)]="pago.num_total" (blur)="formatMonto(pago)"></label>
+              <ng-template #montoTexto>S/ {{ pago.num_total | number:'1.2-2':'en-US' }}</ng-template>
+            </td>
+          </tr>
+          <tr *ngIf="!estudiantesFiltrados.length"><td colspan="6" class="sin-datos">No hay pagos con este estado.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <nav *ngIf="totalPaginas > 1" class="paginacion" aria-label="Páginas de pagos">
+      <button type="button" class="paginacion__boton" [disabled]="pagina === 1" (click)="irAPagina(pagina - 1)" aria-label="Página anterior"><span class="am-icon" aria-hidden="true">chevron_left</span></button>
+      <button *ngFor="let numero of paginas" type="button" class="paginacion__boton" [class.paginacion__boton--actual]="numero === pagina"
+        [attr.aria-current]="numero === pagina ? 'page' : null" (click)="irAPagina(numero)" [attr.aria-label]="'Página ' + numero">{{ numero }}</button>
+      <button type="button" class="paginacion__boton" [disabled]="pagina === totalPaginas" (click)="irAPagina(pagina + 1)" aria-label="Página siguiente"><span class="am-icon" aria-hidden="true">chevron_right</span></button>
+    </nav>
+
+    <footer class="dialogo__acciones">
+      <button type="button" class="am-btn am-btn--secondary" (click)="enviarRecordatorioMasivo()"><span class="am-icon" aria-hidden="true">mail</span>Enviar recordatorio a todos</button>
+      <button type="button" class="am-btn" [class.am-btn--primary]="isEditing" [class.am-btn--secondary]="!isEditing" (click)="toggleEditTable()">{{ isEditing ? 'Guardar cambios' : 'Editar montos y estados' }}</button>
+    </footer>
+  </ng-container>
+</div>

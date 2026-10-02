@@ -30,7 +30,7 @@
 .acceso__accion {
   height: 40px;
   padding: 0 16px;
-  border: 1px solid var(--am-text);
+  border: 1px solid var(--am-border-strong);
   background: var(--am-surface);
   color: var(--am-text);
   font-size: 14px;
@@ -38,8 +38,9 @@
 }
 
 .acceso__accion:hover {
+  border-color: var(--am-brand);
   background: var(--am-surface-muted);
-  color: var(--am-text);
+  color: var(--am-brand-dark);
 }
 
 .acceso__main {

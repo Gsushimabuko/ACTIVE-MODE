@@ -20,8 +20,16 @@
     <span class="am-spinner" aria-hidden="true"></span><span class="am-sr">Cargando catálogo</span>
   </div>
 
+  <div *ngIf="!cargando && archivados" class="catalogo__filtros">
+    <button type="button" class="am-btn am-btn--secondary boton" (click)="alternarArchivados()"
+      [attr.aria-pressed]="mostrarArchivados">
+      <span class="am-icon" aria-hidden="true">{{ mostrarArchivados ? 'inventory_2' : 'archive' }}</span>
+      {{ mostrarArchivados ? 'Volver al catálogo' : 'Ver archivados (' + archivados + ')' }}
+    </button>
+  </div>
+
   <div *ngIf="!cargando" class="am-grid-tarjetas">
-    <a *ngFor="let c of cursos" class="ficha" [routerLink]="['/admin/catalogo', c.id]">
+    <a *ngFor="let c of cursosPagina" class="ficha" [class.ficha--archivada]="c.estado === 'ARCHIVADO'" [routerLink]="['/admin/catalogo', c.id]">
       <span class="ficha__foto" [class.ficha__foto--vacia]="!c.imagen"
         [style.background-image]="c.imagen ? 'url(&quot;' + c.imagen + '&quot;)' : null">
         <span *ngIf="!c.imagen" class="am-icon" aria-hidden="true">{{ icono(c.nombre) }}</span>
@@ -30,11 +38,30 @@
         <b class="ficha__nombre">{{ c.nombre | titlecase }}</b>
         <span class="ficha__meta">{{ c.categoria || 'Sin categoría' }}{{ c.edades ? ' · ' + c.edades : '' }}</span>
         <span class="am-estado" [class.am-estado--ok]="c.estado === 'ACTIVO'" [class.am-estado--neutro]="c.estado !== 'ACTIVO'">
-          <span class="am-icon" aria-hidden="true">{{ c.estado === 'ACTIVO' ? 'check_circle' : 'block' }}</span>
-          {{ c.estado === 'ACTIVO' ? 'Activo' : 'Inactivo' }} · abierto en {{ c.periodos }} periodo(s)
+          <span class="am-icon" aria-hidden="true">{{ c.estado === 'ACTIVO' ? 'check_circle' : c.estado === 'ARCHIVADO' ? 'archive' : 'block' }}</span>
+          {{ c.estado === 'ACTIVO' ? 'Activo' : c.estado === 'ARCHIVADO' ? 'Archivado' : 'Inactivo' }} · abierto en {{ c.periodos }} periodo(s)
         </span>
         <span *ngIf="faltantes(c).length" class="ficha__falta">Ficha incompleta: falta {{ faltantes(c).join(', ') }}</span>
       </span>
     </a>
   </div>
+
+  <div *ngIf="!cargando && !cursosPagina.length" class="am-vacio">
+    <span class="am-icon" aria-hidden="true">{{ mostrarArchivados ? 'archive' : 'school' }}</span>
+    <span>{{ mostrarArchivados ? 'No hay cursos archivados.' : 'No hay cursos en el catálogo.' }}</span>
+  </div>
+
+  <nav *ngIf="!cargando && totalPaginas > 1" class="paginacion" aria-label="Páginas del catálogo">
+    <button type="button" class="paginacion__boton paginacion__boton--texto" [disabled]="pagina === 1"
+      (click)="irAPagina(pagina - 1)" aria-label="Página anterior">
+      <span class="am-icon" aria-hidden="true">chevron_left</span><span>Anterior</span>
+    </button>
+    <button *ngFor="let numero of paginas" type="button" class="paginacion__boton"
+      [class.paginacion__boton--actual]="numero === pagina" [attr.aria-current]="numero === pagina ? 'page' : null"
+      [attr.aria-label]="'Página ' + numero" (click)="irAPagina(numero)">{{ numero }}</button>
+    <button type="button" class="paginacion__boton paginacion__boton--texto" [disabled]="pagina === totalPaginas"
+      (click)="irAPagina(pagina + 1)" aria-label="Página siguiente">
+      <span>Siguiente</span><span class="am-icon" aria-hidden="true">chevron_right</span>
+    </button>
+  </nav>
 </div>

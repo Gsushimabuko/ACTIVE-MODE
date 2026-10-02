@@ -56,8 +56,8 @@
                 <span class="am-campo__control">
                   <select formControlName="curso" (change)="cursoPreseleccionado = null; cursoPeriodoPreseleccionado = null; cambioCurso()">
                     <option value="" disabled>Selecciona un curso</option>
-                    <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO'">
-                      {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : '' }}
+                    <option *ngFor="let c of cursos" [ngValue]="c.idCurso" [disabled]="c.state == 'CERRADO' || cursoYaSeleccionado(c.idCursoPeriodo)">
+                      {{ c.name | titlecase }}{{ c.state == 'CERRADO' ? ' (cerrado)' : cursoYaSeleccionado(c.idCursoPeriodo) ? ' (ya matriculado)' : '' }}
                     </option>
                   </select>
                   <span class="am-icon am-campo__flecha" aria-hidden="true">expand_more</span>
@@ -152,7 +152,7 @@
       [idUsuario]="idUsuario"
       [invitado]="invitado ? invitadoForm.getRawValue() : null"
       [fechaCalendario]="mesCalendario"
-      (volver)="paso = 1"
+      (volver)="volverAFormulario()"
       (verTerminos)="verTerminos()"
       (resultado)="mostrarResultado($event)">
     </app-pasarela>
@@ -161,8 +161,8 @@
     <app-estado-pago *ngIf="paso === 3 && resultado"
       [resultado]="resultado"
       [correoInvitado]="invitado ? invitadoForm.value.correo : null"
-      (reintentar)="paso = 2"
-      (editar)="paso = 1">
+      (reintentar)="reintentarPago()"
+      (editar)="volverAFormulario()">
     </app-estado-pago>
   </div>
 </div>

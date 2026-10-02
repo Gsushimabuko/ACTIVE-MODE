@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
 
@@ -30,7 +30,8 @@ export class PasarelaService {
   createPayment(monto: number, cursos: any, idUsuario: number, ano: number, mes: number, invitado: DatosInvitado | null = null) {
     const payment = { amount: monto, description: 'Pago de matrícula a talleres de Active Mode' };
     const alumno = invitado ? { invitado } : { idUsuario };
-    return this._http.post<CargoCreado>(this.API_URL, { payment, cursos, ...alumno, ano, mes });
+    const headers = invitado ? undefined : new HttpHeaders().set('jwt', localStorage.getItem('jwt') || '');
+    return this._http.post<CargoCreado>(this.API_URL, { payment, cursos, ...alumno, ano, mes }, { headers });
   }
 
   estadoPago(chargeId: string) {

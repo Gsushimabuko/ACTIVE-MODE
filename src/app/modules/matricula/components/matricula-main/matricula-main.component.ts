@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ZCursoService } from '../../../../core/http/z_curso/z-curso.service';
 import { CursoPeriodo } from '../../../shared/interfaces/Curso';
@@ -22,6 +22,16 @@ import { PasarelaService } from '../../../../core/http/pasarela/pasarela.service
 import { Subscription, interval, of } from 'rxjs';
 import { switchMap, take, catchError } from 'rxjs/operators';
 
+interface BorradorMatricula {
+  version: 1
+  guardadoEn: number
+  periodo: string
+  idUsuario: number | null
+  invitado: any
+  cursoForm: any
+  cursos: any[]
+  resultado?: ResultadoPago
+}
 
 
 @Component({
@@ -29,7 +39,7 @@ import { switchMap, take, catchError } from 'rxjs/operators';
   templateUrl: './matricula-main.component.html',
   styleUrls: ['./matricula-main.component.css']
 })
-export class MatriculaMainComponent {
+export class MatriculaMainComponent implements OnDestroy {
 
   idUsuario!:number
 
@@ -63,6 +73,11 @@ export class MatriculaMainComponent {
   listaDeCursosPrecios:any = []
   resultado?: ResultadoPago
   private pollingPagoSub?: Subscription
+  private cambiosSub = new Subscription()
+  private borradorPendiente?: BorradorMatricula
+  private borradorListo = false
+  private restaurandoBorrador = false
+  private pasoSolicitado: string | null = null
 
 
   loader:boolean= true
@@ -104,22 +119,6 @@ export class MatriculaMainComponent {
     this.fechaHoy = new Date()
     this.extra = 15*60*1000 // prorroga:  (+) aumenta prorroga, (-) disminuye prorroga 
 
-    this.cursoService.getMatriculaActiva().subscribe(res=>{
-      this.meses=res
-      this.preseleccionarPeriodo()
-
-      if (this.invitado) {
-        this.loader = false
-        return
-      }
-      this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
-        this.usuarios = res
-        this.loader = false
-
-      })
-      
-    })
-
     this.cursoForm = this.formBuilder.group({
       curso: ['', [Validators.required]],
       ratio: [{ value: '', disabled: true }, [Validators.required]],
@@ -132,6 +131,150 @@ export class MatriculaMainComponent {
       usuario:[this.idPadre]
     })
 
+    this.cambiosSub.add(this.invitadoForm.valueChanges.subscribe(() => this.guardarBorrador()))
+    this.cambiosSub.add(this.cursoForm.valueChanges.subscribe(() => this.guardarBorrador()))
+    this.cambiosSub.add(this.route.queryParamMap.subscribe(params => {
+      this.pasoSolicitado = params.get('paso')
+      if (this.borradorListo) this.aplicarPasoSolicitado()
+    }))
+
+    this.cursoService.getMatriculaActiva().subscribe(res=>{
+      this.meses=res
+
+      if (this.invitado) {
+        this.inicializarFormulario()
+        return
+      }
+      this.usuarioService.getRelatives(this.idPadre).subscribe(res=>{
+        this.usuarios = res
+        this.inicializarFormulario()
+      })
+    })
+
+  }
+
+  private get borradorKey(): string {
+    return `active-mode:matricula:${this.invitado ? 'invitado' : this.idPadre}`
+  }
+
+  private leerBorrador(): BorradorMatricula | undefined {
+    try {
+      const guardado = sessionStorage.getItem(this.borradorKey)
+      if (!guardado) return undefined
+      const borrador = JSON.parse(guardado) as BorradorMatricula
+      if (borrador.version !== 1 || Date.now() - borrador.guardadoEn > 12 * 60 * 60 * 1000) {
+        sessionStorage.removeItem(this.borradorKey)
+        return undefined
+      }
+      return borrador
+    } catch {
+      return undefined
+    }
+  }
+
+  private inicializarFormulario() {
+    const borrador = this.leerBorrador()
+    if (!this.route.snapshot.queryParamMap.has('idCurso') && borrador?.periodo && (this.meses ?? []).some((m: any) => m.periodo_fecha === borrador.periodo)) {
+      this.restaurandoBorrador = true
+      this.borradorPendiente = borrador
+      if (this.invitado) {
+        this.invitadoForm.patchValue(borrador.invitado || {}, { emitEvent: false })
+        this.idTipoUsuario = tipoUsuarioPorRelacion(this.invitadoForm.value.relacion)
+      } else {
+        const usuario = (this.usuarios ?? []).find(u => Number(u.id) === Number(borrador.idUsuario))
+        if (usuario) {
+          this.mesForm.controls['usuario'].setValue(usuario, { emitEvent: false })
+          this.idUsuario = usuario.id
+          this.idTipoUsuario = usuario.id_tipo_usuario
+        }
+      }
+      this.mesForm.controls['mes'].setValue(borrador.periodo, { emitEvent: false })
+      this.borradorListo = true
+      this.seleccionMes()
+      return
+    }
+
+    this.borradorListo = true
+    this.preseleccionarPeriodo()
+    if (this.mesForm.controls['mes'].value === '') this.loader = false
+    this.aplicarPasoSolicitado()
+  }
+
+  private guardarBorrador() {
+    if (!this.borradorListo || this.restaurandoBorrador) return
+    const periodo = this.mesForm?.controls['mes']?.value
+    if (!periodo) return
+    const usuario = this.mesForm.controls['usuario'].value
+    const borrador: BorradorMatricula = {
+      version: 1,
+      guardadoEn: Date.now(),
+      periodo,
+      idUsuario: this.invitado ? null : Number(usuario?.id || this.idUsuario || 0),
+      invitado: this.invitado ? this.invitadoForm.getRawValue() : null,
+      cursoForm: this.cursoForm.getRawValue(),
+      cursos: this.listaCursosNuevos,
+      resultado: this.resultado,
+    }
+    try { sessionStorage.setItem(this.borradorKey, JSON.stringify(borrador)) } catch { }
+  }
+
+  private limpiarBorrador() {
+    try { sessionStorage.removeItem(this.borradorKey) } catch { }
+  }
+
+  private finalizarCargaPeriodo() {
+    const borrador = this.borradorPendiente
+    if (!borrador) {
+      this.restaurandoBorrador = false
+      this.guardarBorrador()
+      return
+    }
+
+    this.borradorPendiente = undefined
+    this.listaCursosNuevos = Array.isArray(borrador.cursos) ? borrador.cursos : []
+    this.resultado = borrador.resultado
+    this.actualizarCursosCalendario()
+    this.restaurarSeleccionCurso(borrador.cursoForm)
+    this.restaurandoBorrador = false
+    this.aplicarPasoSolicitado()
+    if (this.resultado?.estado === 'pendiente') this.consultarConfirmacionPago(this.resultado.chargeId)
+    this.guardarBorrador()
+  }
+
+  private restaurarSeleccionCurso(valores: any) {
+    if (!valores?.curso || !this.cursos?.some(c => c.idCurso == valores.curso)) return
+    const cursoListado = this.cursos.find(c => c.idCurso == valores.curso)!
+    this.cursoForm.controls['curso'].setValue(valores.curso, { emitEvent: false })
+    this.loader = true
+    this.cursoService.getCursoHorarios(
+      this.idTipoUsuario,
+      this.mesCalendario.getMonth(),
+      this.mesCalendario.getFullYear(),
+      valores.curso,
+      cursoListado.idCursoPeriodo,
+    ).subscribe(res => {
+      this.curso = res[0]
+      this.niveles = res[0]?.niveles || []
+      this.cursoForm.controls['nivel'].enable({ emitEvent: false })
+      if (this.niveles.some(n => n.idNivel == valores.nivel)) {
+        this.cursoForm.controls['nivel'].setValue(valores.nivel, { emitEvent: false })
+        this.ratios = this.niveles.find(n => n.idNivel == valores.nivel)?.ratios || []
+        this.cursoForm.controls['ratio'].enable({ emitEvent: false })
+      }
+      if (this.ratios?.some(r => r.idRatio == valores.ratio)) {
+        const ratio = this.ratios.find(r => r.idRatio == valores.ratio)!
+        this.cursoForm.controls['ratio'].setValue(valores.ratio, { emitEvent: false })
+        this.dias = ratio.dias
+        this.cantDiasTemporal = ratio.dias[0]?.numEvents || 0
+        this.costoPagarTemporal = ratio.payment
+        this.cursoForm.controls['dia'].enable({ emitEvent: false })
+      }
+      if (this.dias?.some(d => d.idDias == valores.dia)) {
+        this.cursoForm.controls['dia'].setValue(valores.dia, { emitEvent: false })
+        this.eleccionDia()
+      }
+      this.loader = false
+    })
   }
   
 
@@ -166,6 +309,7 @@ export class MatriculaMainComponent {
         this.actualizarCursosCalendario()
         this.loader=false
         this.aplicarCursoPreseleccionado()
+        this.finalizarCargaPeriodo()
       })
 
     })
@@ -202,6 +346,7 @@ export class MatriculaMainComponent {
         this.actualizarCursosCalendario()
         this.loader=false
         this.aplicarCursoPreseleccionado()
+        this.finalizarCargaPeriodo()
         return
       }
       this.cursoService.getCursosHorariosMatriculados(this.idUsuario,this.mesCalendario.getMonth(),this.mesCalendario.getFullYear()).subscribe(res=>{
@@ -209,6 +354,7 @@ export class MatriculaMainComponent {
         this.actualizarCursosCalendario()
         this.loader=false
         this.aplicarCursoPreseleccionado()
+        this.finalizarCargaPeriodo()
       })
 
     })
@@ -226,6 +372,7 @@ export class MatriculaMainComponent {
     for (const c of ['nivel', 'ratio', 'dia']) this.cursoForm.controls[c].disable()
     this.actualizarCursosCalendario()
     this.aplicarCursoPreseleccionado()
+    this.guardarBorrador()
   }
 
   // Viene de la ficha del curso con ?periodo=<fecha>&idCurso=<id>: elige ese periodo si tiene matrícula abierta.
@@ -278,7 +425,7 @@ export class MatriculaMainComponent {
       this.faltanDatosInvitado = true
       return
     }
-    if (this.listaCursosNuevos.length) this.paso = 2
+    this.irAPago()
   }
 
   ngOnInit(): void {
@@ -487,6 +634,10 @@ export class MatriculaMainComponent {
     }
 
     const curso = {idCursoPeriodo: idCursoPeriodo, cupoMax:cupoMax, nombre: nombre,horarioHoras: horarioHoras,horarioDias:horarioDias,diasEvento:diasEvento,tarifa:tarifa,idTarifa:idTarifa,diasMax:diasMax}
+    if (this.cursoYaSeleccionado(idCursoPeriodo)) {
+      this.openSnackBar('El alumno ya está matriculado o ya agregó este curso para el periodo seleccionado.', 5)
+      return
+    }
     this.listaCursosNuevos.push(curso)
 
     this.cursoForm.controls['curso'].setValue('')
@@ -502,6 +653,7 @@ export class MatriculaMainComponent {
     this.tarifa = 0
     this.listaDeCursosPrecios = []
     this.actualizarCursosCalendario()
+    this.guardarBorrador()
     this.cursoForm.invalid
     
   }
@@ -517,9 +669,15 @@ export class MatriculaMainComponent {
       }
     }
     this.actualizarCursosCalendario()
+    this.guardarBorrador()
   }
 
   comprobarCruce(curso:any) : boolean{
+
+    if (this.cursoYaSeleccionado(curso.idCursoPeriodo)) {
+      this.openSnackBar('El alumno ya está matriculado o ya agregó este curso para el periodo seleccionado.', 5)
+      return false
+    }
 
     for(let  cursoNuevo of this.listaCursosNuevos){
       for(let horarioNuevo of cursoNuevo.diasEvento){
@@ -600,11 +758,60 @@ export class MatriculaMainComponent {
     return alumno && typeof alumno === 'object' ? `${alumno.nombre} ${alumno.apellidop}` : ''
   }
 
+  cursoYaSeleccionado(idCursoPeriodo: number): boolean {
+    return [...this.listaCursos, ...this.listaCursosNuevos]
+      .some(curso => Number(curso.idCursoPeriodo) === Number(idCursoPeriodo))
+  }
+
+  irAPago() {
+    if (!this.listaCursosNuevos.length) return
+    this.paso = 2
+    this.guardarBorrador()
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { paso: 'pago' },
+      queryParamsHandling: 'merge',
+    })
+  }
+
+  volverAFormulario() {
+    this.paso = 1
+    this.guardarBorrador()
+    this.actualizarPasoUrl(null, true)
+  }
+
+  reintentarPago() {
+    this.paso = 2
+    this.guardarBorrador()
+    this.actualizarPasoUrl('pago', true)
+  }
+
+  private actualizarPasoUrl(paso: string | null, replaceUrl: boolean) {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { paso },
+      queryParamsHandling: 'merge',
+      replaceUrl,
+    })
+  }
+
+  private aplicarPasoSolicitado() {
+    if (this.pasoSolicitado === 'estado' && this.resultado) {
+      this.paso = 3
+    } else if (this.pasoSolicitado === 'pago' && this.listaCursosNuevos.length && (!this.invitado || this.invitadoForm.valid)) {
+      this.paso = 2
+    } else {
+      this.paso = 1
+    }
+  }
+
   // La pantalla "pendiente" no ofrece volver atrás: otro "Pagar" crearía un segundo cargo.
   mostrarResultado(resultado: ResultadoPago) {
     this.resultado = resultado
     if (this.invitado && resultado.estado === 'pendiente') this.modo.guardarDatosParaRegistro(this.invitadoForm.getRawValue())
     this.paso = 3
+    this.actualizarPasoUrl('estado', true)
+    this.guardarBorrador()
     if (resultado.estado === 'pendiente') this.consultarConfirmacionPago(resultado.chargeId)
   }
 
@@ -619,12 +826,15 @@ export class MatriculaMainComponent {
       if (pagado) {
         this.resultado = { estado: 'exitoso' }
         this.pollingPagoSub?.unsubscribe()
+        this.limpiarBorrador()
       }
     })
   }
 
   ngOnDestroy(): void {
+    this.guardarBorrador()
     this.pollingPagoSub?.unsubscribe()
+    this.cambiosSub.unsubscribe()
   }
 
   verTerminos() {
