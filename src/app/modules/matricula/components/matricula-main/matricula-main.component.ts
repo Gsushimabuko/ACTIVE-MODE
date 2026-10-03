@@ -19,8 +19,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModoAccesoService } from '../../../../core/acceso/modo-acceso.service';
 import { crearFormInvitado, tipoUsuarioPorRelacion } from '../datos-invitado/datos-invitado.component';
 import { PasarelaService } from '../../../../core/http/pasarela/pasarela.service';
-import { Subscription, interval, of, race, timer } from 'rxjs';
-import { switchMap, take, catchError, filter } from 'rxjs/operators';
+import { Subscription, fromEvent, merge, of, race, timer } from 'rxjs';
+import { take, catchError, filter, takeWhile, exhaustMap } from 'rxjs/operators';
 
 interface BorradorMatricula {
   version: 1
@@ -57,8 +57,6 @@ export class MatriculaMainComponent implements OnDestroy {
   usuarios!:Usuario[]
   
 
-  extra:number
-  fechaHoy:Date
   mesCalendario!:Date
   meses:any
   paso: 1 | 2 | 3 = 1
@@ -117,8 +115,6 @@ export class MatriculaMainComponent implements OnDestroy {
 
     this.mesCalendario = new Date('1900-01-17T23:15:21.905Z') 
 
-    this.fechaHoy = new Date()
-    this.extra = 15*60*1000 // prorroga:  (+) aumenta prorroga, (-) disminuye prorroga 
 
     this.cursoForm = this.formBuilder.group({
       curso: ['', [Validators.required]],
@@ -249,6 +245,8 @@ export class MatriculaMainComponent implements OnDestroy {
     this.borradorPendiente = undefined
     this.listaCursosNuevos = Array.isArray(borrador.cursos) ? borrador.cursos : []
     this.resultado = borrador.resultado
+    // Con un cargo ya creado (pendiente) la selección no se toca: es la que se cobró.
+    if (this.resultado?.estado !== 'pendiente') this.descartarHorariosPasados()
     this.actualizarCursosCalendario()
     this.restaurarSeleccionCurso(borrador.cursoForm)
     this.restaurandoBorrador = false
@@ -604,7 +602,7 @@ export class MatriculaMainComponent implements OnDestroy {
       if(dia.idDias == this.cursoForm.controls['dia'].value){
         let schedule = [] //este es el horario que se envia al front
         for(var evento of dia.schedule){
-          if(new Date(evento.start).getTime() > (this.fechaHoy.getTime() - this.extra)){
+          if(new Date(evento.start).getTime() > Date.now()){
             schedule.push(evento)
           }  
         }
@@ -658,7 +656,7 @@ export class MatriculaMainComponent implements OnDestroy {
       if(dia.idDias == this.cursoForm.controls['dia'].value){
         let schedule = [] //este es el horario que se envia al front
         for(var evento of dia.schedule){
-          if(new Date(evento.start).getTime() > (this.fechaHoy.getTime() - this.extra)){
+          if(new Date(evento.start).getTime() > Date.now()){
             schedule.push(evento)
           }  
         }
@@ -800,12 +798,40 @@ export class MatriculaMainComponent implements OnDestroy {
     return alumno && typeof alumno === 'object' ? `${alumno.nombre} ${alumno.apellidop}` : ''
   }
 
+  // Misma regla que el backend al cobrar (/charge): solo cuentan las clases que
+  // todavía no empiezan. La selección puede haberse armado hace rato (o venir del
+  // borrador guardado), así que antes de pagar se quitan las clases que ya
+  // empezaron y se recalcula el monto; si a un curso no le queda ninguna, sale.
+  private descartarHorariosPasados(): boolean {
+    const ahora = Date.now()
+    const sinClases: string[] = []
+    let cambio = false
+    this.listaCursosNuevos = this.listaCursosNuevos.filter((curso: any) => {
+      const eventos = curso.diasEvento || []
+      const vigentes = eventos.filter((evento: any) => new Date(evento.start).getTime() > ahora)
+      if (vigentes.length === eventos.length) return true
+      cambio = true
+      curso.diasEvento = vigentes
+      if (vigentes.length) return true
+      sinClases.push(curso.nombre)
+      return false
+    })
+    if (!cambio) return false
+    this.actualizarCursosCalendario()
+    this.guardarBorrador()
+    this.openSnackBar(sinClases.length
+      ? `Quitamos ${sinClases.join(', ')}: ya no le quedan clases por empezar en este mes.`
+      : 'Quitamos las clases que ya empezaron. Revisa el nuevo monto antes de pagar.', 7)
+    return true
+  }
+
   cursoYaSeleccionado(idCursoPeriodo: number): boolean {
     return [...this.listaCursos, ...this.listaCursosNuevos]
       .some(curso => Number(curso.idCursoPeriodo) === Number(idCursoPeriodo))
   }
 
   irAPago() {
+    this.descartarHorariosPasados()
     if (!this.listaCursosNuevos.length) return
     this.paso = 2
     this.guardarBorrador()
@@ -823,6 +849,8 @@ export class MatriculaMainComponent implements OnDestroy {
   }
 
   reintentarPago() {
+    this.descartarHorariosPasados()
+    if (!this.listaCursosNuevos.length) return this.volverAFormulario()
     this.paso = 2
     this.guardarBorrador()
     this.actualizarPasoUrl('pago', true)
@@ -857,13 +885,24 @@ export class MatriculaMainComponent implements OnDestroy {
     if (resultado.estado === 'pendiente') this.consultarConfirmacionPago(resultado.chargeId)
   }
 
-  // Cobrana confirma el pago de forma asíncrona (webhook); mientras el usuario ve "pendiente",
-  // consultamos cada 4s si ya llegó esa confirmación, hasta 3 minutos.
+  // Cobrana confirma el pago de forma asíncrona (webhook). Mientras el usuario ve
+  // "pendiente" consultamos cada 4s los primeros 3 minutos y luego cada 15s hasta
+  // 35 minutos (la reserva se libera a los 30): llenar el formulario de Niubiz
+  // puede tomar más de 3 minutos. Además, al volver a esta pestaña desde la del
+  // pago se consulta en el acto, sin esperar al siguiente intervalo.
   private consultarConfirmacionPago(chargeId: string) {
     this.pollingPagoSub?.unsubscribe()
-    this.pollingPagoSub = interval(4000).pipe(
-      switchMap(() => this.pasarelaService.estadoPago(chargeId).pipe(catchError(() => of({ pagado: false })))),
-      take(45),
+    const inicio = Date.now()
+    const alVolver = merge(fromEvent(document, 'visibilitychange'), fromEvent(window, 'focus')).pipe(
+      filter(() => document.visibilityState === 'visible'),
+    )
+    this.pollingPagoSub = merge(
+      timer(4000, 4000).pipe(take(45)),
+      timer(3 * 60 * 1000, 15000),
+      alVolver,
+    ).pipe(
+      takeWhile(() => Date.now() - inicio < 35 * 60 * 1000),
+      exhaustMap(() => this.pasarelaService.estadoPago(chargeId).pipe(catchError(() => of({ pagado: false })))),
     ).subscribe(({ pagado }) => {
       if (pagado) {
         this.resultado = { estado: 'exitoso' }
