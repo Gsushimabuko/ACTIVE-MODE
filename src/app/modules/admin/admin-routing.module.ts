@@ -32,6 +32,7 @@ const routes: Routes = [
 
   {
     path: '', component: AdminShellComponent, canActivateChild: [porteriaGuard], children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'alumnos', component: AlumnosComponent },
       { path: 'codigo', component: CodigosComponent },

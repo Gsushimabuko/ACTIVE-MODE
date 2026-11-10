@@ -61,6 +61,14 @@ export class BotonPagoComponent {
 		this.niubizService.generateSessionToken(this.uuid, this.token)
 			.subscribe({
 				next: (data: any) => {
+					// El back responde 200 aunque Niubiz falle; sin sessionKey (o sin el script) el loader quedaba infinito.
+					if (!data?.data?.sessionKey || typeof VisanetCheckout === 'undefined') {
+						console.log(data);
+						this.loaderService.hide();
+						this.openErrorDialog('No pudimos iniciar el pago. Por favor, inténtelo nuevamente en unos minutos.');
+						return;
+					}
+
 					this.accessToken = data.data;
 					this.pago = data.paymentData;
 					this.pago.num_total = parseFloat(this.pago.num_total);
@@ -120,6 +128,7 @@ export class BotonPagoComponent {
 				error: (error: any) => {
 					console.log(error);
 					this.loaderService.hide();
+					this.openErrorDialog('No pudimos iniciar el pago. Por favor, inténtelo nuevamente en unos minutos.');
 				},
 			}
 			);
