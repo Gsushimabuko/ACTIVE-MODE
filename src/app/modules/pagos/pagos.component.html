@@ -17,6 +17,21 @@
                 <input matInput readonly [value]="'S/.' + (paymentData.num_total | number: '1.2-2':'en-US')">
             </mat-form-field>
 
+            <ng-container *ngIf="paymentData.requiere_datos && !cargoUrl">
+                <mat-form-field appearance="outline">
+                    <mat-label>DNI o carné de extranjería</mat-label>
+                    <input matInput [(ngModel)]="cliente.dni" maxlength="20" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombres de quien paga</mat-label>
+                    <input matInput [(ngModel)]="cliente.nombre" maxlength="100" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellidos de quien paga</mat-label>
+                    <input matInput [(ngModel)]="cliente.apellido" maxlength="100" autocomplete="off">
+                </mat-form-field>
+            </ng-container>
+
             <div style="margin-bottom: 15px;">
                 <mat-checkbox [(ngModel)]="agreedToTerms" color="primary" class="terms" required>He leido y acepto los <a href="#" (click)="openTermsDialog(); $event.preventDefault()">términos y condiciones</a></mat-checkbox>
             </div>
@@ -25,7 +40,16 @@
             ⚠️ Debe aceptar los términos y condiciones para proceder con el pago
             </div>
             
-            <app-boton-pago [token]="token" (clicked)="onPayButtonClicked()" [disabled]="!agreedToTerms" matTooltip="You must agree to the terms." fxLayout="column" fxLayoutAlign="center center" [uuid]="uuid"></app-boton-pago>
+            <div style="margin-bottom: 10px;" *ngIf="agreedToTerms && showTermsWarning && paymentData.requiere_datos && !clienteValido" class="warning-text">
+            ⚠️ Complete su DNI, nombres y apellidos para proceder con el pago
+            </div>
+
+            <app-boton-pago [cliente]="paymentData.requiere_datos ? cliente : null" (clicked)="onPayButtonClicked()" (cargoCreado)="onCargoCreado($event)" [disabled]="pagoDeshabilitado" matTooltip="You must agree to the terms." fxLayout="column" fxLayoutAlign="center center" [uuid]="uuid"></app-boton-pago>
+
+            <p *ngIf="cargoUrl" style="margin-top: 15px; color: gray; text-align: center;">
+                Abrimos la pasarela de pago en otra pestaña. Esta página se actualizará cuando se confirme su pago.
+                Si no se abrió, <a [href]="cargoUrl" target="_blank" rel="noopener">ábrala aquí</a>.
+            </p>
         </mat-card>
     </div>
 </div>

@@ -25,7 +25,7 @@ export class SearchInputComponent {
         return;
       }
 
-      this.uListasService.getStudentsByLastName(searchTerm).subscribe({
+      this.uListasService.buscarAlumnos(searchTerm).subscribe({
         next: (results) => {
           this.searchResults = results;
           this.searchResultsChange.emit(this.searchResults); // Emitir resultados al componente padre

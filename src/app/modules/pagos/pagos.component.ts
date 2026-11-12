@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UPaymentService } from 'src/app/core/http/u_payment/u-payment.service';
+import { ClientePago, UPaymentService } from 'src/app/core/http/u_payment/u-payment.service';
 import { LoaderService } from '../shared/loaderService/loader.service';
-import { finalize } from 'rxjs';
+import { EMPTY, Subscription, catchError, finalize, interval, switchMap, takeWhile } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { TextDialogComponent } from '../shared/text-dialog/text-dialog.component';
 
@@ -13,7 +13,6 @@ import { TextDialogComponent } from '../shared/text-dialog/text-dialog.component
 })
 export class PagosComponent {
     uuid: string = this._route.snapshot.params['id'];
-    token: string = this._route.snapshot.queryParamMap.get('token') ?? '';
 
     paymentData: any = {
         var_description: '',
@@ -22,6 +21,20 @@ export class PagosComponent {
     }
     agreedToTerms = false;
     showTermsWarning = false;
+
+    // Colectas: Cobrana exige DNI, nombre y apellido y nadie los cargó antes.
+    cliente: ClientePago = { dni: '', nombre: '', apellido: '' };
+    cargoUrl = '';
+    private sondeo?: Subscription;
+
+    get clienteValido(): boolean {
+        const dni = this.cliente.dni.replace(/[^0-9A-Za-z]/g, '');
+        return dni.length >= 6 && dni.length <= 20 && !!this.cliente.nombre.trim() && !!this.cliente.apellido.trim();
+    }
+
+    get pagoDeshabilitado(): boolean {
+        return !this.agreedToTerms || (this.paymentData.requiere_datos && !this.clienteValido);
+    }
 
     constructor(
         private readonly _route: ActivatedRoute,
@@ -61,6 +74,20 @@ export class PagosComponent {
 
     onPayButtonClicked() {
         this.showTermsWarning = true;
+    }
+
+    // El cargo ya existe en Cobrana: Active Mode no recibe al padre de vuelta, así que consulta el estado hasta que el webhook lo marque pagado.
+    onCargoCreado(url: string) {
+        this.cargoUrl = url;
+        this.sondeo?.unsubscribe();
+        this.sondeo = interval(5000).pipe(
+            switchMap(() => this._paymentService.getPaymentData(this.uuid).pipe(catchError(() => EMPTY))),
+            takeWhile((data: any) => data.var_status === 'PENDING', true),
+        ).subscribe((data) => this.paymentData = data);
+    }
+
+    ngOnDestroy() {
+        this.sondeo?.unsubscribe();
     }
 
     terms: string = `Acuerdo\n

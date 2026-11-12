@@ -96,6 +96,8 @@ textarea:focus {
   font-size: 14px;
 }
 
-.recalcular {
-  align-self: flex-start;
+.salon {
+  display: block;
+  color: var(--am-text-2);
+  font-size: 12px;
 }

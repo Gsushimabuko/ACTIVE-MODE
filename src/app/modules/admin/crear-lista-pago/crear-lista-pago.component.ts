@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UListasService } from 'src/app/core/http/u_listas/u-listas.service';
-import { debounceTime, Subject } from 'rxjs';
-import { Location } from '@angular/common';
+import { catchError, debounceTime, distinctUntilChanged, of, Subject, switchMap } from 'rxjs';
 import { ZUsuarioService } from 'src/app/core/http/z_usuario/z-usuario.service';
+import { ConfirmarDialogComponent } from '../confirmar-dialog/confirmar-dialog.component';
+
+const MIN_LETRAS = 2;
 
 @Component({
   selector: 'app-crear-lista-pago',
@@ -14,17 +19,16 @@ export class CrearListaPagoComponent implements OnInit {
     nombre: '',
     detalles: '',
     padre: '',
-    FK_parent: null, // ID del padre seleccionado
+    FK_parent: null as number | null, // ID del padre seleccionado
     cuota: 0,
     comision: 0
   };
 
   students: any[] = [];
-  filteredStudents: any[] = [];
   searchResults: any[] = [];
   parentSearchResults: any[] = []; // Resultados de búsqueda de padres
-  searchTerm: string = '';
-  parentSearchTerm: string = ''; // Término de búsqueda para padres
+  sinAlumnos = false; // La búsqueda terminó y no encontró a nadie registrado
+  sinPadres = false;
   searchSubject = new Subject<string>();
   parentSearchSubject = new Subject<string>(); // Subject para búsqueda de padres
 
@@ -33,17 +37,21 @@ export class CrearListaPagoComponent implements OnInit {
   selectedGrade: any = null;
   selectedSection: any = null;
 
+  error = '';
+  enviando = false;
+
   constructor(
     private uListasService: UListasService,
-    private location: Location,
+    private router: Router,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private usuarioService: ZUsuarioService
   ) {}
 
   ngOnInit() {
     this.initializeSearch();
-    this.initializeSearchParents(); // Inicializar búsqueda de padres
+    this.initializeSearchParents();
     this.loadGradesAndSections();
-    this.filteredStudents = [...this.students];
   }
 
   // Cargar grados y secciones desde el servicio
@@ -51,7 +59,6 @@ export class CrearListaPagoComponent implements OnInit {
     this.uListasService.getGradesAndSections().subscribe({
       next: (data) => {
         this.grades = data;
-        console.log('Grados y secciones cargados:', data);
       },
       error: (error) => {
         console.error('Error al cargar grados y secciones:', error);
@@ -65,206 +72,179 @@ export class CrearListaPagoComponent implements OnInit {
     this.selectedSection = null; // Reiniciar la selección de sección
   }
 
-  // Métodos principales
+  // --- Cuota y reparto (el backend repite el mismo reparto, así lo que se ve es lo que se cobra) ---
+
+  // Lo que la persona escribió, o null si está vacío o fuera de rango.
+  private get cuota(): number | null {
+    const c = Number(this.formData.cuota);
+    return this.formData.cuota !== null && Number.isFinite(c) && c > 0 ? c : null;
+  }
+
+  private get comisionPct(): number | null {
+    const p = Number(this.formData.comision);
+    return this.formData.comision !== null && Number.isFinite(p) && p >= 0 && p <= 100 ? p : null;
+  }
+
+  // Reparte en céntimos: el resto sobrante va de a un céntimo a los primeros alumnos.
+  private repartir(cuota: number, comisionPct: number, n: number) {
+    const a = Math.round(cuota * 100);
+    const c = Math.round(Math.round(cuota * 100) * comisionPct / 100);
+    return Array.from({ length: n }, (_, i) => {
+      const base = Math.floor(a / n) + (i < a % n ? 1 : 0);
+      const com = Math.floor(c / n) + (i < c % n ? 1 : 0);
+      return { amount: base / 100, commission: com / 100, total: (base + com) / 100 };
+    });
+  }
+
+  // Recalcula la cuota de cada alumno; se llama al cambiar la cuota, la comisión o la lista.
+  calculateCuotas() {
+    const cuota = this.cuota;
+    const pct = this.comisionPct;
+    const partes = cuota !== null && pct !== null && this.students.length
+      ? this.repartir(cuota, pct, this.students.length)
+      : null;
+
+    this.students = this.students.map((student, i) => ({ ...student, cuota: partes ? partes[i].total : 0 }));
+  }
+
+  calculateTotalWithComision(): number {
+    const cuota = this.cuota;
+    const pct = this.comisionPct;
+    if (cuota === null || pct === null) return 0;
+    return this.repartir(cuota, pct, 1)[0].total;
+  }
+
+  // --- Alumnos: solo los que ya están registrados en la plataforma (vienen de la búsqueda) ---
+
+  yaAgregado(student: any) {
+    return this.students.some(s => s.id === student.id);
+  }
+
   addStudentFromSearch(student: any) {
-    console.log('Estudiante seleccionado:', student);
+    if (this.yaAgregado(student)) return;
 
-    const mappedStudent = {
-      id: student.PK_student,
-      nombre: student.var_name,
-      apellido: student.var_lastname,
-      grado: student.section.grade.var_name,
-      seccion: student.section.var_name,
-      cuota: 0 // Inicializar la cuota en 0
-    };
-
-    if (this.students.some(existingStudent => existingStudent.id === mappedStudent.id)) {
-      alert('El estudiante ya está en la lista.');
-      return;
-    }
-
-    this.students = [...this.students, mappedStudent];
-    this.filteredStudents = [...this.students]; // Actualizar la tabla con todos los estudiantes
+    this.students = [...this.students, { id: student.id, nombre: student.nombre, detalle: student.detalle, cuota: 0 }];
+    this.error = '';
     this.calculateCuotas();
   }
 
   removeStudent(id: number) {
     this.students = this.students.filter(student => student.id !== id);
-    this.filteredStudents = [...this.students]; // Actualizar la tabla con todos los estudiantes
     this.calculateCuotas();
   }
 
   clearTable() {
-    this.students = [];
-    this.filteredStudents = [];
+    if (this.students.length < 2) { this.students = []; return; }
+
+    this.dialog.open(ConfirmarDialogComponent, {
+      width: '440px', panelClass: 'am-dialogo',
+      data: {
+        titulo: `¿Quitar a los ${this.students.length} alumnos de la lista?`,
+        mensaje: 'Tendrás que volver a buscarlos o cargar el salón.',
+        confirmar: 'Vaciar lista', peligro: true,
+      },
+    }).afterClosed().subscribe((ok) => { if (ok) this.students = []; });
   }
 
-  calculateCuotas() {
-    const totalCuota = this.formData.cuota;
-    const comision = this.formData.comision;
-
-    const cuotaConComision = totalCuota + (totalCuota * comision) / 100;
-
-    const cuotaPorEstudiante = this.students.length > 0
-      ? cuotaConComision / this.students.length
-      : 0;
-
-    this.students = this.students.map(student => ({
-      ...student,
-      cuota: cuotaPorEstudiante
-    }));
-
-    this.filteredStudents = [...this.students]; // Actualizar la tabla con las cuotas calculadas
-  }
-
-  calculateTotalWithComision(): number {
-    const totalCuota = this.formData.cuota;
-    const comision = this.formData.comision;
-    return totalCuota + (totalCuota * comision) / 100;
+  // Devuelve el primer problema del formulario, o '' si se puede crear la lista.
+  private validar(): string {
+    if (!this.formData.nombre.trim()) return 'Escribe el nombre de la lista.';
+    if (!this.formData.detalles.trim()) return 'Escribe los detalles de la lista.';
+    if (this.formData.padre.trim() && !this.formData.FK_parent) return 'Elige al padre responsable de entre los resultados de la búsqueda o borra el campo.';
+    if (this.cuota === null) return 'La cuota debe ser un monto mayor que 0.';
+    if (this.comisionPct === null) return 'La comisión debe estar entre 0 y 100 %.';
+    if (!this.students.length) return 'Agrega al menos un alumno a la lista.';
+    if (this.cuota * 100 < this.students.length) return 'La cuota es muy pequeña para repartirla entre tantos alumnos.';
+    return '';
   }
 
   onSubmit() {
-    // Validaciones
-    if (!this.formData.nombre.trim()) {
-      alert('El nombre de la lista no puede estar vacío.');
-      return;
-    }
+    if (this.enviando) return;
 
-    if (!this.formData.detalles.trim()) {
-      alert('Los detalles de la lista no pueden estar vacíos.');
-      return;
-    }
+    this.error = this.validar();
+    if (this.error) return;
 
-    if (!this.formData.padre.trim()) {
-      alert('Debe seleccionar un padre responsable.');
-      return;
-    }
+    const cuota = this.cuota as number;
+    const pct = this.comisionPct as number;
+    const partes = this.repartir(cuota, pct, this.students.length);
+    const num_amount = Math.round(cuota * 100) / 100;
+    const num_commission = Math.round(partes.reduce((s, p) => s + p.commission * 100, 0)) / 100;
 
-    if (this.students.length === 0) {
-      alert('Debe agregar al menos un estudiante a la lista.');
-      return;
-    }
-
-    // Calcular valores globales
-    const num_amount = parseFloat(this.formData.cuota.toFixed(2)); // Cuota base (sin comisión)
-    const num_commission = parseFloat(((num_amount * this.formData.comision) / 100).toFixed(2)); // Comisión total
-    const num_total = parseFloat((num_amount + num_commission).toFixed(2)); // Total (cuota + comisión)
-
-    // Calcular valores individuales
-    const num_individual_amount = parseFloat((num_amount / this.students.length).toFixed(2)); // Cuota base por estudiante
-    const num_individual_commission = parseFloat((num_commission / this.students.length).toFixed(2)); // Comisión por estudiante
-    const num_individual_total = parseFloat((num_individual_amount + num_individual_commission).toFixed(2)); // Total por estudiante
-
-    // Preparar los datos para enviar
     const collectionData = {
-      var_name: this.formData.nombre,
-      var_description: this.formData.detalles,
-      num_total: num_total, // Total (cuota + comisión)
-      num_commission: num_commission, // Comisión total
-      num_amount: num_amount, // Cuota base
-      FK_parent: this.formData.FK_parent || null, // ID del padre (opcional)
-      var_admin_email: // Correo del administrador (opcional, si se desea enviar un recordatorio)
-        this.usuarioService.usuario.correo || null,
-      num_individual_amount: num_individual_amount, // Cuota base por estudiante
-      num_individual_commission: num_individual_commission, // Comisión por estudiante
-      num_individual_total: num_individual_total, // Total por estudiante
-      students: this.students.map(student => ({ FK_student: student.id }))
+      var_name: this.formData.nombre.trim(),
+      var_description: this.formData.detalles.trim(),
+      num_amount, // Cuota total sin comisión
+      num_commission, // Comisión total
+      FK_parent: this.formData.FK_parent,
+      var_admin_email: this.usuarioService.usuario.correo || null,
+      students: this.students.map(student => ({ FK_usuario: student.id }))
     };
 
-    console.log('Datos de la colección a enviar:', collectionData);
-
-    // Enviar los datos al backend
+    this.enviando = true;
     this.uListasService.createCollection(collectionData).subscribe({
       next: (response) => {
-        console.log('Respuesta del backend:', response);
-        alert('La lista de pago se creó exitosamente.');
-        this.volver(); // Navegar de regreso después de la creación exitosa
+        let mensaje = response.correosFallidos ? response.message : 'La lista de pago se creó y se avisó a los padres.';
+        if (response.sinPadres) {
+          mensaje += ` ${response.sinPadres} alumno(s) no tienen padres registrados y no recibieron correo.`;
+        }
+        this.snackBar.open(mensaje, 'Cerrar', { duration: 8000 });
+        this.router.navigate(['/admin/edit-lista-pago']);
       },
       error: (error) => {
-        console.error('Error al crear la lista de pago:', error);
-        alert('Ocurrió un error al crear la lista de pago. Por favor, intente nuevamente.');
+        this.enviando = false;
+        this.error = error?.error?.message || 'Ocurrió un error al crear la lista de pago. Inténtalo nuevamente.';
       }
     });
   }
 
-  // Métodos relacionados con la barra de búsqueda
+  // --- Búsquedas (se cancela la anterior si la persona sigue escribiendo) ---
+
   initializeSearch() {
-    this.searchSubject.pipe(debounceTime(500)).subscribe((searchTerm) => {
-      if (searchTerm.trim() === '') {
-        this.searchResults = [];
-        return;
-      }
-
-      this.uListasService.getStudentsByLastName(searchTerm).subscribe({
-        next: (results) => {
-          this.searchResults = results;
-          console.log('Resultados de búsqueda:', results);
-        },
-        error: (error) => {
-          console.error('Error al buscar estudiantes por apellido:', error);
-        }
-      });
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap((term) => term.length < MIN_LETRAS ? of(null) : this.uListasService.buscarAlumnos(term).pipe(
+        catchError(() => { this.error = 'No se pudo buscar alumnos. Inténtalo nuevamente.'; return of(null); })
+      ))
+    ).subscribe((results) => {
+      this.searchResults = results || [];
+      this.sinAlumnos = results !== null && results.length === 0;
     });
   }
 
-  // Inicializar búsqueda de padres
   initializeSearchParents() {
-    this.parentSearchSubject.pipe(debounceTime(500)).subscribe((searchTerm) => {
-      if (searchTerm.trim() === '') {
-        this.parentSearchResults = [];
-        return;
-      }
-
-      this.uListasService.getParentsByLastName(searchTerm).subscribe({
-        next: (results) => {
-          this.parentSearchResults = results;
-          console.log('Resultados de búsqueda de padres:', results);
-        },
-        error: (error) => {
-          console.error('Error al buscar padres por apellido:', error);
-        }
-      });
+    this.parentSearchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap((term) => term.length < MIN_LETRAS ? of(null) : this.uListasService.getParentsByLastName(term).pipe(
+        catchError(() => { this.error = 'No se pudo buscar padres. Inténtalo nuevamente.'; return of(null); })
+      ))
+    ).subscribe((results) => {
+      this.parentSearchResults = results || [];
+      this.sinPadres = results !== null && results.length === 0;
     });
   }
 
   handleSearchInput(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      const searchTerm = inputElement.value.trim();
-      this.onSearchInputChange(searchTerm);
-    }
+    this.searchSubject.next((event.target as HTMLInputElement).value.trim());
   }
 
-  onSearchInputChange(searchTerm: string) {
-    console.log('Término de búsqueda:', searchTerm);
-    this.searchTerm = searchTerm;
-    this.searchSubject.next(searchTerm);
-  }
-
-  // Manejar entrada en el buscador de padres
+  // Escribir en el campo invalida al padre elegido: hay que volver a elegirlo de la lista.
   handleParentSearchInput(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement) {
-      const searchTerm = inputElement.value.trim();
-      this.onParentSearchInputChange(searchTerm);
-    }
+    this.formData.FK_parent = null;
+    this.parentSearchSubject.next((event.target as HTMLInputElement).value.trim());
   }
 
-  // Actualizar término de búsqueda de padres
-  onParentSearchInputChange(searchTerm: string) {
-    console.log('Término de búsqueda de padres:', searchTerm);
-    this.parentSearchTerm = searchTerm;
-    this.parentSearchSubject.next(searchTerm);
-  }
-
-  // Seleccionar un padre de los resultados de búsqueda
   selectParent(parent: any) {
     this.formData.padre = `${parent.var_name} ${parent.var_lastname}`;
-    this.formData.FK_parent = parent.PK_parent; // Asignar el ID del padre al formulario
-    this.parentSearchResults = []; // Limpiar resultados de búsqueda
-    console.log('Padre seleccionado:', parent);
+    this.formData.FK_parent = parent.PK_parent;
+    this.parentSearchResults = [];
+    this.sinPadres = false;
+    this.error = '';
   }
 
+  // En evaluación: el botón está oculto. Ojo: esto trae alumnos del padrón del colegio (u_student) y la
+  // lista ahora se arma con cuentas de la app, así que sus ids no sirven tal cual.
   loadStudentsByClassroom() {
     if (!this.selectedGrade || !this.selectedSection) {
       alert('Por favor, seleccione un grado y una sección.');
@@ -300,7 +280,6 @@ export class CrearListaPagoComponent implements OnInit {
           }
         });
 
-        this.filteredStudents = [...this.students]; // Actualizar la tabla con todos los estudiantes
         this.calculateCuotas(); // Recalcular cuotas
       },
       error: (error) => {
@@ -309,9 +288,4 @@ export class CrearListaPagoComponent implements OnInit {
       }
     });
   }
-
-  volver() {
-    this.location.back();
-  }
 }
-

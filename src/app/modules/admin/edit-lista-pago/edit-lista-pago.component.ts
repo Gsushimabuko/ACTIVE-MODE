@@ -53,7 +53,7 @@ export class EditListaPagoComponent implements OnInit {
       width: '1120px',
       maxWidth: '96vw',
       maxHeight: '92vh',
-      panelClass: 'lista-pago-dialogo',
+      panelClass: 'am-dialogo',
       ariaLabel: `Detalle de ${lista.var_name}`,
     });
   }

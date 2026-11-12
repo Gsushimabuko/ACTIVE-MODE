@@ -5,9 +5,22 @@
   </header>
 
   <form [formGroup]="pagoForm" class="am-tarjeta am-form" (ngSubmit)="generarPago()">
-    <label class="am-campo">Correo de quien paga
-      <input type="email" formControlName="var_email" autocomplete="off">
-    </label>
+    <div class="am-form-grid">
+      <label class="am-campo">Nombres de quien paga
+        <input type="text" formControlName="nombre" autocomplete="off">
+      </label>
+      <label class="am-campo">Apellidos de quien paga
+        <input type="text" formControlName="apellido" autocomplete="off">
+      </label>
+    </div>
+    <div class="am-form-grid">
+      <label class="am-campo">DNI o carné de extranjería
+        <input type="text" formControlName="dni" maxlength="20" autocomplete="off">
+      </label>
+      <label class="am-campo">Correo de quien paga
+        <input type="email" formControlName="var_email" autocomplete="off">
+      </label>
+    </div>
     <label class="am-campo">Descripción del pago
       <input type="text" formControlName="var_description">
     </label>

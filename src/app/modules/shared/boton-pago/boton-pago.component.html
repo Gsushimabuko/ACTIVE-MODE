@@ -1,1 +1,1 @@
-<button mat-button style="font-weight: bold; background-color:rgb(72, 87, 226); color: white;" id="pago_pasarela" class="boton" mat-flat-button (click)="pay()">Pagar</button>
+<button mat-button style="font-weight: bold; background-color:rgb(72, 87, 226); color: white;" id="pago_pasarela" class="boton" mat-flat-button [disabled]="procesando" (click)="pay()">{{ procesando ? 'Abriendo la pasarela…' : 'Pagar' }}</button>

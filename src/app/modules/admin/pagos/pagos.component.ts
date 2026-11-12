@@ -20,6 +20,10 @@ export class PagosComponent {
 		num_amount: new FormControl(0, [Validators.required, Validators.min(1)]),
 		num_commission_percentage: new FormControl(0.1, [Validators.required]),
 		var_email: new FormControl('', [Validators.required, Validators.email]),
+		// Cobrana exige estos datos de quien paga (el DNI puede ser carné de extranjería).
+		dni: new FormControl('', [Validators.required, Validators.pattern(/^[0-9A-Za-z]{6,20}$/)]),
+		nombre: new FormControl('', [Validators.required]),
+		apellido: new FormControl('', [Validators.required]),
 	});
 
 	commission: number = 0;
@@ -69,6 +73,11 @@ export class PagosComponent {
 			num_total: this.total,
 			var_email: this.pagoForm.get('var_email')?.value,
 			var_admin_email: this.usuarioService.usuario.correo,
+			cliente: {
+				dni: this.pagoForm.get('dni')?.value,
+				nombre: this.pagoForm.get('nombre')?.value,
+				apellido: this.pagoForm.get('apellido')?.value,
+			},
 		}
 		
 		this.paymentService.generatePayment(paymentData).pipe(
@@ -92,6 +101,9 @@ export class PagosComponent {
 		this.pagoForm.patchValue({
 			var_email: '',
 			var_description: '',
+			dni: '',
+			nombre: '',
+			apellido: '',
 		});
 	}
 
